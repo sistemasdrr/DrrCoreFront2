@@ -32,14 +32,16 @@ export class ListaEmpresasComponent implements OnInit {
     bandera: '',
     regtrib: '',
     codCel: '',
+
   }
+  filterBy='N'
   msgPais = ""
   colorMsgPais = ""
   //FILTROS
   razonSocial = ""
   filtroRB = "C"
   idPais = 0
-  chkConInforme = true
+  chkConInforme = false
 
 
   dataSource: MatTableDataSource<TCompany>;
@@ -47,6 +49,7 @@ export class ListaEmpresasComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('filter') filter!: ElementRef;
   columnsToDisplay = ['idioma', 'rucInit', 'razonSocial', 'pais','acciones' ];
+  columnsToDisplaySimilar = ['idioma', 'razonSocial', 'descargado', 'pais','acciones' ];
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,private datosEmpresaService : DatosEmpresaService,private router : Router, private paisService : PaisService,public dialogRef: MatDialogRef<ListaEmpresasComponent>,){
     this.dataSource = new MatTableDataSource()
@@ -117,8 +120,9 @@ export class ListaEmpresasComponent implements OnInit {
         this.colorMsgPais = "green"
       }
     } else {
-      this.idPais = 0
-      console.log(this.idPais)
+      if(this.idPais!==0){       
+        this.filtrarEmpresas()
+       }
       this.msgPais = "Seleccione una opción."
       this.colorMsgPais = "red"
     }
@@ -151,12 +155,13 @@ export class ListaEmpresasComponent implements OnInit {
     const busqueda = {
       razonSocial : this.razonSocial,
       filtro : this.filtroRB,
-      idPais : this.idPais,
-      conInforme : this.chkConInforme
+      idPais : this.idPais,     
+      conInforme : this.chkConInforme,
+      similar:this.filterBy==='S'
     }
     this.loading=true;
     localStorage.setItem('busquedaEmpresas', JSON.stringify(busqueda))
-    this.datosEmpresaService.getDatosEmpresas(this.razonSocial.trim(), this.filtroRB, this.idPais, this.chkConInforme).subscribe(
+    this.datosEmpresaService.getDatosEmpresas(this.razonSocial.trim(), this.filtroRB, this.idPais, this.chkConInforme,this.filterBy==='S').subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.dataSource = new MatTableDataSource(response.data)
