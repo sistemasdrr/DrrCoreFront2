@@ -20,18 +20,21 @@
             <div class="col-md-6 d-flex mt-5">
                 <div class="col-md-3">
                   <mat-button-toggle-group  #group="matButtonToggleGroup" class="w-100 shadow" [vertical]="true" [disabled]="estado === 'editar'">
-                    <mat-button-toggle [ngClass]="{'bg-blue': activeList === 1}" value="Supervisor" (click)="filtrarDatos('Supervisor'); activeList = 1">Supervisor</mat-button-toggle>
-                    <mat-button-toggle [ngClass]="{'bg-blue': activeList === 2}" value="Reportero" (click)="filtrarDatos('Reportero'); activeList = 2" >Reportero</mat-button-toggle>
-                    <mat-button-toggle [ngClass]="{'bg-blue': activeList === 3}" value="Agente" (click)="filtrarDatos('Agente'); activeList = 3">Agente</mat-button-toggle>
-                    <mat-button-toggle [ngClass]="{'bg-blue': activeList === 4}" value="Digitadora" (click)="filtrarDatos('Digitadora'); activeList = 4">Digitadora</mat-button-toggle>
-                    <mat-button-toggle [ngClass]="{'bg-blue': activeList === 5}" value="Traductora" (click)="filtrarDatos('Traductora'); activeList = 5">Traductora</mat-button-toggle>
+                    <mat-button-toggle [ngClass]="{'bg-blue': activeList === 6}" value="PreAsignación" (click)="filtrarDatos('PA'); activeList = 6; type ='PA';">PreAsignación</mat-button-toggle>
+                    <mat-button-toggle [ngClass]="{'bg-blue': activeList === 2}" value="Reportero" (click)="filtrarDatos('RP'); activeList = 2; type ='RP';" >Reportero</mat-button-toggle>
+                    <mat-button-toggle [ngClass]="{'bg-blue': activeList === 7}" value="Agente" (click)="filtrarDatos('AG'); activeList = 7; type ='AG';balance=false;observaciones = ''" >Agente</mat-button-toggle>
+                    <mat-button-toggle [ngClass]="{'bg-blue': activeList === 3}" value="Referencista" (click)="filtrarDatos('RF'); activeList = 3; type ='RF';">Referencista</mat-button-toggle>
+                    <mat-button-toggle [ngClass]="{'bg-blue': activeList === 4}" value="Digitadora" (click)="filtrarDatos('DI'); activeList = 4; type ='DI';">Digitadora</mat-button-toggle>
+                    <mat-button-toggle [ngClass]="{'bg-blue': activeList === 5}" value="Traductora" (click)="filtrarDatos('TR'); activeList = 5; type ='TR';">Traductora</mat-button-toggle>
+                    <mat-button-toggle [ngClass]="{'bg-blue': activeList === 1}" value="Supervisor" (click)="filtrarDatos('SU'); activeList = 1; type ='SU';">Supervisor</mat-button-toggle>
+
                   </mat-button-toggle-group>
                 </div>
                 <div class="col-md-9 mat-elevation-z8" >
-                  <mat-selection-list #asignacion [multiple]="false" [disabled]="estado === 'editar'" style="width: 100%; overflow-y: auto;" (selectionChange)="seleccionarTrabajador(asignacion.selectedOptions.selected[0].value.codigo,asignacion.selectedOptions.selected[0].value.nombre)" >
-                    <mat-list-option *ngFor="let asig of datos" [value]="asig">
-                      <div style="font-size: 14px; border-radius: 20px;" >
-                        {{asig.codigo}} || {{asig.nombre}}
+                  <mat-selection-list #asignacion [multiple]="false" [disabled]="estado === 'editar'" style="width: 100%; max-height: 400px; overflow-y: auto;" (selectionChange)="seleccionarTrabajador(asignacion.selectedOptions.selected[0].value.code,asignacion.selectedOptions.selected[0].value.fullname)" >
+                    <mat-list-option *ngFor="let asig of datos2" [value]="asig">
+                      <div style="font-size: 12px; border-radius: 14px;" >
+                        {{asig.code}} || {{asig.fullname}}
                       </div>
                     </mat-list-option>
                   </mat-selection-list>
@@ -49,46 +52,19 @@
                   <button mat-mini-fab style="margin: 0 .5rem .5rem .5rem;" [class]="asignado === '' ? 'bg-grey' : 'bg-blue'"  *ngIf="estado === 'agregar'" [disabled]="asignado === ''" #tooltip="matTooltip" matTooltip="Agregar" (click)="agregarAsignacion(asignacion.selectedOptions.selected[0].value.codigo)">
                     <mat-icon class="material-icons-outlined col-white" matSuffix>add</mat-icon>
                   </button>
-                  <button mat-mini-fab class="bg-blue" style="margin: 0 .5rem .5rem .5rem;"  *ngIf="estado === 'editar'" #tooltip="matTooltip" matTooltip="Editar" (click)="editarAsignacion()">
-                    <mat-icon class="material-icons-outlined col-white" matSuffix>edit</mat-icon>
-                  </button>
                   <button mat-mini-fab class="bg-red" *ngIf="estado === 'editar'" #tooltip="matTooltip" matTooltip="Cancelar" (click)="limpiar()">
                     <mat-icon class="material-icons-outlined col-white" matSuffix>cancel</mat-icon>
                   </button></div>
               </div>
               <hr>
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-12">
                   <mat-form-field class="w-100">
                     <mat-label>Código || Nombre</mat-label>
                     <input matInput [(ngModel)]="asignado" readonly="true">
                   </mat-form-field>
                 </div>
-                <div class="col-md-3">
-                  <mat-form-field class="w-100">
-                    <mat-label>Calidad</mat-label>
-                    <mat-select [(ngModel)]="calidad">
-                      <mat-option [value]="''">
-                      </mat-option>
-                      <mat-option [value]="'A'">
-                        A
-                      </mat-option>
-                      <mat-option [value]="'B'">
-                        B
-                      </mat-option>
-                      <mat-option [value]="'C'">
-                        C
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-                <div class="col-md-3">
-                  <mat-form-field class="w-100">
-                    <mat-label>Precio</mat-label>
-                    <input matInput [(ngModel)]="precio" type="number">
-                  </mat-form-field>
-                </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <mat-form-field color="primary" class="w-100">
                     <mat-label>Fecha de Asignación</mat-label>
                     <input matInput [matDatepicker]="fechaAsignacion" [(ngModel)]="fechaAsignacionDate" (dateChange)="selectFechaAsignacion($event)">
@@ -96,7 +72,7 @@
                     <mat-datepicker #fechaAsignacion color="primary"></mat-datepicker>
                   </mat-form-field>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <mat-form-field color="primary" class="w-100">
                     <mat-label>Fecha de Vencimiento</mat-label>
                     <input matInput [matDatepicker]="fechaVencimiento" [(ngModel)]="fechaVencimientoDate" (dateChange)="selectFechaVencimiento($event)">
@@ -104,59 +80,49 @@
                     <mat-datepicker #fechaVencimiento color="primary"></mat-datepicker>
                   </mat-form-field>
                 </div>
-                <div class="col-md-4">
-                  <mat-form-field color="primary" class="w-100" >
-                    <mat-label>Fecha de Entrega</mat-label>
-                    <input matInput [matDatepicker]="fechaEntrega" [(ngModel)]="fechaEntregaDate" (dateChange)="selectFechaEntrega($event)">
-                    <mat-datepicker-toggle matIconSuffix [for]="fechaEntrega"></mat-datepicker-toggle>
-                    <mat-datepicker #fechaEntrega color="primary"></mat-datepicker>
-                  </mat-form-field>
-                </div>
                 <div class="col-md-12">
-                  <mat-form-field class="w-100" style="min-height: 5rem;">
-                    <mat-label>Referencias</mat-label>
-                    <textarea matInput [(ngModel)]="referencias"></textarea>
-                  </mat-form-field>
-                </div>
-                <div class="col-md-12">
-                  <mat-form-field class="w-100" style="min-height: 5rem;">
+                  <mat-form-field class="w-100">
                     <mat-label>Observaciones</mat-label>
-                    <textarea matInput [(ngModel)]="observaciones"></textarea>
+                    <textarea matInput [(ngModel)]="observaciones"  style="min-height: 12rem;"></textarea>
                   </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-slide-toggle class="example-margin" [(ngModel)]="referencias" >
+                    Referencias Comerciales?
+                    </mat-slide-toggle>
+                </div>
+                <div class="col-md-6">
+                  <mat-slide-toggle *ngIf="type === 'AG'" class="example-margin" [(ngModel)]="balance" (ngModelChange)="balance === true ? observaciones = 'ASIGNACION DE SOLO BALANCE\n============================\n' + observaciones : observaciones = ''">
+                  Solo Balance?
+                  </mat-slide-toggle>
                 </div>
               </div>
             </div>
             <div class="col-md-12 mt-3">
               <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8">
-                <ng-container matColumnDef="asignado" >
+                <ng-container matColumnDef="assignedTo" >
                   <th mat-header-cell *matHeaderCellDef  class="text-center"> Asignado A </th>
                   <td mat-cell *matCellDef="let asign" class="text-center"> {{asign.trabajador.codigo}} || {{asign.trabajador.nombre}} </td>
                 </ng-container>
-                <ng-container matColumnDef="fechaAsignacion" >
+                <ng-container matColumnDef="assignationDate" >
                   <th mat-header-cell *matHeaderCellDef class="text-center"> Fecha de Asignación</th>
                   <td mat-cell *matCellDef="let asign" class="text-center">
                     {{asign.fechaAsignacion}}
                   </td>
                 </ng-container>
-                <ng-container matColumnDef="fechaVencimiento" >
+                <ng-container matColumnDef="endDate" >
                   <th mat-header-cell *matHeaderCellDef class="text-center"> Fecha de Vencimiento</th>
                   <td mat-cell *matCellDef="let asign" class="text-center">
                     {{asign.fechaVencimiento}}
                   </td>
                 </ng-container>
-                <ng-container matColumnDef="fechaEntrega" >
-                  <th mat-header-cell *matHeaderCellDef class="text-center"> Fecha de Entrega</th>
-                  <td mat-cell *matCellDef="let asign" class="text-center">
-                    {{asign.fechaEntrega}}
-                  </td>
-                </ng-container>
-                <ng-container matColumnDef="calidad" >
+                <ng-container matColumnDef="balance" >
                   <th mat-header-cell *matHeaderCellDef class="text-center"> Calidad</th>
                   <td mat-cell *matCellDef="let asign" class="text-center">
                     {{asign.calidad}}
                   </td>
                 </ng-container>
-                <ng-container matColumnDef="precio" >
+                <ng-container matColumnDef="references" >
                   <th mat-header-cell *matHeaderCellDef  class="text-center"> Precio</th>
                   <td mat-cell *matCellDef="let asign" class="text-center">
                     {{asign.precio}}
@@ -165,7 +131,7 @@
                 <ng-container matColumnDef="accion" >
                   <th mat-header-cell *matHeaderCellDef  class="text-center"></th>
                   <td mat-cell *matCellDef="let asign" class="text-center">
-                    <button mat-icon-button #tooltip="matTooltip" matTooltip="Editar" (click)="seleccionarAsignacion(asign.id)">
+                    <button mat-icon-button #tooltip="matTooltip" matTooltip="Editar" >
                       <i class="fa-regular fa-pen-to-square" style="font-size: 24px; color: #6777ef;"></i>
                     </button>
                     <button mat-icon-button #tooltip="matTooltip" matTooltip="Eliminar" (click)="eliminarAsignacion(asign.id)">

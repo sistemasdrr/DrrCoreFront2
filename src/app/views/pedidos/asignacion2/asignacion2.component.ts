@@ -60,12 +60,13 @@ export class Asignacion2Component implements OnInit {
   }
 
   ngOnInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+
     this.ticketService.getTicketPreassigned(this.userTo).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.dataSource.data = response.data
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
           console.log(response.data)
         }
       }
@@ -76,10 +77,11 @@ export class Asignacion2Component implements OnInit {
     this.router.navigate(['pedidos/lista']);
   }
 
-  asignarTrabajador(codigoCupon : string){
+  asignarTrabajador(codigoCupon : string,tipo : string){
     const dialogRef = this.dialog.open(SeleccionarAgenteComponent, {
       data: {
-        data: codigoCupon,
+        idTicket: codigoCupon,
+        reportType: tipo,
       },
     });
   }

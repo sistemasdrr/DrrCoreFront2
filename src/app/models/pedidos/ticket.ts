@@ -140,3 +140,11 @@ export interface SaveTicketAssignation{
   idReceptor : number
   commentary : string
 }
+export interface PersonalAssignation{
+  id : number
+  idEmployee : number
+  fullname : string
+  type : string
+  code : string
+  internal : boolean
+}
