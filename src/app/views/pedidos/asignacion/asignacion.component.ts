@@ -193,10 +193,10 @@ export class AsignacionComponent implements OnInit {
       }
     });
   }
-  agregarAdjuntos(id : number, cupon : string) {
+  agregarAdjuntos(idTicket : number, cupon : string) {
     const dialogRef = this.dialog.open(AdjuntarArchivosComponent, {
     data: {
-      id: id,
+      id: idTicket,
       cupon: cupon
     },
   });

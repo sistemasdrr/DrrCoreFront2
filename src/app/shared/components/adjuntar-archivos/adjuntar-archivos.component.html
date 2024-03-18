@@ -31,7 +31,7 @@
             </li>
             <li class="tbl-header-btn">
               <div class="m-l-10" >
-                <button mat-icon-button #tooltip="matTooltip" class="btn btn-primary shadow" matTooltip="Agregar Archivo">
+                <button mat-icon-button #tooltip="matTooltip" class="btn btn-primary shadow" matTooltip="Agregar Archivo" (click)="subirArchivo()">
                   <i class="fa-solid fa-upload" style="font-size: 16px; color: white;"></i>
                 </button>
               </div>
@@ -47,26 +47,26 @@
           <li class="d-flex mb-3">
             <span class="msr-3 align-self-center img-icon primary-rgba text-primary">
               <i class="far fa-file-word" style="font-size: 30px;"></i>
-            </span>      
-              <h6 class="font-16">Planilla Negocios Personas </h6>    
+            </span>
+              <h6 class="font-16">Planilla Negocios Personas </h6>
             <div class="ms-auto">
               <td>
                 <button mat-icon-button #tooltip="matTooltip" class="btn bg-teal shadow" matTooltip="Descargar" (click)="descargarArchivo('../../../../assets/formatos/Planilla_Negocios_Personales.doc','Planilla_Negocios_Personales.doc')">
-                  <i class="fa-solid fa-download" style="font-size: 16px; color: white;"></i>                  
-                </button>              
+                  <i class="fa-solid fa-download" style="font-size: 16px; color: white;"></i>
+                </button>
               </td>
             </div>
           </li>
           <li class="d-flex mb-3">
             <span class="msr-3 align-self-center img-icon primary-rgba text-primary">
               <i class="far fa-file-word" style="font-size: 30px;"></i>
-            </span>      
-              <h6 class="font-16">Planilla Reportero </h6>    
+            </span>
+              <h6 class="font-16">Planilla Reportero </h6>
             <div class="ms-auto">
               <td>
                 <button mat-icon-button #tooltip="matTooltip" class="btn bg-teal shadow" matTooltip="Descargar" (click)="descargarArchivo('../../../../assets/formatos/Planilla_Reportero.doc','Planilla_Reportero.doc')">
-                  <i class="fa-solid fa-download" style="font-size: 16px; color: white;"></i>                  
-                </button>              
+                  <i class="fa-solid fa-download" style="font-size: 16px; color: white;"></i>
+                </button>
               </td>
             </div>
           </li>

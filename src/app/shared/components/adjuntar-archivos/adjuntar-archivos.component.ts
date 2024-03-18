@@ -1,3 +1,4 @@
+import { TicketService } from 'app/services/pedidos/ticket.service';
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Adjunto } from 'app/models/adjunto';
@@ -19,7 +20,7 @@ export class AdjuntarArchivosComponent {
 
   constructor(public dialogRef: MatDialogRef<AdjuntarArchivosComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private pedidoService : PedidoService
+    public ticketService : TicketService
   ) {
     if(data){
       this.id = data.id;
@@ -53,20 +54,61 @@ export class AdjuntarArchivosComponent {
       }
     });
   }
+  subirArchivo(){
+      Swal.fire({
+        title: 'Subir Archivo',
+        html:
+          '<input type="file" id="file" class="swal2-file">',
+        confirmButtonText: 'Confirmar',
+        focusConfirm: false,
+        preConfirm: () => {
+          const fileInput = document.getElementById('file') as HTMLInputElement;
+          const file = fileInput.files ? fileInput.files[0] : null;
+          if(file){
+            const listaCuponLoader = document.getElementById('loader-lista-cupon') as HTMLElement | null;
+                if(listaCuponLoader){
+                  listaCuponLoader.classList.remove('hide-loader');
+                }
+            this.ticketService.uploadFile(this.id, this.cupon, file).subscribe(
+              (response) => {
+
+                if(response.isSuccess === true && response.isWarning === false){
+                  Swal.fire({
+                    title: 'Archivo subido correctamente',
+                    text: '',
+                    icon : 'success',
+                    width: '25rem'
+                  })
+                }
+                if(listaCuponLoader){
+                  listaCuponLoader.classList.add('hide-loader');
+                }
+              }
+            );
+          }else{
+            Swal.fire({
+              title: 'Error al subir el archivo',
+              text: 'Comunicarse con sistemas.',
+              icon : 'error',
+              width: '25rem'
+            })
+          }
+        }
+      });
+    }
 
   cerrarDialog(){
     this.dialogRef.close()
   }
 
   descargarArchivo( file : string,filename:string){
-    this.loading=true;    
-   
+    this.loading=true;
+
     let a =document.createElement('a');
     a.download=this.cupon+"_"+filename;
     a.target='_blank';
     a.href=file;
     a.click();
     this.loading = false
-  
-}
+  }
 }

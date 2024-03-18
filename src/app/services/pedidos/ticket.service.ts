@@ -24,6 +24,13 @@ export class TicketService {
   getTipoReporte(id : number, type : string) : Observable<Response<ReportType>>{
     return this.http.get<Response<ReportType>>(this.url + this.controllerTicket + '/getreporttype?id='+id+'&type='+type);
   }
+  uploadFile(idTicket : number, numCupon : string, file : File) : Observable<Response<ReportType>>{
+    const formData = new FormData();
+    formData.append('idTicket', idTicket.toString());
+    formData.append('numCupon', numCupon.toString());
+    formData.append('file', file, file.name);
+    return this.http.post<Response<ReportType>>(this.url + this.controllerTicket + '/uploadFile?idTicket=' +idTicket+ '&numCupon='+numCupon, formData);
+  }
   getList() : Observable<Response<ListTicket[]>>{
     return this.http.get<Response<ListTicket[]>>(this.url + this.controllerTicket + '/getList');
   }
