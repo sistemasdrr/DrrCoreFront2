@@ -1,6 +1,6 @@
 import { Adjunto } from "../adjunto"
 import { Pais } from "../combo"
-import { Asignacion } from "./asignacion/asignacion"
+import { TicketHistory } from "./asignacion/ticketHistory"
 
 export interface Pedido {
   id: number
@@ -45,7 +45,7 @@ export interface Pedido {
   //DATOS PERSONA
   precioInforme: number
   //ASIGNACIONES
-  asignacion : Asignacion[]
+  asignacion : TicketHistory[]
   adjuntos : Adjunto[]
 }
 

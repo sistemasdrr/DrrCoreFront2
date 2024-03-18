@@ -3,7 +3,7 @@ import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FOR
 import { MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter } from '@angular/material/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { Asignacion } from 'app/models/pedidos/asignacion/asignacion';
+import { TicketHistory } from 'app/models/pedidos/asignacion/ticketHistory';
 import { PedidoService } from 'app/services/pedido.service';
 
 
@@ -23,7 +23,7 @@ import { PedidoService } from 'app/services/pedido.service';
 })
 export class MovimientoInformeComponent implements OnInit {
 
-  dataSource : MatTableDataSource<Asignacion>
+  dataSource : MatTableDataSource<TicketHistory>
   columnas = ['asignado','fechaAsignacion','fechaVencimiento','fechaEntrega','calidad','precio']
 
   constructor(public dialogRef: MatDialogRef<MovimientoInformeComponent>, @Inject(MAT_DIALOG_DATA) public data : any,private pedidoService : PedidoService){
@@ -31,12 +31,7 @@ export class MovimientoInformeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const order = this.pedidoService.getPedidos().filter(x => x.cupon == this.data.cupon)[0]
-    if(order.asignacion.length > 0){
-      this.dataSource.data = order.asignacion
-    }else{
-      console.log('El pedido no tiene asignaciones')
-    }
+
   }
 
   salir(){

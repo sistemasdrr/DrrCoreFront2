@@ -48,8 +48,7 @@ export class ListaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataSourceInforme.data = this.pedidoService.getPedidos()
-    console.log(this.dataSourceInforme.data)
+   
     this.dataSourceInforme.paginator = this.paginator
     this.dataSourceInforme.sort = this.sort
   }
@@ -69,13 +68,10 @@ export class ListaComponent implements OnInit {
     })
   }
   applyFilterTipoInforme() {
-    this.dataSourceInforme.data = this.pedidoService.getPedidos()
-      .filter(x => x.tipoTramite === this.tipoTramite && x.tipoInforme === this.tipoInforme);
   }
 
   applyFilterTipoTramite() {
-    this.dataSourceInforme.data = this.pedidoService.getPedidos()
-      .filter(x => x.tipoTramite === this.tipoTramite && x.tipoInforme === this.tipoInforme);
+
   }
 
 }

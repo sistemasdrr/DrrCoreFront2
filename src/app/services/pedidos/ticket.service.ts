@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CurrentTicket, ListTicket, ReportType, SaveTicketAssignation, SendQuery, Ticket, TicketListPending, TicketQuery } from 'app/models/pedidos/ticket';
+import { CurrentTicket, ListTicket, ReportType, PersonalAssignation, SaveTicketAssignation, SendQuery, Ticket, TicketListPending, TicketQuery } from 'app/models/pedidos/ticket';
 import { Response } from 'app/models/response';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
@@ -60,5 +60,11 @@ export class TicketService {
   }
   getTicketPreassigned(userTo : string) : Observable<Response<ListTicket[]>>{
     return this.http.get<Response<ListTicket[]>>(this.url + this.controllerTicket + '/getTicketPreassignToUser?userTo='+userTo);
+  }
+  getPersonalAssignation() : Observable<Response<PersonalAssignation[]>>{
+    return this.http.get<Response<PersonalAssignation[]>>(this.url + this.controllerTicket + '/getPersonalAssignation');
+  }
+  getAgentAssignation() : Observable<Response<PersonalAssignation[]>>{
+    return this.http.get<Response<PersonalAssignation[]>>(this.url + this.controllerTicket + '/getAgentAssignation');
   }
 }

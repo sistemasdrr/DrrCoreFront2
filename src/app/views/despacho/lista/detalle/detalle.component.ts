@@ -46,7 +46,6 @@ export class DetalleComponent implements OnInit{
 
   }
   ngOnInit(): void {
-    const order = this.pedidoService.getPedidos().filter(x => x.cupon == this.data.cupon)[0]
     this.paisService.getPaises().subscribe(response => {
       if(response.isSuccess == true && response.isWarning == false){
         this.paises = response.data;
@@ -56,14 +55,6 @@ export class DetalleComponent implements OnInit{
     // this.direccionInforme = order.direccion
     // this.tipoRT = order.tipoRT
     // this.codigoRT = order.codigoRT
-    this.tipoInforme = order.tipoInforme
-    this.tipoTramite = order.tipoTramite
-    this.paisSeleccionado = order.pais
-    this.actualizarSeleccion(this.paisSeleccionado)
-    const fechaIngreso = order.fechaIngreso.split('/')
-    this.fechaIngresoDate = new Date(parseInt(fechaIngreso[2]),parseInt(fechaIngreso[1])-1,parseInt(fechaIngreso[0]))
-    const fechaVencimiento = order.fechaVencimiento.split('/')
-    this.fechaVencimientoDate = new Date(parseInt(fechaVencimiento[2]),parseInt(fechaVencimiento[1])-1,parseInt(fechaVencimiento[0]))
   }
   paisSeleccionado : Pais = {
     id: 0,
