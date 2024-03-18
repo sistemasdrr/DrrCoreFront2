@@ -1,3 +1,7 @@
+<div id="loader-lista-cupon" class="d-flex justify-content-center align-items-center loader-container" [ngClass]="{'hide-loader': !loading}">
+  <span class="loader"></span><br>
+  <h2 style="color: white;">&nbsp;Cargando...</h2>
+</div>
 <div class="container" style="max-width: 45rem;" >
   <div class="row ">
     <div class="card">
@@ -39,6 +43,36 @@
     <div class="col-md-12 mb-3">
       <ng-scrollbar style="height: 285px" class="mat-elevation-z8 " visibility="hover">
         <ul class="list-unstyled m-3">
+           <h3>Planillas y formatos</h3>
+          <li class="d-flex mb-3">
+            <span class="msr-3 align-self-center img-icon primary-rgba text-primary">
+              <i class="far fa-file-word" style="font-size: 30px;"></i>
+            </span>      
+              <h6 class="font-16">Planilla Negocios Personas </h6>    
+            <div class="ms-auto">
+              <td>
+                <button mat-icon-button #tooltip="matTooltip" class="btn bg-teal shadow" matTooltip="Descargar" (click)="descargarArchivo('../../../../assets/formatos/Planilla_Negocios_Personales.doc','Planilla_Negocios_Personales.doc')">
+                  <i class="fa-solid fa-download" style="font-size: 16px; color: white;"></i>                  
+                </button>              
+              </td>
+            </div>
+          </li>
+          <li class="d-flex mb-3">
+            <span class="msr-3 align-self-center img-icon primary-rgba text-primary">
+              <i class="far fa-file-word" style="font-size: 30px;"></i>
+            </span>      
+              <h6 class="font-16">Planilla Reportero </h6>    
+            <div class="ms-auto">
+              <td>
+                <button mat-icon-button #tooltip="matTooltip" class="btn bg-teal shadow" matTooltip="Descargar" (click)="descargarArchivo('../../../../assets/formatos/Planilla_Reportero.doc','Planilla_Reportero.doc')">
+                  <i class="fa-solid fa-download" style="font-size: 16px; color: white;"></i>                  
+                </button>              
+              </td>
+            </div>
+          </li>
+        </ul>
+        <ul class="list-unstyled m-3">
+          <h3>Documentos Adjuntos</h3>
           <li class="d-flex mb-3" *ngFor="let attachment of attachments">
             <span class="msr-3 align-self-center img-icon primary-rgba text-primary" *ngIf="attachment.type === 'WORD'">
               <i class="far fa-file-word" style="font-size: 30px;"></i>

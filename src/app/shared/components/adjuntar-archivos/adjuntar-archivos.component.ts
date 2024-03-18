@@ -14,7 +14,7 @@ export class AdjuntarArchivosComponent {
 
   id = 0
   cupon = ""
-
+  loading=false;
   attachments : Adjunto[] = []
 
   constructor(public dialogRef: MatDialogRef<AdjuntarArchivosComponent>,
@@ -57,4 +57,16 @@ export class AdjuntarArchivosComponent {
   cerrarDialog(){
     this.dialogRef.close()
   }
+
+  descargarArchivo( file : string,filename:string){
+    this.loading=true;    
+   
+    let a =document.createElement('a');
+    a.download=this.cupon+"_"+filename;
+    a.target='_blank';
+    a.href=file;
+    a.click();
+    this.loading = false
+  
+}
 }
