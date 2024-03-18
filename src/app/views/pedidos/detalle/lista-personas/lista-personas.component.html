@@ -1,5 +1,5 @@
 <mat-dialog-content  g-content class="m-0 p-0" style="min-height: 45rem; overflow-y: auto; overflow-x: none;">
-  <div id="loader-detalle-cupon" class="d-flex justify-content-center align-items-center loader-container" [ngClass]="{'hide-loader': !loading}">
+  <div id="loader-detalle-personas" class="d-flex justify-content-center align-items-center loader-container" [ngClass]="{'hide-loader': !loading}">
     <span class="loader"></span><br>
     <h2 style="color: white;">&nbsp;Cargando...</h2>
   </div>
@@ -14,9 +14,9 @@
             <mat-form-field class="w-100" style="padding-top: 1rem; padding-left: 1rem;">
               <mat-label>Buscar por</mat-label>
               <mat-select [(ngModel)]="filterBy" >
-                <mat-option [value]="'N'">Por Razón Social</mat-option>
+                <mat-option [value]="'N'">Por Nombre Completo</mat-option>
                 <mat-option [value]="'D'">Por Dirección</mat-option>
-                <mat-option [value]="'R'">Por Registro Tributario</mat-option>
+                <mat-option [value]="'R'">Por Documento de Identidad</mat-option>
                 <mat-option [value]="'S'">Por Nombre Solicitado</mat-option>
               </mat-select>
             </mat-form-field>
@@ -35,9 +35,9 @@
           </div>
           <div *ngIf="filterBy!=='S'" class="col-md-3 p-0">
             <mat-form-field class="w-100" style="padding-top: 1rem; padding-left: 1rem;" >
-              <mat-label *ngIf="filterBy==='N'">Razón Social</mat-label>
-              <mat-label *ngIf="filterBy==='D'">Dirección</mat-label>
-              <mat-label *ngIf="filterBy==='R'">Registro Tributario</mat-label>
+              <mat-label *ngIf="filterBy === 'N'">Nombre Completo</mat-label>
+              <mat-label *ngIf="filterBy === 'D'">Dirección</mat-label>
+              <mat-label *ngIf="filterBy === 'R'">Documento de Identidad</mat-label>
               <input matInput  [(ngModel)]="razonSocial" (keypress)="filtrar($event);">
               <button matSuffix mat-icon-button color="primary" style="background-color: rgba(0,0,0,0);" *ngIf="razonSocial !== ''" (click)="razonSocial = ''" #tooltip="matTooltip" matTooltip="Limpiar">
                 <i class="fa-solid fa-xmark" style="color: black; font-size: 20px;"></i>
@@ -52,7 +52,7 @@
           </div>
           <div class="col-md-2 p-0 d-flex align-items-center justify-content-center">
             <div class="" matTooltip="BUSCAR" style="margin: 0 .5rem 0 .5rem">
-              <button mat-mini-fab class="bg-blue" (click)="filtrarEmpresas()">
+              <button mat-mini-fab class="bg-blue" (click)="filtrarPersonas()">
                 <mat-icon class="col-white">search</mat-icon>
               </button>
             </div>
@@ -84,32 +84,32 @@
     </div>
     <div *ngIf="filterBy!=='S'" class="col-md-12 p-0" style="overflow-x: auto;">
       <table  mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8" matSort>
-        <ng-container matColumnDef="idioma" >
+        <ng-container matColumnDef="language" >
         <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Idioma</th>
-        <td mat-cell *matCellDef="let empresa" class="text-center">
-          <span class="fi fi-es" style="font-size: 24px;" *ngIf="empresa.language === 'E'"></span>
-          <span class="fi fi-us" style="font-size: 24px;" *ngIf="empresa.language === 'I'"></span>
-          <span class="fi fi-us" style="font-size: 24px; background-image: url(./../../../../../../assets/images/us-es.png);" *ngIf="empresa.language === 'A'"></span>
+        <td mat-cell *matCellDef="let persona" class="text-center">
+          <span class="fi fi-es" style="font-size: 24px;" *ngIf="persona.language === 'E'"></span>
+          <span class="fi fi-us" style="font-size: 24px;" *ngIf="persona.language === 'I'"></span>
+          <span class="fi fi-us" style="font-size: 24px; background-image: url(./../../../../../../assets/images/us-es.png);" *ngIf="persona.language === 'A'"></span>
           </td>
         </ng-container>
-        <ng-container matColumnDef="rucInit" >
+        <ng-container matColumnDef="codeDocumentType" >
           <th mat-header-cell *matHeaderCellDef  class="text-center"> RUC</th>
-          <td mat-cell *matCellDef="let empresa" class="text-center">{{empresa.taxNumber}}</td>
+          <td mat-cell *matCellDef="let persona" class="text-center">{{persona.codeDocumentType}}</td>
         </ng-container>
-        <ng-container matColumnDef="razonSocial" >
-        <th mat-header-cell *matHeaderCellDef class="text-center"> Razón Social</th>
-        <td mat-cell *matCellDef="let empresa" style="min-width: 12rem;"><a class="selectEmpresa" (click)="seleccionarEmpresa(empresa.id)">{{empresa.name}}</a> </td>
+        <ng-container matColumnDef="fullname">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> Nombre Completo</th>
+        <td mat-cell *matCellDef="let persona" style="min-width: 12rem;"><a class="selectEmpresa" (click)="seleccionarPersona(persona.id)">{{persona.fullname}}</a> </td>
         </ng-container>
-        <ng-container matColumnDef="pais" >
+        <ng-container matColumnDef="country" >
           <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> País</th>
-          <td mat-cell *matCellDef="let empresa" class="text-center">
-            {{empresa.isoCountry}} <span class="fi fi-{{empresa.flagCountry}}" style="font-size: 20px;"></span>
+          <td mat-cell *matCellDef="let persona" class="text-center">
+            {{persona.country}} <span class="fi fi-{{persona.flagCountry}}" style="font-size: 20px;"></span>
           </td>
         </ng-container>
         <ng-container matColumnDef="acciones" >
           <th mat-header-cell *matHeaderCellDef  class="text-center" style="min-width: 14rem;"> Acciones </th>
-          <td mat-cell *matCellDef="let empresa" class="text-center ">
-            <button  mat-mini-fab class="bg-white" matTooltip="Seleccionar" (click)="seleccionarEmpresa(empresa.id)">
+          <td mat-cell *matCellDef="let persona" class="text-center ">
+            <button  mat-mini-fab class="bg-white" matTooltip="Seleccionar" (click)="seleccionarPersona(persona.id)">
               <app-feather-icons [icon]="'check-circle'" class="tbl-fav-web"></app-feather-icons>
             </button>
           </td>
@@ -123,32 +123,32 @@
     </div>
     <div *ngIf="filterBy==='S'" class="col-md-12 p-0" style="overflow-x: auto;">
       <table  mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8" matSort>
-        <ng-container matColumnDef="idioma" >
+        <ng-container matColumnDef="language" >
         <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Idioma</th>
-        <td mat-cell *matCellDef="let empresa" class="text-center">
-          <span class="fi fi-es" style="font-size: 24px;" *ngIf="empresa.language === 'E'"></span>
-          <span class="fi fi-us" style="font-size: 24px;" *ngIf="empresa.language === 'I'"></span>
-          <span class="fi fi-us" style="font-size: 24px; background-image: url(./../../../../../../assets/images/us-es.png);" *ngIf="empresa.language === 'A'"></span>
+        <td mat-cell *matCellDef="let persona" class="text-center">
+          <span class="fi fi-es" style="font-size: 24px;" *ngIf="persona.language === 'E'"></span>
+          <span class="fi fi-us" style="font-size: 24px;" *ngIf="persona.language === 'I'"></span>
+          <span class="fi fi-us" style="font-size: 24px; background-image: url(./../../../../../../assets/images/us-es.png);" *ngIf="persona.language === 'A'"></span>
           </td>
         </ng-container>
-        <ng-container matColumnDef="razonSocial" >
+        <ng-container matColumnDef="fullname" >
         <th mat-header-cell *matHeaderCellDef class="text-center">  Nombre Solicitado</th>
-        <td mat-cell *matCellDef="let empresa" style="min-width: 12rem;"><a class="selectEmpresa" (click)="seleccionarEmpresa(empresa.id)">{{empresa.name}}</a> </td>
+        <td mat-cell *matCellDef="let persona" style="min-width: 12rem;"><a class="selectEmpresa" (click)="seleccionarPersona(persona.id)">{{persona.fullname}}</a> </td>
         </ng-container>
         <ng-container matColumnDef="descargado" >
           <th mat-header-cell *matHeaderCellDef  class="text-center"> Nombre Descargado</th>
-          <td mat-cell *matCellDef="let empresa" class="text-center">{{empresa.dispatchedName}}</td>
+          <td mat-cell *matCellDef="let persona" class="text-center">{{persona.dispatchedName}}</td>
         </ng-container>
-        <ng-container matColumnDef="pais" >
+        <ng-container matColumnDef="country" >
           <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> País</th>
-          <td mat-cell *matCellDef="let empresa" class="text-center">
-            {{empresa.isoCountry}} <span class="fi fi-{{empresa.flagCountry}}" style="font-size: 20px;"></span>
+          <td mat-cell *matCellDef="let persona" class="text-center">
+            {{persona.country}} <span class="fi fi-{{persona.flagCountry}}" style="font-size: 20px;"></span>
           </td>
         </ng-container>
         <ng-container matColumnDef="acciones" >
           <th mat-header-cell *matHeaderCellDef  class="text-center" style="min-width: 14rem;"> Acciones </th>
-          <td mat-cell *matCellDef="let empresa" class="text-center ">
-            <button  mat-mini-fab class="bg-white" matTooltip="Seleccionar" (click)="seleccionarEmpresa(empresa.id)">
+          <td mat-cell *matCellDef="let persona" class="text-center ">
+            <button  mat-mini-fab class="bg-white" matTooltip="Seleccionar" (click)="seleccionarPersona(persona.id)">
               <app-feather-icons [icon]="'check-circle'" class="tbl-fav-web"></app-feather-icons>
             </button>
           </td>

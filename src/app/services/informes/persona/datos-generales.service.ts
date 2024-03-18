@@ -16,6 +16,9 @@ export class DatosGeneralesService {
   getPersonaById(id : number): Observable<Response<Persona>>{
     return this.http.get<Response<Persona>>(this.url + this.controllerPersona + '/getPerson?id='+id)
   }
+  getDatosPersonas(razonSocial : string, tipoFiltro : string, idPais : number, conInforme : boolean, similar:boolean ): Observable<Response<TPersona[]>>{
+    return this.http.get<Response<TPersona[]>>(this.url + this.controllerPersona + '/getListPerson?fullname='+razonSocial+'&form='+tipoFiltro+'&idCountry='+idPais+'&similar='+similar+'&haveReport='+conInforme)
+  }
   getStatus(idPerson : number): Observable<Response<StatusPerson>>{
     return this.http.get<Response<StatusPerson>>(this.url + this.controllerPersona + '/getStatus?idPerson='+idPerson);
   }

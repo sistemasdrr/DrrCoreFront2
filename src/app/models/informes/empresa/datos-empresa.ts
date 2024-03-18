@@ -17,6 +17,7 @@ export interface Company{
   duration : string
   place : string
   idCountry : number
+  idContinent : number
   subTelephone : string
   cellphone : string
   telephone : string

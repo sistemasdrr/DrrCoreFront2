@@ -58,8 +58,8 @@
                 </button>
               </div>
               </div>
-            
-         
+
+
           <hr>
           <div class="col-md-3 d-flex align-items-center ">
             <mat-form-field class="w-100 input-readonly" style="margin-right: 1rem;">
@@ -176,7 +176,9 @@
                   <div class="col-md-4">
                     <mat-form-field class="w-100">
                       <mat-label>Informe de</mat-label>
-                      <mat-select [(ngModel)]="about">
+                      <mat-select [(ngModel)]="about"
+                      (ngModelChange)="busineesName = ''; requestedName = ''; idContinent = 0; idCountry = 0; city = '';
+                      taxType = ''; taxCode = '';email = ''; telephone = ''; address = ''; ">
                         <mat-option [value]="'E'">Empresa</mat-option>
                         <mat-option [value]="'P'">Persona</mat-option>
                       </mat-select>
@@ -189,7 +191,7 @@
                     </mat-form-field>
                   </div>
                   <div class="col-md-1" *ngIf="about === 'E'">
-                    <button class="btn-traduccion bg-blue mt-2" matSuffix mat-mini-fab (click)="buscarEmpresaPersona()">
+                    <button class="btn-traduccion  mt-2" [ngClass]="idSubscriber === 0 ? 'bg-gray' : 'bg-blue'" matSuffix mat-mini-fab (click)="buscarEmpresa()" [disabled]="idSubscriber === 0">
                       <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
                   </div>
@@ -200,7 +202,7 @@
                     </mat-form-field>
                   </div>
                   <div class="col-md-1" *ngIf="about === 'P'">
-                    <button class="btn-traduccion bg-blue mt-2" matSuffix mat-mini-fab (click)="buscarEmpresaPersona()">
+                    <button class="btn-traduccion bg-blue mt-2" [ngClass]="idSubscriber === 0 ? 'bg-gray' : 'bg-blue'" matSuffix mat-mini-fab (click)="buscarPersona()" [disabled]="idSubscriber === 0">
                       <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
                   </div>
@@ -212,6 +214,43 @@
                   </mat-form-field>
                 </div>
                 <div class="row">
+
+                  <div class="col-md-4">
+                    <mat-form-field class="w-100">
+                      <mat-label>Continente</mat-label>
+                      <mat-select [(ngModel)]="idContinent" (selectionChange)="selectContinente()">
+                        <mat-option [value]="continente.id"
+                          *ngFor="let continente of continentes">{{continente.valor}}</mat-option>
+                      </mat-select>
+                      <mat-hint *ngIf="idContinent === 0" style="color: red;"><i
+                          class="fa-solid fa-circle-exclamation"></i> Seleccione un Continente</mat-hint>
+                      <mat-hint *ngIf="idContinent !== 0" style="color: green;"><i
+                          class="fa-solid fa-circle-check"></i>Continente Seleccionado</mat-hint>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-4">
+                    <mat-form-field class="w-100">
+                      <mat-label>País</mat-label>
+                      <mat-select [(ngModel)]="idCountry" (selectionChange)="mostrarBandera()">
+                        <mat-option *ngFor="let item of paisesAbonado" [value]="item.id">
+                          <span class="fi fi-{{item.bandera}}"></span>{{item.valor}}
+                        </mat-option>
+                      </mat-select>
+                      <button class="btn-traduccion" matSuffix mat-icon-button (click)="limpiarSeleccionPais()">
+                        <span class="fi fi-{{iconoSeleccionado}}" style="font-size: 20px;"></span>
+                      </button>
+                      <mat-hint *ngIf="idCountry === 0" style="color: red;"><i class="fa-solid fa-circle-exclamation"></i>
+                        &nbsp;Seleccione un País</mat-hint>
+                      <mat-hint *ngIf="idCountry !== 0" style="color: green;"><i
+                          class="fa-solid fa-circle-check"></i>&nbsp;País Seleccionado</mat-hint>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-4">
+                    <mat-form-field class="w-100">
+                      <mat-label>Ciudad</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="city">
+                    </mat-form-field>
+                  </div>
                   <div class="col-md-6">
                     <mat-form-field class="" style="width: 35%;">
                       <mat-label>Tipo Reg. Trib.</mat-label>
@@ -228,19 +267,13 @@
                       <input matInput [(ngModel)]="email">
                     </mat-form-field>
                   </div>
-                  <div class="col-md-6">
-                    <mat-form-field class="w-100">
-                      <mat-label>Ciudad</mat-label>
-                      <input matInput placeholder="" [(ngModel)]="city">
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <mat-form-field class="w-100">
                       <mat-label>Teléfono</mat-label>
                       <input matInput placeholder="" [(ngModel)]="telephone">
                     </mat-form-field>
                   </div>
-                  <div class="col-md-12">
+                  <div class="col-md-8">
                     <mat-form-field class="w-100">
                       <mat-label>Dirección</mat-label>
                       <input matInput placeholder="" [(ngModel)]="address">
@@ -294,36 +327,7 @@
                     <mat-datepicker #fecha_vencimiento_real color="primary"></mat-datepicker>
                   </mat-form-field>
                 </div>
-                <div class="col-md-6">
-                  <mat-form-field class="w-100">
-                    <mat-label>Continente</mat-label>
-                    <mat-select [(ngModel)]="idContinent" (selectionChange)="selectContinente()">
-                      <mat-option [value]="continente.id"
-                        *ngFor="let continente of continentes">{{continente.valor}}</mat-option>
-                    </mat-select>
-                    <mat-hint *ngIf="idContinent === 0" style="color: red;"><i
-                        class="fa-solid fa-circle-exclamation"></i> Seleccione un Continente</mat-hint>
-                    <mat-hint *ngIf="idContinent !== 0" style="color: green;"><i
-                        class="fa-solid fa-circle-check"></i>Continente Seleccionado</mat-hint>
-                  </mat-form-field>
-                </div>
-                <div class="col-md-6">
-                  <mat-form-field class="w-100">
-                    <mat-label>País</mat-label>
-                    <mat-select [(ngModel)]="idCountry" (selectionChange)="mostrarBandera()">
-                      <mat-option *ngFor="let item of paisesAbonado" [value]="item.id">
-                        <span class="fi fi-{{item.bandera}}"></span>{{item.valor}}
-                      </mat-option>
-                    </mat-select>
-                    <button class="btn-traduccion" matSuffix mat-icon-button (click)="limpiarSeleccionPais()">
-                      <span class="fi fi-{{iconoSeleccionado}}" style="font-size: 20px;"></span>
-                    </button>
-                    <mat-hint *ngIf="idCountry === 0" style="color: red;"><i class="fa-solid fa-circle-exclamation"></i>
-                      &nbsp;Seleccione un País</mat-hint>
-                    <mat-hint *ngIf="idCountry !== 0" style="color: green;"><i
-                        class="fa-solid fa-circle-check"></i>&nbsp;País Seleccionado</mat-hint>
-                  </mat-form-field>
-                </div>
+
                 <div class="col-md-2">
                   <mat-form-field class="w-100">
                     <mat-label>Tipo </mat-label>

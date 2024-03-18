@@ -21,6 +21,8 @@ export interface Persona
   otherDirecctions : string
   tradeName : string
   idCountry : number
+  idContinent : number
+  taxTypeByCountry : string
   codePhone : string
   numberPhone : string
   idCivilStatus : number

@@ -11,13 +11,15 @@ import { DatosEmpresaService } from 'app/services/informes/empresa/datos-empresa
 import { PaisService } from 'app/services/pais.service';
 import { Observable, map, startWith } from 'rxjs';
 import Swal from 'sweetalert2';
+import { DatosGeneralesService } from 'app/services/informes/persona/datos-generales.service';
+import { TPersona } from 'app/models/informes/persona/datos-generales';
 
 @Component({
-  selector: 'app-lista-empresas',
-  templateUrl: './lista-empresas.component.html',
-  styleUrls: ['./lista-empresas.component.scss']
+  selector: 'app-lista-personas',
+  templateUrl: './lista-personas.component.html',
+  styleUrls: ['./lista-personas.component.scss']
 })
-export class ListaEmpresasComponent implements OnInit {
+export class ListaPersonasComponent implements OnInit {
 
   idCompanyRelacion = 0
 
@@ -44,14 +46,14 @@ export class ListaEmpresasComponent implements OnInit {
   chkConInforme = false
 
 
-  dataSource: MatTableDataSource<TCompany>;
+  dataSource: MatTableDataSource<TPersona>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('filter') filter!: ElementRef;
-  columnsToDisplay = ['idioma', 'rucInit', 'razonSocial', 'pais','acciones' ];
-  columnsToDisplaySimilar = ['idioma', 'razonSocial', 'descargado', 'pais','acciones' ];
+  columnsToDisplay = ['language', 'codeDocumentType', 'fullname', 'country','acciones' ];
+  columnsToDisplaySimilar = ['language', 'fullname', 'descargado', 'country','acciones' ];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any,private datosEmpresaService : DatosEmpresaService,private router : Router, private paisService : PaisService,public dialogRef: MatDialogRef<ListaEmpresasComponent>,){
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,private datosPersonaService : DatosGeneralesService,private router : Router, private paisService : PaisService,public dialogRef: MatDialogRef<ListaPersonasComponent>,){
     this.dataSource = new MatTableDataSource()
     this.filterPais = new Observable<Pais[]>()
     this.loading = true
@@ -121,7 +123,7 @@ export class ListaEmpresasComponent implements OnInit {
       }
     } else {
       if(this.idPais!==0){
-        this.filtrarEmpresas()
+        this.filtrarPersonas()
        }
       this.msgPais = "Seleccione una opción."
       this.colorMsgPais = "red"
@@ -129,7 +131,7 @@ export class ListaEmpresasComponent implements OnInit {
   }
   filtrar(event : any){
     if(event.code == 'Enter'){
-      this.filtrarEmpresas()
+      this.filtrarPersonas()
     }
   }
   limpiar(){
@@ -145,12 +147,12 @@ export class ListaEmpresasComponent implements OnInit {
     }
     this.chkConInforme = true
 
-    this.filtrarEmpresas()
+    this.filtrarPersonas()
   }
-  filtrarEmpresas(){
-    const listaEmpresas = document.getElementById('loader-lista-empresas') as HTMLElement | null;
-    if(listaEmpresas){
-      listaEmpresas.classList.remove('hide-loader');
+  filtrarPersonas(){
+    const listaPersonas = document.getElementById('loader-lista-personas') as HTMLElement | null;
+    if(listaPersonas){
+      listaPersonas.classList.remove('hide-loader');
     }
     const busqueda = {
       razonSocial : this.razonSocial,
@@ -160,9 +162,8 @@ export class ListaEmpresasComponent implements OnInit {
       similar:this.filterBy==='S'
     }
     this.loading=true;
-    localStorage.setItem('busquedaEmpresas', JSON.stringify(busqueda))
-    console.log(busqueda)
-    this.datosEmpresaService.getDatosEmpresas(this.razonSocial.trim(), this.filtroRB, this.idPais, this.chkConInforme,this.filterBy==='S').subscribe(
+    localStorage.setItem('busquedaPersonas', JSON.stringify(busqueda))
+    this.datosPersonaService.getDatosPersonas(this.razonSocial.trim(), this.filtroRB, this.idPais, this.chkConInforme,this.filterBy==='S').subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.dataSource = new MatTableDataSource(response.data)
@@ -171,8 +172,8 @@ export class ListaEmpresasComponent implements OnInit {
           this.loading=false;
         }
       },(error) => {
-        if(listaEmpresas){
-          listaEmpresas.classList.add('hide-loader');
+        if(listaPersonas){
+          listaPersonas.classList.add('hide-loader');
         }
         Swal.fire({
           title: 'Ocurrió un problema. Comunicarse con Sistemas.',
@@ -185,53 +186,22 @@ export class ListaEmpresasComponent implements OnInit {
         }).then(() => {
         })
       }).add(() => {
-        if(listaEmpresas){
-          listaEmpresas.classList.add('hide-loader');
+        if(listaPersonas){
+          listaPersonas.classList.add('hide-loader');
           this.loading=false;
         }
       })
 
   }
-  agregarEmpresa(){
-    this.router.navigate(['informes/empresa/detalle/nuevo']);
+  agregarPersona(){
+    this.router.navigate(['informes/persona/detalle/nuevo']);
   }
 
-  eliminarEmpresa(id : number){
-    Swal.fire({
-      title: '¿Está seguro de eliminar este registro?',
-      text: "",
-      icon: 'warning',
-      showCancelButton: true,
-      cancelButtonText : 'No',
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí',
-      width: '20rem',
-      heightAuto : true
-    }).then((result) => {
-      if (result.value) {
-        Swal.fire({
-          title :'¡Eliminado!',
-          text : 'El registro se elimino correctamente.',
-          icon : 'success',
-          width: '20rem',
-          heightAuto : true
-        });
-        this.datosEmpresaService.deleteDatosEmpresa(id).subscribe(
-          (response) => {
-            console.log(response)
-          }
-        ).add(() => {
-          this.filtrarEmpresas()
-        })
-      }
-    });
-  }
 
-  seleccionarEmpresa(idCompany : number){
+  seleccionarPersona(idPerson : number){
     this.dialogRef.close(
       {
-        idCompany : idCompany
+        idPerson : idPerson
       }
     );
   }

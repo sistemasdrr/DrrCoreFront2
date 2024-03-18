@@ -22,6 +22,7 @@ import { SeleccionarAgenteComponent } from './asignacion2/seleccionar-agente/sel
 import { ListaEmpresasComponent } from './detalle/lista-empresas/lista-empresas.component';
 import { ConsultarComponent } from './lista/consultar/consultar.component';
 import { ListaAbonadosComponent } from './detalle/lista-abonados/lista-abonados.component';
+import { ListaPersonasComponent } from './detalle/lista-personas/lista-personas.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ListaAbonadosComponent } from './detalle/lista-abonados/lista-abonados.
     SeleccionarAgenteComponent,
     ListaEmpresasComponent,
     ConsultarComponent,
-    ListaAbonadosComponent
+    ListaAbonadosComponent,
+    ListaPersonasComponent
   ],
   imports: [
     CommonModule,

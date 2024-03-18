@@ -20,6 +20,8 @@ import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAda
 import { tick } from '@angular/core/testing';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { ListaPersonasComponent } from './lista-personas/lista-personas.component';
+import { DatosGeneralesService } from 'app/services/informes/persona/datos-generales.service';
 
 
 
@@ -64,6 +66,10 @@ export class DetalleComponent implements OnInit {
   realExpireDateD : Date=new Date();
   idContinent = 0
   idCountry = 0
+  idContinentCompany = 0
+  idCountryCompany = 0
+  idContinentPerson = 0
+  idCountryPerson = 0
   reportType = "OR"
   procedureType = ""
   idCompany = 0
@@ -153,7 +159,7 @@ export class DetalleComponent implements OnInit {
   modeloNuevo : Ticket[] = []
   modeloModificado : Ticket[] = []
 
-  constructor(public dialog: MatDialog,private activatedRoute: ActivatedRoute,private router : Router,
+  constructor(public datosPersonaService : DatosGeneralesService,public dialog: MatDialog,private activatedRoute: ActivatedRoute,private router : Router,
     private abonadoService : AbonadoService,private datosEmpresaService : DatosEmpresaService,
     private comboService : ComboService,private ticketService : TicketService) {
     const tipo = this.activatedRoute.snapshot.paramMap.get('tipo');
@@ -362,7 +368,7 @@ export class DetalleComponent implements OnInit {
       reportType : this.reportType,
       procedureType : this.procedureType,
       idCompany : this.idCompany,
-      idPerson : 0,
+      idPerson : this.idPerson,
       busineesName : this.busineesName === null ? "" : this.busineesName,
       comercialName : this.comercialName === null ? "" : this.comercialName,
       taxType : this.taxType === null ? "" : this.taxType,
@@ -398,7 +404,7 @@ export class DetalleComponent implements OnInit {
       reportType : this.reportType,
       procedureType : this.procedureType,
       idCompany : this.idCompany,
-      idPerson : 0,
+      idPerson : this.idPerson,
       busineesName : this.busineesName === null ? "" : this.busineesName,
       comercialName : this.comercialName === null ? "" : this.comercialName,
       taxType : this.taxType === null ? "" : this.taxType,
@@ -515,7 +521,7 @@ export class DetalleComponent implements OnInit {
             this.aditionalData = abonado.observations;
             this.language = abonado.language;
             this.tipoFacturacion=abonado.facturationType;
-            this.remainingCoupons=abonado.remainingCoupons
+            this.remainingCoupons=abonado.remainingCoupons;
           }
         }
       }
@@ -536,7 +542,7 @@ export class DetalleComponent implements OnInit {
      )
     });
   }
-  buscarEmpresaPersona() {
+  buscarEmpresa() {
     const dialogRef1 = this.dialog.open(ListaEmpresasComponent, {
       data: {
       },
@@ -549,6 +555,7 @@ export class DetalleComponent implements OnInit {
         (response) => {
           if(response.isSuccess === true && response.isWarning === false){
             const datosEmpresa = response.data
+
             if(datosEmpresa){
               this.idCompany = datosEmpresa.id
               this.busineesName = datosEmpresa.name
@@ -559,12 +566,125 @@ export class DetalleComponent implements OnInit {
               this.city = datosEmpresa.place
               this.address = datosEmpresa.address
               this.telephone = datosEmpresa.telephone
+              this.idContinentCompany = datosEmpresa.idContinent === null ? 0 : datosEmpresa.idContinent
+              this.idCountryCompany = datosEmpresa.idCountry === null ? 0 : datosEmpresa.idCountry
             }
+            this.buscarEnArreglo(this.idContinentCompany, this.idCountryCompany)
+         //////
           }
         }
       ).add(
         () => {
           this.ticketService.getTipoReporte(data.idCompany, 'E').subscribe(
+            (response) => {
+              console.log(response)
+              if(response.isSuccess === true && response.isWarning === false){
+                const tipoReporte = response.data
+                if(tipoReporte){
+                  this.reportType = tipoReporte.typeReport
+                  if(tipoReporte.lastSearchedDate !== "" && tipoReporte.lastSearchedDate !== null){
+                    const lastSearched = tipoReporte.lastSearchedDate.split("/")
+                    if(lastSearched.length > 0){
+                      this.fechaInformeDate = new Date(parseInt(lastSearched[2]),parseInt(lastSearched[1])-1,parseInt(lastSearched[0]))
+                    }else{
+                      this.fechaInformeDate = null
+                    }
+                  }
+                  this.dataSource.data = tipoReporte.listSameSearched
+                  this.dataSource.sort = this.sort
+                  this.dataSource.paginator = this.paginator
+                  this.loading=false;
+                }
+              }
+            }
+          )
+
+        }
+      )
+      }
+    });
+  }
+  buscarEnArreglo(idContinent : number, idCountry : number){
+    let containCont = false
+    let containCoun = false
+    if(idContinent !== 0 && idCountry !== 0){
+      this.continentes.forEach(element => {
+        if(idContinent === element.id){
+          containCont = true
+          this.idContinent = idContinent
+          this.abonadoService.getPaises(this.idSubscriber, idContinent).subscribe(
+            (response) => {
+              if(response.isSuccess === true && response.isWarning === false){
+                this.idCountry = 0
+                this.paisesAbonado = response.data
+                this.paisesAbonado.forEach(element => {
+                  if(idCountry === element.id){
+                    containCoun = true
+                    this.idCountry = idCountry
+                  }
+                });
+                if(containCoun === false){
+                  Swal.fire({
+                    text: '',
+                    title: 'El país seleccionado no esta entre las configuraciones del Abonado. Por favor comunicarse con Sistemas.',
+                    icon: 'info',
+
+                    width: '35rem',
+                    heightAuto : true
+                  })
+                }
+              }
+            }
+          )
+        }
+      });
+      if(containCont === false){
+        Swal.fire({
+          text: '',
+          title: 'El continente seleccionado no esta entre las configuraciones del Abonado. Por favor comunicarse con Sistemas.',
+          icon: 'info',
+
+          width: '35rem',
+          heightAuto : true
+        })
+      }
+    }
+
+  }
+
+  buscarPersona() {
+    const dialogRef1 = this.dialog.open(ListaPersonasComponent, {
+      data: {
+      },
+    });
+    dialogRef1.afterClosed().subscribe((data) => {
+
+      if(data.idPerson > 0){
+      this.loading = true;
+      this.datosPersonaService.getPersonaById(data.idPerson).subscribe(
+        (response) => {
+          if(response.isSuccess === true && response.isWarning === false){
+            const datosPersona = response.data
+            console.log(datosPersona)
+            if(datosPersona){
+              this.idPerson = datosPersona.id
+              this.busineesName = datosPersona.fullname
+              this.comercialName = datosPersona.tradeName
+              this.taxType = datosPersona.taxTypeName
+              this.taxCode = datosPersona.taxTypeCode
+              this.email = datosPersona.email
+              this.city = datosPersona.city
+              this.address = datosPersona.address
+              this.telephone = datosPersona.cellphone
+              this.idContinentPerson = datosPersona.idContinent === null ? 0 : datosPersona.idContinent
+              this.idCountryPerson = datosPersona.idCountry === null ? 0 : datosPersona.idCountry
+            }
+            this.buscarEnArreglo(this.idContinentPerson, this.idCountryPerson)
+          }
+        }
+      ).add(
+        () => {
+          this.ticketService.getTipoReporte(data.idPerson, 'P').subscribe(
             (response) => {
               console.log(response)
               if(response.isSuccess === true && response.isWarning === false){
@@ -615,6 +735,7 @@ export class DetalleComponent implements OnInit {
                 this.language = abonado.language;
                 this.tipoFacturacion=abonado.facturationType;
                 this.remainingCoupons=abonado.remainingCoupons;
+                console.log(this.remainingCoupons)
               }
             }else{
               this.idSubscriber = 0
