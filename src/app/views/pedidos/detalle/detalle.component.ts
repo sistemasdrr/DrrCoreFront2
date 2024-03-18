@@ -632,6 +632,14 @@ export class DetalleComponent implements OnInit {
                     width: '35rem',
                     heightAuto : true
                   })
+                }else{
+                  this.abonadoService.getPreciosPorPais(this.idSubscriber, this.idContinent, this.idCountry).subscribe(
+                    (response) => {
+                      if(response.isSuccess === true && response.isWarning === false){
+                        this.listaPrecio = response.data
+                      }
+                    }
+                  )
                 }
               }
             }
