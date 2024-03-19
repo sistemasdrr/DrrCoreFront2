@@ -49,13 +49,13 @@ export class ExportF1Component implements OnInit {
       a.download= this.codigoEmpresa+"_"+language+"_"+Date.now()+extension;
       a.href=window.URL.createObjectURL(blob);
       a.click();
-}).add(
-  () => {
-    if(listaEmpresas){
-      listaEmpresas.classList.add('hide-loader');
-    }
-  }
-);
+    }).add(
+      () => {
+        if(listaEmpresas){
+          listaEmpresas.classList.add('hide-loader');
+        }
+      }
+    );
 }
   cerrar(){
     this.dialogRef.close()

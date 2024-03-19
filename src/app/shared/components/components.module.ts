@@ -36,7 +36,8 @@ import { FeatherIconsModule } from "./feather-icons/feather-icons.module";
     MatListModule,
     ReactiveFormsModule,
     NgScrollbarModule,
-    FeatherIconsModule
+    FeatherIconsModule,
+    
   ],
   exports: [
     FileUploadComponent,

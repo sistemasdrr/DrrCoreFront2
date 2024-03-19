@@ -148,3 +148,9 @@ export interface PersonalAssignation{
   code : string
   internal : boolean
 }
+export interface TicketFile{
+  id : number
+  name : string
+  path : string
+  extension : string
+}

@@ -1,31 +1,43 @@
 import { TicketService } from 'app/services/pedidos/ticket.service';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Adjunto } from 'app/models/adjunto';
-import { DialogData } from 'app/models/dialog-data';
-import { PedidoService } from 'app/services/pedido.service';
 import Swal from 'sweetalert2';
+import { TicketFile } from 'app/models/pedidos/ticket';
+import { saveAs } from 'file-saver';
+import * as JSZip from 'jszip';
 
 @Component({
   selector: 'app-adjuntar-archivos',
   templateUrl: './adjuntar-archivos.component.html',
   styleUrls: ['./adjuntar-archivos.component.scss']
 })
-export class AdjuntarArchivosComponent {
+export class AdjuntarArchivosComponent implements OnInit {
 
-  id = 0
+  idTicket = 0
   cupon = ""
-  loading=false;
+  loading = false;
   attachments : Adjunto[] = []
+  adjuntos : TicketFile[] = []
 
   constructor(public dialogRef: MatDialogRef<AdjuntarArchivosComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public ticketService : TicketService
   ) {
     if(data){
-      this.id = data.id;
+      this.idTicket = data.id;
       this.cupon = data.cupon;
     }
+    console.log(data)
+  }
+  ngOnInit(): void {
+    this.ticketService.getTicketFiles(this.idTicket).subscribe(
+      (response) => {
+        if(response.isSuccess === true && response.isWarning === false){
+          this.adjuntos = response.data
+        }
+      }
+    )
   }
 
   borrarAttachment(id : number){
@@ -69,7 +81,7 @@ export class AdjuntarArchivosComponent {
                 if(listaCuponLoader){
                   listaCuponLoader.classList.remove('hide-loader');
                 }
-            this.ticketService.uploadFile(this.id, this.cupon, file).subscribe(
+            this.ticketService.uploadFile(this.idTicket, this.cupon, file).subscribe(
               (response) => {
 
                 if(response.isSuccess === true && response.isWarning === false){
@@ -111,4 +123,58 @@ export class AdjuntarArchivosComponent {
     a.click();
     this.loading = false
   }
+  downloadFile(path : string, filename : string){
+    const listaEmpresas = document.getElementById('loader-lista-cupon') as HTMLElement | null;
+    if(listaEmpresas){
+      listaEmpresas.classList.remove('hide-loader');
+    }
+    this.ticketService.downloadFile(path).subscribe(response=>{
+      let blob : Blob = response.body as Blob;
+      let a =document.createElement('a');
+
+      a.download= filename;
+      a.href=window.URL.createObjectURL(blob);
+      a.click();
+    }).add(
+      () => {
+        if(listaEmpresas){
+          listaEmpresas.classList.add('hide-loader');
+        }
+      }
+    );
+  }
+  downloadZip() {
+    const listaEmpresas = document.getElementById('loader-lista-cupon') as HTMLElement | null;
+    if(listaEmpresas){
+      listaEmpresas.classList.remove('hide-loader');
+    }
+    let zip = new JSZip();
+    let zipBlob = new Blob();
+
+    let count = 0;
+
+    this.adjuntos.forEach(element => {
+      this.ticketService.downloadFile(element.path).subscribe(response => {
+        let blob: Blob = response.body as Blob;
+        zip.file(element.name, blob);
+
+        count++;
+
+        if (count === this.adjuntos.length) {
+          setTimeout(() => {
+            zip.generateAsync({ type: 'blob' }).then(content => {
+              zipBlob = content;
+            }).then(() => {
+              saveAs(zipBlob, 'adjuntos_'+this.cupon+'.zip');
+              if(listaEmpresas){
+                listaEmpresas.classList.add('hide-loader');
+              }
+            });
+          }, 5000);
+        }
+      });
+    });
+  }
+
+
 }

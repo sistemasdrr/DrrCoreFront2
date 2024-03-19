@@ -2,14 +2,14 @@
   <span class="loader"></span><br>
   <h2 style="color: white;">&nbsp;Cargando...</h2>
 </div>
-<div class="container" style="max-width: 45rem;" >
+<div class="container" style="min-width: 55rem;" >
   <div class="row ">
     <div class="card">
       <div class="materialTableHeader mt-3" >
         <div class="left">
           <ul class="header-buttons-left ms-0">
-            <li class="tbl-title">
-              <h2>Adjuntar Archivos al Cupón {{cupon}}</h2>
+            <li class="tbl-title" style="font-size: 24px;">
+              <b>Adjuntar Archivos al Cupón {{cupon}}</b>
             </li>
           </ul>
         </div>
@@ -17,22 +17,22 @@
           <ul class="tbl-export-btn">
             <li class="tbl-header-btn">
               <div class="m-l-10" >
-                <button mat-icon-button #tooltip="matTooltip" class="btn bg-red shadow" matTooltip="Salir"  (click)="cerrarDialog()">
-                  <i class="fa-solid fa-right-from-bracket" style="font-size: 16px; color: white;"></i>
+                <button mat-mini-fab class="bg-red" style="margin: 0 .5rem .5rem .5rem;"  matTooltip="Salir" (click)="cerrarDialog()">
+                  <mat-icon class="col-white">logout</mat-icon>
                 </button>
               </div>
             </li>
             <li class="tbl-header-btn">
               <div class="m-l-10" >
-                <button mat-icon-button #tooltip="matTooltip" class="btn shadow" [ngClass]="attachments.length > 0 ? 'bg-blue' : 'bg-grey'" matTooltip="Descargar Todos" [disabled]="attachments.length === 0">
+                <button mat-icon-button #tooltip="matTooltip" class="btn shadow" (click)="downloadZip()" [ngClass]="adjuntos.length > 0 ? 'bg-blue' : 'bg-grey'" matTooltip="Descargar Todos" [disabled]="adjuntos.length === 0">
                   <i class="fa-solid fa-file-zipper" style="font-size: 16px; color: white;"></i>
                 </button>
               </div>
             </li>
             <li class="tbl-header-btn">
               <div class="m-l-10" >
-                <button mat-icon-button #tooltip="matTooltip" class="btn btn-primary shadow" matTooltip="Agregar Archivo" (click)="subirArchivo()">
-                  <i class="fa-solid fa-upload" style="font-size: 16px; color: white;"></i>
+                <button mat-mini-fab class="bg-cyan" style="margin: 0 .5rem .5rem .5rem;" #tooltip="matTooltip" matTooltip="Agregar Archivo" (click)="subirArchivo()">
+                  <mat-icon class="col-white">upload</mat-icon>
                 </button>
               </div>
             </li>
@@ -43,64 +43,78 @@
     <div class="col-md-12 mb-3">
       <ng-scrollbar style="height: 285px" class="mat-elevation-z8 " visibility="hover">
         <ul class="list-unstyled m-3">
-           <h3>Planillas y formatos</h3>
-          <li class="d-flex mb-3">
-            <span class="msr-3 align-self-center img-icon primary-rgba text-primary">
-              <i class="far fa-file-word" style="font-size: 30px;"></i>
-            </span>
-              <h6 class="font-16">Planilla Negocios Personas </h6>
-            <div class="ms-auto">
-              <td>
-                <button mat-icon-button #tooltip="matTooltip" class="btn bg-teal shadow" matTooltip="Descargar" (click)="descargarArchivo('../../../../assets/formatos/Planilla_Negocios_Personales.doc','Planilla_Negocios_Personales.doc')">
-                  <i class="fa-solid fa-download" style="font-size: 16px; color: white;"></i>
-                </button>
-              </td>
+          <div class="row">
+            <div class="col-md-5">
+              <h4>Planillas y formatos</h4>
+              <li class="d-flex mb-3">
+                <span class="msr-3 align-self-center img-icon primary-rgba text-primary">
+                  <i class="far fa-file-word" style="font-size: 24px;"></i>
+                </span>
+                  <h6 class="font-14">Planilla Negocios Personas </h6>
+                <div class="ms-auto">
+                  <td>
+                    <button mat-icon-button #tooltip="matTooltip" class="btn bg-teal shadow" matTooltip="Descargar" (click)="descargarArchivo('../../../../assets/formatos/Planilla_Negocios_Personales.doc','Planilla_Negocios_Personales.doc')">
+                      <i class="fa-solid fa-download" style="font-size: 16px; color: white;"></i>
+                    </button>
+                  </td>
+                </div>
+              </li>
+              <li class="d-flex mb-3">
+                <span class="msr-3 align-self-center img-icon primary-rgba text-primary">
+                  <i class="far fa-file-word" style="font-size: 24px;"></i>
+                </span>
+                  <h6 class="font-14">Planilla Reportero </h6>
+                <div class="ms-auto">
+                  <td>
+                    <button mat-icon-button #tooltip="matTooltip" class="btn bg-teal shadow" matTooltip="Descargar" (click)="descargarArchivo('../../../../assets/formatos/Planilla_Reportero.doc','Planilla_Reportero.doc')">
+                      <i class="fa-solid fa-download" style="font-size: 16px; color: white;"></i>
+                    </button>
+                  </td>
+                </div>
+              </li>
             </div>
-          </li>
-          <li class="d-flex mb-3">
-            <span class="msr-3 align-self-center img-icon primary-rgba text-primary">
-              <i class="far fa-file-word" style="font-size: 30px;"></i>
-            </span>
-              <h6 class="font-16">Planilla Reportero </h6>
-            <div class="ms-auto">
-              <td>
-                <button mat-icon-button #tooltip="matTooltip" class="btn bg-teal shadow" matTooltip="Descargar" (click)="descargarArchivo('../../../../assets/formatos/Planilla_Reportero.doc','Planilla_Reportero.doc')">
-                  <i class="fa-solid fa-download" style="font-size: 16px; color: white;"></i>
-                </button>
-              </td>
+            <div class="col-md-7">
+              <h4>Documentos Adjuntos</h4>
+              <li class="d-flex mb-3" *ngFor="let attachment of adjuntos">
+                <span class="msr-3 align-self-center img-icon primary-rgba text-primary" *ngIf="attachment.extension === '.doc' || attachment.extension === '.docx'">
+                  <i class="far fa-file-word" style="font-size: 24px;"></i>
+                </span>
+                <span class="msr-3 align-self-center img-icon success-rgba text-success" *ngIf="attachment.extension === '.xls' || attachment.extension === '.xlsx'">
+                  <i class="far fa-file-excel" style="font-size: 24px;"></i>
+                </span>
+                <span class="msr-3 align-self-center img-icon danger-rgba text-danger" *ngIf="attachment.extension === '.pdf'">
+                  <i class="far fa-file-pdf" style="font-size: 24px;"></i>
+                </span>
+                <span class="msr-3 align-self-center img-icon info-rgba text-secondary" *ngIf="attachment.extension === '.txt'">
+                  <i class="far fa-file-archive" style="font-size: 24px;"></i>
+                </span>
+                <span class="msr-3 align-self-center img-icon info-rgba text-info" *ngIf="attachment.extension === '.png' || attachment.extension === '.jpg'">
+                  <i class="fa-regular fa-file-image" style="font-size: 24px;"></i>
+                </span>
+                <span class="msr-3 align-self-center img-icon info-rgba text-success" *ngIf="attachment.extension === '.xml'">
+                  <i class="fa-regular fa-file-code" style="font-size: 24px;"></i>
+                </span>
+                <div class="set-flex">
+                  <h5 class="font-14 mb-1">{{attachment.name}}</h5>
+                  <p style="margin: 0px;">{{attachment.path}}</p>
+                </div>
+                <div class="ms-auto">
+                  <td>
+                    <button mat-icon-button #tooltip="matTooltip" class="btn bg-teal shadow" matTooltip="Descargar" (click)="downloadFile(attachment.path, attachment.name)">
+                      <i class="fa-solid fa-download" style="font-size: 16px; color: white;"></i>
+                    </button>
+                    <button mat-icon-button #tooltip="matTooltip" class="btn bg-red shadow" matTooltip="Quitar" (click)="borrarAttachment(attachment.id)">
+                      <i class="fa-solid fa-trash" style="font-size: 16px; color: white;"></i>
+                    </button>
+                  </td>
+                </div>
+              </li>
             </div>
-          </li>
+          </div>
+
         </ul>
         <ul class="list-unstyled m-3">
-          <h3>Documentos Adjuntos</h3>
-          <li class="d-flex mb-3" *ngFor="let attachment of attachments">
-            <span class="msr-3 align-self-center img-icon primary-rgba text-primary" *ngIf="attachment.type === 'WORD'">
-              <i class="far fa-file-word" style="font-size: 30px;"></i>
-            </span>
-            <span class="msr-3 align-self-center img-icon success-rgba text-success" *ngIf="attachment.type === 'EXCEL'">
-              <i class="far fa-file-excel" style="font-size: 30px;"></i>
-            </span>
-            <span class="msr-3 align-self-center img-icon danger-rgba text-danger" *ngIf="attachment.type === 'PDF'">
-              <i class="far fa-file-pdf" style="font-size: 30px;"></i>
-            </span>
-            <span class="msr-3 align-self-center img-icon info-rgba text-info" *ngIf="attachment.type === 'TXT'">
-              <i class="far fa-file-archive" style="font-size: 30px;"></i>
-            </span>
-            <div class="set-flex">
-              <h5 class="font-16 mb-1">{{attachment.name}}</h5>
-              <p>{{attachment.path}}</p>
-            </div>
-            <div class="ms-auto">
-              <td>
-                <button mat-icon-button #tooltip="matTooltip" class="btn bg-teal shadow" matTooltip="Descargar">
-                  <i class="fa-solid fa-download" style="font-size: 16px; color: white;"></i>
-                </button>
-                <button mat-icon-button #tooltip="matTooltip" class="btn bg-red shadow" matTooltip="Quitar" (click)="borrarAttachment(attachment.id)">
-                  <i class="fa-solid fa-trash" style="font-size: 16px; color: white;"></i>
-                </button>
-              </td>
-            </div>
-          </li>
+
         </ul>
       </ng-scrollbar>
     </div>

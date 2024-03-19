@@ -1,4 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -9,24 +11,51 @@ import { TicketService } from 'app/services/pedidos/ticket.service';
 import * as moment from 'moment';
 import Swal from 'sweetalert2';
 
+export interface Asignacion{
+  userFrom : string
+  userTo : string
+  idEmployee : number
+  assignedToCode : string
+  assignedToName : string
+  startDate : string
+  endDate : string
+  balance : boolean
+  references : boolean
+  observations : string
+  type : string
+}
+
 @Component({
   selector: 'app-seleccionar-agente',
   templateUrl: './seleccionar-agente.component.html',
-  styleUrls: ['./seleccionar-agente.component.scss']
+  styleUrls: ['./seleccionar-agente.component.scss'],
+  providers:[
+    {provide: MAT_DATE_LOCALE, useValue: 'es'},
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS}
+  ]
 })
 export class SeleccionarAgenteComponent implements OnInit {
   activeList = 0
   estado = "agregar"
   idEditarAsignacion = 0
   idEditarTrabajador = 0
-  fechaAsignacionDate = new Date()
-  fechaVencimientoDate = new Date()
-  fechaEntregaDate = new Date()
+  fechaAsignacionDate : Date | null = null
+  fechaVencimientoDate : Date | null = null
 
-  dataSource : MatTableDataSource<TicketHistory>
+  dataSource : MatTableDataSource<Asignacion>
   columnas = ['assignedTo','assignationDate','endDate','balance','references']
 
+  asignacion : Asignacion[] = []
+
+  idEmployee = 0;
   asignado = ""
+  asignadoCodigo= ""
+  asignadoNombre= ""
   precio = 0
   type = ""
   idTicket = 0
@@ -36,11 +65,13 @@ export class SeleccionarAgenteComponent implements OnInit {
   calidad = ""
   fechaAsignacion = ""
   fechaVencimiento = ""
-  fechaEntrega = ""
   observaciones = ""
   userTo = ''
 
-  seleccionarTrabajador(codigo : string, nombre : string){
+  seleccionarTrabajador(codigo : string, nombre : string, idEmployee : number){
+    this.asignadoCodigo = codigo
+    this.asignadoNombre =  nombre
+    this.idEmployee = idEmployee
     this.asignado = codigo + ' || ' + nombre
   }
   datos : PersonalAssignation[] = []
@@ -104,7 +135,7 @@ export class SeleccionarAgenteComponent implements OnInit {
     },
   ]
   constructor(public dialogRef: MatDialogRef<SeleccionarAgenteComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private ticketService : TicketService, private pedidoService : PedidoService){
+    @Inject(MAT_DIALOG_DATA) public data: any, private ticketService : TicketService){
       this.dataSource = new MatTableDataSource()
       console.log(data)
       this.idTicket = parseInt(data.idTicket)
@@ -153,19 +184,34 @@ export class SeleccionarAgenteComponent implements OnInit {
     });
     this.asignado = ""
   }
-  agregarAsignacion(codigo : string){
-    let nuevaAsignacion : TicketHistory = {
-      id : 0,
+  addAsignacion(){
+    const asign : Asignacion = {
       userFrom : this.userTo,
-      userTo : '',
-      idStatusTicket : this.type === "PA" ? 12 : this.type === "RP" ? 4 : this.type === "AG" ? 3 : this.type === "RF" ? 13 : this.type === "DI" ? 5 : this.type === "TR" ? 6 : this.type === "SU" ? 7 : 12,
-      asignedTo : '',
-      flag : true,
-      numberAssign : 1
-
+      userTo : this.userTo,
+      idEmployee : this.idEmployee,
+      assignedToCode : this.asignadoCodigo,
+      assignedToName : this.asignadoNombre,
+      startDate : this.fechaAsignacion,
+      endDate : this.fechaVencimiento,
+      balance : this.balance,
+      references : this.referencias,
+      observations : this.observaciones,
+      type : this.type
     }
+    this.asignacion.push(asign)
+    this.dataSource.data = this.asignacion
+    this.idEmployee = 0
+    this.asignado = ""
+    this.fechaAsignacion = ""
+    this.fechaAsignacionDate = null
+    this.fechaVencimiento = ""
+    this.fechaVencimientoDate = null
+    this.balance = false
+    this.referencias = false
+    this.observaciones = ""
+    this.activeList = 0
+    this.estado = 'agregar'
   }
-
 
   editarAsignacion(){
 
@@ -183,23 +229,16 @@ export class SeleccionarAgenteComponent implements OnInit {
     const formattedDate = date.format('DD/MM/YYYY');
     return formattedDate;
   }
-
   selectFechaAsignacion(event: MatDatepickerInputEvent<Date>) {
-    const selectedDate = event.value;
+    const selectedDate = event.value!;
     if (moment.isMoment(selectedDate)) {
       this.fechaAsignacion = this.formatDate(selectedDate);
     }
   }
   selectFechaVencimiento(event: MatDatepickerInputEvent<Date>) {
-    const selectedDate = event.value;
+    const selectedDate = event.value!;
     if (moment.isMoment(selectedDate)) {
       this.fechaVencimiento = this.formatDate(selectedDate);
-    }
-  }
-  selectFechaEntrega(event: MatDatepickerInputEvent<Date>) {
-    const selectedDate = event.value;
-    if (moment.isMoment(selectedDate)) {
-      this.fechaEntrega = this.formatDate(selectedDate);
     }
   }
   limpiar(){
@@ -211,10 +250,11 @@ export class SeleccionarAgenteComponent implements OnInit {
     this.fechaAsignacionDate = new Date()
     this.fechaVencimiento = ''
     this.fechaVencimientoDate = new Date()
-    this.fechaEntrega = ''
-    this.fechaEntregaDate = new Date()
     this.observaciones = ''
     this.datos = []
     this.activeList = 0
+  }
+  guardarCambios(){
+    console.log(this.dataSource.data)
   }
 }
