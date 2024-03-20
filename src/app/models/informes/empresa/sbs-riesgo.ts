@@ -34,6 +34,12 @@ export interface ProveedorT{
   attendedBy : string
   enable : boolean
 }
+export interface ProveedorHistory{
+  ticket : string
+  numReferences : number
+  referentName : string
+  date : string
+}
 export interface Proveedor{
   id : number
   idCompany : number

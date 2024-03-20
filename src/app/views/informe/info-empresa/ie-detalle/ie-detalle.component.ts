@@ -72,14 +72,6 @@ export class IEDetalleComponent implements OnInit {
 
   ngOnInit(): void {
     const tabCompany = document.getElementById('tab-datos-empresa') as HTMLElement | null;
-    const tabBackground = document.getElementById('tab-antecedentes') as HTMLElement | null;
-    const tabBranch = document.getElementById('tab-ramo-negocio') as HTMLElement | null;
-    const tabFinancial = document.getElementById('tab-finanzas') as HTMLElement | null;
-    const tabBalance = document.getElementById('tab-balance') as HTMLElement | null;
-    const tabSbs = document.getElementById('tab-sbs-riesgo') as HTMLElement | null;
-    const tabOpinion = document.getElementById('tab-opinion-credito') as HTMLElement | null;
-    const tabInfoGeneral = document.getElementById('tab-info-general') as HTMLElement | null;
-    const tabImages = document.getElementById('tab-imagenes') as HTMLElement | null;
     if (tabCompany) {
       tabCompany.classList.remove('tab-cambios')
     }

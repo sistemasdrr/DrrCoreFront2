@@ -14,10 +14,8 @@ import { TicketService } from 'app/services/pedidos/ticket.service';
 import { HistorialPedido, Ticket } from 'app/models/pedidos/ticket';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import Swal from 'sweetalert2';
-import { formatDate } from '@angular/common';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
-import { tick } from '@angular/core/testing';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ListaPersonasComponent } from './lista-personas/lista-personas.component';
@@ -337,7 +335,7 @@ export class DetalleComponent implements OnInit {
     this.dataSource = new MatTableDataSource();
   }
   addDays(noOfDaysToAdd:number,orderDate:Date){
-    var endDate : Date=new Date, count = 0;
+    let endDate : Date=new Date, count = 0;
     while(count < noOfDaysToAdd){
         endDate = new Date(orderDate.setDate(orderDate.getDate() + 1));
         if(endDate.getDay() != 0 && endDate.getDay() != 6){

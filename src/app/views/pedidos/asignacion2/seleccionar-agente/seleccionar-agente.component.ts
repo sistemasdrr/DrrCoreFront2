@@ -6,10 +6,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { TicketHistory } from 'app/models/pedidos/asignacion/ticketHistory';
 import { PersonalAssignation } from 'app/models/pedidos/ticket';
-import { PedidoService } from 'app/services/pedido.service';
 import { TicketService } from 'app/services/pedidos/ticket.service';
 import * as moment from 'moment';
-import Swal from 'sweetalert2';
 
 export interface Asignacion{
   userFrom : string
@@ -52,7 +50,7 @@ export class SeleccionarAgenteComponent implements OnInit {
 
   asignacion : Asignacion[] = []
   interno = false;
-  idEmployee = 0;
+  idUserLogin = 0;
   asignado = ""
   asignadoCodigo= ""
   asignadoNombre= ""
@@ -68,10 +66,10 @@ export class SeleccionarAgenteComponent implements OnInit {
   observaciones = ""
   userFrom = ''
 
-  seleccionarTrabajador(codigo : string, nombre : string, idEmployee : number, internal : boolean){
+  seleccionarTrabajador(codigo : string, nombre : string, idUserLogin : number, internal : boolean){
     this.asignadoCodigo = codigo
     this.asignadoNombre =  nombre
-    this.idEmployee = idEmployee
+    this.idUserLogin = idUserLogin
     this.asignado = codigo + ' || ' + nombre
     this.interno = internal
   }
@@ -81,6 +79,7 @@ export class SeleccionarAgenteComponent implements OnInit {
     {
       id : 0,
       idEmployee : 21,
+      idUserLogin : 21,
       fullname : 'KATIA BUSTAMANTE',
       type : 'PA',
       code : 'PA1',
@@ -89,6 +88,7 @@ export class SeleccionarAgenteComponent implements OnInit {
     {
       id : 0,
       idEmployee : 33,
+      idUserLogin : 33,
       fullname : 'MARIELA ACOSTA',
       type : 'PA',
       code : 'PA2',
@@ -97,6 +97,7 @@ export class SeleccionarAgenteComponent implements OnInit {
     {
       id : 0,
       idEmployee : 37,
+      idUserLogin : 37,
       fullname : 'MONICA YEPEZ',
       type : 'PA',
       code : 'PA3',
@@ -105,6 +106,7 @@ export class SeleccionarAgenteComponent implements OnInit {
     {
       id : 0,
       idEmployee : 38,
+      idUserLogin : 38,
       fullname : 'RAFAEL DEL RISCO',
       type : 'PA',
       code : 'PA4',
@@ -113,6 +115,7 @@ export class SeleccionarAgenteComponent implements OnInit {
     {
       id : 0,
       idEmployee : 42,
+      idUserLogin : 42,
       fullname : 'CECILIA RODRIGUEZ',
       type : 'PA',
       code : 'PA5',
@@ -121,6 +124,7 @@ export class SeleccionarAgenteComponent implements OnInit {
     {
       id : 0,
       idEmployee : 50,
+      idUserLogin : 50,
       fullname : 'JESSICA LIAU',
       type : 'PA',
       code : 'PA6',
@@ -129,6 +133,7 @@ export class SeleccionarAgenteComponent implements OnInit {
     {
       id : 0,
       idEmployee : 23,
+      idUserLogin : 23,
       fullname : 'CECILIA SAYAS',
       type : 'PA',
       code : 'PA7',
@@ -167,7 +172,11 @@ export class SeleccionarAgenteComponent implements OnInit {
                 this.datos.push(element)
               });
             }
-          })
+          }).add(
+            () => {
+              console.log(this.datos)
+            }
+          )
       }
     )
   }
@@ -188,7 +197,7 @@ export class SeleccionarAgenteComponent implements OnInit {
   addAsignacion(){
     const asign : Asignacion = {
       userFrom : this.userFrom,
-      userTo : this.idEmployee + "",
+      userTo : this.idUserLogin + "",
       assignedToCode : this.asignadoCodigo,
       assignedToName : this.asignadoNombre,
       startDate : this.fechaAsignacion,
@@ -201,7 +210,7 @@ export class SeleccionarAgenteComponent implements OnInit {
     }
     this.asignacion.push(asign)
     this.dataSource.data = this.asignacion
-    this.idEmployee = 0
+    this.idUserLogin = 0
     this.asignado = ""
     this.fechaAsignacion = ""
     this.fechaAsignacionDate = null

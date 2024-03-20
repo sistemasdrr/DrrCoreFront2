@@ -71,6 +71,7 @@ export interface ListTicket{
   subscriberFlag : string
   queryCredit : string
   timeLimit : string
+  asignedTo : string
   revealName : boolean
   nameRevealed : string
   referenceNumber : string
@@ -143,6 +144,7 @@ export interface SaveTicketAssignation{
 export interface PersonalAssignation{
   id : number
   idEmployee : number
+  idUserLogin : number
   fullname : string
   type : string
   code : string

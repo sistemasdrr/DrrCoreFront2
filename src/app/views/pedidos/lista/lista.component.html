@@ -73,7 +73,7 @@
                 </button>
               </div>
               <div class="" matTooltip="LIMPIAR" style="margin: 0 .3rem 0 .3rem">
-                <button mat-mini-fab class="bg-red" (click)="refresh()">
+                <button mat-mini-fab class="bg-red" (click)="limpiar()">
                   <mat-icon class="col-white">cleaning_services</mat-icon>
                 </button>
               </div>
@@ -160,7 +160,7 @@
             <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Fecha de Vencimiento </th>
             <td mat-cell *matCellDef="let order" class="text-center"> {{order.expireDate}} </td>
           </ng-container>
-         
+
           <ng-container matColumnDef="Acciones" >
             <th mat-header-cell *matHeaderCellDef  class="text-center" style="width: 10rem;"> Acciones </th>
             <td mat-cell *matCellDef="let order"  style="min-width: 12rem;">
@@ -247,7 +247,7 @@
                       <div class="col-md-4">
                         <label><b>Tipo de Informe: </b> {{order.reportType}}</label><br>
                         <label><b>Fecha de Vencimiento: </b> {{order.expireDate}}</label><br>
-                      </div>                    
+                      </div>
                       <br>
                     </div>
                   </div>

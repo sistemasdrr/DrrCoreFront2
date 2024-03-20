@@ -1,4 +1,4 @@
-import { CompanySbs } from './../../../../../models/informes/empresa/sbs-riesgo';
+import { CompanySbs, ProveedorHistory } from './../../../../../models/informes/empresa/sbs-riesgo';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
@@ -59,22 +59,25 @@ export class SbsRiesgoComponent implements OnInit{
   totalesMN = 0
   totalesME = 0
   totalesMD = 0
+  idTicket = 0
 
   listaOpcionalCommentary : ComboData[] = []
   modeloActual : CompanySbs[] = []
   modeloModificado : CompanySbs[] = []
 
   dataSourceProveedor: MatTableDataSource<ProveedorT>
+  dataSourceProveedorHistory: MatTableDataSource<ProveedorHistory>
   dataSourceMorosidadComercial: MatTableDataSource<MorosidadComercialT>
   dataSourceDeudaBancaria: MatTableDataSource<DeudaBancariaT>
   dataSourceAvales: MatTableDataSource<Avales>
-  columnsToDisplayProveedor = ['proveedor', 'telefono', 'pais', 'credMaximo', 'plazos', 'cumplimiento', 'clientesDesde','articulos', 'atendio','accion'];
-  columnsToDisplayMorosidadComercial = ['acreProv', 'tipoDocumento', 'fecha', 'montoMN', 'montoME', 'fechaPago', 'diasAtraso', 'accion'];
-  columnsToDisplayDeudaBancaria = ['banco', 'calificacion', 'fecha', 'deudaMN', 'deudaME', 'memo', 'accion'];
-  columnsToDisplayAval = ['avalista', 'ruc', 'montoME', 'montoMN', 'fecha', 'entidad', 'accion'];
+  columnsToDisplayProveedor = ['name', 'telephone', 'country', 'maximumAmount', 'timeLimit', 'compliance', 'date','productsTheySell', 'attendedBy','accion'];
+  columnsToDisplayMorosidadComercial = ['creditorOrSupplier', 'documentType', 'date', 'amountNc', 'amountFc', 'pendingPaymentDate', 'daysLate', 'accion'];
+  columnsToDisplayDeudaBancaria = ['bankName', 'qualification', 'debtDate', 'debtNc', 'debtFc', 'memo', 'accion'];
+  columnsToDisplayAval = ['endorsementName', 'ruc', 'amountUs', 'amountNc', 'date', 'receivingEntity', 'accion'];
 
   constructor(private dialog : MatDialog,private sbsService : SbsRiesgoService, private activatedRoute : ActivatedRoute, private comboService : ComboService){
     this.dataSourceProveedor = new MatTableDataSource()
+    this.dataSourceProveedorHistory = new MatTableDataSource()
     this.dataSourceMorosidadComercial = new MatTableDataSource()
     this.dataSourceDeudaBancaria = new MatTableDataSource()
     this.dataSourceAvales = new MatTableDataSource()
@@ -83,6 +86,11 @@ export class SbsRiesgoComponent implements OnInit{
       this.idCompany = 0
     } else {
       this.idCompany = parseInt(id + '')
+    }
+    const cupon = this.activatedRoute.snapshot.paramMap.get('cupon');
+    if(cupon){
+      this.idTicket = parseInt(cupon)
+      console.log(this.idTicket)
     }
   }
   compararModelosF : any

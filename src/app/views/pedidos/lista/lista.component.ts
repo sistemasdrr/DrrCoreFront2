@@ -110,7 +110,13 @@ export class ListaComponent implements OnInit {
   addOrder(){
     this.router.navigate(['pedidos/detalle/agregar/nuevo']);
   }
-
+  limpiar(){
+    this.buscarCupon = ""
+    this.buscarInforme = ""
+    this.buscarAbonado = ""
+    this.tipoInforme = ""
+    this.tipoTramite = ""
+  }
   editOrder(cupon : string){
     this.router.navigate(['pedidos/detalle/editar/' + cupon]);
   }

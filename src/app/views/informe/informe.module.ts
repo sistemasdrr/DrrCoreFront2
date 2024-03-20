@@ -77,6 +77,7 @@ import { ImageEditorEComponent } from './info-persona/ip-detalle/p-imagenes/imag
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { AngularCropperjsModule } from 'angular-cropperjs';
 import { ImageEditorComponent } from './info-empresa/ie-detalle/e-imagenes/image-editor/image-editor.component';
+import { ReferencistaComponent } from './referencista/referencista.component';
 
 @NgModule({
   declarations: [
@@ -129,7 +130,8 @@ import { ImageEditorComponent } from './info-empresa/ie-detalle/e-imagenes/image
     AgregarHistorialTrabajadorComponent,
     ExportF1Component,
     ImageEditorEComponent,
-    ImageEditorComponent
+    ImageEditorComponent,
+    ReferencistaComponent
   ],
   imports: [
     CommonModule,
