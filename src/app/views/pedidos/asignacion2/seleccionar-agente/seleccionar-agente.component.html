@@ -31,7 +31,7 @@
                   </mat-button-toggle-group>
                 </div>
                 <div class="col-md-9 mat-elevation-z8" >
-                  <mat-selection-list #asignacion [multiple]="false" [disabled]="estado === 'editar'" style="width: 100%; max-height: 400px; overflow-y: auto;" (selectionChange)="seleccionarTrabajador(asignacion.selectedOptions.selected[0].value.code,asignacion.selectedOptions.selected[0].value.fullname,asignacion.selectedOptions.selected[0].value.idEmployee)" >
+                  <mat-selection-list #asignacion [multiple]="false" [disabled]="estado === 'editar'" style="width: 100%; max-height: 400px; overflow-y: auto;" (selectionChange)="seleccionarTrabajador(asignacion.selectedOptions.selected[0].value.code,asignacion.selectedOptions.selected[0].value.fullname,asignacion.selectedOptions.selected[0].value.idEmployee,asignacion.selectedOptions.selected[0].value.internal)" >
                     <mat-list-option *ngFor="let asig of datos2" [value]="asig">
                       <div style="font-size: 12px; border-radius: 14px;" >
                         {{asig.code}} || {{asig.fullname}}

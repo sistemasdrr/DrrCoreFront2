@@ -14,7 +14,6 @@ import Swal from 'sweetalert2';
 export interface Asignacion{
   userFrom : string
   userTo : string
-  idEmployee : number
   assignedToCode : string
   assignedToName : string
   startDate : string
@@ -23,6 +22,7 @@ export interface Asignacion{
   references : boolean
   observations : string
   type : string
+  internal : boolean
 }
 
 @Component({
@@ -51,7 +51,7 @@ export class SeleccionarAgenteComponent implements OnInit {
   columnas = ['assignedTo','assignationDate','endDate','balance','references']
 
   asignacion : Asignacion[] = []
-
+  interno = false;
   idEmployee = 0;
   asignado = ""
   asignadoCodigo= ""
@@ -66,13 +66,14 @@ export class SeleccionarAgenteComponent implements OnInit {
   fechaAsignacion = ""
   fechaVencimiento = ""
   observaciones = ""
-  userTo = ''
+  userFrom = ''
 
-  seleccionarTrabajador(codigo : string, nombre : string, idEmployee : number){
+  seleccionarTrabajador(codigo : string, nombre : string, idEmployee : number, internal : boolean){
     this.asignadoCodigo = codigo
     this.asignadoNombre =  nombre
     this.idEmployee = idEmployee
     this.asignado = codigo + ' || ' + nombre
+    this.interno = internal
   }
   datos : PersonalAssignation[] = []
   datos2 : PersonalAssignation[] = []
@@ -144,7 +145,7 @@ export class SeleccionarAgenteComponent implements OnInit {
         this.referencias = true
       }
       const auth = JSON.parse(localStorage.getItem('authCache')+'')
-      this.userTo = auth.idUser
+      this.userFrom = auth.idUser
   }
 
   ngOnInit(): void {
@@ -186,9 +187,8 @@ export class SeleccionarAgenteComponent implements OnInit {
   }
   addAsignacion(){
     const asign : Asignacion = {
-      userFrom : this.userTo,
-      userTo : this.userTo,
-      idEmployee : this.idEmployee,
+      userFrom : this.userFrom,
+      userTo : this.idEmployee + "",
       assignedToCode : this.asignadoCodigo,
       assignedToName : this.asignadoNombre,
       startDate : this.fechaAsignacion,
@@ -196,7 +196,8 @@ export class SeleccionarAgenteComponent implements OnInit {
       balance : this.balance,
       references : this.referencias,
       observations : this.observaciones,
-      type : this.type
+      type : this.type,
+      internal : this.interno
     }
     this.asignacion.push(asign)
     this.dataSource.data = this.asignacion
@@ -210,6 +211,7 @@ export class SeleccionarAgenteComponent implements OnInit {
     this.referencias = false
     this.observaciones = ""
     this.activeList = 0
+    this.interno = false
     this.estado = 'agregar'
   }
 
