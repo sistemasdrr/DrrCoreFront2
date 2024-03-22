@@ -48,6 +48,11 @@ export interface Abonado{
   enable : boolean
   remainingCoupons:number
 }
+export interface AbonadoUsr{
+  id : number
+  code : string
+  name : string
+}
 
 export interface PrecioAbonado{
   id : number

@@ -55,6 +55,9 @@ export class ComboService {
   getPaises() : Observable<Response<Pais[]>>{
     return this.http.get<Response<Pais[]>>(this.url + this.controllerCombo + '/country');
   }
+  getPaisById(idCountry : number) : Observable<Response<Pais>>{
+    return this.http.get<Response<Pais>>(this.url + this.controllerCombo + '/countryById?idCountry='+idCountry);
+  }
   getContinentes() : Observable<Response<ComboData[]>>{
     return this.http.get<Response<ComboData[]>>(this.url + this.controllerCombo + '/continent');
   }

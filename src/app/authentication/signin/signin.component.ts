@@ -1,6 +1,4 @@
-import { PersonalService } from './../../services/mantenimiento/personal.service';
 
-import { UsuarioService } from './../../services/usuario.service';
 import { Component, OnInit } from '@angular/core';
 import { UnsubscribeOnDestroyAdapter } from '@shared';
 import { Aniversario } from 'app/models/login/aniversario';
@@ -8,13 +6,7 @@ import { FechasImportantesService } from 'app/services/login/fechas-importantes.
 import { AuthService } from '@core';
 import { Router } from '@angular/router';
 
-interface DecodedToken {
-  Id : number
-  username: string;
-  role: string;
-  exp: Date;
-  iat: Date;
-}
+
 
 @Component({
   selector: 'app-signin',
@@ -54,11 +46,9 @@ export class SigninComponent
   msgError = ""
   fechasImportantes : Aniversario[] = []
   constructor(
-    private personalService :PersonalService,
     private authService : AuthService,
     private router : Router,
-    private aniversarioService : FechasImportantesService,
-    private usuarioService : UsuarioService
+    private aniversarioService : FechasImportantesService
   ) {
     super();
   }
@@ -104,7 +94,7 @@ export class SigninComponent
                 password : this.password
               };
               localStorage.setItem(this.CACHE_KEY, JSON.stringify(cacheData));
-            
+
             this.router.navigate(['/dashboard/main']);
           }
         }else{
@@ -151,7 +141,7 @@ export class SigninComponent
 
     // }
   }
-  enter(event : any){    
+  enter(event : any){
     if(event.code == 'Enter'){
       this.onSubmit()
     }

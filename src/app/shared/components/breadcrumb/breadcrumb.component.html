@@ -34,7 +34,7 @@
         <div class="d-flex align-items-center justify-content-end" [ngClass]="codigoInforme === '' ? 'col-6' : 'col-3'">
             <ul class="breadcrumb-list">
                 <li class="breadcrumb-item bcrumb-1">
-                    <a [routerLink]="'/dashboard/main'">
+                    <a [routerLink]="idEmployee !== 0 ? '/dashboard/main' : '/abonado/i/main'">
                         <app-feather-icons [icon]="'home'" [class]="'breadcrumb-icon'"></app-feather-icons>
                     </a>
                 </li>

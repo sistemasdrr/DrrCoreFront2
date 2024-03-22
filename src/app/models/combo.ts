@@ -35,6 +35,7 @@ export interface PoliticaPagos{
 export interface Pais{
   id : number
   valor : string
+  abreviation : string
   bandera : string
   regtrib : string
   codCel : string

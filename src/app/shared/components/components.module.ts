@@ -2,8 +2,7 @@ import { NgModule } from "@angular/core";
 import { FileUploadComponent } from "./file-upload/file-upload.component";
 import { BreadcrumbComponent } from "./breadcrumb/breadcrumb.component";
 import { SharedModule } from "../shared.module";
-import { BuscarAbonadoDialogComponent } from "./buscar-abonado-dialog/buscar-abonado-dialog.component";
-import {MatRadioModule} from '@angular/material/radio';
+import { MatRadioModule } from '@angular/material/radio';
 import { AdjuntarArchivosComponent } from './adjuntar-archivos/adjuntar-archivos.component';
 import { ComentarioComponent } from './comentario/comentario.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -20,7 +19,6 @@ import { FeatherIconsModule } from "./feather-icons/feather-icons.module";
   declarations: [
     FileUploadComponent,
     BreadcrumbComponent,
-    BuscarAbonadoDialogComponent,
     AdjuntarArchivosComponent,
     ComentarioComponent,
     TraduccionDialogComponent,
@@ -37,12 +35,11 @@ import { FeatherIconsModule } from "./feather-icons/feather-icons.module";
     ReactiveFormsModule,
     NgScrollbarModule,
     FeatherIconsModule,
-    
+
   ],
   exports: [
     FileUploadComponent,
     BreadcrumbComponent,
-    BuscarAbonadoDialogComponent,
     ComentarioComponent,
     CuadroImpoExpoComponent,
     TraduccionDialogComponent,

@@ -59,6 +59,7 @@ export class DetalleComponent implements OnInit{
   paisSeleccionado : Pais = {
     id: 0,
     valor: '',
+    abreviation: '',
     bandera: '',
     regtrib: '',
     codCel: '',

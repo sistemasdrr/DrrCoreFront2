@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ComboData } from 'app/models/combo';
-import { Abonado, AbonadoT, FacturacionPorCupones, HistorialFacturacionPorCupones, PrecioAbonado, PrecioAbonadoT } from 'app/models/mantenimiento/abonado';
+import { Abonado, AbonadoT, AbonadoUsr, FacturacionPorCupones, HistorialFacturacionPorCupones, PrecioAbonado, PrecioAbonadoT } from 'app/models/mantenimiento/abonado';
 import { Pais } from 'app/models/combo';
 import { Response } from 'app/models/response';
 import { environment } from 'environments/environment';
@@ -69,6 +69,11 @@ export class AbonadoService {
   addHistorialFacturacionPorCupones(obj : HistorialFacturacionPorCupones) : Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url + this.controllerAbonado + '/addCouponBillingHistory',obj);
   }
+
+  loginSubscriber(usr : string, psw : string) : Observable<Response<AbonadoUsr>>{
+    return this.http.post<Response<AbonadoUsr>>(this.url + this.controllerAbonado + '/loginSubscriber?usr='+usr+'&psw='+psw,"");
+  }
+
 }
 export interface Precio{
   name : string

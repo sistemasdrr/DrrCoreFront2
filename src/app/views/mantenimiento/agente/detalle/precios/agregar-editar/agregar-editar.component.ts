@@ -25,6 +25,7 @@ export class AgregarEditarAgenteComponent implements OnInit {
   countryPrecio : Pais = {
     id: 0,
     valor: '',
+    abreviation: '',
     bandera: '',
     regtrib: '',
     codCel: '',

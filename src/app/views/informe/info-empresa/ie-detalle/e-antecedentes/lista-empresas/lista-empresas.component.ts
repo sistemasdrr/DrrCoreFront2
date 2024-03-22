@@ -40,6 +40,7 @@ export class ListaEmpresasComponent implements OnInit {
   paisSeleccionado: Pais = {
     id: 0,
     valor: '',
+    abreviation: '',
     bandera: '',
     regtrib: '',
     codCel: '',
@@ -147,6 +148,7 @@ export class ListaEmpresasComponent implements OnInit {
     this.paisSeleccionado = {
       id: 0,
       valor: '',
+      abreviation: '',
       bandera: '',
       regtrib: '',
       codCel: '',

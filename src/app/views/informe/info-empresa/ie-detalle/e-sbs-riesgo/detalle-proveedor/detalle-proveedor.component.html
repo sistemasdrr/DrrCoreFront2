@@ -151,6 +151,27 @@
                 </button>
               </mat-form-field>
             </div>
+            <h5 style="font-size: 20px;">Datos del Referencista</h5>
+            <div class="col-md-4 m-0">
+              <mat-form-field class="w-100" style="margin: 0 .5rem 0 .5rem;">
+                <mat-label>Referencista</mat-label>
+                <input matInput placeholder="" [(ngModel)]="referentName">
+              </mat-form-field>
+            </div>
+            <div class="col-md-3 m-0">
+              <mat-form-field color="primary" style="width: 100%; margin: 0 .5rem 0 .5rem;">
+                <mat-label>Fecha</mat-label>
+                <input matInput [matDatepicker]="fecha_referent" [(ngModel)]="dateReferentD" (dateChange)="selectFechaR($event)">
+                <mat-datepicker-toggle matIconSuffix [for]="fecha_referent"></mat-datepicker-toggle>
+                <mat-datepicker #fecha_referent color="primary"></mat-datepicker>
+              </mat-form-field>
+          </div>
+          <div class="col-md-4 m-0">
+            <mat-form-field class="w-100" style="margin: 0 .5rem 0 .5rem;">
+              <mat-label>Ticket</mat-label>
+              <input matInput placeholder="" [(ngModel)]="numCupon" [disabled]="true">
+            </mat-form-field>
+          </div>
             <h5 style="font-size: 20px;">Comentarios</h5>
             <div class="col-md-12 m-0">
               <mat-form-field class="w-100" style="margin: 0 .5rem 0 .5rem;">
