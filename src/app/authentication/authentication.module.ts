@@ -10,6 +10,7 @@ import { LockedComponent } from './locked/locked.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
+import { LoginSubscriberComponent } from './login-subscriber/login-subscriber.component';
 @NgModule({
   declarations: [
     Page500Component,
@@ -18,6 +19,7 @@ import { SharedModule } from '../shared/shared.module';
     SignupComponent,
     LockedComponent,
     ForgotPasswordComponent,
+    LoginSubscriberComponent
   ],
   imports: [
     CommonModule,

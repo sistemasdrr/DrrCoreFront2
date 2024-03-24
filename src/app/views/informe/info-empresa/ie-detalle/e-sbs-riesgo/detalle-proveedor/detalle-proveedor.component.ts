@@ -13,6 +13,8 @@ import Swal from 'sweetalert2';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import * as moment from 'moment';
+import { TicketService } from 'app/services/pedidos/ticket.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-detalle-proveedor',
@@ -59,6 +61,12 @@ export class DetalleProveedorComponent implements OnInit {
   additionalCommentaryEng = ""
   referentCommentary = ""
 
+  idTicket = 0
+  referentName = ""
+  dateReferentD : Date | null = null
+  dateReferent = ""
+  numCupon = ""
+
   modelo: Proveedor[] = []
 
   msgPais = ""
@@ -70,13 +78,15 @@ export class DetalleProveedorComponent implements OnInit {
   paisSeleccionado: Pais = {
     id: 0,
     valor: '',
+    abreviation: '',
     bandera: '',
     regtrib: '',
     codCel: '',
   }
   iconoSeleccionado = ""
   constructor(private comboService : ComboService, public dialogRef: MatDialogRef<DetalleProveedorComponent>, private dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: any, private sbsService : SbsRiesgoService
+    @Inject(MAT_DIALOG_DATA) public data: any, private sbsService : SbsRiesgoService, private ticketService : TicketService,
+    private activatedRoute : ActivatedRoute
   ) {
 
     this.filterPais = new Observable<Pais[]>()
@@ -92,8 +102,21 @@ export class DetalleProveedorComponent implements OnInit {
       this.id = data.id
       this.idCompany = data.idCompany
     }
+    const idTicket = this.activatedRoute.snapshot.paramMap.get('idTicket');
+    if(idTicket){
+      this.idTicket = parseInt(idTicket)
+      console.log(this.idTicket)
+    }
   }
   ngOnInit(): void {
+    this.ticketService.getNumTicketById(this.idTicket).subscribe(
+      (response) => {
+        if(response.isSuccess === true && response.isWarning === false){
+          this.numCupon = response.data
+          console.log(response)
+        }
+      }
+    )
     this.comboService.getPaises().subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
@@ -137,6 +160,8 @@ export class DetalleProveedorComponent implements OnInit {
                       this.additionalCommentary = proveedor.additionalCommentary
                       this.additionalCommentaryEng = proveedor.additionalCommentaryEng
                       this.referentCommentary = proveedor.referentCommentary
+
+                      this.referentName = proveedor.referentName
                       if(proveedor.date !== null && proveedor.date !== ''){
                         const fecha = proveedor.date.split("/")
                         if(fecha.length > 0){
@@ -145,6 +170,16 @@ export class DetalleProveedorComponent implements OnInit {
                         }else{
                           this.date = ""
                           this.dateD = null
+                        }
+                      }
+                      if(proveedor.dateReferent !== null && proveedor.dateReferent !== ''){
+                        const fecha = proveedor.dateReferent.split("/")
+                        if(fecha.length > 0){
+                          this.dateReferent = proveedor.date
+                          this.dateReferentD = new Date(parseInt(fecha[2]),parseInt(fecha[1])-1,parseInt(fecha[0]))
+                        }else{
+                          this.dateReferent = ""
+                          this.dateReferentD = null
                         }
                       }
                     }
@@ -177,6 +212,12 @@ export class DetalleProveedorComponent implements OnInit {
       this.date = this.formatDate(this.dateD);
     }
   }
+  selectFechaR(event: MatDatepickerInputEvent<Date>) {
+    this.dateReferentD = event.value!
+    if (moment.isMoment(this.dateReferentD)) {
+      this.dateReferent = this.formatDate(this.dateReferentD);
+    }
+  }
   formatDate(date: moment.Moment): string {
     const formattedDate = date.format('DD/MM/YYYY');
     return formattedDate;
@@ -206,7 +247,11 @@ export class DetalleProveedorComponent implements OnInit {
       additionalCommentary : this.additionalCommentary,
       additionalCommentaryEng : this.additionalCommentaryEng,
       referentCommentary : this.referentCommentary,
-      qualificationEng : this.qualificationEng
+      qualificationEng : this.qualificationEng,
+      idTicket : this.idTicket,
+      referentName : this.referentName,
+      dateReferent : this.dateReferent,
+      ticket : this.numCupon
     }
   }
   cambiarCumplimiento(cumplimiento : string){

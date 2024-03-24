@@ -18,27 +18,45 @@ export interface CompanySbs{
   traductions : Traduction[]
 }
 
-export interface ProveedorT{
-  id : number
-  idCompany : number
-  idPerson : number
-  name : string
-  telephone : string
-  country : string
-  flagCountry : string
-  maximumAmount : string
-  timeLimit : string
-  compliance : string
-  date : string
-  productsTheySell : string
-  attendedBy : string
-  enable : boolean
-}
+
 export interface ProveedorHistory{
   ticket : string
   numReferences : number
   referentName : string
   date : string
+}
+export interface ProveedorT{
+  id : number
+  idCompany : number
+  idPerson : number
+  name : string
+  idCountry : number
+  country : string
+  flagCountry : string
+  qualification : string
+  qualificationEng : string
+  date : string
+  telephone : string
+  attendedBy : string
+  idCurrency : number
+  maximumAmount : string
+  maximumAmountEng : string
+  timeLimit : string
+  timeLimitEng : string
+  compliance : string
+  complianceEng : string
+  clientSince : string
+  clientSinceEng : string
+  productsTheySell : string
+  productsTheySellEng : string
+  additionalCommentary : string
+  additionalCommentaryEng : string
+  referentCommentary : string
+  idTicket : number
+  referentName : string
+  dateReferent : string
+  ticket : string
+  enable : boolean
 }
 export interface Proveedor{
   id : number
@@ -65,6 +83,10 @@ export interface Proveedor{
   additionalCommentaryEng : string
   referentCommentary : string
   qualificationEng : string
+  idTicket : number
+  referentName : string
+  dateReferent : string
+  ticket : string
 }
 
 export interface MorosidadComercialT{

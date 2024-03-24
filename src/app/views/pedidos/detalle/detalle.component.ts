@@ -94,6 +94,7 @@ export class DetalleComponent implements OnInit {
   countryAbonado : Pais = {
     id: 0,
     valor: '',
+    abreviation: '',
     bandera: '',
     regtrib: '',
     codCel: '',

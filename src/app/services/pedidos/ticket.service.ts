@@ -18,6 +18,9 @@ export class TicketService {
   getTicketActual() : Observable<Response<CurrentTicket>>{
     return this.http.get<Response<CurrentTicket>>(this.url + this.controllerTicket + '/numberticket');
   }
+  getNumTicketById(idTicket : number) : Observable<Response<string>>{
+    return this.http.get<Response<string>>(this.url + this.controllerTicket + '/getNumTicketById?idTicket='+idTicket);
+  }
   addTicket(obj : Ticket) : Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/add',obj);
   }

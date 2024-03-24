@@ -51,6 +51,7 @@ export class IEListaComponent implements OnInit{
   paisSeleccionado: Pais = {
     id: 0,
     valor: '',
+    abreviation: '',
     bandera: '',
     regtrib: '',
     codCel: '',
@@ -155,6 +156,7 @@ export class IEListaComponent implements OnInit{
     this.paisSeleccionado = {
       id: 0,
       valor: '',
+      abreviation: '',
       bandera: '',
       regtrib: '',
       codCel: '',

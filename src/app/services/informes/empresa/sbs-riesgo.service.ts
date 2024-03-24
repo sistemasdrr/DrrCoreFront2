@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Avales, CompanySbs, DeudaBancaria, DeudaBancariaT, MorosidadComercial, MorosidadComercialT, Proveedor, ProveedorT } from 'app/models/informes/empresa/sbs-riesgo';
+import { Avales, CompanySbs, DeudaBancaria, DeudaBancariaT, MorosidadComercial, MorosidadComercialT, Proveedor, ProveedorHistory, ProveedorT } from 'app/models/informes/empresa/sbs-riesgo';
 import { Response } from 'app/models/response';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
@@ -22,8 +22,14 @@ export class SbsRiesgoService {
   addProvider(obj : Proveedor): Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url  + this.controllerCompany + '/addOrUpdateProvider',obj)
   }
+  addListProvider(obj : ProveedorT[], idCompany : number): Observable<Response<boolean>>{
+    return this.http.post<Response<boolean>>(this.url  + this.controllerCompany + '/addListProvider?idCompany='+idCompany,obj)
+  }
   getProviderByIdCompany(idCompany : number): Observable<Response<ProveedorT[]>>{
     return this.http.get<Response<ProveedorT[]>>(this.url  + this.controllerCompany + '/getListProvider?idCompany='+idCompany)
+  }
+  getProviderHistory(type : string,id : number): Observable<Response<ProveedorHistory[]>>{
+    return this.http.get<Response<ProveedorHistory[]>>(this.url  + this.controllerCompany + '/getProviderHistory?type='+type+'&id='+id)
   }
   getProviderById(id : number): Observable<Response<Proveedor>>{
     return this.http.get<Response<Proveedor>>(this.url + this.controllerCompany + '/getProviderById?id='+id)

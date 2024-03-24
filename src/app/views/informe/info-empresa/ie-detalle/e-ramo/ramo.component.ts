@@ -151,6 +151,7 @@ export class RamoComponent implements OnInit{
   paisInformeImpo : Pais = {
     id: 0,
     valor: '',
+    abreviation: '',
     bandera: '',
     regtrib: '',
     codCel: '',
@@ -163,6 +164,7 @@ export class RamoComponent implements OnInit{
   paisInformeExpo : Pais = {
     id: 0,
     valor: '',
+    abreviation: '',
     bandera: '',
     regtrib: '',
     codCel: '',

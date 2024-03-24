@@ -72,6 +72,7 @@ export class DatosEmpresaComponent implements OnInit, OnDestroy {
   paisSeleccionado: Pais = {
     id: 0,
     valor: '',
+    abreviation: '',
     bandera: '',
     regtrib: '',
     codCel: '',

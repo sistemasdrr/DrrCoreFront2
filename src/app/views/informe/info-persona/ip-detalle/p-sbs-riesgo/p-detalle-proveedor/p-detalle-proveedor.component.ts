@@ -13,6 +13,8 @@ import Swal from 'sweetalert2';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import * as moment from 'moment';
+import { TicketService } from 'app/services/pedidos/ticket.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-p-detalle-proveedor',
@@ -59,6 +61,12 @@ export class PDetalleProveedorComponent implements OnInit{
   additionalCommentaryEng = ""
   referentCommentary = ""
 
+  idTicket = 0
+  referentName = ""
+  dateReferentD : Date | null = null
+  dateReferent = ""
+  numCupon = ""
+
   modelo: Proveedor[] = []
 
   msgPais = ""
@@ -70,13 +78,15 @@ export class PDetalleProveedorComponent implements OnInit{
   paisSeleccionado: Pais = {
     id: 0,
     valor: '',
+    abreviation: '',
     bandera: '',
     regtrib: '',
     codCel: '',
   }
   iconoSeleccionado = ""
   constructor(private comboService : ComboService, public dialogRef: MatDialogRef<PDetalleProveedorComponent>, private dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: any, private PersonSbsService : PersonSbsService
+    @Inject(MAT_DIALOG_DATA) public data: any, private PersonSbsService : PersonSbsService,
+    private ticketService : TicketService, private activatedRoute : ActivatedRoute
   ) {
 
     this.filterPais = new Observable<Pais[]>()
@@ -91,6 +101,11 @@ export class PDetalleProveedorComponent implements OnInit{
       this.titulo = "Editar Proveedor"
       this.id = data.id
       this.idPerson = data.idPerson
+    }
+    const idTicket = this.activatedRoute.snapshot.paramMap.get('idTicket');
+    if(idTicket){
+      this.idTicket = parseInt(idTicket)
+      console.log(this.idTicket)
     }
   }
   ngOnInit(): void {
@@ -205,7 +220,11 @@ export class PDetalleProveedorComponent implements OnInit{
       additionalCommentary : this.additionalCommentary,
       additionalCommentaryEng : this.additionalCommentaryEng,
       referentCommentary : this.referentCommentary,
-      qualificationEng : this.qualificationEng
+      qualificationEng : this.qualificationEng,
+      idTicket : this.idTicket,
+      referentName : this.referentName,
+      dateReferent : this.dateReferent,
+      ticket : this.numCupon
     }
   }
 
@@ -243,6 +262,12 @@ export class PDetalleProveedorComponent implements OnInit{
         }
       }
     });
+  }
+  selectFechaR(event: MatDatepickerInputEvent<Date>) {
+    this.dateReferentD = event.value!
+    if (moment.isMoment(this.dateReferentD)) {
+      this.dateReferent = this.formatDate(this.dateReferentD);
+    }
   }
   agregarComentario(titulo: string, subtitulo: string, comentario_es: string, comentario_en: string, input: string) {
     const dialogRef = this.dialog.open(TraduccionDialogComponent, {

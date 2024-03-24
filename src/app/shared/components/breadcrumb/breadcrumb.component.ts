@@ -23,7 +23,19 @@ export class BreadcrumbComponent {
   @Input()
   active_item!: string;
 
+  idEmployee = 0
+  idSubscriber = 0
+
   constructor() {
-    //constructor
+    const auth = JSON.parse(localStorage.getItem('authCache')+'')
+    const subscriberUser = JSON.parse(localStorage.getItem('subscriberUser') || '{}')
+    if(auth){
+      this.idEmployee = parseInt(auth.idEmployee)
+      this.idSubscriber = 0
+    }else if(!auth && subscriberUser){
+      this.idSubscriber = parseInt(subscriberUser.id)
+      this.idEmployee = 0
+    }
+
   }
 }

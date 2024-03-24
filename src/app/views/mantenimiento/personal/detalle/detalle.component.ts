@@ -50,6 +50,7 @@ export class DetallePersonalComponent implements OnInit {
   paisNac : Pais = {
     id: 0,
     valor: '',
+    abreviation: '',
     bandera: '',
     regtrib: '',
     codCel: '',

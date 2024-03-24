@@ -1,10 +1,11 @@
-import { FacturacionModule } from './views/facturacion/facturacion.module';
+
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { Page404Component } from './authentication/page404/page404.component';
 import { AuthGuard } from './core/guard/auth.guard';
 import { AuthLayoutComponent } from './layout/app-layout/auth-layout/auth-layout.component';
 import { MainLayoutComponent } from './layout/app-layout/main-layout/main-layout.component';
+import { AuthSubscriberGuard } from './authentication/auth/auth-subscriber.guard';
 
 const routes: Routes = [
   {
@@ -84,7 +85,30 @@ const routes: Routes = [
           then((m) => m.MantenimientoModule)
             ,canActivate: [AuthGuard]
       },
+      {
+        path: 'subscriber',
+        loadChildren: () =>
+          import('./views/mantenimiento/mantenimiento.module').
+          then((m) => m.MantenimientoModule)
+            ,canActivate: [AuthGuard]
+      },
     ],
+  },
+  {
+    path: 'abonado',
+    component: MainLayoutComponent,
+    canActivate: [AuthSubscriberGuard],
+    children: [
+      { path: '', redirectTo: '/authentication/login', pathMatch: 'full' },
+      {
+        path: 'i',
+        loadChildren: () =>
+          import('./views/subscriber/subscriber.module')
+          .then((m) => m.SubscriberModule)
+          ,canActivate: [AuthSubscriberGuard],
+        title: 'Solicitud de Informes - DRR Core'
+      },
+    ]
   },
   {
     path: 'authentication',
