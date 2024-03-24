@@ -1068,6 +1068,7 @@
 
   .mat-mdc-table {
     background: #1a202e;
+    table-layout: fixed !important;
   }
 
   .mat-mdc-cell {
