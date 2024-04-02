@@ -48,13 +48,13 @@ export class ListaComponent implements OnInit {
   loading = false;
 
   dataSource: MatTableDataSource<ListTicket>;
-  columnsToDisplay = ['number', 'busineesName','subscriberCode', 'status', 'reportType', 'procedureType', 'quality', 'orderDate', 'expireDate', 'Acciones' ];
+  columnsToDisplay = ['number', 'busineesName','subscriberCode', 'status', 'reportType', 'procedureType', 'origen', 'orderDate', 'expireDate', 'Acciones' ];
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
   expandedOrder: Pedido | null = null;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private pedidoService : PedidosService,
+  constructor(
     private router : Router,
     private datosEmpresaService : DatosEmpresaService, private ticketService : TicketService,
     public dialog : MatDialog) {
@@ -71,6 +71,7 @@ export class ListaComponent implements OnInit {
           this.dataSource.data = response.data
           this.dataSource.paginator = this.paginator
           this.dataSource.sort = this.sort
+          console.log(response.data)
         }
       }
     ).add(
@@ -80,7 +81,7 @@ export class ListaComponent implements OnInit {
     )
   }
   getColor(arg0: boolean,arg1: number): string {
-    console.log(arg0);
+   
     if(!arg0){
       return 'black';
     } else if(arg1===1){

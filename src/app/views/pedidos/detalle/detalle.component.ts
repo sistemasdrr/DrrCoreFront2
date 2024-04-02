@@ -233,7 +233,7 @@ export class DetalleComponent implements OnInit {
                   this.nameRevealed = abonado.name
                   this.estado = abonado.enable;
                   this.indicacionesAbonado = abonado.indications;
-                  this.aditionalData = abonado.observations;
+                  this.aditionalData === null || this.aditionalData === '' ? abonado.observations : this.aditionalData;
                   this.language = abonado.language
                   this.tipoFacturacion=abonado.facturationType;
                 }

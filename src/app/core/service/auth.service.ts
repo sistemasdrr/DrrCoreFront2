@@ -92,6 +92,7 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('currentUser');
+    localStorage.removeItem('subscriberUser');
     localStorage.removeItem(this.CACHE_KEY);
     this.currentUserSubject.next(this.currentUserValue);
     return of({ success: false });

@@ -36,6 +36,41 @@ export interface Ticket{
   requestedName : string
   price : number
 }
+export interface SearchSituation{
+  idCompany : number
+  idPerson : number
+  oldCode : string
+  name : string
+  taxName : string
+  taxCode : string
+  telephone : string
+  idCountry : number
+  country : string
+  flagCountry : string
+}
+export interface TicketsByCompanyOrPerson{
+  id :number
+  ticket : string
+  status : string
+  color : string
+  requestedName : string
+  subscriberCode : string
+  procedureType : string
+  reportType : string
+  language : string
+  orderDate : string
+  endDate : string
+  dispatchDate : string
+}
+export interface TimeLineTicket{
+  id : number
+  assignedTo : string
+  assignedToName : string
+  date : string
+  time : string
+  status : string
+  color : string
+}
 export interface ReportType{
   typeReport : string
   lastSearchedDate : string
@@ -100,6 +135,7 @@ export interface ListTicket{
   status : string
   statusColor : string
   statusFinalOwner : string
+  origen : string
 }
 export interface TicketListPending{
   id : number
@@ -155,4 +191,14 @@ export interface TicketFile{
   name : string
   path : string
   extension : string
+}
+export interface TicketHistorySubscriber{
+  id : number
+  idCompany : number
+  ticket : string
+  name : string
+  idCountry : number
+  country : string
+  flagCountry : string
+  dispatchDate : string
 }

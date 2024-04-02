@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CurrentTicket, ListTicket, ReportType, PersonalAssignation, SaveTicketAssignation, SendQuery, Ticket, TicketListPending, TicketQuery, TicketFile } from 'app/models/pedidos/ticket';
+import { CurrentTicket, ListTicket, ReportType, PersonalAssignation, SaveTicketAssignation, SendQuery, Ticket, TicketListPending, TicketQuery, TicketFile, TicketHistorySubscriber, SearchSituation, TicketsByCompanyOrPerson, TimeLineTicket } from 'app/models/pedidos/ticket';
 import { Response } from 'app/models/response';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
@@ -18,14 +18,34 @@ export class TicketService {
   getTicketActual() : Observable<Response<CurrentTicket>>{
     return this.http.get<Response<CurrentTicket>>(this.url + this.controllerTicket + '/numberticket');
   }
+  getTicketHistorySubscriber(idSubscriber : number, name : string, from : Date | null, until : Date | null, idCountry : number) : Observable<Response<TicketHistorySubscriber[]>>{
+    const fromD = from === null ? '' : from?.toDateString()
+    const untilD = until === null ? '' : until?.toDateString()
+    return this.http.get<Response<TicketHistorySubscriber[]>>(this.url + this.controllerTicket + '/getTicketHistorySubscriber?idSubscriber='+idSubscriber+'&name='+name+'&from='+ fromD+'&until='+ untilD+'&idCountry='+idCountry);
+  }
   getNumTicketById(idTicket : number) : Observable<Response<string>>{
     return this.http.get<Response<string>>(this.url + this.controllerTicket + '/getNumTicketById?idTicket='+idTicket);
   }
   addTicket(obj : Ticket) : Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/add',obj);
   }
+  addTicketByWeb(obj : Ticket) : Observable<Response<boolean>>{
+    return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/addByWeb',obj);
+  }
+  addTicketOnline(obj : Ticket,rubro : string, sendTo : string) : Observable<Response<boolean>>{
+    return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/addOnline?rubro='+rubro+'&sendTo='+sendTo,obj);
+  }
   getTipoReporte(id : number, type : string) : Observable<Response<ReportType>>{
     return this.http.get<Response<ReportType>>(this.url + this.controllerTicket + '/getreporttype?id='+id+'&type='+type);
+  }
+  getSearchSituation(about : string, typeSearch : string, search : string, idCountry : number) : Observable<Response<SearchSituation[]>>{
+    return this.http.get<Response<SearchSituation[]>>(this.url + this.controllerTicket + '/getSearchSituation?about='+about+'&typeSearch='+typeSearch+'&search='+search+'&idCountry='+idCountry);
+  }
+  getTicketByCompanyOrPerson(about : string, id : number, oldCode : string) : Observable<Response<TicketsByCompanyOrPerson[]>>{
+    return this.http.get<Response<TicketsByCompanyOrPerson[]>>(this.url + this.controllerTicket + '/getListTicketSituation?about='+about+'&id='+id+'&oldCode='+oldCode);
+  }
+  getTimeLine(idTicket : number) : Observable<Response<TimeLineTicket[]>>{
+    return this.http.get<Response<TimeLineTicket[]>>(this.url + this.controllerTicket + '/getTimeLine?idTicket='+idTicket);
   }
   uploadFile(idTicket : number, numCupon : string, file : File) : Observable<Response<ReportType>>{
     const formData = new FormData();

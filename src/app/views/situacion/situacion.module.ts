@@ -14,12 +14,14 @@ import { SharedModule } from '@shared';
 import { ComponentsModule } from '@shared/components/components.module';
 import { SituacionRoutingModule } from './situacion-routing.module';
 import { HistorialComponent } from './historial/historial.component';
+import { HistorialPedidoComponent } from './lista/historial-pedido/historial-pedido.component';
 
 
 @NgModule({
   declarations: [
     ListaSituacionComponent,
-    HistorialComponent
+    HistorialComponent,
+    HistorialPedidoComponent
   ],
   imports: [
     SituacionRoutingModule,

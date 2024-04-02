@@ -52,6 +52,7 @@ export interface AbonadoUsr{
   id : number
   code : string
   name : string
+  typeFact : string
 }
 
 export interface PrecioAbonado{

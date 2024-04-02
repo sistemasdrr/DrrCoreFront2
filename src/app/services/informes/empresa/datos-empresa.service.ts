@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Company, StatusCompany, TCompany} from 'app/models/informes/empresa/datos-empresa';
+import { Company, StatusCompany, TCompany, WCompany} from 'app/models/informes/empresa/datos-empresa';
 import { Response } from 'app/models/response';
 import { environment } from 'environments/environment';
 import { Observable, catchError, throwError } from 'rxjs';
@@ -18,6 +18,9 @@ export class DatosEmpresaService {
   getDatosEmpresas(razonSocial : string, tipoFiltro : string, idPais : number, conInforme : boolean, similar:boolean ): Observable<Response<TCompany[]>>{
     return this.http.post<Response<TCompany[]>>(this.url + this.controllerCompany + '/getbyname?name='+razonSocial+'&form='+tipoFiltro+'&idCountry='+idPais+'&similar='+similar+'&haveReport='+conInforme,'')
     .pipe(catchError(this.handleErrorGet));
+  }
+  getCompanySearch(name : string, taxCode : string, idCountry : number): Observable<Response<WCompany[]>>{
+    return this.http.get<Response<WCompany[]>>(this.url + this.controllerCompany + '/getCompanySearch?name='+name+'&taxCode='+taxCode+'&idCountry='+idCountry)
   }
   getStatus(idCompany : number): Observable<Response<StatusCompany>>{
     return this.http.get<Response<StatusCompany>>(this.url + this.controllerCompany + '/getStatus?idCompany='+idCompany);

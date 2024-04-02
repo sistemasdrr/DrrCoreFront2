@@ -42,31 +42,31 @@ export class AsignacionComponent implements OnInit {
 
   lista : ComboData[] = [
     {
-      id : 5,
+      id : 21,
       valor : "KATIA BUSTAMANTE"
     },
     {
-      id : 42,
+      id : 33,
       valor : "MARIELA ACOSTA"
     },
     {
-      id : 50,
+      id : 37,
       valor : "MONICA YEPEZ"
     },
     {
-      id : 51,
+      id : 38,
       valor : "RAFAEL DEL RISCO"
     },
     {
-      id : 55,
+      id : 42,
       valor : "CECILIA RODRIGUEZ"
     },
     {
-      id : 64,
+      id : 50,
       valor : "JESSICA LIAU"
     },
     {
-      id : 8,
+      id : 23,
       valor : "CECILIA SAYAS"
     },
   ]

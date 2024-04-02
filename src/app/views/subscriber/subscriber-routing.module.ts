@@ -5,12 +5,19 @@ import { AuthSubscriberGuard } from '../../authentication/auth/auth-subscriber.g
 import { PedidosOnlineComponent } from './pedidos-online/pedidos-online.component';
 import { PedidosOfflineComponent } from './pedidos-offline/pedidos-offline.component';
 import { HistorialPedidosComponent } from './historial-pedidos/historial-pedidos.component';
+import { PerfilComponent } from './perfil/perfil.component';
 
 const routes: Routes = [
   {
     path: 'main',
     component: MainPageComponent,
     data: { title: 'Inicio - Solicitud de Informes' }
+    ,canActivate: [AuthSubscriberGuard]
+  },
+  {
+    path: 'perfil',
+    component: PerfilComponent,
+    data: { title: 'Perfil del Abonado' }
     ,canActivate: [AuthSubscriberGuard]
   },
   {
@@ -21,6 +28,12 @@ const routes: Routes = [
   },
   {
     path: 'pedidos/offline',
+    component: PedidosOfflineComponent,
+    data: { title: 'Solicitud de Informe - Offline' }
+    ,canActivate: [AuthSubscriberGuard]
+  },
+  {
+    path: 'pedidos/offline/:idCompany',
     component: PedidosOfflineComponent,
     data: { title: 'Solicitud de Informe - Offline' }
     ,canActivate: [AuthSubscriberGuard]

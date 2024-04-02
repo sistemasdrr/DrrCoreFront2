@@ -52,6 +52,25 @@ export interface TCompany{
   manager : string
   onWeb : boolean
 }
+export interface WCompany{
+  id : number
+  oldCode : string
+  name : string
+  socialName : string
+  lastSearched : string
+  language : string
+  yearFundation : string
+  quality : string
+  taxTypeName : string
+  taxTypeCode : string
+  address : string
+  place : string
+  idCountry : string
+  country : string
+  flagCountry : string
+  haveBalance : string
+  balanceDate : string
+}
 export interface data {
   name: string;
 }

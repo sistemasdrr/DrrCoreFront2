@@ -38,7 +38,7 @@
           </div>
           <div class="col-md-2">
             <mat-form-field style="width: 100%;">
-              <mat-label>Idioma</mat-label>
+              <mat-label>Idioma (*)</mat-label>
               <mat-select [(ngModel)]="language">
                 <mat-option [value]="'E'">
                   <span class="fi fi-es"></span>
@@ -57,7 +57,7 @@
                   *ngIf="language === 'A'"></span>
               </a>
               <mat-hint *ngIf="language === ''" style="color: red;"><i class="fa-solid fa-circle-exclamation"></i>
-                &nbsp;Seleccione un idioma</mat-hint>
+                &nbsp;Seleccione un idioma </mat-hint>
               <mat-hint *ngIf="language !== ''" style="color: green;"><i
                   class="fa-solid fa-circle-check"></i>&nbsp;Idioma Seleccionado</mat-hint>
             </mat-form-field>
@@ -107,6 +107,7 @@
         <div class="row counter-box p-3">
           <div class="d-flex justify-content-between ">
             <h5>Haga su Pedido</h5>
+            <h6>(*) Datos Obligatorios</h6>
           </div>
           <div class="col-md-8">
             <mat-form-field class="w-100">
