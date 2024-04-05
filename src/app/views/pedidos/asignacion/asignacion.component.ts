@@ -89,7 +89,10 @@ export class AsignacionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loading = true;
+    const loader = document.getElementById('loader-lista-cupon') as HTMLElement | null;
+    if(loader){
+      loader.classList.remove('hide-loader');
+    }
     this.ticketService.getListPending().subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
@@ -100,7 +103,9 @@ export class AsignacionComponent implements OnInit {
       }
     ).add(
       () => {
-        this.loading = false
+        if(loader){
+          loader.classList.add('hide-loader');
+        }
       }
     )
   }
@@ -137,15 +142,25 @@ export class AsignacionComponent implements OnInit {
       const ticket : SaveTicketAssignation ={
         id : element.id,
         idEmisor : this.idUser,
-        idReceptor : element.receptor,
+        idReceptor : element.receptor2,
         commentary : element.commentary
       }
       lista.push(ticket)
     });
+    const loader = document.getElementById('loader-lista-cupon') as HTMLElement | null;
+    if(loader){
+      loader.classList.remove('hide-loader');
+    }
     this.ticketService.savePreassign(lista).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           console.log('guardado')
+        }
+      }
+    ).add(
+      () => {
+        if(loader){
+          loader.classList.add('hide-loader');
         }
       }
     )
@@ -160,15 +175,25 @@ export class AsignacionComponent implements OnInit {
       const ticket : SaveTicketAssignation ={
         id : element.id,
         idEmisor : this.idUser,
-        idReceptor : element.receptor,
+        idReceptor : element.receptor2,
         commentary : element.commentary
       }
       lista.push(ticket)
     });
+    const loader = document.getElementById('loader-lista-cupon') as HTMLElement | null;
+    if(loader){
+      loader.classList.remove('hide-loader');
+    }
     this.ticketService.saveAndSendPreassign(lista).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           console.log('guardado')
+        }
+      }
+    ).add(
+      () => {
+        if(loader){
+          loader.classList.add('hide-loader');
         }
       }
     )

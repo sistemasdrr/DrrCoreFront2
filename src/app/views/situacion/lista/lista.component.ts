@@ -2,17 +2,15 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatTableDataSource} from '@angular/material/table';
-
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-
-
 import { Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ListTicket, SearchSituation, TicketsByCompanyOrPerson } from 'app/models/pedidos/ticket';
+import { SearchSituation, TicketsByCompanyOrPerson } from 'app/models/pedidos/ticket';
 import { TicketService } from 'app/services/pedidos/ticket.service';
 import { MatDialog } from '@angular/material/dialog';
 import { HistorialPedidoComponent } from './historial-pedido/historial-pedido.component';
+import { ObservacionComponent } from './observacion/observacion.component';
 
 
 const today = new Date();
@@ -69,12 +67,22 @@ export class ListaSituacionComponent implements  OnInit {
   }
 
   applyFilter() {
+    const loader = document.getElementById('loader-lista-situacion') as HTMLElement | null;
+    if(loader){
+      loader.classList.remove('hide-loader');
+    }
     this.ticketService.getSearchSituation(this.about,this.typeSearch,this.name,0).subscribe(
       (response) =>{
         if(response.isSuccess === true && response.isWarning === false){
           this.dataSource.data = response.data
           this.dataSource.paginator = this.paginator
           this.dataSource.sort = this.sort
+        }
+      }
+    ).add(
+      () => {
+        if(loader){
+          loader.classList.add('hide-loader');
         }
       }
     )
@@ -100,12 +108,22 @@ export class ListaSituacionComponent implements  OnInit {
     this.fechaFin = new Date(endDate);
   }
   seleccionar(id : number, oldCode : string){
+    const loader = document.getElementById('loader-lista-situacion') as HTMLElement | null;
+    if(loader){
+      loader.classList.remove('hide-loader');
+    }
     this.ticketService.getTicketByCompanyOrPerson(this.about,id,oldCode).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.dataSourceSelect.data = response.data
           this.dataSourceSelect.paginator = this.paginator
           this.dataSourceSelect.sort = this.sort
+        }
+      }
+    ).add(
+      () => {
+        if(loader){
+          loader.classList.add('hide-loader');
         }
       }
     )
@@ -116,6 +134,22 @@ export class ListaSituacionComponent implements  OnInit {
           idTicket : idTicket
       },
     });
+  }
+  observacion(idTicket : number) {
+    const dialogRef = this.dialog.open(ObservacionComponent, {
+      data : {
+          idTicket : idTicket
+      },
+    });
+    dialogRef.beforeClosed().subscribe(
+      (data) => {
+        if(data.success === true){
+          this.dataSourceSelect.data = []
+          this.dataSourceSelect.paginator = this.paginator
+          this.dataSourceSelect.sort = this.sort
+        }
+      }
+    )
   }
 
 

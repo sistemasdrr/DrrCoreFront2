@@ -15,13 +15,15 @@ import { ComponentsModule } from '@shared/components/components.module';
 import { SituacionRoutingModule } from './situacion-routing.module';
 import { HistorialComponent } from './historial/historial.component';
 import { HistorialPedidoComponent } from './lista/historial-pedido/historial-pedido.component';
+import { ObservacionComponent } from './lista/observacion/observacion.component';
 
 
 @NgModule({
   declarations: [
     ListaSituacionComponent,
     HistorialComponent,
-    HistorialPedidoComponent
+    HistorialPedidoComponent,
+    ObservacionComponent
   ],
   imports: [
     SituacionRoutingModule,

@@ -70,6 +70,8 @@ export interface CompanyBranch{
   tabCommentary : string
   countriesExport : string
   countriesImport : string
+  countriesExportEng : string
+  countriesImportEng : string
   specificActivities : string
   specificActivitiesEng : string
   traductions : Traduction[]

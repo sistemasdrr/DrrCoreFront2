@@ -63,6 +63,7 @@ export class PedidosOfflineComponent implements OnInit {
   modeloModificado : Ticket[] = []
 
   subscriberName = ""
+  subscriberCode = ""
   idCountrySubscriber = 0
   subscriberFlag = ""
 
@@ -129,6 +130,7 @@ export class PedidosOfflineComponent implements OnInit {
   controlPaises = new FormControl<string | Pais>('')
   paises: Pais[] = []
   filterPais: Observable<Pais[]>
+  userFrom = ""
 
   constructor(private abonadoService : AbonadoService, private comboService : ComboService, private datosEmpresaService : DatosEmpresaService,
     private activatedRoute: ActivatedRoute, private router : Router,private ticketService : TicketService){
@@ -154,7 +156,9 @@ export class PedidosOfflineComponent implements OnInit {
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.subscriberName = response.data.name
+          this.subscriberCode = response.data.code
           this.idCountrySubscriber = response.data.idCountry !== null || response.data.idCountry !== 0 ? response.data.idCountry : 0
+          this.indicacionesAbonado = response.data.indications
         }
       }
     ).add(
@@ -250,6 +254,7 @@ export class PedidosOfflineComponent implements OnInit {
       queryCredit : this.queryCredit,
       timeLimit : this.timeLimit,
       aditionalData : this.aditionalData,
+      subscriberIndications : this.indicacionesAbonado,
       about : this.about,
       orderDate : this.orderDateD,
       expireDate :this.expireDateD,
@@ -271,7 +276,8 @@ export class PedidosOfflineComponent implements OnInit {
       creditrisk : 0,
       enable : true,
       requestedName : this.requestedName,
-      price : this.precio
+      price : this.precio,
+      userFrom : this.subscriberCode
     }
   }
   armarModeloModificado(){
@@ -286,6 +292,7 @@ export class PedidosOfflineComponent implements OnInit {
       queryCredit : this.queryCredit,
       timeLimit : this.timeLimit,
       aditionalData : this.aditionalData,
+      subscriberIndications : this.indicacionesAbonado,
       about : this.about,
       orderDate : new Date(this.orderDate),
       expireDate : new Date(this.expireDate),
@@ -307,7 +314,8 @@ export class PedidosOfflineComponent implements OnInit {
       creditrisk : 0,
       enable : true,
       requestedName : this.requestedName,
-      price : this.precio
+      price : this.precio,
+      userFrom : this.subscriberCode
     }
   }
   limpiarSeleccionPais() {

@@ -18,6 +18,7 @@ export class ConfirmarPedidoComponent implements OnInit {
   number : number = 0
   idSubscriber : number = 0
   revealName : boolean = false
+  code = ""
   nameRevealed : string = ""
   referenceNumber : string = ""
   language : string = ""
@@ -106,6 +107,7 @@ export class ConfirmarPedidoComponent implements OnInit {
         if(response.isSuccess === true && response.isWarning === false){
           console.log(response.data)
           this.revealName = response.data.revealName
+          this.code = response.data.code
           this.nameRevealed = this.revealName === true ? response.data.name : ""
           this.sendTo = response.data.sendReportToEmail
         }
@@ -124,6 +126,7 @@ export class ConfirmarPedidoComponent implements OnInit {
       queryCredit : "",
       timeLimit : "",
       aditionalData : "",
+      subscriberIndications : "",
       about : "E",
       orderDate : this.orderDate,
       expireDate : this.expireDate,
@@ -145,7 +148,8 @@ export class ConfirmarPedidoComponent implements OnInit {
       creditrisk : 0,
       enable : true,
       requestedName : this.requestedName,
-      price : 0
+      price : 0,
+      userFrom : this.code
     }
   }
   cerrarDialog(){

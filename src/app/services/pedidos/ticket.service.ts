@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CurrentTicket, ListTicket, ReportType, PersonalAssignation, SaveTicketAssignation, SendQuery, Ticket, TicketListPending, TicketQuery, TicketFile, TicketHistorySubscriber, SearchSituation, TicketsByCompanyOrPerson, TimeLineTicket } from 'app/models/pedidos/ticket';
+import { CurrentTicket, ListTicket, ReportType, PersonalAssignation, SaveTicketAssignation, SendQuery, Ticket, TicketListPending, TicketQuery, TicketFile, TicketHistorySubscriber, SearchSituation, TicketsByCompanyOrPerson, TimeLineTicket, TicketObservations } from 'app/models/pedidos/ticket';
 import { Response } from 'app/models/response';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
@@ -46,6 +46,12 @@ export class TicketService {
   }
   getTimeLine(idTicket : number) : Observable<Response<TimeLineTicket[]>>{
     return this.http.get<Response<TimeLineTicket[]>>(this.url + this.controllerTicket + '/getTimeLine?idTicket='+idTicket);
+  }
+  getTicketObservations(idTicket : number) : Observable<Response<TicketObservations>>{
+    return this.http.get<Response<TicketObservations>>(this.url + this.controllerTicket + '/getTicketObservations?idTicket='+idTicket);
+  }
+  addTicketObservations(idTicket : number, indications : string, userFrom :string) : Observable<Response<boolean>>{
+    return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/addTicketObservations?idTicket='+idTicket+'&indications='+indications+'&userFrom='+userFrom,'');
   }
   uploadFile(idTicket : number, numCupon : string, file : File) : Observable<Response<ReportType>>{
     const formData = new FormData();

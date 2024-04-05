@@ -41,6 +41,7 @@ export interface TCompany{
   name : string
   code : string
   creditRisk : string
+  telephone : string
   language : string
   traductionPercentage : number
   lastReportDate : string

@@ -12,6 +12,7 @@ export interface Ticket{
   language : string
   queryCredit : string
   timeLimit : string
+  subscriberIndications : string
   aditionalData : string
   about : string
   orderDate : Date
@@ -35,6 +36,7 @@ export interface Ticket{
   enable : boolean
   requestedName : string
   price : number
+  userFrom : string
 }
 export interface SearchSituation{
   idCompany : number
@@ -51,6 +53,7 @@ export interface SearchSituation{
 export interface TicketsByCompanyOrPerson{
   id :number
   ticket : string
+  idStatusTicket : string
   status : string
   color : string
   requestedName : string
@@ -70,6 +73,12 @@ export interface TimeLineTicket{
   time : string
   status : string
   color : string
+}
+export interface TicketObservations{
+  reportName : string
+  subscriberCode : string
+  supervisor : string
+  nameSupervisor : string
 }
 export interface ReportType{
   typeReport : string
@@ -147,6 +156,7 @@ export interface TicketListPending{
   realExpireDate : string
   expireDate : string
   receptor : number
+  receptor2 : number
   commentary : string
   hasFiles : boolean
   files : any[]

@@ -49,8 +49,8 @@ export class ListaEmpresasComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('filter') filter!: ElementRef;
-  columnsToDisplay = ['idioma', 'rucInit', 'razonSocial', 'pais','acciones' ];
-  columnsToDisplaySimilar = ['idioma', 'razonSocial', 'descargado', 'pais','acciones' ];
+  columnsToDisplay = ['idioma', 'rucInit', 'razonSocial', 'telefono','pais','acciones' ];
+  columnsToDisplaySimilar = ['idioma', 'razonSocial', 'telefono', 'descargado', 'pais','acciones' ];
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,private datosEmpresaService : DatosEmpresaService,private router : Router, private paisService : PaisService,public dialogRef: MatDialogRef<ListaEmpresasComponent>,){
     this.dataSource = new MatTableDataSource()
@@ -159,14 +159,15 @@ export class ListaEmpresasComponent implements OnInit {
       filtro : this.filtroRB,
       idPais : this.idPais,
       conInforme : this.chkConInforme,
-      similar:this.filterBy==='S'
+      filterBy: this.filterBy
     }
     this.loading=true;
     localStorage.setItem('busquedaEmpresas', JSON.stringify(busqueda))
     console.log(busqueda)
-    this.datosEmpresaService.getDatosEmpresas(this.razonSocial.trim(), this.filtroRB, this.idPais, this.chkConInforme,this.filterBy==='S').subscribe(
+    this.datosEmpresaService.getDatosEmpresas(this.razonSocial.trim(), this.filtroRB, this.idPais, this.chkConInforme,this.filterBy).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
+          console.log(response.data)
           this.dataSource = new MatTableDataSource(response.data)
           this.dataSource.sort = this.sort
           this.dataSource.paginator = this.paginator
