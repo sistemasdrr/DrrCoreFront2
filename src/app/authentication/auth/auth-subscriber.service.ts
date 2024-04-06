@@ -39,8 +39,12 @@ export class AuthSubscriberService {
             const user : AbonadoUsr = {
               id : response.data.id,
               code : response.data.code,
-              name : response.data.name
+              name : response.data.name,
+              typeFact : response.data.typeFact
             };
+
+            localStorage.removeItem('authCache');
+            localStorage.removeItem('currentUser');
             localStorage.setItem('subscriberUser', JSON.stringify(user));
             success =  true;
           }else{

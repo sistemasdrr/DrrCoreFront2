@@ -10,6 +10,8 @@ import { PedidosOfflineComponent } from './pedidos-offline/pedidos-offline.compo
 import { HistorialPedidosComponent } from './historial-pedidos/historial-pedidos.component';
 import { SharedModule } from '@shared';
 import { ComponentsModule } from '@shared/components/components.module';
+import { ConfirmarPedidoComponent } from './pedidos-online/confirmar-pedido/confirmar-pedido.component';
+import { PerfilComponent } from './perfil/perfil.component';
 
 
 
@@ -19,6 +21,8 @@ import { ComponentsModule } from '@shared/components/components.module';
     PedidosOnlineComponent,
     PedidosOfflineComponent,
     HistorialPedidosComponent,
+    ConfirmarPedidoComponent,
+    PerfilComponent,
   ],
   imports: [
     CommonModule,

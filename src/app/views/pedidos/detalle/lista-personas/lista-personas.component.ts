@@ -49,8 +49,8 @@ export class ListaPersonasComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('filter') filter!: ElementRef;
-  columnsToDisplay = ['language', 'codeDocumentType', 'fullname', 'country','acciones' ];
-  columnsToDisplaySimilar = ['language', 'fullname', 'descargado', 'country','acciones' ];
+  columnsToDisplay = ['language', 'codeDocumentType', 'fullname', 'cellphone', 'country','acciones' ];
+  columnsToDisplaySimilar = ['language', 'fullname', 'descargado', 'cellphone', 'country','acciones' ];
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,private datosPersonaService : DatosGeneralesService,private router : Router, private paisService : PaisService,public dialogRef: MatDialogRef<ListaPersonasComponent>,){
     this.dataSource = new MatTableDataSource()
@@ -163,7 +163,7 @@ export class ListaPersonasComponent implements OnInit {
     }
     this.loading=true;
     localStorage.setItem('busquedaPersonas', JSON.stringify(busqueda))
-    this.datosPersonaService.getDatosPersonas(this.razonSocial.trim(), this.filtroRB, this.idPais, this.chkConInforme,this.filterBy==='S').subscribe(
+    this.datosPersonaService.getDatosPersonas(this.razonSocial.trim(), this.filtroRB, this.idPais, this.chkConInforme,this.filterBy).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.dataSource = new MatTableDataSource(response.data)

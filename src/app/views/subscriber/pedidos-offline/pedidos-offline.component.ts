@@ -8,6 +8,7 @@ import { Pais } from 'app/models/combo';
 import { Precio } from 'app/models/mantenimiento/abonado';
 import { Ticket } from 'app/models/pedidos/ticket';
 import { ComboService } from 'app/services/combo.service';
+import { DatosEmpresaService } from 'app/services/informes/empresa/datos-empresa.service';
 import { AbonadoService } from 'app/services/mantenimiento/abonado.service';
 import { TicketService } from 'app/services/pedidos/ticket.service';
 import { Observable, map, startWith } from 'rxjs';
@@ -62,6 +63,7 @@ export class PedidosOfflineComponent implements OnInit {
   modeloModificado : Ticket[] = []
 
   subscriberName = ""
+  subscriberCode = ""
   idCountrySubscriber = 0
   subscriberFlag = ""
 
@@ -128,8 +130,9 @@ export class PedidosOfflineComponent implements OnInit {
   controlPaises = new FormControl<string | Pais>('')
   paises: Pais[] = []
   filterPais: Observable<Pais[]>
+  userFrom = ""
 
-  constructor(private abonadoService : AbonadoService, private comboService : ComboService,
+  constructor(private abonadoService : AbonadoService, private comboService : ComboService, private datosEmpresaService : DatosEmpresaService,
     private activatedRoute: ActivatedRoute, private router : Router,private ticketService : TicketService){
     this.filterPais = new Observable<Pais[]>()
     const subscriberUser = JSON.parse(localStorage.getItem('subscriberUser') || '{}')
@@ -137,9 +140,15 @@ export class PedidosOfflineComponent implements OnInit {
       this.idSubscriber = parseInt(subscriberUser.id)
       console.log(this.idSubscriber)
     }
-
+    const idCompany = this.activatedRoute.snapshot.paramMap.get('idCompany');
+    if(idCompany !== null){
+      this.idCompany = parseInt(idCompany)
+    }else{
+      this.idCompany = 0
+    }
   }
   ngOnInit(): void {
+
     this.orderDateD = new Date()
     this.expireDateD = this.addDays(5,new Date(this.orderDateD));
     this.realExpireDateD = this.addDays(6,new Date(this.orderDateD));
@@ -147,7 +156,9 @@ export class PedidosOfflineComponent implements OnInit {
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.subscriberName = response.data.name
+          this.subscriberCode = response.data.code
           this.idCountrySubscriber = response.data.idCountry !== null || response.data.idCountry !== 0 ? response.data.idCountry : 0
+          this.indicacionesAbonado = response.data.indications
         }
       }
     ).add(
@@ -165,6 +176,32 @@ export class PedidosOfflineComponent implements OnInit {
           (response) => {
             if(response.isSuccess === true && response.isWarning === false){
               this.paises = response.data
+            }
+          }
+        ).add(
+          () => {
+            if(this.idCompany > 0){
+              this.datosEmpresaService.getDatosEmpresaPorId(this.idCompany).subscribe(
+                (response) => {
+                  if(response.isSuccess === true && response.isWarning === false){
+                    this.busineesName = response.data.name
+                    this.comercialName = response.data.socialName
+                    this.taxType = response.data.taxTypeName
+                    this.taxCode = response.data.taxTypeCode
+                    this.email = response.data.email
+                    this.address = response.data.address
+                    this.city = response.data.place
+                    this.telephone = response.data.telephone
+                    this.requestedName = response.data.name
+
+                    this.idCountry = response.data.idCountry
+                  }
+                }
+              ).add(
+                () => {
+                  this.paisSeleccionado = this.paises.filter(x => x.id === this.idCountry)[0]
+                }
+              )
             }
           }
         )
@@ -217,6 +254,7 @@ export class PedidosOfflineComponent implements OnInit {
       queryCredit : this.queryCredit,
       timeLimit : this.timeLimit,
       aditionalData : this.aditionalData,
+      subscriberIndications : this.indicacionesAbonado,
       about : this.about,
       orderDate : this.orderDateD,
       expireDate :this.expireDateD,
@@ -238,7 +276,8 @@ export class PedidosOfflineComponent implements OnInit {
       creditrisk : 0,
       enable : true,
       requestedName : this.requestedName,
-      price : this.precio
+      price : this.precio,
+      userFrom : this.subscriberCode
     }
   }
   armarModeloModificado(){
@@ -253,6 +292,7 @@ export class PedidosOfflineComponent implements OnInit {
       queryCredit : this.queryCredit,
       timeLimit : this.timeLimit,
       aditionalData : this.aditionalData,
+      subscriberIndications : this.indicacionesAbonado,
       about : this.about,
       orderDate : new Date(this.orderDate),
       expireDate : new Date(this.expireDate),
@@ -274,7 +314,8 @@ export class PedidosOfflineComponent implements OnInit {
       creditrisk : 0,
       enable : true,
       requestedName : this.requestedName,
-      price : this.precio
+      price : this.precio,
+      userFrom : this.subscriberCode
     }
   }
   limpiarSeleccionPais() {
@@ -306,7 +347,6 @@ export class PedidosOfflineComponent implements OnInit {
         }
     }
     return endDate;
-
   }
   mostrarBandera(){
     this.iconoSeleccionado = this.paises.filter(x => x.id === this.idCountry)[0].bandera
@@ -326,7 +366,7 @@ export class PedidosOfflineComponent implements OnInit {
       this.armarModeloNuevo()
       console.log(this.modeloNuevo[0])
       Swal.fire({
-        title: '¿Está seguro de guardar este registro?',
+        title: '¿Está seguro de realizar este pedido?',
         text: "",
         icon: 'warning',
         showCancelButton: true,
@@ -342,7 +382,7 @@ export class PedidosOfflineComponent implements OnInit {
           if(loader){
             loader.classList.remove('hide-loader');
           }
-          this.ticketService.addTicket(this.modeloNuevo[0]).subscribe(
+          this.ticketService.addTicketByWeb(this.modeloNuevo[0]).subscribe(
             (response) => {
               if(response.isSuccess === true && response.isWarning === false){
                 Swal.fire({

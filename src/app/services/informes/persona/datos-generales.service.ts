@@ -16,14 +16,14 @@ export class DatosGeneralesService {
   getPersonaById(id : number): Observable<Response<Persona>>{
     return this.http.get<Response<Persona>>(this.url + this.controllerPersona + '/getPerson?id='+id)
   }
-  getDatosPersonas(razonSocial : string, tipoFiltro : string, idPais : number, conInforme : boolean, similar:boolean ): Observable<Response<TPersona[]>>{
-    return this.http.get<Response<TPersona[]>>(this.url + this.controllerPersona + '/getListPerson?fullname='+razonSocial+'&form='+tipoFiltro+'&idCountry='+idPais+'&similar='+similar+'&haveReport='+conInforme)
+  getDatosPersonas(razonSocial : string, tipoFiltro : string, idPais : number, conInforme : boolean, filterBy:string ): Observable<Response<TPersona[]>>{
+    return this.http.get<Response<TPersona[]>>(this.url + this.controllerPersona + '/getListPerson?fullname='+razonSocial+'&form='+tipoFiltro+'&idCountry='+idPais+'&filterBy='+filterBy+'&haveReport='+conInforme)
   }
   getStatus(idPerson : number): Observable<Response<StatusPerson>>{
     return this.http.get<Response<StatusPerson>>(this.url + this.controllerPersona + '/getStatus?idPerson='+idPerson);
   }
   getList(fullname : string, tipoFiltro : string, idCountry : number, haveReport : boolean): Observable<Response<TPersona[]>>{
-    return this.http.get<Response<TPersona[]>>(this.url + this.controllerPersona + '/getListPerson?fullname='+fullname+'&form='+tipoFiltro+'&idCountry='+idCountry)
+    return this.http.get<Response<TPersona[]>>(this.url + this.controllerPersona + '/getListPerson?fullname='+fullname+'&form='+tipoFiltro+'&idCountry='+idCountry+'&filterBy=N')
   }
   addPerson(obj : Persona): Observable<Response<number>>{
     return this.http.post<Response<number>>(this.url + this.controllerPersona + '/addPerson', obj)

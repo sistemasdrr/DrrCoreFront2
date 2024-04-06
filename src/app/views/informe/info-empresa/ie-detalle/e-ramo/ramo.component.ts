@@ -132,6 +132,8 @@ export class RamoComponent implements OnInit{
   tabCommentary = ""
   countriesExport = ""
   countriesImport = ""
+  countriesExportEng = ""
+  countriesImportEng = ""
   specificActivities = ""
   specificActivitiesEng = ""
 
@@ -261,6 +263,9 @@ export class RamoComponent implements OnInit{
               this.internationPurchase = ramoNegocio.internationalPurchasesPercentage + '% | ' + ramoNegocio.internationalPurchasesComentary
               this.internationalPurchasesPercentage = ramoNegocio.internationalPurchasesPercentage
               this.internationalPurchasesComentary = ramoNegocio.internationalPurchasesComentary
+
+              this.countriesImportEng = ramoNegocio.countriesImportEng
+              this.countriesExportEng = ramoNegocio.countriesExportEng
 
               this.workerNumber = ramoNegocio.workerNumber
               this.idLandOwnership = ramoNegocio.idLandOwnership
@@ -606,6 +611,8 @@ export class RamoComponent implements OnInit{
       tabCommentary : this.tabCommentary,
       countriesExport : this.countriesExport,
       countriesImport : this.countriesImport,
+      countriesExportEng : this.countriesExportEng,
+      countriesImportEng : this.countriesImportEng,
       specificActivities : this.specificActivities,
       specificActivitiesEng : this.specificActivitiesEng,
       traductions : [
@@ -682,6 +689,8 @@ export class RamoComponent implements OnInit{
       tabCommentary : this.tabCommentary,
       countriesExport : this.countriesExport,
       countriesImport : this.countriesImport,
+      countriesExportEng : this.countriesExportEng,
+      countriesImportEng : this.countriesImportEng,
       specificActivities : this.specificActivities,
       specificActivitiesEng : this.specificActivitiesEng,
       traductions : [
@@ -956,6 +965,14 @@ export class RamoComponent implements OnInit{
         case 'areaTotal':
         this.totalArea = data.comentario_es;
         this.totalAreaEng = data.comentario_en;
+        break
+        case 'exportacion':
+        this.countriesExport = data.comentario_es;
+        this.countriesExportEng = data.comentario_en;
+        break
+        case 'importacion':
+        this.countriesImport = data.comentario_es;
+        this.countriesImportEng = data.comentario_en;
         break
 
       }

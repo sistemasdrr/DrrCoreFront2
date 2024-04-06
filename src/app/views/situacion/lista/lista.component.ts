@@ -2,16 +2,16 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatTableDataSource} from '@angular/material/table';
-
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-
-
 import { Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ListTicket } from 'app/models/pedidos/ticket';
+import { SearchSituation, TicketsByCompanyOrPerson } from 'app/models/pedidos/ticket';
 import { TicketService } from 'app/services/pedidos/ticket.service';
-import { PedidosService } from 'app/services/pedidos/pedidos.service';
+import { MatDialog } from '@angular/material/dialog';
+import { HistorialPedidoComponent } from './historial-pedido/historial-pedido.component';
+import { ObservacionComponent } from './observacion/observacion.component';
+
 
 const today = new Date();
 const month = today.getMonth();
@@ -43,14 +43,19 @@ export class ListaSituacionComponent implements  OnInit {
       this.applyFilter()
     }
   }
-  dataSource: MatTableDataSource<ListTicket>;
-  columnsToDisplay = [ 'informe',  'tipoInforme', 'tipoTramite', 'calidad', 'fechaIngreso', 'fechaVencimiento', 'fechaDescarga', 'Acciones' ];
+  dataSource: MatTableDataSource<SearchSituation>;
+  columnsToDisplay = [ 'oldCode',  'name', 'taxCode', 'telephone', 'country', 'Acciones' ];
+
+  dataSourceSelect: MatTableDataSource<TicketsByCompanyOrPerson>;
+  columnsToDisplaySelect = [ 'ticket', 'requestedName', 'status', 'subscriberCode','procedureType'
+  , 'reportType', 'language', 'orderDate', 'endDate', 'dispatchDate', 'Acciones' ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private pedidoService : PedidosService, private router : Router, private fb: FormBuilder, private ticketService : TicketService) {
+  constructor(private router : Router, private fb: FormBuilder, private ticketService : TicketService,public dialog : MatDialog) {
     this.dataSource = new MatTableDataSource();
+    this.dataSourceSelect = new MatTableDataSource();
     this.range = this.fb.group({
       start: new FormControl(new Date(new Date().getFullYear(), 0, 1)),
       end: new FormControl(new Date(year, month, day)),
@@ -58,22 +63,35 @@ export class ListaSituacionComponent implements  OnInit {
   }
 
   ngOnInit(): void {
-    this.ticketService.getList().subscribe(
-      (response) => {
+
+  }
+
+  applyFilter() {
+    const loader = document.getElementById('loader-lista-situacion') as HTMLElement | null;
+    if(loader){
+      loader.classList.remove('hide-loader');
+    }
+    this.ticketService.getSearchSituation(this.about,this.typeSearch,this.name,0).subscribe(
+      (response) =>{
         if(response.isSuccess === true && response.isWarning === false){
           this.dataSource.data = response.data
           this.dataSource.paginator = this.paginator
+          this.dataSource.sort = this.sort
+        }
+      }
+    ).add(
+      () => {
+        if(loader){
+          loader.classList.add('hide-loader');
         }
       }
     )
   }
 
-  applyFilter() {
-
-  }
-
   //FILTROS
-  nombreEmpresa = ""
+  about = "E"
+  typeSearch = "N";
+  name = ""
   fechaInicio : Date = new Date(2023, 0, 1)
   fechaFin : Date = new Date(year, month, day)
   tipoInforme = ""
@@ -89,9 +107,49 @@ export class ListaSituacionComponent implements  OnInit {
     this.fechaInicio = new Date(startDate);
     this.fechaFin = new Date(endDate);
   }
-
-  verHistorial() {
-    window.open('/#/situacion/historial', '_blank');
+  seleccionar(id : number, oldCode : string){
+    const loader = document.getElementById('loader-lista-situacion') as HTMLElement | null;
+    if(loader){
+      loader.classList.remove('hide-loader');
+    }
+    this.ticketService.getTicketByCompanyOrPerson(this.about,id,oldCode).subscribe(
+      (response) => {
+        if(response.isSuccess === true && response.isWarning === false){
+          this.dataSourceSelect.data = response.data
+          this.dataSourceSelect.paginator = this.paginator
+          this.dataSourceSelect.sort = this.sort
+        }
+      }
+    ).add(
+      () => {
+        if(loader){
+          loader.classList.add('hide-loader');
+        }
+      }
+    )
+  }
+  verHistorial(idTicket : number) {
+    const dialogRef = this.dialog.open(HistorialPedidoComponent, {
+      data : {
+          idTicket : idTicket
+      },
+    });
+  }
+  observacion(idTicket : number) {
+    const dialogRef = this.dialog.open(ObservacionComponent, {
+      data : {
+          idTicket : idTicket
+      },
+    });
+    dialogRef.beforeClosed().subscribe(
+      (data) => {
+        if(data.success === true){
+          this.dataSourceSelect.data = []
+          this.dataSourceSelect.paginator = this.paginator
+          this.dataSourceSelect.sort = this.sort
+        }
+      }
+    )
   }
 
 

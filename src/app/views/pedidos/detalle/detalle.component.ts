@@ -132,7 +132,7 @@ export class DetalleComponent implements OnInit {
   //calificacionCrediticia : RiesgoCrediticio[] = []
 
   paisesAbonado : Pais[] = []
-
+  idUser = 0
 
   continentes: data[] = [];
 
@@ -162,6 +162,9 @@ export class DetalleComponent implements OnInit {
   constructor(public datosPersonaService : DatosGeneralesService,public dialog: MatDialog,private activatedRoute: ActivatedRoute,private router : Router,
     private abonadoService : AbonadoService,private datosEmpresaService : DatosEmpresaService,
     private comboService : ComboService,private ticketService : TicketService) {
+      const auth = JSON.parse(localStorage.getItem('authCache')+'')
+      this.idUser = parseInt(auth.idUser)
+      console.log(parseInt(auth.idUser))
     const tipo = this.activatedRoute.snapshot.paramMap.get('tipo');
     if (tipo?.includes('agregar')) {
       this.tipo_formulario = 'agregar'
@@ -196,6 +199,7 @@ export class DetalleComponent implements OnInit {
               this.queryCredit = ticket.queryCredit
               this.timeLimit = ticket.timeLimit
               this.aditionalData = ticket.aditionalData
+              this.indicacionesAbonado = ticket.subscriberIndications
               this.about = ticket.about
               this.idContinent = ticket.idContinent
               this.idCountry = ticket.idCountry
@@ -233,8 +237,8 @@ export class DetalleComponent implements OnInit {
                   this.revealName = abonado.revealName
                   this.nameRevealed = abonado.name
                   this.estado = abonado.enable;
-                  this.indicacionesAbonado = abonado.indications;
-                  this.aditionalData = abonado.observations;
+                  this.indicacionesAbonado = this.indicacionesAbonado === null || this.indicacionesAbonado === '' ? abonado.indications : this.indicacionesAbonado;
+                  this.aditionalData === null || this.aditionalData === '' ? abonado.observations : this.aditionalData;
                   this.language = abonado.language
                   this.tipoFacturacion=abonado.facturationType;
                 }
@@ -359,6 +363,7 @@ export class DetalleComponent implements OnInit {
       queryCredit : this.queryCredit,
       timeLimit : this.timeLimit,
       aditionalData : this.aditionalData,
+      subscriberIndications : this.indicacionesAbonado,
       about : this.about,
       orderDate : new Date(this.orderDateD),
       expireDate : new Date(this.expireDateD),
@@ -380,7 +385,8 @@ export class DetalleComponent implements OnInit {
       creditrisk : 0,
       enable : true,
       requestedName : this.requestedName,
-      price : this.precio
+      price : this.precio,
+      userFrom : this.idUser.toString()
     }
   }
   armarModeloModificado(){
@@ -395,6 +401,7 @@ export class DetalleComponent implements OnInit {
       queryCredit : this.queryCredit,
       timeLimit : this.timeLimit,
       aditionalData : this.aditionalData,
+      subscriberIndications : this.indicacionesAbonado,
       about : this.about,
       orderDate : new Date(this.orderDateD),
       expireDate : new Date(this.expireDateD),
@@ -416,7 +423,8 @@ export class DetalleComponent implements OnInit {
       creditrisk : 0,
       enable : true,
       requestedName : this.requestedName,
-      price : this.precio
+      price : this.precio,
+      userFrom : this.idUser.toString()
     }
   }
   selectContinente(){
@@ -568,6 +576,8 @@ export class DetalleComponent implements OnInit {
               this.telephone = datosEmpresa.telephone
               this.idContinentCompany = datosEmpresa.idContinent === null ? 0 : datosEmpresa.idContinent
               this.idCountryCompany = datosEmpresa.idCountry === null ? 0 : datosEmpresa.idCountry
+              this.procedureType = ""
+              this.reportType = ""
             }
             this.buscarEnArreglo(this.idContinentCompany, this.idCountryCompany)
          //////

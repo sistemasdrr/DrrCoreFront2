@@ -43,21 +43,18 @@
           </ul>
         </div>
       </div>
-
-
-
     </div>
     <div class="col-md-12">
-      <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8" matSort>
-        <ng-container matColumnDef="position">
-          <th mat-header-cell *matHeaderCellDef>
+      <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8 w-100" style="table-layout:  auto !important;" matSort>
+        <ng-container matColumnDef="position" >
+          <th mat-header-cell *matHeaderCellDef >
             <mat-checkbox color="primary" (change)="$event ? toggleAllRows() : null"
                           [checked]="selection.hasValue() && isAllSelected()"
                           [indeterminate]="selection.hasValue() && !isAllSelected()"
                           [aria-label]="checkboxLabel()">
             </mat-checkbox>
           </th>
-          <td mat-cell *matCellDef="let order">
+          <td mat-cell *matCellDef="let order" >
             <mat-checkbox color="primary" (click)="$event.stopPropagation()"
                           (change)="$event ? selection.toggle(order) : null"
                           [checked]="selection.isSelected(order)"
@@ -68,7 +65,7 @@
         </ng-container>
         <ng-container matColumnDef="number" >
         <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Cupón </th>
-        <td mat-cell *matCellDef="let order" class="text-center"> {{order.number}} </td>
+        <td mat-cell *matCellDef="let order" class="text-center" style="max-width: 5rem;"> {{order.number}} </td>
         </ng-container>
         <ng-container matColumnDef="busineesName" >
         <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Nombre de Informe</th>
@@ -122,12 +119,12 @@
           <td mat-cell *matCellDef="let order" class="text-center"> {{order.expireDate}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="Acciones" >
+        <ng-container matColumnDef="Acciones" style="min-width: 15rem; max-width: 15rem;">
           <th mat-header-cell *matHeaderCellDef  class="text-center"> Acciones </th>
           <td mat-cell *matCellDef="let order" class="text-center d-flex">
-            <mat-form-field style="width: 15rem; margin: .5rem 1rem 0 0;">
+            <mat-form-field style="min-width: 15rem; margin: .5rem 1rem 0 0;">
               <mat-label>Destinatario</mat-label>
-              <mat-select [(ngModel)]="order.receptor" (click)="$event.stopPropagation();">
+              <mat-select [(ngModel)]="order.receptor2" (click)="$event.stopPropagation();">
                 <mat-option *ngFor="let item of lista" [value]="item.id">
                   {{item.valor}}
                 </mat-option>

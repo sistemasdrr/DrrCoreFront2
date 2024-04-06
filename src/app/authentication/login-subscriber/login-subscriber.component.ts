@@ -83,7 +83,7 @@ export class LoginSubscriberComponent extends UnsubscribeOnDestroyAdapter implem
             password : this.password
           };
           localStorage.setItem(this.CACHE_KEY, JSON.stringify(cacheData));
-          this.router.navigate(['/abonado/i/main']);
+          this.router.navigate(['/abonado/i/pedidos/online']);
         }else{
           console.log('no')
           this.msgError = "Usuario o Contraseña incorrecta"

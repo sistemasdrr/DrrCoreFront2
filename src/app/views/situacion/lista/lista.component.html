@@ -1,4 +1,8 @@
 <section class="content">
+  <div id="loader-lista-situacion" class="d-flex justify-content-center align-items-center loader-container hide-loader" >
+    <span class="loader"></span><br>
+    <h2 style="color: white;">&nbsp;Cargando...</h2>
+  </div>
   <div class="container-fluid" style="overflow: auto; width: 100%;">
     <div class="block-header" *ngFor="let breadscrum of breadscrums">
       <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [codigoInforme]="''" [active_item]="breadscrum.active">
@@ -10,44 +14,40 @@
           <div class="materialTableHeader h-100" style="align-items: start;" >
             <div class="left">
               <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-2">
                   <mat-form-field class="w-100" style="padding-top: 1rem; padding-left: 1rem;" >
-                    <mat-label>Nombre de la Empresa</mat-label>
-                    <input matInput placeholder="Ej. ALICORP SA" [(ngModel)]="nombreEmpresa" (keypress)="enter($event)">
-                  </mat-form-field>
-                </div>
-                <div class="col-md-3">
-                  <mat-form-field class="w-100" style="padding-top: 1rem;">
-                    <mat-label>Buscar entre</mat-label>
-                    <mat-date-range-input [formGroup]="range" [rangePicker]="picker" [max]="maxDate">
-                      <input matStartDate formControlName="start" [readOnly]="true" placeholder="Start date"  [ngModel]="fechaInicio" (dateChange)="mostrarFechas()">
-                      <input matEndDate formControlName="end" [readOnly]="true" placeholder="End date"   (dateChange)="mostrarFechas()">
-                    </mat-date-range-input>
-                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-date-range-picker #picker ></mat-date-range-picker>
-                  </mat-form-field>
-                </div>
-                <div class="col-md-2">
-                  <mat-form-field class="w-100" style="padding-top: 1rem;">
                     <mat-label>Tipo de Informe</mat-label>
-                    <mat-select  [(ngModel)]="tipoInforme">
-                      <mat-option value=""></mat-option>
-                      <mat-option value="RV">RV</mat-option>
-                      <mat-option value="OR">OR</mat-option>
+                    <mat-select [(ngModel)]="about" (ngModelChange)="dataSourceSelect.data = []" placeholder="">
+                        <mat-option [value]="'E'">Empresa</mat-option>
+                        <mat-option [value]="'P'">Persona</mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
                 <div class="col-md-2">
-                  <mat-form-field class="w-100" style="padding-top: 1rem;">
-                    <mat-label>Tipo de Trámite</mat-label>
-                    <mat-select [(ngModel)]="tipoTramite">
-                      <mat-option value=""></mat-option>
-                      <mat-option value="T1">T1</mat-option>
-                      <mat-option value="T2">T2</mat-option>
-                      <mat-option value="T3">T3</mat-option>
+                  <mat-form-field class="w-100" style="padding-top: 1rem; padding-left: 1rem;" >
+                    <mat-label>Buscar Por</mat-label>
+                    <mat-select [(ngModel)]="typeSearch" placeholder="">
+                        <mat-option [value]="'N'">Nombre</mat-option>
+                        <mat-option [value]="'R'">Reg. Tributario</mat-option>
+                        <mat-option [value]="'T'">{{about === 'E' ? 'Telefono': 'Celular'}}</mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
+                <div class="col-md-5">
+                  <mat-form-field class="w-100" style="padding-top: 1rem; padding-left: 1rem;" >
+                    <mat-label *ngIf="typeSearch === 'N'">
+                      {{about === 'E' ? 'Nombre de la Empresa': 'Nombre de la Persona'}}
+                    </mat-label>
+                    <mat-label *ngIf="typeSearch === 'R'">
+                      Registro Tributario
+                    </mat-label>
+                    <mat-label *ngIf="typeSearch === 'T'">
+                      {{about === 'E' ? 'Telefono': 'Celular'}}
+                    </mat-label>
+                    <input matInput  [(ngModel)]="name" (keypress)="enter($event)">
+                  </mat-form-field>
+                </div>
+                <div class="col-md-2"></div>
                 <div class="col-md-1 d-flex justify-content-center align-items-center">
                   <button mat-mini-fab [class]="'bg-primary'" matTooltip="Aplicar Filtros" (click)="applyFilter()" [disabled]="">
                     <i class="fa-solid fa-magnifying-glass col-white"></i>
@@ -61,71 +61,131 @@
       <div class="col-md-12" style="overflow-x: auto;">
         <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8" matSort>
 
-          <ng-container matColumnDef="informe" >
-          <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Nombre de Informe</th>
-          <td mat-cell *matCellDef="let order" class="text-left" style="min-width: 17rem;"> {{order.busineesName}} </td>
+          <ng-container matColumnDef="oldCode" >
+          <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Código </th>
+          <td mat-cell *matCellDef="let search" class="text-center" > {{search.oldCode}} </td>
           </ng-container>
-          <ng-container matColumnDef="tipoInforme" >
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center"> Tipo de Informe</th>
-            <td mat-cell *matCellDef="let order" class="text-center">
-              <div *ngIf="order.reportType === 'OR'">
-                <div class="badge badge-solid-orange" style="font-size: 16px;">{{order.reportType}}</div>
-              </div>
-              <div *ngIf="order.reportType === 'RV'">
-                <div class="badge badge-solid-green" style="font-size: 16px;">{{order.reportType}}</div>
-              </div>
-            </td>
+          <ng-container matColumnDef="name" >
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-left"> Razón Social / Nombre</th>
+            <td mat-cell *matCellDef="let search" class="text-left" style="min-width: 17rem;">{{search.name}} </td>
           </ng-container>
-          <ng-container matColumnDef="tipoTramite" >
-            <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Tipo de Trámite</th>
-            <td mat-cell *matCellDef="let order" class="text-center">
-              <div *ngIf="order.procedureType === 'T1'">
-                <div class="badge badge-solid-blue">{{order.procedureType}}</div>
-              </div>
-              <div *ngIf="order.procedureType === 'T2'">
-                <div class="badge badge-solid-purple">{{order.procedureType}}</div>
-              </div>
-              <div *ngIf="order.procedureType === 'T3'">
-                <div class="badge badge-solid-cyan">{{order.procedureType}}</div>
-              </div>
-            </td>
+          <ng-container matColumnDef="taxCode" >
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Reg. Tributario</th>
+            <td mat-cell *matCellDef="let search" class="text-center"> {{search.taxCode}} </td>
           </ng-container>
-          <ng-container matColumnDef="calidad" >
-            <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Calidad</th>
-            <td mat-cell *matCellDef="let order" class="text-center"> {{order.quality}} </td>
+          <ng-container matColumnDef="telephone" >
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Telefono / Celular</th>
+            <td mat-cell *matCellDef="let search" class="text-center"> {{search.telephone}} </td>
           </ng-container>
-          <ng-container matColumnDef="fechaIngreso" >
-            <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Fecha de Ingreso </th>
-            <td mat-cell *matCellDef="let order" class="text-center"> {{order.orderDate}} </td>
-          </ng-container>
-          <ng-container matColumnDef="fechaVencimiento" >
-            <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Fecha de Vencimiento </th>
-            <td mat-cell *matCellDef="let order" class="text-center"> {{order.expireDate}} </td>
-          </ng-container>
-          <ng-container matColumnDef="fechaDescarga" >
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center"> Fecha de Descarga </th>
-            <td mat-cell *matCellDef="let order" class="text-center"> {{order.dispatchDate === null ? "" : order.dispatchDate}} </td>
+          <ng-container matColumnDef="country" >
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Pais </th>
+            <td mat-cell *matCellDef="let search" class="text-center"> </td>
           </ng-container>
           <ng-container matColumnDef="Acciones" >
             <th mat-header-cell *matHeaderCellDef  class="text-center" style="width: 10rem;"> Acciones </th>
-            <td mat-cell *matCellDef="let order" class="text-center" style="min-width: 8rem;">
-              <button mat-icon-button class="tbl-action-btn " (click)="verHistorial()" matTooltip="Ver Historial">
-                <app-feather-icons [icon]="'clock'" [class]="'tbl-fav-edit'"></app-feather-icons>
-              </button>
-              <button mat-icon-button  class="tbl-action-btn " matTooltip="Ver PDF">
-                <app-feather-icons [icon]="'file-text'" [class]="'tbl-fav-delete'"></app-feather-icons>
+            <td mat-cell *matCellDef="let search" class="text-center" style="min-width: 8rem;">
+              <button mat-icon-button class="tbl-action-btn " (click)="seleccionar(about === 'E' ? search.idCompany : search.idPerson ,search.oldCode)" matTooltip="Ver Historial">
+                <app-feather-icons [icon]="'check-circle'" class="tbl-fav-web"></app-feather-icons>
               </button>
             </td>
           </ng-container>
-
-
-
-
           <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
           <tr mat-row *matRowDef="let order; columns: columnsToDisplay;">
           </tr>
         </table>
+        <mat-paginator [pageSizeOptions]="[10, 25]"></mat-paginator>
+      </div>
+      <div class="col-md-12 mt-3" style="overflow-x: auto;" *ngIf="dataSourceSelect.data.length > 0">
+        <table mat-table [dataSource]="dataSourceSelect" multiTemplateDataRows class="mat-elevation-z8"  style="table-layout:  auto !important;" matSort>
 
+          <ng-container matColumnDef="ticket" >
+          <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center" > Ticket </th>
+          <td mat-cell *matCellDef="let order" class="text-center" style="white-space: nowrap;" > {{order.ticket}} </td>
+          </ng-container>
+          <ng-container matColumnDef="requestedName" >
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-left"> Nombre Solicitado</th>
+            <td mat-cell *matCellDef="let order" class="text-left" style="min-width: 17rem;">{{order.requestedName}} </td>
+          </ng-container>
+          <ng-container matColumnDef="status" >
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Situación</th>
+            <td mat-cell *matCellDef="let order" class="text-center">
+              <span class="float-end progress-percent label {{order.color}}  shadow" style="width: 150px;{{order.color === 'label' ? 'color : black;' : ''}}" >
+                {{order.status}}
+              </span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="subscriberCode" >
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Abonado</th>
+            <td mat-cell *matCellDef="let order" class="text-center"> {{order.subscriberCode}} </td>
+          </ng-container>
+          <ng-container matColumnDef="procedureType" >
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Trámite </th>
+            <td mat-cell *matCellDef="let order" class="text-center">
+              <div *ngIf="order.procedureType === 'T1'">
+                <div class="badge badge-solid-blue">T1</div>
+              </div>
+              <div *ngIf="order.procedureType === 'T2'">
+                <div class="badge badge-solid-purple">T2</div>
+              </div>
+              <div *ngIf="order.procedureType === 'T3'">
+                <div class="badge badge-solid-cyan">T3</div>
+              </div>
+              <div *ngIf="order.procedureType === 'BC'">
+                <div class="badge badge-solid-brown">BC</div>
+              </div></td>
+          </ng-container>
+          <ng-container matColumnDef="reportType" >
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Tipo </th>
+            <td mat-cell *matCellDef="let order" class="text-center">
+              <div *ngIf="order.reportType === 'OR'">
+                <div class="badge badge-solid-orange" style="font-size: 16px;">OR</div>
+              </div>
+              <div *ngIf="order.reportType === 'RV'">
+                <div class="badge badge-solid-green" style="font-size: 16px;">RV</div>
+              </div>
+              <div *ngIf="order.reportType === 'EF'">
+                <div class="badge badge-solid-cyan" style="font-size: 16px;">EF</div>
+              </div>
+              <div *ngIf="order.reportType === 'DF'">
+                <div class="badge badge-solid-blue" style="font-size: 16px;">DF</div>
+              </div>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="language" >
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Idioma </th>
+            <td mat-cell *matCellDef="let order" class="text-center">
+              <span class="fi fi-es" style="font-size: 24px;" *ngIf="order.language === 'E'"></span>
+              <span class="fi fi-us" style="font-size: 24px;" *ngIf="order.language === 'I'"></span>
+              <span class="fi fi-us" style="font-size: 24px; background-image: url(./../../../../../../assets/images/us-es.png);" *ngIf="order.language === 'A'"></span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="orderDate" >
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Fecha del Ped. </th>
+            <td mat-cell *matCellDef="let order" class="text-center"> {{order.orderDate}}</td>
+          </ng-container>
+          <ng-container matColumnDef="endDate" >
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Fecha de Venc. </th>
+            <td mat-cell *matCellDef="let order" class="text-center"> {{order.endDate}}</td>
+          </ng-container>
+          <ng-container matColumnDef="dispatchDate" >
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Fecha de Desp. </th>
+            <td mat-cell *matCellDef="let order" class="text-center"> {{order.dispatchDate}}</td>
+          </ng-container>
+          <ng-container matColumnDef="Acciones" >
+            <th mat-header-cell *matHeaderCellDef  class="text-center" style="width: 10rem;"> Acciones </th>
+            <td mat-cell *matCellDef="let order" class="text-center" style="min-width: 8rem;">
+              <button *ngIf="order.id > 0" mat-icon-button class="tbl-action-btn " (click)="verHistorial(order.id)" matTooltip="Ver Historial">
+                <app-feather-icons [icon]="'clock'" [class]="'tbl-fav-edit'"></app-feather-icons>
+              </button>
+              <button mat-icon-button  class="tbl-action-btn " matTooltip="Editar" (click)="observacion(order.id)" *ngIf="order.idStatusTicket === 9 && order.web === false"> <!-- -->
+                <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-delete'"></app-feather-icons>
+              </button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="columnsToDisplaySelect"></tr>
+          <tr mat-row *matRowDef="let order; columns: columnsToDisplaySelect;">
+          </tr>
+        </table>
         <mat-paginator [pageSizeOptions]="[10, 25]"></mat-paginator>
       </div>
     </div>

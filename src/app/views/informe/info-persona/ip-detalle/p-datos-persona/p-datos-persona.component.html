@@ -130,8 +130,8 @@
             <mat-datepicker #fecha_informe color="primary"></mat-datepicker>
           </mat-form-field>
         </!--div-->
-        <div class="col-md-4 d-flex">
-          <mat-form-field class="">
+        <div class="col-md-5 d-flex">
+          <mat-form-field class="" style="width: 60%;">
             <mat-label>Tipo de Doc.</mat-label>
             <mat-select [(ngModel)]="idDocumentType" >
                 <mat-option [value]="item.id" *ngFor="let item of tipoDocumento">
@@ -139,12 +139,12 @@
                 </mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-form-field class="w-100">
+          <mat-form-field style="width: 40%;">
             <mat-label>Código de Documento</mat-label>
             <input matInput placeholder="" [(ngModel)]="codeDocumentType">
           </mat-form-field>
         </div>
-        <div class="col-md-5">
+        <div class="col-md-4">
           <mat-form-field class="" style="width: 40%;">
             <mat-label>Registro Tributario (Tipo)</mat-label>
             <input matInput placeholder="" [(ngModel)]="taxTypeName">

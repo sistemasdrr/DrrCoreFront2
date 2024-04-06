@@ -19,6 +19,9 @@ export class ComboService {
   getTipoDocumento() : Observable<Response<ComboData[]>>{
     return this.http.get<Response<ComboData[]>>(this.url + this.controllerCombo + '/doctype');
   }
+  getDocumentType() : Observable<Response<ComboData[]>>{
+    return this.http.get<Response<ComboData[]>>(this.url + this.controllerCombo + '/documentType');
+  }
   getTipoMoneda() : Observable<Response<ComboData[]>>{
     return this.http.get<Response<ComboData[]>>(this.url + this.controllerCombo + '/currency');
   }
