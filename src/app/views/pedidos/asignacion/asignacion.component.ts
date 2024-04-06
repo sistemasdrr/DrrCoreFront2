@@ -14,6 +14,7 @@ import { SaveTicketAssignation, TicketListPending } from 'app/models/pedidos/tic
 import { TicketService } from 'app/services/pedidos/ticket.service';
 import { Pedido } from 'app/models/pedidos/pedido';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import Swal from 'sweetalert2';
 
 
 
@@ -42,31 +43,31 @@ export class AsignacionComponent implements OnInit {
 
   lista : ComboData[] = [
     {
-      id : 5,
+      id : 21,
       valor : "KATIA BUSTAMANTE"
     },
     {
-      id : 42,
+      id : 33,
       valor : "MARIELA ACOSTA"
     },
     {
-      id : 50,
+      id : 37,
       valor : "MONICA YEPEZ"
     },
     {
-      id : 51,
+      id : 38,
       valor : "RAFAEL DEL RISCO"
     },
     {
-      id : 55,
+      id : 42,
       valor : "CECILIA RODRIGUEZ"
     },
     {
-      id : 64,
+      id : 50,
       valor : "JESSICA LIAU"
     },
     {
-      id : 8,
+      id : 23,
       valor : "CECILIA SAYAS"
     },
   ]
@@ -132,6 +133,7 @@ export class AsignacionComponent implements OnInit {
     this.router.navigate(['pedidos/lista']);
   }
   guardar(){
+    this.loading = true;
     let lista : SaveTicketAssignation[] = []
     this.selection.selected.forEach(element => {
       const ticket : SaveTicketAssignation ={
@@ -145,16 +147,25 @@ export class AsignacionComponent implements OnInit {
     this.ticketService.savePreassign(lista).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
-          console.log('guardado')
+          this.loading = false; 
+          Swal.fire({
+            title: 'Se ha guardado la pre-asignación correctamnete',
+            text: '',
+            icon: 'success',
+            width: '30rem',
+            heightAuto: true
+          }).then(() => {
+            this.ngOnInit();
+          })
         }
       }
     )
 
-    console.log(this.selection.selected);
-    console.log(lista);
+   
   }
 
   guardarEnviar(){
+    this.loading = true;
     let lista : SaveTicketAssignation[] = []
     this.selection.selected.forEach(element => {
       const ticket : SaveTicketAssignation ={
@@ -165,16 +176,42 @@ export class AsignacionComponent implements OnInit {
       }
       lista.push(ticket)
     });
-    this.ticketService.saveAndSendPreassign(lista).subscribe(
-      (response) => {
-        if(response.isSuccess === true && response.isWarning === false){
-          console.log('guardado')
-        }
-      }
-    )
 
-    console.log(this.selection.selected);
-    console.log(lista);
+    Swal.fire({
+      title: '¿Está seguro que desea realizar las asignaciones seleccionadas?',
+      text: "",
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText : 'No',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí',
+      width: '30rem',
+      heightAuto : true
+    }).then((result) => {
+      if (result.value) {
+       
+      this.loading=true;
+      this.ticketService.saveAndSendPreassign(lista).subscribe(
+        (response) => {
+          if(response.isSuccess === true && response.isWarning === false){
+           this.loading=false;
+           Swal.fire({
+            title: 'Se ha realizado la pre-asignación correctamnete',
+            text: '',
+            icon: 'success',
+            width: '30rem',
+            heightAuto: true
+          }).then(() => {
+            this.ngOnInit();
+          })
+         
+          }
+        }
+      )
+  }
+})
+
   }
 
   //ACCIONES

@@ -113,7 +113,7 @@ tr.example-element-row:not(.example-expanded-row):active {
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 1000;
+  z-index: 5000;
   opacity: 1;
   transition: .3s ease all;
   background-color: rgba(0,0,0,0.7);

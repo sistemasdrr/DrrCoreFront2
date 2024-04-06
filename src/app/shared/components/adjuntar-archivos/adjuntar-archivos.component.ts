@@ -77,10 +77,7 @@ export class AdjuntarArchivosComponent implements OnInit {
           const fileInput = document.getElementById('file') as HTMLInputElement;
           const file = fileInput.files ? fileInput.files[0] : null;
           if(file){
-            const listaCuponLoader = document.getElementById('loader-lista-cupon') as HTMLElement | null;
-                if(listaCuponLoader){
-                  listaCuponLoader.classList.remove('hide-loader');
-                }
+           this.loading=true;
             this.ticketService.uploadFile(this.idTicket, this.cupon, file).subscribe(
               (response) => {
 
@@ -91,10 +88,10 @@ export class AdjuntarArchivosComponent implements OnInit {
                     icon : 'success',
                     width: '25rem'
                   })
+                  this.loading=false;
+                  this.ngOnInit();
                 }
-                if(listaCuponLoader){
-                  listaCuponLoader.classList.add('hide-loader');
-                }
+               
               }
             );
           }else{
@@ -125,9 +122,7 @@ export class AdjuntarArchivosComponent implements OnInit {
   }
   downloadFile(path : string, filename : string){
     const listaEmpresas = document.getElementById('loader-lista-cupon') as HTMLElement | null;
-    if(listaEmpresas){
-      listaEmpresas.classList.remove('hide-loader');
-    }
+   this.loading=true;
     this.ticketService.downloadFile(path).subscribe(response=>{
       let blob : Blob = response.body as Blob;
       let a =document.createElement('a');
@@ -137,17 +132,12 @@ export class AdjuntarArchivosComponent implements OnInit {
       a.click();
     }).add(
       () => {
-        if(listaEmpresas){
-          listaEmpresas.classList.add('hide-loader');
-        }
+        this.loading=false;
       }
     );
   }
   downloadZip() {
-    const listaEmpresas = document.getElementById('loader-lista-cupon') as HTMLElement | null;
-    if(listaEmpresas){
-      listaEmpresas.classList.remove('hide-loader');
-    }
+  this.loading=true;
     let zip = new JSZip();
     let zipBlob = new Blob();
 
@@ -166,9 +156,7 @@ export class AdjuntarArchivosComponent implements OnInit {
               zipBlob = content;
             }).then(() => {
               saveAs(zipBlob, 'adjuntos_'+this.cupon+'.zip');
-              if(listaEmpresas){
-                listaEmpresas.classList.add('hide-loader');
-              }
+             this.loading=false;
             });
           }, 5000);
         }

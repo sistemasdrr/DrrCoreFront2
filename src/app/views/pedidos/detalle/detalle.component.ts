@@ -48,6 +48,7 @@ export class DetalleComponent implements OnInit {
   number = 0
   idSubscriber = 0
   revealName = false
+  
   nameRevealed = ""
   referenceNumber = ""
   language = ""

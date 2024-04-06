@@ -30,6 +30,7 @@ import { TicketService } from 'app/services/pedidos/ticket.service';
 })
 export class Asignacion2Component implements OnInit {
   userTo = ""
+  loading:boolean=false;
   //BREADCRUMB
   breadscrums = [
     {
@@ -60,14 +61,14 @@ export class Asignacion2Component implements OnInit {
   }
 
   ngOnInit() {
-
+    this.loading=true;
     this.ticketService.getTicketPreassigned(this.userTo).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.dataSource.data = response.data
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
-          console.log(response.data)
+          this.loading=false;
         }
       }
     )

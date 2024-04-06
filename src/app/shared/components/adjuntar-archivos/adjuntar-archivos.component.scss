@@ -9,6 +9,7 @@
   display: inline-block;
   position: relative;
   border: 3px solid;
+  z-index: 1000000;
   border-color: #FFF #FFF transparent transparent;
   box-sizing: border-box;
   animation: rotation 1s linear infinite;
@@ -28,6 +29,7 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  z-index: 1000000;
   box-sizing: border-box;
   animation: rotationBack 0.5s linear infinite;
   transform-origin: center center;
@@ -62,7 +64,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 1000;
+  z-index: 1000000;
   opacity: 1;
   transition: .3s ease all;
   background-color: rgba(0,0,0,0.7);

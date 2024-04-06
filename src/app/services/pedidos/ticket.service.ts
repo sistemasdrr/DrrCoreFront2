@@ -61,8 +61,8 @@ export class TicketService {
   sendQuery(obj : SendQuery) : Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/sendQuery',obj);
   }
-  resolveQuery(idTicket:number) : Observable<Response<boolean>>{
-    return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/answeredTicketQuery?idTicket='+idTicket,'');
+  resolveQuery(idTicket:number,response:string) : Observable<Response<boolean>>{
+    return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/answeredTicketQuery?idTicket='+idTicket+'&&response='+response,'');
   }
   downloadReport(){
     return this.http.get(this.url + this.controllerTicket + '/report',{observe:'response',responseType:'blob'});

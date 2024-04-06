@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./consultar.component.scss']
 })
 export class ConsultarComponent implements OnInit{
- 
+  loading:boolean = false;
   dateQuery:any
   ticket:any;
   language:string ='';
@@ -20,6 +20,7 @@ export class ConsultarComponent implements OnInit{
   email:string='';
   report:string='';
   message:string='';
+  response:string='';
   canWork:boolean=false;  
   canSend:boolean=false;
   canCheck:boolean=false;
@@ -38,7 +39,8 @@ export class ConsultarComponent implements OnInit{
     }
    
   }
-  ngOnInit(): void {     
+  ngOnInit(): void {    
+    this.loading=true;
     this.ticketService.getTicketQuery(this.ticket.id).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
@@ -48,8 +50,10 @@ export class ConsultarComponent implements OnInit{
            this.subscriber= response.data.subscriberName;
            this.email= response.data.email;
            this.message= response.data.message;
+           this.response=response.data.response;
 
         }
+        this.loading=false;
       }
     )
   }
@@ -64,8 +68,13 @@ export class ConsultarComponent implements OnInit{
       idSubscriber: this.ticket.idSubscriber,
       language: this.language,
       email: this.email,
-      message: this.message
+      message: this.message,
+      response: this.response,     
+      user:''
     };
+    const auth = JSON.parse(localStorage.getItem('authCache')+'')
+    query.user = auth.idUser
+    this.loading=true;
     Swal.fire({
       title: '¿Está seguro de enviar la consulta?',
       text: "",
@@ -79,17 +88,12 @@ export class ConsultarComponent implements OnInit{
       heightAuto : true
     }).then((result) => {
       if (result.value) {
-        const listaCuponLoader = document.getElementById('loader-lista-cupon') as HTMLElement | null;
-        if(listaCuponLoader){
-          listaCuponLoader.classList.remove('hide-loader');
-        }
-
+       
+      this.loading=true;
         this.ticketService.sendQuery(query).subscribe(
           (response) => {
             if(response.isSuccess === true && response.isWarning === false){
-              if(listaCuponLoader){
-                listaCuponLoader.classList.add('hide-loader');
-              }
+               this.loading=false;  
               Swal.fire({
                 title: 'Se ha enviado la consulta al abonado',
                 text: '',
@@ -107,7 +111,7 @@ export class ConsultarComponent implements OnInit{
 })
   }
   resolver(){
-    console.log(this.ticket);
+    this.loading=true;
     Swal.fire({
       title: '¿El cliente ha respondido su consulta?',
       text: "",
@@ -121,17 +125,12 @@ export class ConsultarComponent implements OnInit{
       heightAuto : true
     }).then((result) => {
       if (result.value) {
-        const listaCuponLoader = document.getElementById('loader-lista-cupon') as HTMLElement | null;
-        if(listaCuponLoader){
-          listaCuponLoader.classList.remove('hide-loader');
-        }
+        
 
-        this.ticketService.resolveQuery(this.ticket.id).subscribe(
+        this.ticketService.resolveQuery(this.ticket.id,this.response).subscribe(
           (response) => {
             if(response.isSuccess === true && response.isWarning === false){
-              if(listaCuponLoader){
-                listaCuponLoader.classList.add('hide-loader');
-              }
+             this.loading=false;
               Swal.fire({
                 title: 'El ticket se encuentra listo para ser derivado',
                 text: '',

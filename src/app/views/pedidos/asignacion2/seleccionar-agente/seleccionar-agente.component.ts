@@ -14,11 +14,14 @@ export interface Asignacion{
   userTo : string
   assignedToCode : string
   assignedToName : string
+  startDateD : Date|null
+  endDateD :Date|null
   startDate : string
   endDate : string
   balance : boolean
   references : boolean
   observations : string
+  idTicket:number,
   type : string
   internal : boolean
 }
@@ -44,6 +47,8 @@ export class SeleccionarAgenteComponent implements OnInit {
   idEditarTrabajador = 0
   fechaAsignacionDate : Date | null = null
   fechaVencimientoDate : Date | null = null
+  fechaAsignacionString: string=new Date().toLocaleDateString('en-GB')
+  fechaVencimientoString: string=new Date().toLocaleDateString('en-GB')
 
   dataSource : MatTableDataSource<Asignacion>
   columnas = ['assignedTo','assignationDate','endDate','balance','references']
@@ -146,9 +151,9 @@ export class SeleccionarAgenteComponent implements OnInit {
       console.log(data)
       this.idTicket = parseInt(data.idTicket)
       this.reportType = data.reportType
-      if(this.reportType === "RV"){
-        this.referencias = true
-      }
+      this.referencias = true
+      this.fechaAsignacionDate=new Date()
+      this.fechaVencimientoDate=new Date()
       const auth = JSON.parse(localStorage.getItem('authCache')+'')
       this.userFrom = auth.idUser
   }
@@ -195,27 +200,31 @@ export class SeleccionarAgenteComponent implements OnInit {
     this.asignado = ""
   }
   addAsignacion(){
+    console.log(this.fechaVencimientoString);
     const asign : Asignacion = {
-      userFrom : this.userFrom,
-      userTo : this.idUserLogin + "",
-      assignedToCode : this.asignadoCodigo,
-      assignedToName : this.asignadoNombre,
-      startDate : this.fechaAsignacion,
-      endDate : this.fechaVencimiento,
-      balance : this.balance,
-      references : this.referencias,
-      observations : this.observaciones,
-      type : this.type,
-      internal : this.interno
+      userFrom: this.userFrom,
+      userTo: this.idUserLogin + "",
+      assignedToCode: this.asignadoCodigo,
+      assignedToName: this.asignadoNombre,
+      startDateD: this.fechaAsignacionDate,
+      endDateD: this.fechaVencimientoDate,
+      references: this.referencias,
+      observations: this.observaciones,
+      type: this.type,
+      internal: this.interno,
+      balance: false,
+      startDate: this.fechaAsignacionString,
+      endDate: this.fechaVencimientoString,
+      idTicket:this.idTicket
     }
     this.asignacion.push(asign)
     this.dataSource.data = this.asignacion
     this.idUserLogin = 0
     this.asignado = ""
-    this.fechaAsignacion = ""
-    this.fechaAsignacionDate = null
-    this.fechaVencimiento = ""
-    this.fechaVencimientoDate = null
+    this.fechaAsignacion = ""  
+    this.fechaVencimiento = ""  
+    this.fechaAsignacionDate=new Date()
+    this.fechaVencimientoDate=new Date()
     this.balance = false
     this.referencias = false
     this.observaciones = ""
@@ -240,16 +249,17 @@ export class SeleccionarAgenteComponent implements OnInit {
     const formattedDate = date.format('DD/MM/YYYY');
     return formattedDate;
   }
+ 
   selectFechaAsignacion(event: MatDatepickerInputEvent<Date>) {
     const selectedDate = event.value!;
     if (moment.isMoment(selectedDate)) {
-      this.fechaAsignacion = this.formatDate(selectedDate);
+      this.fechaAsignacionString = this.formatDate(selectedDate);
     }
   }
   selectFechaVencimiento(event: MatDatepickerInputEvent<Date>) {
     const selectedDate = event.value!;
     if (moment.isMoment(selectedDate)) {
-      this.fechaVencimiento = this.formatDate(selectedDate);
+      this.fechaVencimientoString = this.formatDate(selectedDate);
     }
   }
   limpiar(){

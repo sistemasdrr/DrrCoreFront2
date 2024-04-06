@@ -124,7 +124,8 @@ export interface TicketQuery{
   email: string,
   message: string,
   status: number,
-  report: string
+  report: string,
+  response: string
 }
 export interface SendQuery{
     idTicket: number,
@@ -132,7 +133,9 @@ export interface SendQuery{
     idSubscriber: number,
     language: string,
     email: string,
-    message: string
+    message: string,
+    response:string,
+    user:string
 }
 
 export interface SaveTicketAssignation{
