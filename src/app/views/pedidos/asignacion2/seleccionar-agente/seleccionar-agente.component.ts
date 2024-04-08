@@ -26,6 +26,7 @@ export interface Asignacion{
   internal : boolean,
   numberAssign:number,
   assignedFromCode:string
+  quality:string | null
 }
 
 @Component({
@@ -75,6 +76,7 @@ export class SeleccionarAgenteComponent implements OnInit {
   numberAssign:number = 0
   loading=false;
   assginFromCode: any;
+  quality = ""
 
   seleccionarTrabajador(codigo : string, nombre : string, idUserLogin : number, internal : boolean){
     this.asignadoCodigo = codigo
@@ -157,6 +159,7 @@ export class SeleccionarAgenteComponent implements OnInit {
       this.idTicket = parseInt(data.idTicket)
       this.reportType = data.reportType
       this.numberAssign=data.numberAssign
+      this.quality=data.quality
       this.assginFromCode=data.assginFromCode
       this.referencias = true
       this.fechaAsignacionDate=new Date()
@@ -194,16 +197,37 @@ export class SeleccionarAgenteComponent implements OnInit {
   }
 
   filtrarDatos(tipo : string){
-    this.datos2 = this.datos.filter(x => x.type === tipo)
-    this.datos2.sort((a, b) => {
-      if (a.code < b.code) {
-        return -1;
+    if (tipo === "DI" || tipo === "TR") {
+      const crodriguez = this.datos.find(x => x.type === tipo && x.code.includes("D15") ||x.type === tipo && x.code.includes("T14") );
+      this.datos2 = this.datos.filter(x => x.type === tipo);
+      this.datos2.sort((a, b) => {
+        if (a.code < b.code) {
+          return -1;
+        }
+        if (a.code > b.code) {
+          return 1;
+        }
+        return 0;
+      });
+
+      if (crodriguez) {
+        this.datos2 = this.datos2.filter(x => x !== crodriguez);
+        this.datos2.unshift(crodriguez);
       }
-      if (a.code > b.code) {
-        return 1;
-      }
-      return 0;
-    });
+    }
+    else{
+      this.datos2 = this.datos.filter(x => x.type === tipo)
+      this.datos2.sort((a, b) => {
+        if (a.code < b.code) {
+          return -1;
+        }
+        if (a.code > b.code) {
+          return 1;
+        }
+        return 0;
+      });
+    }
+
     this.asignado = ""
   }
   addAsignacion(){
@@ -224,14 +248,15 @@ export class SeleccionarAgenteComponent implements OnInit {
       endDate: this.fechaVencimientoString,
       idTicket: this.idTicket,
       numberAssign: this.numberAssign,
-      assignedFromCode:this.assginFromCode
+      assignedFromCode:this.assginFromCode,
+      quality:this.quality !== '' ? this.quality : null
     }
     this.asignacion.push(asign)
     this.dataSource.data = this.asignacion
     this.idUserLogin = 0
     this.asignado = ""
-    this.fechaAsignacion = ""  
-    this.fechaVencimiento = ""  
+    this.fechaAsignacion = ""
+    this.fechaVencimiento = ""
     this.fechaAsignacionDate=new Date()
     this.fechaVencimientoDate=new Date()
     this.balance = false
@@ -258,7 +283,7 @@ export class SeleccionarAgenteComponent implements OnInit {
     const formattedDate = date.format('DD/MM/YYYY');
     return formattedDate;
   }
- 
+
   selectFechaAsignacion(event: MatDatepickerInputEvent<Date>) {
     const selectedDate = event.value!;
     if (moment.isMoment(selectedDate)) {
@@ -289,7 +314,7 @@ export class SeleccionarAgenteComponent implements OnInit {
     this.ticketService.sendAssignation(this.asignacion).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
-          this.dialogRef.close()                
+          this.dialogRef.close()
           this.loading=false;
         }
       }

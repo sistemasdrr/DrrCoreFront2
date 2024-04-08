@@ -44,7 +44,7 @@ export class Asignacion2Component implements OnInit {
 
   //TABLA
   dataSource: MatTableDataSource<ListTicket>;
-  columnsToDisplay = ['number', 'busineesName','status','subscriberCode', 'reportType', 'procedureType', 'orderDate', 'expireDate', 'Acciones' ];
+  columnsToDisplay = ['number', 'busineesName','status','subscriberCode', 'reportType', 'procedureType', 'quality', 'orderDate', 'expireDate', 'Acciones' ];
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
   expandedOrder: ListTicket | null = null;
     selection = new SelectionModel<ListTicket>(true, []);
@@ -61,6 +61,8 @@ export class Asignacion2Component implements OnInit {
     const auth = JSON.parse(localStorage.getItem('authCache')+'')
     this.userTo = auth.idUser
   }
+
+  quality = ""
 
   ngOnInit() {
     this.loading=true;
@@ -80,17 +82,32 @@ export class Asignacion2Component implements OnInit {
     this.router.navigate(['pedidos/lista']);
   }
 
-  asignarTrabajador(codigoCupon : string,tipo : string, numberAssign:number,assginFromCode:string){
-    const dialogRef = this.dialog.open(SeleccionarAgenteComponent, {
-      data: {
-        idTicket: codigoCupon,
-        reportType: tipo,
-        numberAssign:numberAssign,
-        assginFromCode:assginFromCode
-      },
-    }).afterClosed().subscribe(() => {
-         this.ngOnInit();
-       });
+  asignarTrabajador(codigoCupon : string,tipo : string, numberAssign:number,assginFromCode:string, quality : string){
+    console.log(quality)
+    if(quality !== '' && quality !== null){
+      const dialogRef = this.dialog.open(SeleccionarAgenteComponent, {
+        data: {
+          idTicket: codigoCupon,
+          reportType: tipo,
+          numberAssign:numberAssign,
+          assginFromCode:assginFromCode,
+          quality : quality
+        },
+      }).afterClosed().subscribe(() => {
+           this.ngOnInit();
+         });
+    }else{
+      Swal.fire({
+        title :'¡Calidad no seleccionada!',
+        icon : 'error',
+        width: '20rem',
+        heightAuto : true
+      });
+    }
+
+  }
+  entregarTrabajo(codigoCupon : string,tipo : string, numberAssign:number,assginFromCode:string, quality : string){
+    
   }
   //ACCIONES
   agregarComentario(id : string,cupon : string,comentario : string) {
@@ -131,7 +148,7 @@ export class Asignacion2Component implements OnInit {
     console.log(asignedTo)
     console.log(numberAssign)
     Swal.fire({
-      title: '¿Está seguro de despachar este pedido?',
+      title: '¿Está seguro de eliminar esta asignación?',
       text: "",
       icon: 'warning',
       showCancelButton: true,
@@ -147,7 +164,7 @@ export class Asignacion2Component implements OnInit {
           (response) => {
             if(response.isSuccess === true && response.isWarning === false){
               Swal.fire({
-                title: 'Se eliminó el registro con exito',
+                title: 'Se eliminó la asignación con exito',
                 text: "",
                 icon: 'success',
                 width: '20rem',
