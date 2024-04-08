@@ -71,6 +71,9 @@ export class TicketService {
   getList() : Observable<Response<ListTicket[]>>{
     return this.http.get<Response<ListTicket[]>>(this.url + this.controllerTicket + '/getList');
   }
+  getListToDispatch() : Observable<Response<ListTicket[]>>{
+    return this.http.get<Response<ListTicket[]>>(this.url + this.controllerTicket + '/getListToDispatch');
+  }
   getListBy(ticket : string, name : string, subscriber : string, type : string, procedure : string) : Observable<Response<ListTicket[]>>{
     return this.http.get<Response<ListTicket[]>>(this.url + this.controllerTicket + '/getListby?ticket='+ticket+'&name='+name+'&subscriber='+subscriber+'&type='+type+'&procedure='+procedure);
   }

@@ -2,11 +2,8 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatTableDataSource} from '@angular/material/table';
-
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-
-
 import { Router } from '@angular/router';
 import { Pedido } from 'app/models/pedidos/pedido';
 import { DatosEmpresaService } from 'app/services/informes/empresa/datos-empresa.service';
@@ -15,7 +12,6 @@ import { ConsultarComponent } from './consultar/consultar.component';
 import { ListTicket } from 'app/models/pedidos/ticket';
 import { TicketService } from 'app/services/pedidos/ticket.service';
 import Swal from 'sweetalert2';
-import { PedidosService } from 'app/services/pedidos/pedidos.service';
 
 @Component({
   selector: 'app-lista',
@@ -81,7 +77,7 @@ export class ListaComponent implements OnInit {
     )
   }
   getColor(arg0: boolean,arg1: number): string {
-   
+
     if(!arg0){
       return 'black';
     } else if(arg1===1){
