@@ -31,6 +31,7 @@ import { TicketService } from 'app/services/pedidos/ticket.service';
 export class Asignacion2Component implements OnInit {
   userTo = ""
   loading:boolean=false;
+  state="P";
   //BREADCRUMB
   breadscrums = [
     {
@@ -78,19 +79,25 @@ export class Asignacion2Component implements OnInit {
     this.router.navigate(['pedidos/lista']);
   }
 
-  asignarTrabajador(codigoCupon : string,tipo : string){
+  asignarTrabajador(codigoCupon : string,tipo : string, numberAssign:number,assginFromCode:string){
     const dialogRef = this.dialog.open(SeleccionarAgenteComponent, {
       data: {
         idTicket: codigoCupon,
         reportType: tipo,
+        numberAssign:numberAssign,
+        assginFromCode:assginFromCode
       },
-    });
+    }).afterClosed().subscribe(() => {
+         this.ngOnInit();
+       });
   }
   //ACCIONES
   agregarComentario(cod : string) {
+    console.log(cod);
     const dialogRef = this.dialog.open(ComentarioComponent, {
     data: {
-      data: cod,
+      id: cod,
+    
     },
   });
   console.log(dialogRef)
@@ -101,11 +108,13 @@ export class Asignacion2Component implements OnInit {
     //   }
     // });
   }
-  agregarAdjuntos(cod : string) {
+  agregarAdjuntos(cod : string,cupon:string) {
+    console.log(cod);
     const dialogRef = this.dialog.open(AdjuntarArchivosComponent, {
-    data: {
-      data: cod,
-    },
+      data: {
+        id: cod,
+        cupon: cupon,
+      },
   });
   console.log(dialogRef)
     // dialogRef.afterClosed().subscribe((codAbonado) => {

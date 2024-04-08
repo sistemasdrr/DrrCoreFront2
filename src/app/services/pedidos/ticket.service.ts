@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CurrentTicket, ListTicket, ReportType, PersonalAssignation, SaveTicketAssignation, SendQuery, Ticket, TicketListPending, TicketQuery, TicketFile, TicketHistorySubscriber, SearchSituation, TicketsByCompanyOrPerson, TimeLineTicket, TicketObservations } from 'app/models/pedidos/ticket';
 import { Response } from 'app/models/response';
+import { Asignacion } from 'app/views/pedidos/asignacion2/seleccionar-agente/seleccionar-agente.component';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
 
@@ -9,6 +10,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class TicketService {
+
 
   url = environment.apiUrl
   controllerTicket = "/Ticket"
@@ -109,4 +111,8 @@ export class TicketService {
   getAgentAssignation() : Observable<Response<PersonalAssignation[]>>{
     return this.http.get<Response<PersonalAssignation[]>>(this.url + this.controllerTicket + '/getAgentAssignation');
   }
+  sendAssignation(list : Asignacion[]) : Observable<Response<boolean>>{
+    return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/assignTicket',list);
+  }
+
 }

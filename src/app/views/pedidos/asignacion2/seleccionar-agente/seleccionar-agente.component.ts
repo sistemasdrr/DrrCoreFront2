@@ -23,7 +23,9 @@ export interface Asignacion{
   observations : string
   idTicket:number,
   type : string
-  internal : boolean
+  internal : boolean,
+  numberAssign:number,
+  assignedFromCode:string
 }
 
 @Component({
@@ -70,6 +72,9 @@ export class SeleccionarAgenteComponent implements OnInit {
   fechaVencimiento = ""
   observaciones = ""
   userFrom = ''
+  numberAssign:number = 0
+  loading=false;
+  assginFromCode: any;
 
   seleccionarTrabajador(codigo : string, nombre : string, idUserLogin : number, internal : boolean){
     this.asignadoCodigo = codigo
@@ -151,6 +156,8 @@ export class SeleccionarAgenteComponent implements OnInit {
       console.log(data)
       this.idTicket = parseInt(data.idTicket)
       this.reportType = data.reportType
+      this.numberAssign=data.numberAssign
+      this.assginFromCode=data.assginFromCode
       this.referencias = true
       this.fechaAsignacionDate=new Date()
       this.fechaVencimientoDate=new Date()
@@ -215,7 +222,9 @@ export class SeleccionarAgenteComponent implements OnInit {
       balance: false,
       startDate: this.fechaAsignacionString,
       endDate: this.fechaVencimientoString,
-      idTicket:this.idTicket
+      idTicket: this.idTicket,
+      numberAssign: this.numberAssign,
+      assignedFromCode:this.assginFromCode
     }
     this.asignacion.push(asign)
     this.dataSource.data = this.asignacion
@@ -276,6 +285,14 @@ export class SeleccionarAgenteComponent implements OnInit {
     this.activeList = 0
   }
   guardarCambios(){
-    console.log(this.dataSource.data)
+    this.loading=true;
+    this.ticketService.sendAssignation(this.asignacion).subscribe(
+      (response) => {
+        if(response.isSuccess === true && response.isWarning === false){
+          this.dialogRef.close()                
+          this.loading=false;
+        }
+      }
+    )
   }
 }
