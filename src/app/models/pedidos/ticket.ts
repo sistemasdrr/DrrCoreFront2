@@ -149,6 +149,7 @@ export interface ListTicket{
   startDate : string
   endDate : string
   numberAssign : number
+  references : number
 }
 export interface TicketListPending{
   id : number
