@@ -43,6 +43,7 @@ export class ListaComponent implements OnInit {
     },
   ];
 
+  idUser = 0
   loading = false
 
   dataSource: MatTableDataSource<ListTicket>;
@@ -56,6 +57,10 @@ export class ListaComponent implements OnInit {
 
   constructor(private ticketService : TicketService,public dialog: MatDialog){
     this.dataSource = new MatTableDataSource()
+    const auth = JSON.parse(localStorage.getItem('authCache')+'')
+    if(auth){
+      this.idUser = parseInt(auth.idUser)
+    }
   }
 
   ngOnInit(): void {
@@ -76,7 +81,7 @@ export class ListaComponent implements OnInit {
   }
 
   enviarInforme(id : number){
-
+    
   }
   consultar(ticket : ListTicket){
 
