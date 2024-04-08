@@ -22,6 +22,7 @@ export class ReferencistaComponent implements OnInit {
   idTicket = 0
   numCupon = ""
   type = ""
+  user=""
 
   dataSourceProveedor: MatTableDataSource<ProveedorT>
   dataSourceHistorico: MatTableDataSource<ProveedorHistory>
@@ -32,7 +33,8 @@ export class ReferencistaComponent implements OnInit {
     private activatedRoute : ActivatedRoute, private comboService : ComboService, private ticketService : TicketService){
     this.dataSourceProveedor = new MatTableDataSource()
     this.dataSourceHistorico = new MatTableDataSource()
-
+    const auth = JSON.parse(localStorage.getItem('authCache')+'')
+    this.user = auth.idUser
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (id?.includes('nuevo')) {
       this.id = 0
@@ -315,7 +317,7 @@ agregarProveedor() {
       heightAuto : true
     }).then((result) => {
       if (result.value) {
-        this.sbsService.addListProvider(this.dataSourceProveedor.data, this.id).subscribe(
+        this.sbsService.addListProvider(this.dataSourceProveedor.data, this.id,this.user).subscribe(
           (response) => {
             if(response.isSuccess === true && response.isWarning === false){
               Swal.fire({
