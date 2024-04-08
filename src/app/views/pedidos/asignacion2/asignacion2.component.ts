@@ -14,6 +14,7 @@ import { SeleccionarAgenteComponent } from './seleccionar-agente/seleccionar-age
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ListTicket } from 'app/models/pedidos/ticket';
 import { TicketService } from 'app/services/pedidos/ticket.service';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -43,7 +44,7 @@ export class Asignacion2Component implements OnInit {
 
   //TABLA
   dataSource: MatTableDataSource<ListTicket>;
-  columnsToDisplay = ['number', 'busineesName','subscriberCode', 'reportType', 'procedureType', 'orderDate', 'expireDate', 'Acciones' ];
+  columnsToDisplay = ['number', 'busineesName','status','subscriberCode', 'reportType', 'procedureType', 'orderDate', 'expireDate', 'Acciones' ];
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
   expandedOrder: ListTicket | null = null;
     selection = new SelectionModel<ListTicket>(true, []);
@@ -92,12 +93,13 @@ export class Asignacion2Component implements OnInit {
        });
   }
   //ACCIONES
-  agregarComentario(cod : string) {
-    console.log(cod);
+  agregarComentario(id : string,cupon : string,comentario : string) {
     const dialogRef = this.dialog.open(ComentarioComponent, {
     data: {
-      id: cod,
-    
+      id: id,
+      cupon : cupon,
+      comentario : comentario
+
     },
   });
   console.log(dialogRef)
@@ -123,5 +125,39 @@ export class Asignacion2Component implements OnInit {
     //     this.asignarDatosAbonado()
     //   }
     // });
+  }
+  eliminar(id : number, asignedTo : string, numberAssign : number){
+    console.log(id)
+    console.log(asignedTo)
+    console.log(numberAssign)
+    Swal.fire({
+      title: '¿Está seguro de despachar este pedido?',
+      text: "",
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText : 'No',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí',
+      width: '20rem',
+      heightAuto : true
+    }).then((result) => {
+      if(result.value){
+        this.ticketService.deleteTicketHistory(id,asignedTo,numberAssign).subscribe(
+          (response) => {
+            if(response.isSuccess === true && response.isWarning === false){
+              Swal.fire({
+                title: 'Se eliminó el registro con exito',
+                text: "",
+                icon: 'success',
+                width: '20rem',
+                heightAuto : true
+              })
+            }
+          }
+        )
+      }
+    })
+
   }
 }

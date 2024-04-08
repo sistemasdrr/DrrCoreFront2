@@ -145,6 +145,10 @@ export interface ListTicket{
   statusColor : string
   statusFinalOwner : string
   origen : string
+  observations : string
+  startDate : string
+  endDate : string
+  numberAssign : number
 }
 export interface TicketListPending{
   id : number

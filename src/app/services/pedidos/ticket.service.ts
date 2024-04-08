@@ -74,8 +74,8 @@ export class TicketService {
   getListToDispatch() : Observable<Response<ListTicket[]>>{
     return this.http.get<Response<ListTicket[]>>(this.url + this.controllerTicket + '/getListToDispatch');
   }
-  dispatchTicket() : Observable<Response<boolean>>{
-    return this.http.get<Response<boolean>>(this.url + this.controllerTicket + '/getList');
+  dispatchTicket(idTicket : number, idUser : number) : Observable<Response<boolean>>{
+    return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/DispatchTicket?idTicket='+idTicket+'&idUser='+idUser,'');
   }
   getListBy(ticket : string, name : string, subscriber : string, type : string, procedure : string) : Observable<Response<ListTicket[]>>{
     return this.http.get<Response<ListTicket[]>>(this.url + this.controllerTicket + '/getListby?ticket='+ticket+'&name='+name+'&subscriber='+subscriber+'&type='+type+'&procedure='+procedure);
@@ -110,6 +110,9 @@ export class TicketService {
   }
   getTicketPreassigned(userTo : string) : Observable<Response<ListTicket[]>>{
     return this.http.get<Response<ListTicket[]>>(this.url + this.controllerTicket + '/getTicketPreassignToUser?userTo='+userTo);
+  }
+  deleteTicketHistory(idTicket: number, assignedTo : string, numberAssign : number) : Observable<Response<boolean>>{
+    return this.http.get<Response<boolean>>(this.url + this.controllerTicket + '/deleteTicketHistory?idTicket='+idTicket+'&assignedTo='+assignedTo+'&numberAssign='+numberAssign);
   }
   getPersonalAssignation() : Observable<Response<PersonalAssignation[]>>{
     return this.http.get<Response<PersonalAssignation[]>>(this.url + this.controllerTicket + '/getPersonalAssignation');

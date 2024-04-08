@@ -9,6 +9,7 @@ import { MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter } from '@angular/materia
 import { ListTicket } from 'app/models/pedidos/ticket';
 import { TicketService } from 'app/services/pedidos/ticket.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import Swal from 'sweetalert2';
 
 
 
@@ -81,7 +82,36 @@ export class ListaComponent implements OnInit {
   }
 
   enviarInforme(id : number){
-    
+    console.log(this.idUser)
+    Swal.fire({
+      title: '¿Está seguro de despachar este pedido?',
+      text: "",
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText : 'No',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí',
+      width: '20rem',
+      heightAuto : true
+    }).then((result) => {
+      if(result.value){
+        this.ticketService.dispatchTicket(id, this.idUser).subscribe(
+          (response) => {
+            if(response.isSuccess === true && response.isWarning === false){
+                Swal.fire({
+                  text : 'El Pedido se envio correctamente',
+                  icon : 'success',
+                  width: '20rem',
+                  heightAuto : true
+                });
+            }
+          }
+        )
+      }
+      }
+    );
+
   }
   consultar(ticket : ListTicket){
 

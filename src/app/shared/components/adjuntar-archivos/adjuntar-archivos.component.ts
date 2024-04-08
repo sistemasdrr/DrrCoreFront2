@@ -91,7 +91,7 @@ export class AdjuntarArchivosComponent implements OnInit {
                   this.loading=false;
                   this.ngOnInit();
                 }
-               
+
               }
             );
           }else{
