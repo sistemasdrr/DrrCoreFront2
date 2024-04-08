@@ -116,6 +116,7 @@ export interface ListTicket{
   queryCredit : string
   timeLimit : string
   asignedTo : string
+  asignedFrom : string
   revealName : boolean
   nameRevealed : string
   referenceNumber : string

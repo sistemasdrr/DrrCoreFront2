@@ -111,6 +111,9 @@ export class TicketService {
   getTicketPreassigned(userTo : string) : Observable<Response<ListTicket[]>>{
     return this.http.get<Response<ListTicket[]>>(this.url + this.controllerTicket + '/getTicketPreassignToUser?userTo='+userTo);
   }
+  finishWord(obj : Asignacion) : Observable<Response<boolean>>{
+    return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/finishWork',obj);
+  }
   deleteTicketHistory(idTicket: number, assignedTo : string, numberAssign : number) : Observable<Response<boolean>>{
     return this.http.get<Response<boolean>>(this.url + this.controllerTicket + '/deleteTicketHistory?idTicket='+idTicket+'&assignedTo='+assignedTo+'&numberAssign='+numberAssign);
   }

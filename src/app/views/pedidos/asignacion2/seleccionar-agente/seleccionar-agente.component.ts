@@ -161,7 +161,7 @@ export class SeleccionarAgenteComponent implements OnInit {
       this.numberAssign=data.numberAssign
       this.quality=data.quality
       this.assginFromCode=data.assginFromCode
-      this.referencias = true
+      this.referencias = false
       this.fechaAsignacionDate=new Date()
       this.fechaVencimientoDate=new Date()
       const auth = JSON.parse(localStorage.getItem('authCache')+'')
