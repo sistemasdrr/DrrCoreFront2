@@ -205,6 +205,15 @@ export interface PersonalAssignation{
   code : string
   internal : boolean
 }
+export interface ProviderByTicket{
+  id : number
+  idCompany : number
+  idPerson : number
+  name : string
+  telephone : string
+  country : string
+  flagCountry : string
+}
 export interface TicketFile{
   id : number
   name : string

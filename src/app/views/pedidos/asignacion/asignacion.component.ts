@@ -156,7 +156,7 @@ export class AsignacionComponent implements OnInit {
     this.ticketService.savePreassign(lista).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
-          this.loading = false; 
+          this.loading = false;
           Swal.fire({
             title: 'Se ha guardado la pre-asignación correctamnete',
             text: '',
@@ -176,11 +176,10 @@ export class AsignacionComponent implements OnInit {
       }
     )
 
-   
+
   }
 
   guardarEnviar(){
-    this.loading = true;
     let lista : SaveTicketAssignation[] = []
     this.selection.selected.forEach(element => {
       const ticket : SaveTicketAssignation ={
@@ -205,14 +204,14 @@ export class AsignacionComponent implements OnInit {
       heightAuto : true
     }).then((result) => {
       if (result.value) {
-       
+
       this.loading=true;
       this.ticketService.saveAndSendPreassign(lista).subscribe(
         (response) => {
           if(response.isSuccess === true && response.isWarning === false){
            this.loading=false;
            Swal.fire({
-            title: 'Se ha realizado la pre-asignación correctamnete',
+            title: 'Se ha realizado la pre-asignación correctamente',
             text: '',
             icon: 'success',
             width: '30rem',
@@ -220,7 +219,7 @@ export class AsignacionComponent implements OnInit {
           }).then(() => {
             this.ngOnInit();
           })
-         
+
           }
         }
       )
@@ -252,6 +251,11 @@ export class AsignacionComponent implements OnInit {
       cupon: cupon
     },
   });
+  dialogRef.afterClosed().subscribe(
+    () => {
+      this.ngOnInit()
+    }
+  )
     // dialogRef.afterClosed().subscribe((codAbonado) => {
     //   if (codAbonado) {
     //     this.codAbonado = codAbonado.codigoAbonado

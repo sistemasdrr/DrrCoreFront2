@@ -11,7 +11,7 @@
         <div class="w-100 d-flex justify-content-between align-items-center">
           <div style="font-size: 24px;">Asignación del Cupón  </div>
             <div>
-              <button mat-flat-button class="bg-cyan" style="margin: 0 .5rem .5rem .5rem; font-size: 16px;"  >
+              <button *ngIf="assginFromCode.includes('S')" mat-flat-button class="bg-cyan" style="margin: 0 .5rem .5rem .5rem; font-size: 16px;"  >
                 Despachar
               </button>
               <button mat-mini-fab class="bg-blue" style="margin: 0 .5rem .5rem .5rem;" #tooltip="matTooltip" matTooltip="Guardar" (click)="guardarCambios()">

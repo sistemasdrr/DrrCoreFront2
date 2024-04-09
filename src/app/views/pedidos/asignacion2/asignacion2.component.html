@@ -55,7 +55,7 @@
             <span class="float-end progress-percent label {{order.statusColor}}  shadow" style="width: 150px;{{order.statusColor === 'label' ? 'color : black;' : ''}}" >
               {{order.status}}
             </span>
-            <button  *ngIf="order.references !== -1" class="float-end progress-percent label" [ngClass]="order.references === 1 ? 'bg-green':'bg-red'" (click)="$event.stopPropagation(); " style=" border-radius: 15px; color: white;">RC</button>
+            <button  *ngIf="order.references !== -1" class="float-end progress-percent label" [ngClass]="order.references === 1 ? 'bg-green':'bg-red'" (click)="$event.stopPropagation(); listarProveedores(order.id)" style=" border-radius: 15px; color: white;">RC</button>
           </div>
 
          </td>

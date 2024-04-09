@@ -15,6 +15,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { ListTicket } from 'app/models/pedidos/ticket';
 import { TicketService } from 'app/services/pedidos/ticket.service';
 import Swal from 'sweetalert2';
+import { ReferenciasComercialesComponent } from './referencias-comerciales/referencias-comerciales.component';
 
 
 @Component({
@@ -83,27 +84,43 @@ export class Asignacion2Component implements OnInit {
   }
 
   asignarTrabajador(codigoCupon : string,tipo : string, numberAssign:number,assginFromCode:string, quality : string){
+    console.log(assginFromCode)
     console.log(quality)
-    if(quality !== '' && quality !== null){
+    if(assginFromCode.includes('S')){
+      if(quality !== '' && quality !== null){
+        const dialogRef = this.dialog.open(SeleccionarAgenteComponent, {
+          data: {
+            idTicket: codigoCupon,
+            reportType: tipo,
+            numberAssign:numberAssign,
+            assginFromCode:assginFromCode,
+            quality : quality
+          },
+        }).afterClosed().subscribe(() => {
+             this.ngOnInit();
+           });
+      }else{
+        Swal.fire({
+          title :'¡Calidad no seleccionada!',
+          icon : 'error',
+          width: '20rem',
+          heightAuto : true
+        });
+      }
+    }else{
       const dialogRef = this.dialog.open(SeleccionarAgenteComponent, {
         data: {
           idTicket: codigoCupon,
           reportType: tipo,
           numberAssign:numberAssign,
           assginFromCode:assginFromCode,
-          quality : quality
+          quality : ''
         },
       }).afterClosed().subscribe(() => {
            this.ngOnInit();
          });
-    }else{
-      Swal.fire({
-        title :'¡Calidad no seleccionada!',
-        icon : 'error',
-        width: '20rem',
-        heightAuto : true
-      });
     }
+
 
   }
   entregarTrabajo(codigoCupon : string,tipo : string, numberAssign:number,assignedToCode:string, quality : string){
@@ -168,9 +185,12 @@ export class Asignacion2Component implements OnInit {
       }
     })
   }
-  formatDate(date: moment.Moment): string {
-    const formattedDate = date.format('DD/MM/YYYY');
-    return formattedDate;
+  listarProveedores(idTicket : number){
+    const dialogRef = this.dialog.open(ReferenciasComercialesComponent, {
+      data: {
+        idTicket: idTicket
+      },
+    });
   }
   //ACCIONES
   agregarComentario(id : string,cupon : string,comentario : string) {

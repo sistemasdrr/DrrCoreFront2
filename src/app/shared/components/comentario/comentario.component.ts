@@ -1,9 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { DialogData } from 'app/models/dialog-data';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { PedidoService } from 'app/services/pedido.service';
-import { Pedido } from 'app/models/pedidos/pedido';
 
 @Component({
   selector: 'app-comentario',
@@ -19,8 +16,7 @@ export class ComentarioComponent {
 
   constructor(
     public dialogRef: MatDialogRef<ComentarioComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private pedidoService : PedidoService
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     if(data){
       this.id = data.id
