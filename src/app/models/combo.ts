@@ -13,6 +13,11 @@ export interface ComboData3{
   valor : string
   valorEng : string
 }
+export interface ComboDataName{
+  id : number
+  name : string
+  valor : string
+}
 export interface RiesgoCrediticio{
   id : number
   abreviation : string

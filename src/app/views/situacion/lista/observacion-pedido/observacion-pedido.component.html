@@ -7,7 +7,7 @@
             <div class="left">
               <ul class="header-buttons-left ms-0">
                 <li class="tbl-title">
-                  <h5 style="font-size: 24px;">Envio de Observación</h5>
+                  <h5 style="font-size: 24px;">Observaciones del Cupón</h5>
                 </li>
               </ul>
             </div>
@@ -15,10 +15,6 @@
               <ul class="tbl-export-btn">
                 <li class="tbl-header-btn">
                   <div class="m-l-10">
-                    <button mat-icon-button class="btn bg-cyan " (click)="enviarObservacion()" #tooltip="matTooltip"
-                      matTooltip="Enviar Observación">
-                      <mat-icon>send</mat-icon>
-                    </button>
                     <button mat-icon-button class="btn bg-red " (click)="salir()" #tooltip="matTooltip"
                       matTooltip="Volver">
                       <mat-icon>logout</mat-icon>
@@ -53,10 +49,10 @@
             </div>
             <div class="row">
               <div class="col-md-7">
-                <h5>Observaciones Pendientes</h5>
+                <h5>Observaciones</h5>
                 <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8"  style="table-layout:  auto !important;" matSort>
                   <ng-container matColumnDef="id" >
-                  <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center" > Num. Observación </th>
+                  <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center" > N. Obs. </th>
                   <td mat-cell *matCellDef="let order" class="text-center"> {{order.id}} </td>
                   </ng-container>
                   <ng-container matColumnDef="asignedDate" >
@@ -67,6 +63,10 @@
                   <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center" > Fec. Vencimiento </th>
                   <td mat-cell *matCellDef="let order" class="text-center"> {{formatearFecha(order.endDate)}} </td>
                   </ng-container>
+                  <ng-container matColumnDef="solutionDate" >
+                  <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center" > Fec. Solución </th>
+                  <td mat-cell *matCellDef="let order" class="text-center"> {{formatearFecha(order.solutionDate)}} </td>
+                  </ng-container>
                   <ng-container matColumnDef="acciones">
                   <th mat-header-cell *matHeaderCellDef  class="text-center" >
                     <button mat-mini-fab color="primary"  (click)="agregar()">
@@ -74,13 +74,11 @@
                     </button>
                   </th>
                   <td mat-cell *matCellDef="let order" class="text-center">
-                    <button mat-icon-button class="tbl-action-btn " #tooltip="matTooltip" matTooltip="Editar"
-                    style="margin-top: 1rem;"  (click)="seleccionarObservacion(order)">
-                      <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
+                    <button mat-icon-button class="tbl-action-btn " #tooltip="matTooltip" matTooltip="Seleccionar" (click)="seleccionarObservacion(order,order.idStatusTicketObservation)">
+                      <app-feather-icons [icon]="'check-circle'" [class]="'tbl-fav-edit'"></app-feather-icons>
                     </button>
-                    <button mat-icon-button class="tbl-action-btn" #tooltip="matTooltip" matTooltip="Quitar"
-                    style="margin-top: 1rem;" (click)="eliminarObservacion(order.id)">
-                    <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
+                    <button mat-icon-button *ngIf="order.idStatusTicketObservation === 1" class="tbl-action-btn" #tooltip="matTooltip" matTooltip="Concluir" (click)="concluirObservacion(order.id)">
+                    <app-feather-icons [icon]="'flag'" style="color: rgb(10, 167, 167)" ></app-feather-icons>
                   </button>
                   </td>
                   </ng-container>
@@ -94,7 +92,7 @@
                   <div class="col-md-12">
                     <h6>Personal Asignado al Informe</h6>
                     <mat-selection-list  #personalList style="font-size: 10px;" [disabled]="!add">
-                        <mat-list-option *ngFor="let item of list" [value]="item">
+                        <mat-list-option *ngFor="let item of list" [value]="item" >
                         {{item.code}} {{item.name !== null || item.name !== '' ? ' | '+item.name : ''}}
                         </mat-list-option>
                     </mat-selection-list>
@@ -105,16 +103,16 @@
             <div class="row mt-2">
               <div class="d-flex justify-content-between" style="background-color: #dae1f3; padding: .5rem .5rem .5rem .5rem;">
                 <h5>Asignación de Observación</h5>
-                <button mat-mini-fab class="bg-cyan" *ngIf="add === true || edit === true" (click)="agregarObservacion()">
+                <button mat-mini-fab class="bg-cyan" *ngIf="add === true" (click)="agregarObservacion()">
                   <mat-icon class="col-white">save</mat-icon>
                 </button>
               </div>
               <div class="col-md-5">
                 <div class="row">
                   <div class="col-md-6 mb-0 mt-2 pb-0 pt-2" style="">
-                    <mat-form-field color="primary" style="width: 100%;" >
+                    <mat-form-field color="primary" style="width: 100%;"  >
                       <mat-label >Fecha de Registro</mat-label>
-                      <input matInput [matDatepicker]="observation_date" #fechaInput [(ngModel)]="observationDate" [readonly]="true">
+                      <input matInput  [disabled]="!add" [matDatepicker]="observation_date" #fechaInput [(ngModel)]="observationDate" [readonly]="true">
                       <mat-datepicker-toggle matIconSuffix [for]="observation_date"></mat-datepicker-toggle>
                       <mat-datepicker #observation_date color="primary"></mat-datepicker>
                     </mat-form-field>
@@ -122,7 +120,7 @@
                   <div class="col-md-6 mb-0 mt-2 pb-0 pt-2">
                     <mat-form-field color="primary" style="width: 100%;" >
                       <mat-label >Fecha de Asignacion</mat-label>
-                      <input matInput [matDatepicker]="asignation_date" #fechaInput [(ngModel)]="asignedDate" [readonly]="true">
+                      <input matInput [disabled]="!add" [matDatepicker]="asignation_date" #fechaInput [(ngModel)]="asignedDate" [readonly]="true">
                       <mat-datepicker-toggle matIconSuffix [for]="asignation_date"></mat-datepicker-toggle>
                       <mat-datepicker #asignation_date color="primary"></mat-datepicker>
                     </mat-form-field>
@@ -130,7 +128,7 @@
                   <div class="col-md-6 mb-0 mt-0 pb-0 pt-0">
                     <mat-form-field color="primary" style="width: 100%;" >
                       <mat-label >Fecha de Vencimiento</mat-label>
-                      <input matInput [matDatepicker]="vencimiento_date" #fechaInput [(ngModel)]="endDate" [readonly]="true">
+                      <input matInput [disabled]="!add" [matDatepicker]="vencimiento_date" #fechaInput [(ngModel)]="endDate" [readonly]="true">
                       <mat-datepicker-toggle matIconSuffix [for]="vencimiento_date"></mat-datepicker-toggle>
                       <mat-datepicker #vencimiento_date color="primary"></mat-datepicker>
                     </mat-form-field>
@@ -138,16 +136,38 @@
                   <div class="col-md-6 mb-0 mt-0 pb-0 pt-0">
                     <mat-form-field color="primary" style="width: 100%;" >
                       <mat-label >Fecha de Solución</mat-label>
-                      <input matInput [matDatepicker]="solution_date" #fechaInput [(ngModel)]="solutionDate" [readonly]="true">
+                      <input matInput [disabled]="!add" [matDatepicker]="solution_date" #fechaInput [(ngModel)]="solutionDate" [readonly]="true">
                       <mat-datepicker-toggle matIconSuffix [for]="solution_date"></mat-datepicker-toggle>
                       <mat-datepicker #solution_date color="primary"></mat-datepicker>
                     </mat-form-field>
                   </div>
+
                   <div class="col-md-12  mb-0 mt-0 pb-0 pt-0">
-                    <mat-form-field color="primary" style="width: 100%;" >
+                    <mat-form-field class="example-chip-list w-100">
+                      <mat-label>CC </mat-label>
+                      <mat-chip-grid #chipGrid1 >
+                          <mat-chip-row *ngFor="let data of emailsSeleccionados;" (removed)="remove(data.name)" >
+                            {{data.valor}}
+                            <button matChipRemove [attr.aria-label]="'remove ' + data.name" *ngIf="add">
+                              <mat-icon>cancel</mat-icon>
+                            </button>
+                          </mat-chip-row>
+                      </mat-chip-grid>
+                      <input placeholder="Seleccionar Email" #paisExpoInput [formControl]="controlEmails" [disabled]="!add"
+                        [matChipInputFor]="chipGrid1" [matAutocomplete]="auto1"
+                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                        (matChipInputTokenEnd)="addEmail($event)"/>
+                      <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displayCombo" (optionSelected)="selectedEmail($event)" >
+                        <mat-option *ngFor="let combo of filteredCombo | async" [value]="combo">
+
+                          {{combo.name}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                    <!-- <mat-form-field color="primary" style="width: 100%;" >
                       <mat-label >Correo CC </mat-label>
                       <input matInput type="text" [(ngModel)]="cc">
-                    </mat-form-field>
+                    </mat-form-field> -->
                   </div>
                 </div>
               </div>
@@ -156,7 +176,7 @@
                   <div class="col-md-6 mb-0 mt-2 pb-0 pt-2" style="">
                     <mat-form-field color="primary" style="width: 100%;" >
                       <mat-label >Motivo de la Observación</mat-label>
-                      <mat-select [(ngModel)]="idReason" placeholder="">
+                      <mat-select [disabled]="!add" [(ngModel)]="idReason" placeholder="">
                           <mat-option [value]="0"></mat-option>
                           <mat-option [value]="item.id" *ngFor="let item of listReason">{{item.valor}}</mat-option>
                       </mat-select>
@@ -166,7 +186,7 @@
                   <div class="col-md-12  mb-0 mt-0 pb-0 pt-0">
                     <mat-form-field color="primary" style="width: 100%;" >
                       <mat-label >Mensaje para los Asignados</mat-label>
-                      <textarea matInput type="text" [(ngModel)]="message" style="min-height: 6.6rem;"></textarea>
+                      <textarea [disabled]="!editable"  matInput type="text" [(ngModel)]="message" style="min-height: 6.6rem;"></textarea>
                     </mat-form-field>
                   </div>
                 </div>

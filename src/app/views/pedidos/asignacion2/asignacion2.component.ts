@@ -16,6 +16,7 @@ import { ListTicket } from 'app/models/pedidos/ticket';
 import { TicketService } from 'app/services/pedidos/ticket.service';
 import Swal from 'sweetalert2';
 import { ReferenciasComercialesComponent } from './referencias-comerciales/referencias-comerciales.component';
+import { UsuarioService } from 'app/services/usuario.service';
 
 
 @Component({
@@ -54,9 +55,10 @@ export class Asignacion2Component implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('filter') filter!: ElementRef;
 
-  constructor(private  ticketService : TicketService,
-    private router : Router,
-    public dialog: MatDialog) {
+  userCodes : string[] = []
+
+  constructor(private  ticketService : TicketService, private router : Router,
+    private usuarioService : UsuarioService, public dialog: MatDialog) {
     this.dataSource = new MatTableDataSource();
     console.log(this.dataSource)
     const auth = JSON.parse(localStorage.getItem('authCache')+'')
@@ -74,6 +76,13 @@ export class Asignacion2Component implements OnInit {
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
           this.loading=false;
+        }
+      }
+    )
+    this.usuarioService.getOtherUserCode(parseInt(this.userTo)).subscribe(
+      (response) => {
+        if(response.isSuccess === true && response.isWarning === false){
+          this.userCodes = response.data
         }
       }
     )

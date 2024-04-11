@@ -12,6 +12,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { HistorialPedidoComponent } from './historial-pedido/historial-pedido.component';
 import { ObservacionComponent } from './observacion/observacion.component';
 import { ObservacionPedidoComponent } from './observacion-pedido/observacion-pedido.component';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 
 
 const today = new Date();
@@ -30,6 +32,15 @@ const day = today.getDate()
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ],
+  providers:[
+    {provide: MAT_DATE_LOCALE, useValue: 'es'},
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS}
+  ]
 })
 export class ListaSituacionComponent implements  OnInit {
   breadscrums = [

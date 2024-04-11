@@ -1,20 +1,43 @@
+import { add } from '@ckeditor/ckeditor5-utils/src/translation-service';
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSelectionList } from '@angular/material/list';
 import { MatTableDataSource } from '@angular/material/table';
-import { ComboData } from 'app/models/combo';
+import { ComboData, ComboDataName } from 'app/models/combo';
 import { AddTicketObservations, EmployeesAssignated, GetTicketObservations } from 'app/models/pedidos/ticket';
 import { ComboService } from 'app/services/combo.service';
 import { AbonadoService } from 'app/services/mantenimiento/abonado.service';
 import { TicketService } from 'app/services/pedidos/ticket.service';
 import Swal from 'sweetalert2';
+import { ConcluirObservacionComponent } from './concluir-observacion/concluir-observacion.component';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { FormControl } from '@angular/forms';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { Observable, map, startWith } from 'rxjs';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+
+export interface data {
+  name: string;
+}
 
 @Component({
   selector: 'app-observacion-pedido',
   templateUrl: './observacion-pedido.component.html',
-  styleUrls: ['./observacion-pedido.component.scss']
+  styleUrls: ['./observacion-pedido.component.scss'],
+  providers:[
+    {provide: MAT_DATE_LOCALE, useValue: 'es'},
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS}
+  ]
 })
+
 export class ObservacionPedidoComponent implements OnInit{
 
   idTicket = 0
@@ -42,27 +65,80 @@ export class ObservacionPedidoComponent implements OnInit{
 
   add = false;
   edit = false;
+  editable = false
 
+  emails : ComboDataName[] = []
+  emailsSeleccionados : ComboDataName[] = []
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+
+  controlEmails = new FormControl<string | ComboDataName>('')
+
+  remove(name: string): void {
+    const deleteData = this.emailsSeleccionados.filter(x => x.name === name)
+    if (deleteData.length > 0) {
+      this.emailsSeleccionados = this.emailsSeleccionados.filter(x => x.name !== name)
+    }
+  }
+  addEmail(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+    event.chipInput!.clear();
+    this.controlEmails.setValue(null);
+  }
+  private _filterCombo(name: string): ComboDataName[] {
+    const filterValue = name.toLowerCase();
+    return this.emails.filter(x => x.name.toLowerCase().includes(filterValue));
+  }
+  displayCombo(data : ComboDataName): string {
+    return data && data.valor ? data.valor : '';
+  }
+  selectedEmail(event: MatAutocompleteSelectedEvent): void {
+    console.log(event.option.value)
+    console.log(this.emailsSeleccionados)
+    const email = this.emailsSeleccionados.filter(x => x.valor === event.option.value.valor)[0]
+    if(email){
+      Swal.fire({
+        title: 'No se puede repetir el mismo correo',
+        text: "",
+        icon: 'info',
+        width: '20rem',
+        heightAuto : true
+      })
+    }else{
+      this.emailsSeleccionados.push(event.option.value)
+
+    }
+    this.controlEmails.setValue(null);
+  }
   dataSource = new MatTableDataSource<GetTicketObservations>()
-  columnsToDisplay = ['id','asignedDate','endDate','acciones']
+  columnsToDisplay = ['id','asignedDate','endDate','solutionDate','acciones']
 
   modelo : AddTicketObservations[] = []
 
   @ViewChild('personalList') personalList!: MatSelectionList;
 
-  constructor(public dialogRef: MatDialogRef<ObservacionPedidoComponent>, private datePipe: DatePipe,
+  filteredCombo : Observable<ComboDataName[]>
+  constructor(public dialog : MatDialog,public dialogRef: MatDialogRef<ObservacionPedidoComponent>, private datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,private ticketService : TicketService,
     private comboService : ComboService, private abonadoService : AbonadoService){
       if(data){
         this.idTicket = parseInt(data.idTicket)
         console.log(this.idTicket)
       }
+      this.filteredCombo = new Observable<ComboDataName[]>()
+
   }
   ngOnInit(): void {
     this.ticketService.GetEmployeesAssignated(this.idTicket).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.list = response.data
+        }
+      }
+    )
+    this.comboService.getUserEmail().subscribe(
+      (response) => {
+        if(response.isSuccess === true && response.isWarning === false){
+          this.emails = response.data
         }
       }
     )
@@ -102,12 +178,28 @@ export class ObservacionPedidoComponent implements OnInit{
         }
       }
     )
+    this.filteredCombo = this.controlEmails.valueChanges.pipe(
+      startWith(''),
+      map(value => {
+        const name = typeof value === 'string' ? value : value?.name
+        return name ? this._filterCombo(name as string) : this.emails.slice()
+      }),
+    )
   }
   formatearFecha(date : Date | null) {
-    return this.datePipe.transform(date, 'dd/MM/yyyy')!;
+    if(date !== null && date !== undefined){
+      return this.datePipe.transform(date, 'dd/MM/yyyy')!;
+    }else{
+      return ''
+    }
   }
-  seleccionarObservacion(obj : GetTicketObservations){
-
+  seleccionarObservacion(obj : GetTicketObservations, finished : number){
+    if(finished === 2 || finished === 3){
+      this.editable = false
+    }else{
+      this.editable = true
+    }
+    this.emailsSeleccionados = []
     this.personalList.deselectAll()
     this.id = obj.id
     this.message = obj.message
@@ -115,6 +207,19 @@ export class ObservacionPedidoComponent implements OnInit{
     this.idStatusTicketObservation = obj.idStatusTicketObservation
     this.idReason = obj.idReason
     this.cc = obj.cc
+    console.log(this.cc)
+    if(this.cc !== null && this.cc !== ''){
+      const list = this.cc.split(";")
+      if(list.length > 0){
+        list.forEach(email => {
+          const em = this.emails.filter(x => x.valor === email)[0]
+          if(em !== null && em !== undefined){
+            this.emailsSeleccionados.push(em)
+          }
+        });
+      }
+    }
+
     this.observationDate = obj.observationDate
     this.asignedDate = obj.asignedDate
     this.endDate = obj.endDate
@@ -132,6 +237,7 @@ export class ObservacionPedidoComponent implements OnInit{
 
   }
   agregar(){
+    this.emailsSeleccionados = []
     this.id = 0
     this.idReason = 0
     this.message = ""
@@ -143,6 +249,15 @@ export class ObservacionPedidoComponent implements OnInit{
     console.log(this.personalList.selectedOptions.selected.map(option => option.value))
   }
   armarModelo(){
+    let cc = ""
+    for(let x = 0; x < this.emailsSeleccionados.length; x++){
+      if(x === this.emailsSeleccionados.length-1){
+        cc += this.emailsSeleccionados[x].valor
+      }else{
+        cc += this.emailsSeleccionados[x].valor + ";"
+      }
+    }
+    console.log(cc)
     this.modelo[0] = {
       id : this.id,
       idTicket : this.idTicket,
@@ -154,7 +269,7 @@ export class ObservacionPedidoComponent implements OnInit{
       message : this.message,
       conclusion : this.conclusion,
       idStatusTicketObservation : this.idStatusTicketObservation,
-      cc : this.cc,
+      cc : cc,
       observationDate : this.observationDate,
       asignedDate : this.asignedDate,
       endDate : this.endDate,
@@ -165,7 +280,8 @@ export class ObservacionPedidoComponent implements OnInit{
   }
   agregarObservacion(){
     this.armarModelo();
-    if(this.personalList.selectedOptions.select.length === 0){
+    console.log(this.personalList.selectedOptions.selected.length)
+    if(this.personalList.selectedOptions.selected.length === 0){
       Swal.fire({
         title: 'Seleccione 1 Personal como minimo',
         text: "",
@@ -258,6 +374,22 @@ export class ObservacionPedidoComponent implements OnInit{
     }
 
 
+  }
+  concluirObservacion(id : number){
+    const dialogRef = this.dialog.open(ConcluirObservacionComponent, {
+      data : {
+          idTicketObservation : id
+      },
+    });
+    dialogRef.beforeClosed().subscribe(() => {
+      this.ticketService.GetTicketObservations(this.idTicket).subscribe(
+        (response) => {
+          if(response.isSuccess === true && response.isWarning === false){
+            this.dataSource.data = response.data
+          }
+        }
+      )
+    })
   }
   enviarObservacion(){
 

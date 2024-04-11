@@ -87,71 +87,7 @@ export class SeleccionarAgenteComponent implements OnInit {
   }
   datos : PersonalAssignation[] = []
   datos2 : PersonalAssignation[] = []
-  datosPA : PersonalAssignation[] = [
-    {
-      id : 0,
-      idEmployee : 21,
-      idUserLogin : 21,
-      fullname : 'KATIA BUSTAMANTE',
-      type : 'PA',
-      code : 'PA1',
-      internal : true
-    },
-    {
-      id : 0,
-      idEmployee : 33,
-      idUserLogin : 33,
-      fullname : 'MARIELA ACOSTA',
-      type : 'PA',
-      code : 'PA2',
-      internal : true
-    },
-    {
-      id : 0,
-      idEmployee : 37,
-      idUserLogin : 37,
-      fullname : 'MONICA YEPEZ',
-      type : 'PA',
-      code : 'PA3',
-      internal : true
-    },
-    {
-      id : 0,
-      idEmployee : 38,
-      idUserLogin : 38,
-      fullname : 'RAFAEL DEL RISCO',
-      type : 'PA',
-      code : 'PA4',
-      internal : true
-    },
-    {
-      id : 0,
-      idEmployee : 42,
-      idUserLogin : 42,
-      fullname : 'CECILIA RODRIGUEZ',
-      type : 'PA',
-      code : 'PA5',
-      internal : true
-    },
-    {
-      id : 0,
-      idEmployee : 50,
-      idUserLogin : 50,
-      fullname : 'JESSICA LIAU',
-      type : 'PA',
-      code : 'PA6',
-      internal : true
-    },
-    {
-      id : 0,
-      idEmployee : 23,
-      idUserLogin : 23,
-      fullname : 'CECILIA SAYAS',
-      type : 'PA',
-      code : 'PA7',
-      internal : true
-    },
-  ]
+
   constructor(public dialogRef: MatDialogRef<SeleccionarAgenteComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, private ticketService : TicketService){
       this.dataSource = new MatTableDataSource()
@@ -173,9 +109,6 @@ export class SeleccionarAgenteComponent implements OnInit {
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.datos = response.data
-          this.datosPA.forEach(element => {
-            this.datos.push(element)
-          });
         }
       }
     ).add(

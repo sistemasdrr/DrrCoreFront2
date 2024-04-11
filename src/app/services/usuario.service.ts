@@ -26,6 +26,9 @@ export class UsuarioService {
   getUserProcess(idEmployee : number) : Observable<Response<UserPermission>>{
     return this.http.get<Response<UserPermission>>(this.url + this.controller + '/UserProcess?idEmployee='+idEmployee);
   }
+  getOtherUserCode(idUser : number) : Observable<Response<string[]>>{
+    return this.http.get<Response<string[]>>(this.url + '/Ticket' + '/GetOtherUserCode?idUser='+idUser);
+  }
   updateUserProcess(obj : UserPermission) : Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url + this.controller + '/UpdateProcess',obj);
   }

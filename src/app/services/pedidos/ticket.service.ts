@@ -142,5 +142,8 @@ export class TicketService {
   AddTicketObservations(obj : AddTicketObservations) : Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/AddOrUpdateTicketPendingObservations',obj);
   }
+  FinishTicketObservation(id : number, conclusion : string, dr : boolean, ag : boolean, cl : boolean) : Observable<Response<boolean>>{
+    return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/FinishTicketObservation?idTicketObservation='+id+'&conclusion='+conclusion+'&dr='+dr+'&ag='+ag+'&cl='+cl,'');
+  }
 
 }

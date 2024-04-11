@@ -16,7 +16,10 @@ import { SituacionRoutingModule } from './situacion-routing.module';
 import { HistorialComponent } from './historial/historial.component';
 import { HistorialPedidoComponent } from './lista/historial-pedido/historial-pedido.component';
 import { ObservacionComponent } from './lista/observacion/observacion.component';
+import { ConcluirObservacionComponent } from './lista/observacion-pedido/concluir-observacion/concluir-observacion.component';
 import { ObservacionPedidoComponent } from './lista/observacion-pedido/observacion-pedido.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 
 @NgModule({
@@ -25,7 +28,8 @@ import { ObservacionPedidoComponent } from './lista/observacion-pedido/observaci
     HistorialComponent,
     HistorialPedidoComponent,
     ObservacionComponent,
-    ObservacionPedidoComponent
+    ObservacionPedidoComponent,
+    ConcluirObservacionComponent
   ],
   imports: [
     SituacionRoutingModule,
@@ -40,6 +44,8 @@ import { ObservacionPedidoComponent } from './lista/observacion-pedido/observaci
     FormsModule,
     SharedModule,
     ComponentsModule,
+    MatChipsModule,
+    MatAutocompleteModule
   ],
   providers:[
     DatePipe
