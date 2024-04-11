@@ -1,3 +1,4 @@
+import { AddTicketObservations, EmployeesAssignated, GetTicketObservations } from './../../models/pedidos/ticket';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CurrentTicket, ListTicket, ReportType, PersonalAssignation, SaveTicketAssignation, SendQuery, Ticket, TicketListPending, TicketQuery, TicketFile, TicketHistorySubscriber, SearchSituation, TicketsByCompanyOrPerson, TimeLineTicket, TicketObservations, ProviderByTicket } from 'app/models/pedidos/ticket';
@@ -130,5 +131,16 @@ export class TicketService {
     return this.http.get<Response<ProviderByTicket[]>>(this.url + this.controllerTicket + '/providerByIdTicket?idTicket='+idTicket );
   }
 
+
+
+  GetEmployeesAssignated(idTicket : number) : Observable<Response<EmployeesAssignated[]>>{
+    return this.http.get<Response<EmployeesAssignated[]>>(this.url + this.controllerTicket + '/GetEmployeesAssignated?idTicket='+idTicket );
+  }
+  GetTicketObservations(idTicket : number) : Observable<Response<GetTicketObservations[]>>{
+    return this.http.get<Response<GetTicketObservations[]>>(this.url + this.controllerTicket + '/GetTicketPendingObservations?idTicket='+idTicket );
+  }
+  AddTicketObservations(obj : AddTicketObservations) : Observable<Response<boolean>>{
+    return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/AddOrUpdateTicketPendingObservations',obj);
+  }
 
 }

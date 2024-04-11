@@ -218,6 +218,7 @@ export class AsignacionComponent implements OnInit {
             heightAuto: true
           }).then(() => {
             this.ngOnInit();
+            this.selection.clear()
           })
 
           }

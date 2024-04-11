@@ -230,3 +230,47 @@ export interface TicketHistorySubscriber{
   flagCountry : string
   dispatchDate : string
 }
+
+
+export interface AddTicketObservations{
+  id : number
+  idTicket : number
+  about : string
+  idCompany : number
+  idPerson : number
+  idSubscriber : number
+  idReason : number
+  message : string
+  conclusion : string
+  idStatusTicketObservation : number
+  cc : string
+  observationDate : Date
+  asignedDate : Date
+  endDate : Date
+  solutionDate : Date | null
+  employeesObservated : EmployeesAssignated[]
+}
+export interface GetTicketObservations{
+  id : number
+  about : string
+  idCompany : number
+  idPerson : number
+  idSubscriber : number
+  idReason : number
+  message : string
+  conclusion : string
+  idStatusTicketObservation : number
+  cc : string
+  observationDate : Date
+  asignedDate : Date
+  endDate : Date
+  solutionDate : Date
+  employeesObservated : EmployeesAssignated[]
+}
+export interface EmployeesAssignated{
+  id : number
+  userTo : string
+  code : string
+  name : string
+}
+

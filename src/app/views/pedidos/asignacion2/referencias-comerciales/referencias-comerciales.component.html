@@ -1,4 +1,4 @@
-<div class="container" style="min-width: 45rem;" >
+<div class="container" style="min-width: 45rem; max-height: 45rem;" >
     <div class="row">
     <div class="col-md-12">
       <br>
@@ -6,7 +6,7 @@
       <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8" matSort>
         <ng-container matColumnDef="name" >
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center"> Proveedor </th>
-          <td mat-cell *matCellDef="let provider" class="text-center" >
+          <td mat-cell *matCellDef="let provider" class="text-left" >
             {{provider.name}}
           </td>
         </ng-container>

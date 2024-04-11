@@ -48,7 +48,7 @@ export class DetalleComponent implements OnInit {
   number = 0
   idSubscriber = 0
   revealName = false
-  
+
   nameRevealed = ""
   referenceNumber = ""
   language = ""
@@ -349,7 +349,6 @@ export class DetalleComponent implements OnInit {
         }
     }
     return endDate;
-
   }
   armarModeloNuevo(){
     this.modeloNuevo[0] = {

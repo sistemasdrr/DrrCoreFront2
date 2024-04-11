@@ -11,10 +11,10 @@
         <div class="w-100 d-flex justify-content-between align-items-center">
           <div style="font-size: 24px;">Asignación del Cupón  </div>
             <div>
-              <button *ngIf="assginFromCode.includes('S')" mat-flat-button class="bg-cyan" style="margin: 0 .5rem .5rem .5rem; font-size: 16px;"  >
+              <button  mat-flat-button class="bg-cyan" style="margin: 0 .5rem .5rem .5rem; font-size: 16px;"  >
                 Despachar
-              </button>
-              <button mat-mini-fab class="bg-blue" style="margin: 0 .5rem .5rem .5rem;" #tooltip="matTooltip" matTooltip="Guardar" (click)="guardarCambios()">
+              </button><!--*ngIf="assginFromCode.includes('S')"-->
+              <button mat-mini-fab class="" style="margin: 0 .5rem .5rem .5rem;" #tooltip="matTooltip" matTooltip="Guardar" (click)="guardarCambios()" [ngClass]="dataSource.data.length === 0 ? 'bg-gray' : 'bg-blue' " [disabled]="dataSource.data.length === 0">
                 <mat-icon class="material-icons-outlined col-white" matSuffix>save</mat-icon>
               </button>
               <button mat-mini-fab class="bg-red" style="margin: 0 .5rem .5rem .5rem;" #tooltip="matTooltip" matTooltip="Salir" (click)="cerrarDialog()">
@@ -138,11 +138,8 @@
                 <ng-container matColumnDef="accion" >
                   <th mat-header-cell *matHeaderCellDef  class="text-center"></th>
                   <td mat-cell *matCellDef="let asign" class="text-center">
-                    <button mat-icon-button #tooltip="matTooltip" matTooltip="Editar" >
-                      <i class="fa-regular fa-pen-to-square" style="font-size: 24px; color: #6777ef;"></i>
-                    </button>
-                    <button mat-icon-button #tooltip="matTooltip" matTooltip="Eliminar" (click)="eliminarAsignacion(asign.id)">
-                      <i class="fa-solid fa-trash" style="font-size: 24px; color: red;"></i>
+                    <button mat-icon-button #tooltip="matTooltip" matTooltip="Eliminar" (click)="eliminarAsignacion(asign)">
+                      <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
                     </button>
                   </td>
                 </ng-container>

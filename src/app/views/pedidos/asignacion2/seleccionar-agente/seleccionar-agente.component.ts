@@ -54,7 +54,7 @@ export class SeleccionarAgenteComponent implements OnInit {
   fechaVencimientoString: string=new Date().toLocaleDateString('en-GB')
 
   dataSource : MatTableDataSource<Asignacion>
-  columnas = ['assignedTo','assignationDate','endDate','balance','references']
+  columnas = ['assignedTo','assignationDate','endDate','balance','references','accion']
 
   asignacion : Asignacion[] = []
   interno = false;
@@ -271,8 +271,13 @@ export class SeleccionarAgenteComponent implements OnInit {
 
   }
 
-  eliminarAsignacion(id : number){
-
+  eliminarAsignacion(obj : Asignacion){
+    const index = this.dataSource.data.findIndex(item => item === obj);
+    if (index !== -1) {
+      this.dataSource.data.splice(index, 1);
+      this.dataSource.data = [...this.dataSource.data];
+    }
+    console.log(this.dataSource.data)
   }
 
   cerrarDialog(){

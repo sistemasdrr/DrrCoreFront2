@@ -1,6 +1,6 @@
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 import { ListaSituacionComponent } from './lista/lista.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,6 +16,7 @@ import { SituacionRoutingModule } from './situacion-routing.module';
 import { HistorialComponent } from './historial/historial.component';
 import { HistorialPedidoComponent } from './lista/historial-pedido/historial-pedido.component';
 import { ObservacionComponent } from './lista/observacion/observacion.component';
+import { ObservacionPedidoComponent } from './lista/observacion-pedido/observacion-pedido.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { ObservacionComponent } from './lista/observacion/observacion.component'
     ListaSituacionComponent,
     HistorialComponent,
     HistorialPedidoComponent,
-    ObservacionComponent
+    ObservacionComponent,
+    ObservacionPedidoComponent
   ],
   imports: [
     SituacionRoutingModule,
@@ -38,6 +40,9 @@ import { ObservacionComponent } from './lista/observacion/observacion.component'
     FormsModule,
     SharedModule,
     ComponentsModule,
+  ],
+  providers:[
+    DatePipe
   ]
 })
 export class SituacionModule { }

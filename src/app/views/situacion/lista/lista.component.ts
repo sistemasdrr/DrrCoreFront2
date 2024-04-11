@@ -11,6 +11,7 @@ import { TicketService } from 'app/services/pedidos/ticket.service';
 import { MatDialog } from '@angular/material/dialog';
 import { HistorialPedidoComponent } from './historial-pedido/historial-pedido.component';
 import { ObservacionComponent } from './observacion/observacion.component';
+import { ObservacionPedidoComponent } from './observacion-pedido/observacion-pedido.component';
 
 
 const today = new Date();
@@ -150,6 +151,13 @@ export class ListaSituacionComponent implements  OnInit {
         }
       }
     )
+  }
+  verObservacion(idTicket : number){
+    const dialogRef = this.dialog.open(ObservacionPedidoComponent,{
+      data : {
+        idTicket : idTicket
+    },
+    });
   }
 
 
