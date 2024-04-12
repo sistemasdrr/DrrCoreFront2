@@ -152,6 +152,87 @@ export interface ListTicket{
   numberAssign : number
   references : number
 }
+export interface Asignacion{
+  userFrom : string
+  userTo : string
+  assignedToCode : string
+  assignedToName : string
+  startDateD : Date|null
+  endDateD :Date|null
+  startDate : string
+  endDate : string
+  balance : boolean
+  references : boolean
+  observations : string
+  idTicket:number,
+  type : string
+  internal : boolean,
+  numberAssign:number,
+  assignedFromCode:string
+  quality:string | null
+}
+
+export interface ListTicket2{
+  id : number
+  idTicket : number
+  number : string
+  idSubscriber : number
+  language : string
+  about : string
+  idContinent : number
+  idCountry : number
+  idCompany : number
+  idPerson : number
+  creditrisk : number
+  enable : boolean
+  subscriberCode : string
+  subscriberName : string
+  subscriberCountry : string
+  subscriberFlag : string
+  queryCredit : string
+  timeLimit : string
+  asignedTo : string
+  otherUserCode : OtherUserCode[]
+  asignedFrom : string
+  revealName : boolean
+  nameRevealed : string
+  referenceNumber : string
+  aditionalData : string
+  subscriberIndications : string
+  busineesName : string
+  comercialName : string
+  requestedName : string
+  taxType : string
+  taxCode : string
+  investigatedContinent : string
+  investigatedCountry : string
+  investigatedFlag : string
+  city : string
+  email : string
+  address : string
+  telephone : string
+  reportType : string
+  procedureType : string
+  price : number
+  orderDate : string
+  expireDate : string
+  realExpireDate : string
+  dispatchDate : string
+  quality : string
+  status : string
+  statusColor : string
+  statusFinalOwner : string
+  origen : string
+  observations : string
+  startDate : string
+  endDate : string
+  numberAssign : number
+  references : number
+}
+export interface OtherUserCode{
+  code : string
+  active : boolean
+}
 export interface TicketListPending{
   id : number
   number : string
@@ -231,7 +312,13 @@ export interface TicketHistorySubscriber{
   dispatchDate : string
 }
 
+export interface NewAsignacion{
+  idTicketHistory : number
+  asignedTo : string
+  asignacion : Asignacion[]
+  otherUserCode : OtherUserCode[]
 
+}
 export interface AddTicketObservations{
   id : number
   idTicket : number

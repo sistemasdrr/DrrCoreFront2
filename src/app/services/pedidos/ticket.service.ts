@@ -1,9 +1,8 @@
-import { AddTicketObservations, EmployeesAssignated, GetTicketObservations } from './../../models/pedidos/ticket';
+import { AddTicketObservations, Asignacion, EmployeesAssignated, GetTicketObservations, ListTicket2, NewAsignacion } from './../../models/pedidos/ticket';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CurrentTicket, ListTicket, ReportType, PersonalAssignation, SaveTicketAssignation, SendQuery, Ticket, TicketListPending, TicketQuery, TicketFile, TicketHistorySubscriber, SearchSituation, TicketsByCompanyOrPerson, TimeLineTicket, TicketObservations, ProviderByTicket } from 'app/models/pedidos/ticket';
 import { Response } from 'app/models/response';
-import { Asignacion } from 'app/views/pedidos/asignacion2/seleccionar-agente/seleccionar-agente.component';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
 
@@ -109,8 +108,8 @@ export class TicketService {
   saveAndSendPreassign(list : SaveTicketAssignation[]) : Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/sendTicketPreassignations',list);
   }
-  getTicketPreassigned(userTo : string) : Observable<Response<ListTicket[]>>{
-    return this.http.get<Response<ListTicket[]>>(this.url + this.controllerTicket + '/getTicketPreassignToUser?userTo='+userTo);
+  getTicketPreassigned(userTo : string) : Observable<Response<ListTicket2[]>>{
+    return this.http.get<Response<ListTicket2[]>>(this.url + this.controllerTicket + '/getTicketPreassignToUser?userTo='+userTo);
   }
   finishWord(obj : Asignacion) : Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/finishWork',obj);
@@ -124,7 +123,7 @@ export class TicketService {
   getAgentAssignation() : Observable<Response<PersonalAssignation[]>>{
     return this.http.get<Response<PersonalAssignation[]>>(this.url + this.controllerTicket + '/getAgentAssignation');
   }
-  sendAssignation(list : Asignacion[]) : Observable<Response<boolean>>{
+  sendAssignation(list : NewAsignacion) : Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/assignTicket',list);
   }
   getProvidersByTicket(idTicket : number) : Observable<Response<ProviderByTicket[]>>{

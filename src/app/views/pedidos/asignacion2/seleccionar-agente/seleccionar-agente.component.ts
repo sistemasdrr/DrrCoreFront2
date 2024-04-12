@@ -4,30 +4,12 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { TicketHistory } from 'app/models/pedidos/asignacion/ticketHistory';
-import { PersonalAssignation } from 'app/models/pedidos/ticket';
+import { Asignacion, ListTicket2, NewAsignacion, PersonalAssignation } from 'app/models/pedidos/ticket';
 import { TicketService } from 'app/services/pedidos/ticket.service';
 import * as moment from 'moment';
+import Swal from 'sweetalert2';
 
-export interface Asignacion{
-  userFrom : string
-  userTo : string
-  assignedToCode : string
-  assignedToName : string
-  startDateD : Date|null
-  endDateD :Date|null
-  startDate : string
-  endDate : string
-  balance : boolean
-  references : boolean
-  observations : string
-  idTicket:number,
-  type : string
-  internal : boolean,
-  numberAssign:number,
-  assignedFromCode:string
-  quality:string | null
-}
+
 
 @Component({
   selector: 'app-seleccionar-agente',
@@ -44,6 +26,7 @@ export interface Asignacion{
   ]
 })
 export class SeleccionarAgenteComponent implements OnInit {
+  order : ListTicket2[] = []
   activeList = 0
   estado = "agregar"
   idEditarAsignacion = 0
@@ -94,6 +77,7 @@ export class SeleccionarAgenteComponent implements OnInit {
       console.log(data)
       this.idTicket = parseInt(data.idTicket)
       this.reportType = data.reportType
+      this.order[0] = data.order
       this.numberAssign=data.numberAssign
       this.quality=data.quality
       this.assginFromCode=data.assginFromCode
@@ -102,6 +86,11 @@ export class SeleccionarAgenteComponent implements OnInit {
       this.fechaVencimientoDate=new Date()
       const auth = JSON.parse(localStorage.getItem('authCache')+'')
       this.userFrom = auth.idUser
+
+      console.log(this.order[0].id)
+      console.log(this.order[0].asignedTo)
+      console.log(this.order[0].idTicket)
+      console.log(this.order[0].otherUserCode)
   }
 
   ngOnInit(): void {
@@ -248,14 +237,47 @@ export class SeleccionarAgenteComponent implements OnInit {
     this.activeList = 0
   }
   guardarCambios(){
-    this.loading=true;
-    this.ticketService.sendAssignation(this.asignacion).subscribe(
-      (response) => {
-        if(response.isSuccess === true && response.isWarning === false){
-          this.dialogRef.close()
-          this.loading=false;
-        }
+    let assignSelf = false
+    this.order[0].otherUserCode.forEach(element => {
+      if(this.order[0].asignedTo.trim() !== element.code.trim() && element.active === true){
+        console.log('asignar a: ' + element.code)
+        assignSelf = true
       }
-    )
+    });
+    if(assignSelf){
+
+    }
+    const newAsignacion : NewAsignacion = {
+      idTicketHistory : this.order[0].id,
+      asignedTo : this.order[0].asignedTo,
+      asignacion : this.asignacion,
+      otherUserCode : this.order[0].otherUserCode
+    }
+    console.log(newAsignacion)
+    Swal.fire({
+      title: '¿Está seguro agregar las asignaciones?',
+      text: "",
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText : 'No',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí',
+      width: '20rem',
+      heightAuto : true
+    }).then((result) => {
+      if (result.value) {
+        this.loading=true;
+        this.ticketService.sendAssignation(newAsignacion).subscribe(
+          (response) => {
+            if(response.isSuccess === true && response.isWarning === false){
+              this.dialogRef.close()
+              this.loading=false;
+            }
+          }
+        )
+      }
+    })
+
   }
 }

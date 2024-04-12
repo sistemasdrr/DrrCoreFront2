@@ -10,9 +10,9 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { ComentarioComponent } from '@shared/components/comentario/comentario.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AdjuntarArchivosComponent } from '@shared/components/adjuntar-archivos/adjuntar-archivos.component';
-import { Asignacion, SeleccionarAgenteComponent } from './seleccionar-agente/seleccionar-agente.component';
+import {  SeleccionarAgenteComponent } from './seleccionar-agente/seleccionar-agente.component';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { ListTicket } from 'app/models/pedidos/ticket';
+import { ListTicket, ListTicket2, OtherUserCode } from 'app/models/pedidos/ticket';
 import { TicketService } from 'app/services/pedidos/ticket.service';
 import Swal from 'sweetalert2';
 import { ReferenciasComercialesComponent } from './referencias-comerciales/referencias-comerciales.component';
@@ -45,11 +45,11 @@ export class Asignacion2Component implements OnInit {
   ];
 
   //TABLA
-  dataSource: MatTableDataSource<ListTicket>;
+  dataSource: MatTableDataSource<ListTicket2>;
   columnsToDisplay = ['number', 'busineesName','status','subscriberCode', 'reportType', 'procedureType', 'quality', 'orderDate', 'expireDate', 'Acciones' ];
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
-  expandedOrder: ListTicket | null = null;
-    selection = new SelectionModel<ListTicket>(true, []);
+  expandedOrder: ListTicket2 | null = null;
+    selection = new SelectionModel<ListTicket2>(true, []);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -64,8 +64,6 @@ export class Asignacion2Component implements OnInit {
     const auth = JSON.parse(localStorage.getItem('authCache')+'')
     this.userTo = auth.idUser
   }
-
-  quality = ""
 
   ngOnInit() {
     this.loading=true;
@@ -91,19 +89,38 @@ export class Asignacion2Component implements OnInit {
   volver(){
     this.router.navigate(['pedidos/lista']);
   }
+  activeQuality(obj : OtherUserCode[]){
+    let active = false;
+    obj.forEach(element => {
+      if(element.code.includes('S') && element.active === true){
+        active = true
+      }
+    });
+    return active
+  }
+  asignarTrabajador(order : ListTicket2){
+    console.log(order)
+    let quality : boolean = false
+    order.otherUserCode.forEach(element => {
 
-  asignarTrabajador(codigoCupon : string,tipo : string, numberAssign:number,assginFromCode:string, quality : string){
-    console.log(assginFromCode)
+      if(element.code.includes('S') && element.active === true){
+        quality = true
+      }
+    });
     console.log(quality)
-    if(assginFromCode.includes('S')){
-      if(quality !== '' && quality !== null){
+
+    if(quality){
+      if(order.quality !== null && order.quality !== ''){
         const dialogRef = this.dialog.open(SeleccionarAgenteComponent, {
           data: {
-            idTicket: codigoCupon,
-            reportType: tipo,
-            numberAssign:numberAssign,
-            assginFromCode:assginFromCode,
-            quality : quality
+            id : order.id,
+            idTicket: order.idTicket,
+            reportType: order.reportType,
+            numberAssign : order.numberAssign,
+            assginFromCode : order.asignedTo,
+            quality : quality === true ? order.quality : '',
+            otherUserCode : order.otherUserCode,
+            order : order
           },
         }).afterClosed().subscribe(() => {
              this.ngOnInit();
@@ -119,81 +136,83 @@ export class Asignacion2Component implements OnInit {
     }else{
       const dialogRef = this.dialog.open(SeleccionarAgenteComponent, {
         data: {
-          idTicket: codigoCupon,
-          reportType: tipo,
-          numberAssign:numberAssign,
-          assginFromCode:assginFromCode,
-          quality : ''
+          id : order.id,
+          idTicket: order.idTicket,
+          reportType: order.reportType,
+          numberAssign : order.numberAssign,
+          assginFromCode : order.asignedTo,
+          quality : '',
+          otherUserCode : order.otherUserCode,
+          order : order
         },
       }).afterClosed().subscribe(() => {
            this.ngOnInit();
          });
+
     }
-
-
   }
-  entregarTrabajo(codigoCupon : string,tipo : string, numberAssign:number,assignedToCode:string, quality : string){
-    const today = new Date();
-    const dd = String(today.getDate()).padStart(2, '0');
-    const mm = String(today.getMonth() + 1).padStart(2, '0'); // Enero es 0!
-    const yyyy = today.getFullYear();
+  // entregarTrabajo(codigoCupon : string,tipo : string, numberAssign:number,assignedToCode:string, quality : string){
+  //   const today = new Date();
+  //   const dd = String(today.getDate()).padStart(2, '0');
+  //   const mm = String(today.getMonth() + 1).padStart(2, '0'); // Enero es 0!
+  //   const yyyy = today.getFullYear();
 
-    const startDateFormatted = dd + '/' + mm + '/' + yyyy;
-    const endDateFormatted = startDateFormatted;
-    const asign : Asignacion = {
-      userFrom: this.userTo,
-      userTo: "",
-      assignedToCode: assignedToCode,
-      assignedToName: '',
-      startDateD: new Date(),
-      endDateD: new Date(),
-      references: false,
-      observations: '',
-      type: '',
-      internal: false,
-      balance: false,
-      startDate: startDateFormatted,
-      endDate: endDateFormatted,
-      idTicket: parseInt(codigoCupon),
-      numberAssign: numberAssign,
-      assignedFromCode: assignedToCode,
-      quality:this.quality !== '' ? this.quality : null
-    }
-    console.log(asign)
-    Swal.fire({
-      title: '¿Está seguro de entregar su trabajo?',
-      text: "",
-      icon: 'warning',
-      showCancelButton: true,
-      cancelButtonText : 'No',
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí',
-      width: '20rem',
-      heightAuto : true
-    }).then((result) => {
-      if(result.value){
-        this.ticketService.finishWord(asign).subscribe(
-          (response) => {
-            if(response.isSuccess === true && response.isWarning === false){
-              Swal.fire({
-                title: 'Se entrego el trabajo correctamente',
-                text: "",
-                icon: 'success',
-                width: '20rem',
-                heightAuto : true
-              })
-            }
-          }
-        ).add(
-          () => {
-            this.ngOnInit()
-          }
-        )
+  //   const startDateFormatted = dd + '/' + mm + '/' + yyyy;
+  //   const endDateFormatted = startDateFormatted;
+  //   const asign : Asignacion = {
+  //     userFrom: this.userTo,
+  //     userTo: "",
+  //     assignedToCode: assignedToCode,
+  //     assignedToName: '',
+  //     startDateD: new Date(),
+  //     endDateD: new Date(),
+  //     references: false,
+  //     observations: '',
+  //     type: '',
+  //     internal: false,
+  //     balance: false,
+  //     startDate: startDateFormatted,
+  //     endDate: endDateFormatted,
+  //     idTicket: parseInt(codigoCupon),
+  //     numberAssign: numberAssign,
+  //     assignedFromCode: assignedToCode,
+  //     quality : this.quality !== '' ? this.quality : null
+  //   }
+  //   console.log(asign)
+  //   Swal.fire({
+  //     title: '¿Está seguro de entregar su trabajo?',
+  //     text: "",
+  //     icon: 'warning',
+  //     showCancelButton: true,
+  //     cancelButtonText : 'No',
+  //     confirmButtonColor: '#3085d6',
+  //     cancelButtonColor: '#d33',
+  //     confirmButtonText: 'Sí',
+  //     width: '20rem',
+  //     heightAuto : true
+  //   }).then((result) => {
+  //     if(result.value){
+  //       this.ticketService.finishWord(asign).subscribe(
+  //         (response) => {
+  //           if(response.isSuccess === true && response.isWarning === false){
+  //             Swal.fire({
+  //               title: 'Se entrego el trabajo correctamente',
+  //               text: "",
+  //               icon: 'success',
+  //               width: '20rem',
+  //               heightAuto : true
+  //             })
+  //           }
+  //         }
+  //       ).add(
+  //         () => {
+  //           this.ngOnInit()
+  //         }
+  //       )
 
-      }
-    })
-  }
+  //     }
+  //   })
+  // }
   listarProveedores(idTicket : number){
     const dialogRef = this.dialog.open(ReferenciasComercialesComponent, {
       data: {
