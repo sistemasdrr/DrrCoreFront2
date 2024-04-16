@@ -35,10 +35,12 @@ export class CapitalPagadoComponent implements OnInit {
 
 
   ctrlMoneda = new FormControl<string | ComboData>('');
+
   listaMonedas : ComboData[] = []
   filteredMoneda: Observable<ComboData[]>;
 
   selectMoneda(data : ComboData){
+    console.log(data)
     if (data !== null) {
       if (typeof data === 'string' || data === null) {
         this.idCurrency = 0
@@ -71,8 +73,12 @@ export class CapitalPagadoComponent implements OnInit {
         }
       }).add(
         () => {
-          console.log(this.listaMonedas)
-          this.currentPaidCapitalCurrencyInforme = this.listaMonedas.filter(x => x.id === this.idCurrency)[0]
+          this.idCurrency = this.data.moneda
+          console.log(this.idCurrency)
+          if(this.idCurrency !== 0){
+            this.currentPaidCapitalCurrencyInforme = this.listaMonedas.filter(x => x.id === this.idCurrency)[0]
+            console.log(this.currentPaidCapitalCurrencyInforme)
+          }
         }
       );
     this.filteredMoneda = this.ctrlMoneda.valueChanges.pipe(
@@ -97,6 +103,7 @@ export class CapitalPagadoComponent implements OnInit {
     this.dialogRef.close()
   }
   realizarEnvioCodigo() {
+    console.log(this.idCurrency)
     this.dialogRef.close(
     {
       idMoneda : this.idCurrency,
@@ -104,5 +111,17 @@ export class CapitalPagadoComponent implements OnInit {
       observacion :this.commentary,
       observacionIng : this.commentaryEng
     });
+  }
+  limpiarSeleccion(){
+    this.ctrlMoneda.reset();
+    this.idCurrency = 0
+  }
+  cambioMoneda(moneda: ComboData) {
+    if (typeof moneda === 'string' || moneda === null) {
+      console.log(moneda)
+      this.idCurrency = 0
+    } else {
+      this.idCurrency = moneda.id
+    }
   }
 }

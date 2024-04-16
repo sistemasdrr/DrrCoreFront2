@@ -616,11 +616,14 @@ compararModelosF : any
         this.colorMsgPais = "red"
         this.iconoSeleccionado = ""
         this.idCountry = 0
+
+        this.taxTypeName = ""
       } else {
         this.msgPais = "Opción Seleccionada"
         this.colorMsgPais = "green"
         this.iconoSeleccionado =pais.bandera
         this.idCountry = pais.id
+        this.taxTypeName = pais.regtrib
       }
     } else {
       this.idCountry = 0
@@ -804,6 +807,8 @@ compararModelosF : any
               loader.classList.remove('hide-loader');
             }
             if(response.isSuccess === true && response.isWarning === false){
+              this.router.navigate(['informes/persona/detalle/'+response.data]);
+
               if(loader){
                 loader.classList.add('hide-loader');
               }
@@ -816,7 +821,11 @@ compararModelosF : any
                 confirmButtonText: 'Ok',
                 width: '30rem',
                 heightAuto: true
-              })
+              }).then (
+                () => {
+                  window.location.reload();
+                }
+              )
               this.armarModeloActual()
               this.armarModeloModificado()
             }else{

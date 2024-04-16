@@ -9,6 +9,8 @@ import { ComboService } from 'app/services/combo.service';
 import { BalanceFinancieroService } from 'app/services/informes/empresa/balance-financiero.service';
 import Swal from 'sweetalert2';
 import * as moment from 'moment';
+import { TraduccionDialogComponent } from '@shared/components/traduccion-dialog/traduccion-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-balance',
@@ -83,7 +85,7 @@ export class BalanceComponent implements OnInit {
   profitabilityRatio = 0
   workingCapital = 0
 
-  constructor(private activatedRoute : ActivatedRoute, private balanceService : BalanceFinancieroService, private comboService : ComboService){
+  constructor(public dialog: MatDialog,private activatedRoute : ActivatedRoute, private balanceService : BalanceFinancieroService, private comboService : ComboService){
     const id = this.activatedRoute.snapshot.paramMap.get('id');
       if (id?.includes('nuevo')) {
         this.idCompany = 0
@@ -128,6 +130,28 @@ export class BalanceComponent implements OnInit {
       }
     )
   }
+  agregarTraduccion(titulo : string, subtitulo : string, comentario_es : string, comentario_en : string, input : string) {
+    const dialogRef = this.dialog.open(TraduccionDialogComponent, {
+      data: {
+        titulo : titulo,
+        subtitulo : subtitulo,
+        tipo : 'input',
+        comentario_es : comentario_es,
+        comentario_en : comentario_en
+      },
+    });
+    dialogRef.afterClosed().subscribe((data) => {
+      if (data) {
+        console.log(data)
+        switch(input){
+          case 'duracion':
+            this.duration = data.comentario_es
+            this.durationEng = data.comentario_en
+          break
+        }
+      }
+    })
+  }
   armarModelo(){
     this.modeloModificado[0] = {
       id : this.id,
@@ -135,6 +159,7 @@ export class BalanceComponent implements OnInit {
       date : this.date,
       balanceType : this.balanceType,
       duration : this.duration,
+      durationEng : this.durationEng,
       idCurrency : this.idCurrency,
       exchangeRate : this.exchangeRate,
       sales : this.sales,

@@ -7,7 +7,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { TraduccionDialogComponent } from '@shared/components/traduccion-dialog/traduccion-dialog.component';
-import { EmpresaRelacionada } from 'app/models/informes/empresa-relacionada';
 import { EmpresaRelacionadaService } from 'app/services/informes/empresa-relacionada.service';
 import { Observable, map, startWith } from 'rxjs';
 import { CapitalPagadoComponent } from './capital-pagado/capital-pagado.component';
@@ -177,7 +176,7 @@ constructor(
               this.backgroundEng = antecedentesLegales.traductions[6].value
               this.historyEng = antecedentesLegales.traductions[7].value
             }
-            if(antecedentesLegales.currentPaidCapitalCurrency > 0 && antecedentesLegales.currentPaidCapitalCurrency !== null){
+            if(antecedentesLegales.currentPaidCapitalCurrency !== null && antecedentesLegales.currentPaidCapitalCurrency > 0){
               this.currentPaidCapitalCurrency = antecedentesLegales.currentPaidCapitalCurrency
               this.currentPaidCapitalCurrencyInforme = this.listaMonedas.filter(x => x.id === this.currentPaidCapitalCurrency)[0]
               this.capitalPagadoActualInforme = this.currentPaidCapitalCurrencyInforme.valor + ' | ' + this.currentPaidCapital + ' | ' + this.currentPaidCapitalComentary
@@ -187,8 +186,8 @@ constructor(
               this.capitalPagadoActualInforme = ' | ' + this.currentPaidCapital + ' | ' + this.currentPaidCapitalComentary
 
             }
-            if(antecedentesLegales.currency > 0 && antecedentesLegales.currency !== null){
-              this.currency = antecedentesLegales.currentPaidCapitalCurrency
+            if(antecedentesLegales.currency !== null && antecedentesLegales.currency > 0 ){
+              this.currency = antecedentesLegales.currentPaidCapitalCurrency !== null ? antecedentesLegales.currentPaidCapitalCurrency : 0
               this.currencyInforme = this.listaMonedas.filter(x => x.id === this.currency)[0]
             }else{
               this.limpiarSeleccionTipoMoneda()
@@ -199,7 +198,7 @@ constructor(
             }
             this.origin = antecedentesLegales.origin
             this.increaceDateCapital = antecedentesLegales.increaceDateCapital
-            if(antecedentesLegales.currency > 0 && antecedentesLegales.currency !== null){
+            if(antecedentesLegales.currency !== null && antecedentesLegales.currency > 0){
               this.currency = antecedentesLegales.currency
               this.currencyInforme = this.listaMonedas.filter(x => x.id === this.currency)[0]
             }else{
@@ -439,12 +438,18 @@ constructor(
       }
     }).add(
       () => {
-        const moneda = this.listaMonedas.filter(x => x.id === this.currentPaidCapitalCurrency)[0]
-        this.capitalPagadoActualInforme = moneda.valor + ' | ' + this.currentPaidCapital + ' | ' + this.currentPaidCapitalComentary
-        const input = document.getElementById('input_fecha_constitucion') as HTMLElement | null;
-        if(input){
-          input.focus()
+        if(this.currentPaidCapitalCurrency !== 0) {
+          const moneda = this.listaMonedas.filter(x => x.id === this.currentPaidCapitalCurrency)[0]
+          this.capitalPagadoActualInforme = moneda.valor + ' | ' + this.currentPaidCapital + ' | ' + this.currentPaidCapitalComentary
+          const input = document.getElementById('input_fecha_constitucion') as HTMLElement | null;
+          if(input){
+            input.focus()
+          }
+        }else{
+          this.capitalPagadoActualInforme = this.currentPaidCapital + ' | ' + this.currentPaidCapitalComentary
+
         }
+
       }
     );
   }

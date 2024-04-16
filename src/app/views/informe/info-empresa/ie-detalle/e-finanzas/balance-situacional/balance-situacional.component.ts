@@ -42,6 +42,7 @@ export class BalanceSituacionalComponent implements OnInit {
   dateD : Date | null = null
   balanceType = "SITUACIONAL"
   duration = ""
+  durationEng = ""
   idCurrency = 0
   exchangeRate = 0
   sales = 0
@@ -123,6 +124,7 @@ export class BalanceSituacionalComponent implements OnInit {
       date : this.date,
       balanceType : this.balanceType,
       duration : this.duration,
+      durationEng : this.durationEng,
       idCurrency : this.idCurrency,
       exchangeRate : this.exchangeRate,
       sales : this.sales,
@@ -205,6 +207,7 @@ export class BalanceSituacionalComponent implements OnInit {
     this.dateD = null
     this.balanceType = "SITUACIONAL"
     this.duration = ""
+    this.durationEng = ""
     this.idCurrency = 0
     this.exchangeRate = 0
     this.sales = 0
@@ -361,6 +364,7 @@ export class BalanceSituacionalComponent implements OnInit {
             }
             this.balanceType = balance.balanceType
             this.duration = balance.duration
+            this.durationEng = balance.durationEng
             this.idCurrency = balance.idCurrency
             this.exchangeRate = balance.exchangeRate
             this.sales = balance.sales

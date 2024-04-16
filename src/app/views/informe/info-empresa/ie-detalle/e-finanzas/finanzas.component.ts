@@ -361,10 +361,7 @@ export class FinanzasComponent implements OnInit, OnDestroy{
         },
       };
 
-      console.log(listaFechas);
-      console.log(listaMN);
-      console.log(listaME);
-      console.log(listaER);
+ 
     }
   }
 

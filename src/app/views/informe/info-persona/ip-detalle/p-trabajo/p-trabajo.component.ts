@@ -3,7 +3,7 @@ import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FOR
 import { MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter } from '@angular/material/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TraduccionDialogComponent } from '@shared/components/traduccion-dialog/traduccion-dialog.component';
 import { ComboData } from 'app/models/combo';
 import { TrabajoA } from 'app/models/informes/persona/trabajo';
@@ -59,7 +59,7 @@ export class PTrabajoComponent implements OnInit{
 
   listaCargo : ComboData[] = []
 
-  constructor(private comboService : ComboService, private dialog : MatDialog, private empresaService : DatosEmpresaService, private activatedRoute: ActivatedRoute, private trabajoService : TrabajoPService){
+  constructor(private router: Router,private comboService : ComboService, private dialog : MatDialog, private empresaService : DatosEmpresaService, private activatedRoute: ActivatedRoute, private trabajoService : TrabajoPService){
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (id?.includes('nuevo')) {
       this.idPerson = 0
@@ -383,6 +383,7 @@ export class PTrabajoComponent implements OnInit{
                   this.armarModeloActual()
                   this.armarModeloModificado()
                 })
+
                 this.id = response.data
               }
             }

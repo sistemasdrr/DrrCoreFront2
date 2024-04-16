@@ -10,11 +10,11 @@ export interface Background{
   notaryRegister : string
   publicRegister : string
   currentPaidCapital : number
-  currentPaidCapitalCurrency : number
+  currentPaidCapitalCurrency : number | null
   currentPaidCapitalComentary : string
   origin : string
   increaceDateCapital : string
-  currency : number
+  currency : number | null
   traded : string
   tradedBy : string
   currentExchangeRate : string

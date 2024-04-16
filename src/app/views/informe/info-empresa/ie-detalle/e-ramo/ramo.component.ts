@@ -291,28 +291,28 @@ export class RamoComponent implements OnInit{
               }
               if(ramoNegocio.countriesImport !== '' && ramoNegocio.countriesImport !== null){
                 this.countriesImport = ramoNegocio.countriesImport
-                const paises = ramoNegocio.countriesImport.split(', ')
-                if(paises.length > 0){
-                  paises.forEach(p => {
-                    const pais = this.paisesImpo.filter(x => x.valor === p)[0]
-                    if(pais){
-                      this.paisesSeleccionadosImpo.push(pais)
-                    }
-                  });
-                }
+                // const paises = ramoNegocio.countriesImport.split(', ')
+                // if(paises.length > 0){
+                //   paises.forEach(p => {
+                //     const pais = this.paisesImpo.filter(x => x.valor === p)[0]
+                //     if(pais){
+                //       this.paisesSeleccionadosImpo.push(pais)
+                //     }
+                //   });
+                // }
               }
 
               if(ramoNegocio.countriesExport.length > 0 && ramoNegocio.countriesExport !== null){
                 this.countriesExport = ramoNegocio.countriesExport
-                const paises = ramoNegocio.countriesExport.split(',')
-                if(paises.length > 0){
-                  paises.forEach(idPais => {
-                    const pais = this.paisesExpo.filter(x => x.id === parseInt(idPais))[0]
-                    if(pais){
-                      this.paisesSeleccionadosExpo.push(pais)
-                    }
-                  });
-                }
+                // const paises = ramoNegocio.countriesExport.split(',')
+                // if(paises.length > 0){
+                //   paises.forEach(idPais => {
+                //     const pais = this.paisesExpo.filter(x => x.id === parseInt(idPais))[0]
+                //     if(pais){
+                //       this.paisesSeleccionadosExpo.push(pais)
+                //     }
+                //   });
+                // }
               }
             }
           }
@@ -997,22 +997,22 @@ export class RamoComponent implements OnInit{
 
   guardar(){
     if(this.id === 0){
-      this.countriesImport = ""
-      this.countriesExport = ""
-      this.paisesSeleccionadosImpo.forEach(pais => {
-        if(this.paisesSeleccionadosImpo[this.paisesSeleccionadosImpo.length-1] == pais){
-          this.countriesImport += pais.valor
-        }else{
-          this.countriesImport += pais.valor + ', '
-        }
-      });
-      this.paisesSeleccionadosExpo.forEach(pais => {
-        if(this.paisesSeleccionadosExpo[this.paisesSeleccionadosExpo.length-1] == pais){
-          this.countriesExport += pais.valor
-        }else{
-          this.countriesExport += pais.valor + ', '
-        }
-      });
+      // this.countriesImport = ""
+      // this.countriesExport = ""
+      // this.paisesSeleccionadosImpo.forEach(pais => {
+      //   if(this.paisesSeleccionadosImpo[this.paisesSeleccionadosImpo.length-1] == pais){
+      //     this.countriesImport += pais.valor
+      //   }else{
+      //     this.countriesImport += pais.valor + ', '
+      //   }
+      // });
+      // this.paisesSeleccionadosExpo.forEach(pais => {
+      //   if(this.paisesSeleccionadosExpo[this.paisesSeleccionadosExpo.length-1] == pais){
+      //     this.countriesExport += pais.valor
+      //   }else{
+      //     this.countriesExport += pais.valor + ', '
+      //   }
+      // });
       this.armarModeloModificado()
       console.log(this.modeloModificado[0])
       Swal.fire({
@@ -1063,22 +1063,22 @@ export class RamoComponent implements OnInit{
         }
       });
     }else{
-      this.countriesImport = ""
-      this.countriesExport = ""
-      this.paisesSeleccionadosImpo.forEach(pais => {
-        if(this.paisesSeleccionadosImpo[this.paisesSeleccionadosImpo.length-1] == pais){
-          this.countriesImport += pais.valor
-        }else{
-          this.countriesImport += pais.valor + ', '
-        }
-      });
-      this.paisesSeleccionadosExpo.forEach(pais => {
-        if(this.paisesSeleccionadosExpo[this.paisesSeleccionadosExpo.length-1] == pais){
-          this.countriesExport += pais.valor
-        }else{
-          this.countriesExport += pais.valor + ', '
-        }
-      });
+      // this.countriesImport = ""
+      // this.countriesExport = ""
+      // this.paisesSeleccionadosImpo.forEach(pais => {
+      //   if(this.paisesSeleccionadosImpo[this.paisesSeleccionadosImpo.length-1] == pais){
+      //     this.countriesImport += pais.valor
+      //   }else{
+      //     this.countriesImport += pais.valor + ', '
+      //   }
+      // });
+      // this.paisesSeleccionadosExpo.forEach(pais => {
+      //   if(this.paisesSeleccionadosExpo[this.paisesSeleccionadosExpo.length-1] == pais){
+      //     this.countriesExport += pais.valor
+      //   }else{
+      //     this.countriesExport += pais.valor + ', '
+      //   }
+      // });
       this.armarModeloModificado()
       console.log(this.modeloModificado[0])
       Swal.fire({

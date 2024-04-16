@@ -4,6 +4,7 @@ export interface Balance{
   date : string
   balanceType : string
   duration : string
+  durationEng : string
   idCurrency : number
   exchangeRate : number
   sales : number

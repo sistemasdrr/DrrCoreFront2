@@ -35,9 +35,19 @@
         <span matSuffix style="margin-right: .5rem; color:gray;">
           <i class="fa-solid fa-coins"></i>
         </span>
-        <mat-select [(ngModel)]="idCurrency">
+        <input type="text" matInput [formControl]="ctrlMoneda"  [matAutocomplete]="auto2" [(ngModel)]="currentPaidCapitalCurrencyInforme" (ngModelChange)="selectMoneda(currentPaidCapitalCurrencyInforme)">
+
+        <button matSuffix mat-icon-button color="primary" style="background-color: rgba(0,0,0,0);" (click)="limpiarSeleccion()" #tooltip="matTooltip" matTooltip="Limpiar">
+          <i class="fa-solid fa-xmark" style="color: black; font-size: 20px;"></i>
+        </button>
+        <mat-autocomplete #auto2="matAutocomplete" [displayWith]="displayFn">
+          <mat-option *ngFor="let situacionRUC of filteredMoneda | async" [value]="situacionRUC">
+            {{situacionRUC.valor}}
+          </mat-option>
+        </mat-autocomplete>
+        <!-- <mat-select [(ngModel)]="idCurrency">
             <mat-option [value]="item.id" *ngFor="let item of listaMonedas">{{item.valor}}</mat-option>
-        </mat-select>
+        </mat-select> -->
       </mat-form-field>
     </div>
     <div class="col-md-7 mb-3">
