@@ -230,7 +230,6 @@ compararModelosF : any
             (response) => {
               if(response.isSuccess === true && response.isWarning === false){
                 const persona = response.data
-                console.log(response.data)
                 if(persona){
                   this.oldCode = persona.oldCode
                   this.fullname = persona.fullname
@@ -302,7 +301,6 @@ compararModelosF : any
                     if(fecha.length > 0){
                       this.lastSearchedD = new Date(parseInt(fecha[2]),parseInt(fecha[1])-1,parseInt(fecha[0]))
                     }
-                    console.log(this.lastSearchedD)
                   }
                   if(persona.birthDate !== null && persona.birthDate !== ""){
                     this.birthDate = persona.birthDate
@@ -316,6 +314,8 @@ compararModelosF : any
             }
           ).add(
             () => {
+              this.armarModeloActual()
+              this.armarModeloModificado()
               if(this.idLegalRegisterSituation !== 0){
                 this.situacionRucInforme = this.situacionRuc.filter(x => x.id === this.idLegalRegisterSituation)[0]
               }
@@ -338,8 +338,8 @@ compararModelosF : any
                 this.colorReputacion = this.reputacionSeleccionada.color
               }
 
-    this.armarModeloActual()
-    this.armarModeloModificado()
+
+
             }
           )
         }
@@ -360,14 +360,14 @@ compararModelosF : any
         return name ? this._filterPais(name as string) : this.paises.slice()
       }),
     )
-    this.armarModeloActual()
-    this.armarModeloModificado()
     this.compararModelosF = setInterval(() => {
       this.compararModelos();
     }, 2000);
   }
   compararModelos(){
     this.armarModeloModificado()
+    console.log(this.modeloActual)
+    console.log(this.modeloModificado)
     if(JSON.stringify(this.modeloActual) !== JSON.stringify(this.modeloModificado)){
       const tabPersona = document.getElementById('tab-persona') as HTMLElement | null;
       if (tabPersona) {
@@ -598,11 +598,9 @@ compararModelosF : any
       this.colorMsgSituacionRuc = "red"
     } else {
       this.msgSituacionRuc = "Opción Seleccionada."
-      console.log( situacionRuc.id)
       this.idLegalRegisterSituation = situacionRuc.id
       this.colorMsgSituacionRuc = "green"
     }
-    console.log(this.idLegalRegisterSituation)
   }
   limpiarSeleccionSituacionRUC() {
     this.controlSituacionRUC.reset();

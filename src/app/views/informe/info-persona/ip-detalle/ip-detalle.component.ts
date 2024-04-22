@@ -21,7 +21,7 @@ import Swal from 'sweetalert2';
   ]
 })
 export class IPDetalleComponent implements OnInit {
-  title : string = 'Detalles de Empresa'
+  title : string = 'Detalles de Persona'
   subtitle : string = ''
   codigoInforme : string | null = '';
   usr = 'Julio del Risco Lizarzaburu'
