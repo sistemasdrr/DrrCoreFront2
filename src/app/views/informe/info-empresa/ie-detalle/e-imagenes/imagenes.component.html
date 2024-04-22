@@ -7,13 +7,8 @@
       </div>
       <hr>
       <div class="col-md-8" >
-        <div class="custom-dropzone" ngx-dropzone [accept]="'image/*'" style="height: 20rem;" [accept]="'image/*'" (change)="onSelect($event)"   [disabled]="cardSeleccionada === 0">
-          <div class="d-flex justify-content-center" style="background-size: cover; width: 100%; height: 100%" *ngIf="imgSeleccionadaCheck === true">
-          </div>
-          <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" class="w-100 h-100 d-flex justify-content-center" *ngFor="let file of files" [file]="file" >
-
-
-          </ngx-dropzone-image-preview>
+        <div class="container d-flex justify-content-center" style="min-width: 100%; height: 300px; border: 2px groove black;">
+          <img [src]="base64.includes('data:image/') === true ? base64 : 'data:image/png;base64,'+base64" class="img-fluid">
         </div>
       </div>
       <div class="col-md-4">
@@ -51,6 +46,12 @@
             <input matInput [(ngModel)]="descIng"  [disabled]="cardSeleccionada === 0">
           </mat-form-field>
         </div>
+        <div class="col-md-12">
+          <mat-slide-toggle [(ngModel)]="print" color="primary" [disabled]="id === -1">
+             Imprimir?
+          </mat-slide-toggle>
+
+        </div>
       </div>
 
       <div class="col-md-12">
@@ -83,7 +84,7 @@
   </div>
   <div class="col-md-4">
     <mat-card>
-      <img mat-card-image src="{{img2}}">
+      <img mat-card-image src="{{img2}}" >
       <mat-card-content>
        <p><b>Descripción : </b>{{imgDesc2}}</p>
        <p><b>Descripción Inglés: </b>{{imgDescEng2}}</p>
@@ -105,7 +106,7 @@
   </div>
   <div class="col-md-4">
     <mat-card>
-      <img mat-card-image src="{{img3}}">
+      <img mat-card-image src="{{img3}}" >
       <mat-card-content>
         <p><b>Descripción : </b>{{imgDesc3}}</p>
         <p><b>Descripción Inglés: </b>{{imgDescEng3}}</p>
@@ -127,7 +128,7 @@
   </div>
   <div class="col-md-12 mt-2">
     <mat-card>
-      <img mat-card-image src="{{img4}}">
+      <img mat-card-image src="{{img4}}" >
       <mat-card-content>
         <p><b>Descripción : </b>{{imgDesc4}}</p>
         <p><b>Descripción Inglés: </b>{{imgDescEng4}}</p>

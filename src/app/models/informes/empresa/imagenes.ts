@@ -13,7 +13,6 @@ export interface CompanyImages{
   path4 : string
   traductions : Traduction[]
 }
-
 export interface CompanyImg{
   id : number
   idCompany : number
