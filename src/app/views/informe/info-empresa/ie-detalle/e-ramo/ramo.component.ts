@@ -591,17 +591,17 @@ export class RamoComponent implements OnInit{
       export : this.export,
       cashSalePercentage : this.cashSalePercentage,
       cashSaleComentary : this.cashSaleComentary,
-      creditSalePercentage : this.creditSalePercentage,
+      creditSalePercentage : this.creditSalePercentage === null ? 0 : this.creditSalePercentage,
       creditSaleComentary : this.creditSaleComentary,
-      territorySalePercentage : this.territorySalePercentage,
+      territorySalePercentage : this.territorySalePercentage === null ? 0 : this.territorySalePercentage,
       territorySaleComentary : this.territorySaleComentary,
-      abroadSalePercentage : this.abroadSalePercentage,
+      abroadSalePercentage : this.abroadSalePercentage === null ? 0 : this.abroadSalePercentage,
       abroadSaleComentary : this.abroadSaleComentary,
-      nationalPurchasesPercentage : this.nationalPurchasesPercentage,
+      nationalPurchasesPercentage : this.nationalPurchasesPercentage === null ? 0 : this.nationalPurchasesPercentage,
       nationalPurchasesComentary : this.nationalPurchasesComentary,
-      internationalPurchasesPercentage : this.internationalPurchasesPercentage,
+      internationalPurchasesPercentage : this.internationalPurchasesPercentage === null ? 0 : this.internationalPurchasesPercentage,
       internationalPurchasesComentary : this.internationalPurchasesComentary,
-      workerNumber : this.workerNumber,
+      workerNumber : this.workerNumber === null ? 0 : this.workerNumber,
       idLandOwnership : this.idLandOwnership,
       totalArea : this.totalArea,
       previousAddress : this.previousAddress,
@@ -618,43 +618,43 @@ export class RamoComponent implements OnInit{
       traductions : [
         {
           key : 'S_R_SALEPER',
-          value : this.cashSaleComentaryEng
+          value : this.cashSaleComentaryEng === null ? "" : this.cashSaleComentaryEng
         },
         {
           key : 'S_R_CREDITPER',
-          value : this.creditSaleComentaryEng
+          value : this.creditSaleComentaryEng === null ? "" : this.creditSaleComentaryEng
         },
         {
           key : 'S_R_TERRITORY',
-          value : this.territorySaleComentaryEng
+          value : this.territorySaleComentaryEng === null ? "" : this.territorySaleComentaryEng
         },
         {
           key : 'S_R_EXTSALES',
-          value : this.abroadSaleComentaryEng
+          value : this.abroadSaleComentaryEng === null ? "" : this.abroadSaleComentaryEng
         },
         {
           key : 'S_R_NATIBUY',
-          value : this.nationalPurchasesComentaryEng
+          value : this.nationalPurchasesComentaryEng === null ? "" : this.nationalPurchasesComentaryEng
         },
         {
           key : 'S_R_INTERBUY',
-          value : this.internationalPurchasesComentaryEng
+          value : this.internationalPurchasesComentaryEng === null ? "" : this.internationalPurchasesComentaryEng
         },
         {
           key : 'S_R_TOTALAREA',
-          value : this.totalAreaEng
+          value : this.totalAreaEng === null ? "" : this.totalAreaEng
         },
         {
           key : 'L_R_OTRHERLOCALS',
-          value : this.otherLocationsEng
+          value : this.otherLocationsEng === null ? "" : this.otherLocationsEng
         },
         {
           key : 'L_R_PRINCACT',
-          value : this.activityDetailCommentaryEng
+          value : this.activityDetailCommentaryEng === null ? "" : this.activityDetailCommentaryEng
         },
         {
           key : 'L_R_ADIBUS',
-          value : this.aditionalCommentaryEng
+          value : this.aditionalCommentaryEng === null ? "" : this.aditionalCommentaryEng
         },
       ]
     }
@@ -669,17 +669,17 @@ export class RamoComponent implements OnInit{
       export : this.export,
       cashSalePercentage : this.cashSalePercentage,
       cashSaleComentary : this.cashSaleComentary,
-      creditSalePercentage : this.creditSalePercentage,
+      creditSalePercentage : this.creditSalePercentage === null ? 0 : this.creditSalePercentage,
       creditSaleComentary : this.creditSaleComentary,
-      territorySalePercentage : this.territorySalePercentage,
+      territorySalePercentage : this.territorySalePercentage === null ? 0 : this.territorySalePercentage,
       territorySaleComentary : this.territorySaleComentary,
-      abroadSalePercentage : this.abroadSalePercentage,
+      abroadSalePercentage : this.abroadSalePercentage === null ? 0 : this.abroadSalePercentage,
       abroadSaleComentary : this.abroadSaleComentary,
-      nationalPurchasesPercentage : this.nationalPurchasesPercentage,
+      nationalPurchasesPercentage : this.nationalPurchasesPercentage === null ? 0 : this.nationalPurchasesPercentage,
       nationalPurchasesComentary : this.nationalPurchasesComentary,
-      internationalPurchasesPercentage : this.internationalPurchasesPercentage,
+      internationalPurchasesPercentage : this.internationalPurchasesPercentage === null ? 0 : this.internationalPurchasesPercentage,
       internationalPurchasesComentary : this.internationalPurchasesComentary,
-      workerNumber : this.workerNumber,
+      workerNumber : this.workerNumber === null ? 0 : this.workerNumber,
       idLandOwnership : this.idLandOwnership,
       totalArea : this.totalArea,
       previousAddress : this.previousAddress,
@@ -696,43 +696,43 @@ export class RamoComponent implements OnInit{
       traductions : [
         {
           key : 'S_R_SALEPER',
-          value : this.cashSaleComentaryEng
+          value : this.cashSaleComentaryEng === null ? "" : this.cashSaleComentaryEng
         },
         {
           key : 'S_R_CREDITPER',
-          value : this.creditSaleComentaryEng
+          value : this.creditSaleComentaryEng === null ? "" : this.creditSaleComentaryEng
         },
         {
           key : 'S_R_TERRITORY',
-          value : this.territorySaleComentaryEng
+          value : this.territorySaleComentaryEng === null ? "" : this.territorySaleComentaryEng
         },
         {
           key : 'S_R_EXTSALES',
-          value : this.abroadSaleComentaryEng
+          value : this.abroadSaleComentaryEng === null ? "" : this.abroadSaleComentaryEng
         },
         {
           key : 'S_R_NATIBUY',
-          value : this.nationalPurchasesComentaryEng
+          value : this.nationalPurchasesComentaryEng === null ? "" : this.nationalPurchasesComentaryEng
         },
         {
           key : 'S_R_INTERBUY',
-          value : this.internationalPurchasesComentaryEng
+          value : this.internationalPurchasesComentaryEng === null ? "" : this.internationalPurchasesComentaryEng
         },
         {
           key : 'S_R_TOTALAREA',
-          value : this.totalAreaEng
+          value : this.totalAreaEng === null ? "" : this.totalAreaEng
         },
         {
           key : 'L_R_OTRHERLOCALS',
-          value : this.otherLocationsEng
+          value : this.otherLocationsEng === null ? "" : this.otherLocationsEng
         },
         {
           key : 'L_R_PRINCACT',
-          value : this.activityDetailCommentaryEng
+          value : this.activityDetailCommentaryEng === null ? "" : this.activityDetailCommentaryEng
         },
         {
           key : 'L_R_ADIBUS',
-          value : this.aditionalCommentaryEng
+          value : this.aditionalCommentaryEng === null ? "" : this.aditionalCommentaryEng
         },
       ]
     }
