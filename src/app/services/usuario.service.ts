@@ -5,6 +5,54 @@ import { Process, User, UserPermission } from 'app/models/usuario';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
 
+
+export interface CopilotModel{
+  _type : string
+  queryContext : QueryContext
+  webPages : WebPages
+  relatedSearches : RelatedSearches
+}
+export interface RelatedSearches{
+  id : string
+  value : RelatedSearchesValues[]
+}
+export interface RelatedSearchesValues{
+  text : string
+  displayText : string
+  webSearchUrl : string
+}
+export interface QueryContext{
+  originalQuery : string
+}
+export interface WebPages{
+  webSearchUrl : string
+  totalEstimatedMatches : number
+  value : CopilotValue[]
+}
+export interface CopilotValue{
+  id : string
+  name : string
+  url : string
+  isFamilyFriendly : boolean
+  displayUrl : string
+  snippet : string
+  dateLastCrawled : string
+  cachedPageUrl : string
+  language : string
+  isNavigational : boolean
+  noCache : string
+  richFacts : CopilotValueRichFacts[]
+
+}
+export interface CopilotValueRichFacts{
+  label : CopilotText
+  items : CopilotText[]
+  hint : CopilotText
+}
+
+export interface CopilotText{
+  text : string
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -16,6 +64,10 @@ export class UsuarioService {
   }
   getProcess(): Observable<Response<Process[]>> {
     return this.http.get<Response<Process[]>>(this.url + this.controller + '/GetProcess');
+  }
+  Copilot(consulta : string) : Observable<CopilotModel>{
+    return this.http.post<CopilotModel>(this.url + '/Agent' + '/copilot?query='+consulta,'');
+
   }
   Login(username : string, password : string): Observable<Response<string>> {
     return this.http.get<Response<string>>(this.url + this.controller + '/Login?username='+username+'&password='+password);
@@ -32,4 +84,6 @@ export class UsuarioService {
   updateUserProcess(obj : UserPermission) : Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url + this.controller + '/UpdateProcess',obj);
   }
+
+
 }

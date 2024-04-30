@@ -1,7 +1,7 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { HistoricoVentasComponent } from './historico-ventas/historico-ventas.component';
 import { HistoricoVentasService } from '../../../../../services/informes/historico-ventas.service';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { TraduccionDialogComponent } from '@shared/components/traduccion-dialog/traduccion-dialog.component';
@@ -15,6 +15,8 @@ import Swal from 'sweetalert2';
 import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexFill, ApexGrid, ApexLegend, ApexPlotOptions, ApexResponsive, ApexStates, ApexStroke, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis } from 'ng-apexcharts';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 export interface data {
   name: string;
@@ -86,7 +88,8 @@ export class FinanzasComponent implements OnInit, OnDestroy{
   listaGradoColaboracion : ComboData[] = []
   listaSituacionFinanciera : ComboData2[] = []
 
-
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
   public areaChartOptions!: Partial<ChartOptions>;
 
 
@@ -171,6 +174,8 @@ export class FinanzasComponent implements OnInit, OnDestroy{
                   (response) => {
                     if(response.isSuccess === true && response.isWarning === false){
                       this.dataSourceHistoricoVentas.data = response.data
+                      this.dataSourceHistoricoVentas.sort = this.sort
+                      this.dataSourceHistoricoVentas.paginator = this.paginator
                       console.log(this.dataSourceHistoricoVentas.data)
                     }
                   }
@@ -361,7 +366,7 @@ export class FinanzasComponent implements OnInit, OnDestroy{
         },
       };
 
- 
+
     }
   }
 

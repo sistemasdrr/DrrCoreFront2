@@ -45,7 +45,12 @@
             <a *ngIf="order.asignedTo.includes('RC') && order.about === 'P'" [target]="'_blank'" [routerLink]="'../../informes/referencias/P/'+order.id+'/'+order.idCompany">
               {{order.busineesName}}
             </a>
-            <p *ngIf="!order.asignedTo.includes('RC')"> {{order.busineesName}}</p>
+            <a *ngIf="!order.asignedTo.includes('RC') && order.about === 'E'" [target]="'_blank'" [routerLink]="'../../informes/empresa/detalle/'+order.idCompany">
+              {{order.busineesName}}
+            </a>
+            <a *ngIf="!order.asignedTo.includes('RC') && order.about === 'P'" [target]="'_blank'" [routerLink]="'../../informes/persona/detalle/'+order.idPerson">
+              {{order.busineesName}}
+            </a>
           </td>
         </ng-container>
         <ng-container matColumnDef="status" >

@@ -11,7 +11,7 @@
         <div class="w-100 d-flex justify-content-between align-items-center">
           <div style="font-size: 24px;">Asignación del Cupón  </div>
             <div>
-              <button  mat-flat-button class="bg-cyan" style="margin: 0 .5rem .5rem .5rem; font-size: 16px;"  >
+              <button  mat-flat-button class="bg-cyan" style="margin: 0 .5rem .5rem .5rem; font-size: 16px;" (click)="enviarDespachar()"  >
                 Despachar
               </button><!--*ngIf="assginFromCode.includes('S')"-->
               <button mat-mini-fab class="" style="margin: 0 .5rem .5rem .5rem;" #tooltip="matTooltip" matTooltip="Guardar" (click)="guardarCambios()" [ngClass]="dataSource.data.length === 0 ? 'bg-gray' : 'bg-blue' " [disabled]="dataSource.data.length === 0">
@@ -24,10 +24,12 @@
           </div>
           <hr>
           <div class="row">
-            <div class="col-md-6 d-flex mt-5">
+            <div class="col-md-6 d-flex mt-2">
+
                 <div class="col-md-3">
+
                   <mat-button-toggle-group  #group="matButtonToggleGroup" class="w-100 shadow" [vertical]="true" [disabled]="estado === 'editar'">
-                    <mat-button-toggle [ngClass]="{'bg-blue': activeList === 6}" value="PreAsignación" (click)="filtrarDatos('PA'); activeList = 6; type ='PA'; referencias = false;">PreAsignación</mat-button-toggle>
+                    <mat-button-toggle [ngClass]="{'bg-blue': activeList === 6}" value="PreAsignación" (click)="filtrarDatos('PA'); activeList = 6; type ='PA'; referencias = false;  ">PreAsignación</mat-button-toggle>
                     <mat-button-toggle [ngClass]="{'bg-blue': activeList === 2}" value="Reportero" (click)="filtrarDatos('RP'); activeList = 2; type ='RP';" >Reportero</mat-button-toggle>
                     <mat-button-toggle [ngClass]="{'bg-blue': activeList === 7}" value="Agente" (click)="filtrarDatos('AG'); activeList = 7; type ='AG';balance=false;observaciones = ''" >Agente</mat-button-toggle>
                     <mat-button-toggle [ngClass]="{'bg-blue': activeList === 3}" value="Referencista" (click)="filtrarDatos('RF'); activeList = 3; type ='RF'; referencias = false;">Referencista</mat-button-toggle>
@@ -38,10 +40,12 @@
                   </mat-button-toggle-group>
                 </div>
                 <div class="col-md-9 mat-elevation-z8" >
+
+                  <p class="m-1" style="color:green"><b>Asignaciones Activas : {{numAsig}}</b></p>
                   <mat-selection-list #asignacion [multiple]="false" [disabled]="estado === 'editar'" style="width: 100%; max-height: 400px; overflow-y: auto;" (selectionChange)="seleccionarTrabajador(asignacion.selectedOptions.selected[0].value.code,asignacion.selectedOptions.selected[0].value.fullname,asignacion.selectedOptions.selected[0].value.idUserLogin,asignacion.selectedOptions.selected[0].value.internal)" >
                     <mat-list-option *ngFor="let asig of datos2" [value]="asig">
                       <div style="font-size: 12px; border-radius: 14px;" >
-                        {{asig.code}} || {{asig.fullname}}
+                        <div class="d-flex" style="color: red; font-size: 16px;">{{asig.porcentaje + '%'}} <div style="color:black; font-size: 13px !important;">{{ ' - ' + asig.code}} || {{asig.fullname}}</div></div>
                       </div>
                     </mat-list-option>
                   </mat-selection-list>

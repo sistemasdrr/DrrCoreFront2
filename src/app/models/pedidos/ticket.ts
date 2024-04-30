@@ -278,6 +278,7 @@ export interface SaveTicketAssignation{
   commentary : string
 }
 export interface PersonalAssignation{
+  porcentaje : number
   id : number
   idEmployee : number
   idUserLogin : number
@@ -361,3 +362,22 @@ export interface EmployeesAssignated{
   name : string
 }
 
+export interface TicketHistoryCount{
+  id : number
+  idTicket : number
+  userFrom : string
+  userTo : string
+  creationDate : Date
+  updateDate : Date
+  deleteDate : Date
+  enable : boolean
+  idStatusTicket : number
+  asignedTo : string
+  flag : boolean
+  numberAssign : number
+  balance : boolean
+  references : boolean
+  observations : string
+  startDate : Date
+  endDate : Date
+}

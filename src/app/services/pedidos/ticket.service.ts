@@ -1,4 +1,4 @@
-import { AddTicketObservations, Asignacion, EmployeesAssignated, GetTicketObservations, ListTicket2, NewAsignacion } from './../../models/pedidos/ticket';
+import { AddTicketObservations, Asignacion, EmployeesAssignated, GetTicketObservations, ListTicket2, NewAsignacion, TicketHistoryCount } from './../../models/pedidos/ticket';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CurrentTicket, ListTicket, ReportType, PersonalAssignation, SaveTicketAssignation, SendQuery, Ticket, TicketListPending, TicketQuery, TicketFile, TicketHistorySubscriber, SearchSituation, TicketsByCompanyOrPerson, TimeLineTicket, TicketObservations, ProviderByTicket } from 'app/models/pedidos/ticket';
@@ -129,7 +129,9 @@ export class TicketService {
   getProvidersByTicket(idTicket : number) : Observable<Response<ProviderByTicket[]>>{
     return this.http.get<Response<ProviderByTicket[]>>(this.url + this.controllerTicket + '/providerByIdTicket?idTicket='+idTicket );
   }
-
+  getTicketHistoryCount() : Observable<Response<TicketHistoryCount[]>>{
+    return this.http.get<Response<TicketHistoryCount[]>>(this.url + this.controllerTicket + '/getCountAsignation' );
+  }
 
 
   GetEmployeesAssignated(idTicket : number) : Observable<Response<EmployeesAssignated[]>>{
@@ -143,6 +145,10 @@ export class TicketService {
   }
   FinishTicketObservation(id : number, conclusion : string, dr : boolean, ag : boolean, cl : boolean) : Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/FinishTicketObservation?idTicketObservation='+id+'&conclusion='+conclusion+'&dr='+dr+'&ag='+ag+'&cl='+cl,'');
+  }
+
+  TicketToDispatch(idTicketHistory : number, idTicket : number) : Observable<Response<boolean>>{
+    return this.http.get<Response<boolean>>(this.url + this.controllerTicket + '/TicketToDispatch?idTicketHistory='+idTicketHistory+'&idTicket='+idTicket);
   }
 
 }

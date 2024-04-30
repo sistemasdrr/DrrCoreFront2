@@ -1,3 +1,4 @@
+import { CopilotModel, UsuarioService } from 'app/services/usuario.service';
 import { DOCUMENT } from '@angular/common';
 import {
   Component,
@@ -41,10 +42,13 @@ export class RightSidebarComponent
     public elementRef: ElementRef,
     private rightSidebarService: RightSidebarService,
     private configService: ConfigService,
-    private directionService: DirectionService
+    private directionService: DirectionService,
+    private usuarioService : UsuarioService
   ) {
     super();
   }
+
+  copilot : CopilotModel[] = []
   ngOnInit() {
     this.config = this.configService.configData;
     this.subs.sink = this.rightSidebarService.sidebarState.subscribe(
@@ -176,7 +180,7 @@ export class RightSidebarComponent
     this.innerHeight = window.innerHeight;
     const height = this.innerHeight - this.headerHeight;
     this.maxHeight = height + '';
-    this.maxWidth = '500px';
+    this.maxWidth = '700px';
   }
   onClickedOutside(event: Event) {
     const button = event.target as HTMLButtonElement;
@@ -223,4 +227,23 @@ export class RightSidebarComponent
     this.isRtl = false;
     localStorage.setItem('isRtl', 'false');
   }
+  search = ""
+  loading = false;
+  consultar(){
+    this.loading = true
+    this.usuarioService.Copilot(this.search).subscribe(
+      (response) => {
+        if(response !== null){
+          this.loading = false
+          this.copilot[0] = response
+          const input = document.getElementById('buscador') as HTMLElement | null;
+          if(input){
+            input.focus()
+          }
+        }
+      }
+    )
+  }
+
+
 }

@@ -96,6 +96,8 @@
                     <tr mat-header-row *matHeaderRowDef="columnToDisplayHistoricoVentas"></tr>
                     <tr mat-row *matRowDef="let row; columns: columnToDisplayHistoricoVentas;"></tr>
                   </table>
+                  <mat-paginator [pageSizeOptions]="[5, 10]" aria-label="Seleccionar página de Pedidos" class="w-100"></mat-paginator>
+
                 </div>
               </div>
             </div>
@@ -127,10 +129,10 @@
         </mat-form-field>
       </div>
       <div class="col-md-5 d-flex justify-content-end">
-        <button mat-raised-button class="bg-blue" style="margin: .7rem; color:white;" [class]="tabCommentary === null || tabCommentary === '' ? 'sin-traduccion' : ''" (click)="cuadroTabulado('Cuadro Tabulado - Información Financiera','',tabCommentary,tabCommentaryEng,'tab')" >
+        <button mat-raised-button class="bg-blue" style="margin: .7rem; color:white;" [class]="tabCommentaryEng === null || tabCommentaryEng === '' ? 'sin-traduccion' : ''" (click)="cuadroTabulado('Cuadro Tabulado - Información Financiera','',tabCommentary,tabCommentaryEng,'tab')" >
           Cuadro Tabulado
         </button>
-        <button mat-raised-button class="bg-blue" style="margin: .7rem; color:white;" [class]="tabCommentary === null || tabCommentary === '' ? 'sin-traduccion' : ''" (click)="agregarComentario(tituloActivos,subtituloActivos,mainFixedAssets,mainFixedAssetsEng,'principalesActivos')" >
+        <button mat-raised-button class="bg-blue" style="margin: .7rem; color:white;" [class]="mainFixedAssetsEng === null || mainFixedAssetsEng === '' ? 'sin-traduccion' : ''" (click)="agregarComentario(tituloActivos,subtituloActivos,mainFixedAssets,mainFixedAssetsEng,'principalesActivos')" >
           Activos Fijos
         </button>
         <button mat-raised-button class="bg-blue" style="margin: .7rem; color:white;" (click)="balanceSituacional(idCompany)" >

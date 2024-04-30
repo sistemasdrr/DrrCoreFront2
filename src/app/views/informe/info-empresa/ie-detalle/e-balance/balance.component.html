@@ -111,8 +111,8 @@
           </div>
           <div class="col-md-12 ">
             <mat-accordion class="w-100">
-              <mat-expansion-panel>
-                <mat-expansion-panel-header>
+              <mat-expansion-panel [expanded]="true" (opened)="true">
+                <mat-expansion-panel-header >
                   <mat-panel-title>
                     <b>Activos</b>
                   </mat-panel-title>
@@ -120,8 +120,8 @@
                     <input class="form-control"  mask="separator.2" thousandSeparator="{{separator}}" [allowNegativeNumbers]="true" [(ngModel)]="totalAssets" (keyup.enter)="enter($event)" (ngModelChange)="updRatios()">
                   </mat-panel-description>
                 </mat-expansion-panel-header>
-                <mat-accordion class="w-100">
-                  <mat-expansion-panel>
+                <mat-accordion class="w-100" [displayMode]="'default'">
+                  <mat-expansion-panel [expanded]="true" (opened)="true">
                     <mat-expansion-panel-header>
                       <mat-panel-title>
                         <b>Activos Corrientes</b>
@@ -160,7 +160,7 @@
                   </mat-expansion-panel>
                 </mat-accordion>
                 <mat-accordion class="w-100">
-                  <mat-expansion-panel>
+                  <mat-expansion-panel [expanded]="true" (opened)="true">
                     <mat-expansion-panel-header>
                       <mat-panel-title>
                         <b>Activos No Corrientes</b>
@@ -196,7 +196,7 @@
           </div>
           <div class="col-md-12 mb-1">
             <mat-accordion class="w-100">
-              <mat-expansion-panel>
+              <mat-expansion-panel [expanded]="true" (opened)="true">
                 <mat-expansion-panel-header>
                   <mat-panel-title>
                     Pasivos
@@ -206,7 +206,7 @@
                   </mat-panel-description>
                 </mat-expansion-panel-header>
                 <mat-accordion class="w-100">
-                  <mat-expansion-panel>
+                  <mat-expansion-panel [expanded]="true" (opened)="true">
                     <mat-expansion-panel-header>
                       <mat-panel-title>
                         Pasivos Corrientes
@@ -232,7 +232,7 @@
                   </mat-expansion-panel>
                 </mat-accordion>
                 <mat-accordion class="w-100">
-                  <mat-expansion-panel>
+                  <mat-expansion-panel [expanded]="true" (opened)="true">
                     <mat-expansion-panel-header>
                       <mat-panel-title>
                         Pasivos No Corrientes
@@ -265,7 +265,7 @@
           </div>
           <div class="col-md-12 ">
             <mat-accordion class="w-100">
-              <mat-expansion-panel>
+              <mat-expansion-panel [expanded]="true" (opened)="true">
                 <mat-expansion-panel-header>
                   <mat-panel-title>
                     Patrimonio
@@ -301,7 +301,7 @@
                   </div>
                 </div>
                 <mat-accordion class="w-100">
-                  <mat-expansion-panel>
+                  <mat-expansion-panel [expanded]="true" (opened)="true">
                     <mat-expansion-panel-header>
                       <mat-panel-title>
                         Total Pasivo / Patrimonio

@@ -36,7 +36,7 @@ export class AgregarHistorialTrabajadorComponent implements OnInit{
       this.id = data.id
       this.idCompany = data.idCompany
     }
-    if(this.id !== 0){
+    if(this.id === 0){
       this.titulo = "Agregar Historial de Trabajadores"
     }else{
 

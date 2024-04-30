@@ -40,6 +40,7 @@ import { MatSort } from '@angular/material/sort';
 import { AgregarHistorialTrabajadorComponent } from './agregar-historial-trabajador/agregar-historial-trabajador.component';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
+import { MatPaginator } from '@angular/material/paginator';
 
 export interface data {
   name: string;
@@ -175,6 +176,7 @@ export class RamoComponent implements OnInit{
   columnsWorkerHistory : string[] = ['numberYear', 'numberWorker','acciones']
   dataSourceWorkerHistory : MatTableDataSource<WorkerHistory>
   @ViewChild(MatSort, {static: true}) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   public areaChartOptions!: Partial<ChartOptions>;
 
   @ViewChild('paisExpoInput') paisExpoInput!: ElementRef<HTMLInputElement>;
@@ -224,6 +226,7 @@ export class RamoComponent implements OnInit{
           if(response.isSuccess === true && response.isWarning === false){
             this.dataSourceWorkerHistory.data = response.data
             this.dataSourceWorkerHistory.sort = this.sort
+            this.dataSourceWorkerHistory.paginator = this.paginator
           }
         }
       )

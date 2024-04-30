@@ -4,7 +4,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { Asignacion, ListTicket2, NewAsignacion, PersonalAssignation } from 'app/models/pedidos/ticket';
+import { Asignacion, ListTicket2, NewAsignacion, PersonalAssignation, TicketHistoryCount } from 'app/models/pedidos/ticket';
 import { TicketService } from 'app/services/pedidos/ticket.service';
 import * as moment from 'moment';
 import Swal from 'sweetalert2';
@@ -26,6 +26,7 @@ import Swal from 'sweetalert2';
   ]
 })
 export class SeleccionarAgenteComponent implements OnInit {
+  idTicketHistory = 0
   order : ListTicket2[] = []
   activeList = 0
   estado = "agregar"
@@ -70,6 +71,7 @@ export class SeleccionarAgenteComponent implements OnInit {
   }
   datos : PersonalAssignation[] = []
   datos2 : PersonalAssignation[] = []
+  ticketHistory : TicketHistoryCount[] = []
 
   constructor(public dialogRef: MatDialogRef<SeleccionarAgenteComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, private ticketService : TicketService){
@@ -88,6 +90,7 @@ export class SeleccionarAgenteComponent implements OnInit {
       this.userFrom = auth.idUser
 
       console.log(this.order[0].id)
+      this.idTicketHistory = this.order[0].id
       console.log(this.order[0].asignedTo)
       console.log(this.order[0].idTicket)
       console.log(this.order[0].otherUserCode)
@@ -111,44 +114,130 @@ export class SeleccionarAgenteComponent implements OnInit {
             }
           }).add(
             () => {
-              console.log(this.datos)
+              this.ticketService.getTicketHistoryCount().subscribe(
+                (response) => {
+                  if(response.isSuccess === true && response.isWarning === false){
+                    this.ticketHistory = response.data
+                  }
+                }
+              ).add(
+                () => {
+
+                  console.log(this.datos)
+                  console.log(this.ticketHistory)
+                }
+              )
             }
           )
       }
     )
   }
+  numAsig = 0
+  enviarDespachar(){
+    Swal.fire({
+      title: '¿Está seguro de enviar a despachar?',
+      text: "",
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText : 'No',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí',
+      width: '20rem',
+      heightAuto : true
+    }).then((result) => {
+      if (result.value) {
+        this.loading=true;
+        this.ticketService.TicketToDispatch(this.idTicketHistory, this.idTicket).subscribe(
+          (response) => {
+            if(response.isSuccess === true && response.isWarning === false){
+              Swal.fire({
+                title: 'El ticket se envio a despacho',
+                text: "",
+                icon: 'success',
+                width: '20rem',
+                heightAuto : true
+              }).then(() => {
+                this.dialogRef.close()
+                this.loading=false;
+              })
 
-  filtrarDatos(tipo : string){
-    if (tipo === "DI" || tipo === "TR") {
-      const crodriguez = this.datos.find(x => x.type === tipo && x.code.includes("D15") ||x.type === tipo && x.code.includes("T14") );
-      this.datos2 = this.datos.filter(x => x.type === tipo);
-      this.datos2.sort((a, b) => {
-        if (a.code < b.code) {
-          return -1;
-        }
-        if (a.code > b.code) {
-          return 1;
-        }
-        return 0;
-      });
-
-      if (crodriguez) {
-        this.datos2 = this.datos2.filter(x => x !== crodriguez);
-        this.datos2.unshift(crodriguez);
+            }
+          }
+        )
       }
+    })
+  }
+  filtrarDatos(tipo : string){
+    if(tipo === "PA"){
+      this.numAsig = this.ticketHistory.filter(x => x.asignedTo.includes('PA') === true).length;
+    }else if(tipo === 'RP'){
+      this.numAsig = this.ticketHistory.filter(x => x.asignedTo.includes('RC') === false && x.asignedTo.includes('CR') === false && x.asignedTo.includes('R') === true).length;
+    }else if(tipo === 'AG'){
+      this.numAsig = this.ticketHistory.filter(x => x.asignedTo.includes('P') === false && x.asignedTo.includes('A') === true).length;
+    }else if(tipo === 'RF'){
+      this.numAsig = this.ticketHistory.filter(x => x.asignedTo.includes('RC') === true).length;
+    }else if(tipo === 'DI'){
+      this.numAsig = this.ticketHistory.filter(x => x.asignedTo.includes('D') === true).length;
+    }else if(tipo === 'TR'){
+      this.numAsig = this.ticketHistory.filter(x => x.asignedTo.includes('T') === true).length;
+    }else if(tipo === 'SU'){
+      this.numAsig = this.ticketHistory.filter(x => x.asignedTo.includes('S') === true).length;
     }
-    else{
-      this.datos2 = this.datos.filter(x => x.type === tipo)
+    console.log(this.numAsig)
+    if(this.numAsig === 0){
+      this.datos.forEach(element => {
+        element.porcentaje = 0;
+      })
+    }else{
+      this.datos.forEach(element => {
+        const num =  ((this.ticketHistory.filter(x => x.asignedTo.trim() === element.code.trim()).length / this.numAsig) * 100)
+        element.porcentaje = parseFloat(num.toFixed(1));
+      })
+    }
+
+    if (tipo === "DI" || tipo === "TR") {
+      // Encuentra el elemento especial crodriguez, si existe
+      const crodriguez = this.datos.find(x =>
+          x.type === tipo && (x.code.includes("D15") || x.code.includes("T14"))
+      );
+
+      // Filtra los datos según el tipo y excluye a crodriguez de esta lista inicialmente si se encontró
+      this.datos2 = this.datos.filter(x => x.type === tipo && x !== crodriguez);
+
+      // Ordena primero por porcentaje de forma descendente y luego por código de forma ascendente
       this.datos2.sort((a, b) => {
-        if (a.code < b.code) {
-          return -1;
-        }
-        if (a.code > b.code) {
-          return 1;
-        }
-        return 0;
+          // Orden descendente para porcentaje
+          if (a.porcentaje > b.porcentaje) return -1;
+          if (a.porcentaje < b.porcentaje) return 1;
+
+          // Si los porcentajes son iguales, ordena por código ascendente
+          if (a.code < b.code) return -1;
+          if (a.code > b.code) return 1;
+          return 0;
       });
-    }
+
+      // Si crodriguez existe, agrega al inicio de la lista ordenada
+      if (crodriguez) {
+          this.datos2.unshift(crodriguez);
+      }
+  } else {
+      // Caso para otros tipos que no son 'DI' o 'TR'
+      this.datos2 = this.datos.filter(x => x.type === tipo);
+
+      // Ordena por porcentaje descendente y luego por código ascendente si los porcentajes son iguales
+      this.datos2.sort((a, b) => {
+          if (a.porcentaje > b.porcentaje) return -1;
+          if (a.porcentaje < b.porcentaje) return 1;
+
+          // Orden por código si el porcentaje es igual
+          if (a.code < b.code) return -1;
+          if (a.code > b.code) return 1;
+          return 0;
+      });
+  }
+
+
 
     this.asignado = ""
   }

@@ -44,6 +44,10 @@ export class SociosEmpresaComponent implements OnInit{
     }
   }
   ngOnInit(): void {
+    const listaEmpresas = document.getElementById('pagina-detalle-empresa') as HTMLElement | null;
+    if(listaEmpresas){
+      listaEmpresas.classList.remove('hide-loader');
+    }
     this.sociosEmpresaService.getListCompanyPartner(this.idCompany).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
@@ -52,6 +56,12 @@ export class SociosEmpresaComponent implements OnInit{
         }
       },(error) => {
         console.log(error)
+      }
+    ).add(
+      () => {
+        if(listaEmpresas){
+          listaEmpresas.classList.add('hide-loader');
+        }
       }
     )
     this.sociosEmpresaService.getListCompanyShareHolder(this.idCompany).subscribe(
@@ -159,5 +169,8 @@ export class SociosEmpresaComponent implements OnInit{
   }
   eliminarAccionistasEmpresa(id : number){
 
+  }
+  salir(){
+    this.dialog.closeAll()
   }
 }

@@ -244,6 +244,8 @@
             <tr mat-header-row *matHeaderRowDef="columnsWorkerHistory"></tr>
             <tr mat-row *matRowDef="let row; columns: columnsWorkerHistory;"></tr>
           </table>
+          <mat-paginator [pageSizeOptions]="[5]" aria-label="Seleccionar página de Pedidos" class="w-100"></mat-paginator>
+
         </div>
       </div>
       <div class="col-md-7">

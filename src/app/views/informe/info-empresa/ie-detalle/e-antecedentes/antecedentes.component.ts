@@ -140,6 +140,8 @@ constructor(
         (response) => {
           if(response.isSuccess === true && response.isWarning === false){
             this.dataSource.data = response.data
+            this.dataSource.sort = this.sort
+            this.dataSource.paginator = this.paginator
           }
         }
       )
