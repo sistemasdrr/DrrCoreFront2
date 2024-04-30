@@ -138,12 +138,12 @@
               <button  mat-mini-fab class="bg-white" matTooltip="Generar Documento" (click)="descargarDocumento(empresa.id, empresa.code,'E','pdf')">
                 <app-feather-icons [icon]="'file-text'" class="tbl-fav-pdf"></app-feather-icons>
               </button>
-              <button  mat-mini-fab class="bg-white" matTooltip="" *ngIf="empresa.enable" (click)="desactivarWebEmpresa(empresa.id)" matTooltip="Desactivar">
+              <!--button  mat-mini-fab class="bg-white" matTooltip="" *ngIf="empresa.enable" (click)="desactivarWebEmpresa(empresa.id)" matTooltip="Desactivar">
                 <app-feather-icons [icon]="'globe'" class="tbl-fav-web"></app-feather-icons>
-              </button>
-              <button  mat-mini-fab class="bg-white" matTooltip=""  *ngIf="!empresa.enable" (click)="activarWebEmpresa(empresa.id)" matTooltip="Activar">
+              </!--button>
+              <button--  mat-mini-fab class="bg-white" matTooltip=""  *ngIf="!empresa.enable" (click)="activarWebEmpresa(empresa.id)" matTooltip="Activar">
                 <app-feather-icons [icon]="'globe'" class="tbl-fav-no-web"></app-feather-icons>
-              </button>
+              </button-->
               <button  mat-mini-fab class="bg-white" matTooltip="Eliminar" (click)="eliminarEmpresa(empresa.id)">
                 <app-feather-icons [icon]="'trash-2'"   class="tbl-fav-delete"></app-feather-icons>
               </button>

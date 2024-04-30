@@ -139,12 +139,12 @@
               <button  mat-mini-fab class="bg-white" matTooltip="Generar PDF">
                 <app-feather-icons [icon]="'file-text'" class="tbl-fav-pdf"></app-feather-icons>
               </button>
-              <button  mat-mini-fab class="bg-white" matTooltip="" *ngIf="persona.enable" (click)="desactivarWebPersona(persona.id)" matTooltip="Desactivar">
+              <!--button  mat-mini-fab class="bg-white" matTooltip="" *ngIf="persona.enable" (click)="desactivarWebPersona(persona.id)" matTooltip="Desactivar">
                 <app-feather-icons [icon]="'globe'" class="tbl-fav-web"></app-feather-icons>
-              </button>
-              <button  mat-mini-fab class="bg-white" matTooltip=""  *ngIf="!persona.enable" (click)="activarWebPersona(persona.id)" matTooltip="Activar">
+              </!--button>
+              <button--  mat-mini-fab class="bg-white" matTooltip=""  *ngIf="!persona.enable" (click)="activarWebPersona(persona.id)" matTooltip="Activar">
                 <app-feather-icons [icon]="'globe'" class="tbl-fav-no-web"></app-feather-icons>
-              </button>
+              </button-->
               <button  mat-mini-fab class="bg-white" matTooltip="Eliminar" (click)="eliminarPersona(persona.id)">
                 <app-feather-icons [icon]="'trash-2'"   class="tbl-fav-delete"></app-feather-icons>
               </button>

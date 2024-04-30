@@ -27,6 +27,7 @@ import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FOR
 })
 export class SociosEmpresaComponent implements OnInit{
 
+  loading = false;
   idCompany = 0
 
   dataSourcePartners : MatTableDataSource<SociosEmpresaT>
@@ -44,10 +45,7 @@ export class SociosEmpresaComponent implements OnInit{
     }
   }
   ngOnInit(): void {
-    const listaEmpresas = document.getElementById('pagina-detalle-empresa') as HTMLElement | null;
-    if(listaEmpresas){
-      listaEmpresas.classList.remove('hide-loader');
-    }
+    this.loading = true
     this.sociosEmpresaService.getListCompanyPartner(this.idCompany).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
@@ -59,9 +57,7 @@ export class SociosEmpresaComponent implements OnInit{
       }
     ).add(
       () => {
-        if(listaEmpresas){
-          listaEmpresas.classList.add('hide-loader');
-        }
+        this.loading = false
       }
     )
     this.sociosEmpresaService.getListCompanyShareHolder(this.idCompany).subscribe(

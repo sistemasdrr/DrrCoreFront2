@@ -1,3 +1,5 @@
+import { PendingTask, ObservedTickets } from './../../models/pedidos/ticket';
+import { TicketService } from 'app/services/pedidos/ticket.service';
 import { Component, OnInit } from '@angular/core';
 import {
   ApexAxisChartSeries,
@@ -15,6 +17,7 @@ import {
   ApexTitleSubtitle,
   ApexStates,
 } from 'ng-apexcharts';
+import { Router } from '@angular/router';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -40,6 +43,17 @@ export type ChartOptions = {
   styleUrls: ['./main.component.scss'],
 })
 export class MainComponent implements OnInit {
+
+  pendingTask : PendingTask[] = []
+  pendingTaskStr = ""
+  dailyProduction = 0
+  monthlyProduction = 0
+  observedTickets : ObservedTickets[] = []
+  observedTicketsStr = ""
+
+  idUser = ''
+  idEmployee = 0
+
   public areaChartOptions!: Partial<ChartOptions>;
   public barChartOptions!: Partial<ChartOptions>;
   public smallBarChart!: Partial<ChartOptions>;
@@ -59,16 +73,68 @@ export class MainComponent implements OnInit {
       active: 'Dashboard',
     },
   ];
-  constructor() {
+  constructor(private ticketService : TicketService, private router: Router) {
+    const auth = JSON.parse(localStorage.getItem('authCache')+'')
+    if(auth){
+      this.idUser = auth.idUser
+      this.idEmployee = parseInt(auth.idEmployee)
+    }
   }
 
   ngOnInit() {
+
+    this.ticketService.PendingTask(this.idUser).subscribe(
+      (response) => {
+        if(response.isSuccess === true && response.isWarning === false){
+          this.pendingTask = response.data
+          this.pendingTask.forEach(element => {
+            if(element == this.pendingTask[this.pendingTask.length-1]){
+              this.pendingTaskStr += element.asignedTo + '→' + element.count
+            }else{
+              this.pendingTaskStr += element.asignedTo + '→' + element.count + ' || '
+            }
+          })
+        }
+      }
+    )
+    this.ticketService.DailyProduction(this.idUser).subscribe(
+      (response) => {
+        if(response.isSuccess === true && response.isWarning === false){
+          this.dailyProduction = response.data
+        }
+      }
+    )
+    this.ticketService.MonthlyProduction(this.idUser).subscribe(
+      (response) => {
+        if(response.isSuccess === true && response.isWarning === false){
+          this.monthlyProduction = response.data
+        }
+      }
+    )
+    this.ticketService.ObservedTickets(this.idEmployee).subscribe(
+      (response) => {
+        if(response.isSuccess === true && response.isWarning === false){
+          this.observedTickets = response.data
+          this.observedTickets.forEach(element => {
+            if(element == this.observedTickets[this.observedTickets.length-1]){
+              this.observedTicketsStr += element.asignedTo + '→' + element.ticket
+            }else{
+              this.observedTicketsStr += element.asignedTo + '→' + element.ticket + ' || '
+            }
+          })
+        }
+      }
+    )
+
     this.cardChart1();
     this.cardChart2();
     this.cardChart3();
     this.cardChart4();
     this.chart1();
     this.chart2();
+  }
+  redirigir(){
+    this.router.navigate(['/pedidos/asignacion-empleados']);
   }
   private cardChart1() {
     this.smallBarChart = {

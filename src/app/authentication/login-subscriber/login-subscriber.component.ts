@@ -89,6 +89,8 @@ export class LoginSubscriberComponent extends UnsubscribeOnDestroyAdapter implem
           this.msgError = "Usuario o Contraseña incorrecta"
 
         }
+      },(error) => {
+        console.log(error)
       }
     ).add(
       () => {

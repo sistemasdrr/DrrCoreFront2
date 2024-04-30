@@ -1,4 +1,4 @@
-import { AddTicketObservations, Asignacion, EmployeesAssignated, GetTicketObservations, ListTicket2, NewAsignacion, TicketHistoryCount } from './../../models/pedidos/ticket';
+import { AddTicketObservations, Asignacion, EmployeesAssignated, GetTicketObservations, ListTicket2, NewAsignacion, TicketHistoryCount, PendingTask, ObservedTickets } from './../../models/pedidos/ticket';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CurrentTicket, ListTicket, ReportType, PersonalAssignation, SaveTicketAssignation, SendQuery, Ticket, TicketListPending, TicketQuery, TicketFile, TicketHistorySubscriber, SearchSituation, TicketsByCompanyOrPerson, TimeLineTicket, TicketObservations, ProviderByTicket } from 'app/models/pedidos/ticket';
@@ -149,6 +149,18 @@ export class TicketService {
 
   TicketToDispatch(idTicketHistory : number, idTicket : number) : Observable<Response<boolean>>{
     return this.http.get<Response<boolean>>(this.url + this.controllerTicket + '/TicketToDispatch?idTicketHistory='+idTicketHistory+'&idTicket='+idTicket);
+  }
+  PendingTask(userTo : string) : Observable<Response<PendingTask[]>>{
+    return this.http.get<Response<PendingTask[]>>(this.url + this.controllerTicket + '/PendingTask?userTo='+userTo);
+  }
+  DailyProduction(userTo : string) : Observable<Response<number>>{
+    return this.http.get<Response<number>>(this.url + this.controllerTicket + '/DailyProduction?userTo='+userTo);
+  }
+  MonthlyProduction(userTo : string) : Observable<Response<number>>{
+    return this.http.get<Response<number>>(this.url + this.controllerTicket + '/MonthlyProduction?userTo='+userTo);
+  }
+  ObservedTickets(idEmployee : number) : Observable<Response<ObservedTickets[]>>{
+    return this.http.get<Response<ObservedTickets[]>>(this.url + this.controllerTicket + '/ObservedTickets?idEmployee='+idEmployee);
   }
 
 }

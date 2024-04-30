@@ -180,7 +180,7 @@
               <button *ngIf="order.id > 0" mat-icon-button class="tbl-action-btn " (click)="verHistorial(order.id)" matTooltip="Ver Historial">
                 <app-feather-icons [icon]="'clock'" [class]="'tbl-fav-edit'"></app-feather-icons>
               </button>
-              <button mat-icon-button  class="tbl-action-btn " matTooltip="Editar" (click)="verObservacion(order.id)" *ngIf="order.web === false"> <!-- -->
+              <button mat-icon-button  class="tbl-action-btn " matTooltip="Observación" (click)="verObservacion(order.id)" *ngIf="order.idStatusTicket === 9"> <!-- -->
                 <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-delete'"></app-feather-icons>
               </button>
             </td>

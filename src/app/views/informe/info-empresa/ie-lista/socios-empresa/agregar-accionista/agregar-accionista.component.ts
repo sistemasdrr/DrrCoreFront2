@@ -32,7 +32,7 @@ import { MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter } from '@angular/materia
 export class AgregarAccionistaComponent implements OnInit{
 
   titulo = ""
-
+  loading = false
   id = 0
   idCompany = 0
   idCompanyShareHolder = 0
@@ -99,6 +99,7 @@ export class AgregarAccionistaComponent implements OnInit{
     }
   }
   ngOnInit(): void {
+    this.loading = true
     this.comboService.getPaises().subscribe((response) => {
       if (response.isSuccess == true) {
         this.paises = response.data;
@@ -146,6 +147,8 @@ export class AgregarAccionistaComponent implements OnInit{
         }
       ).add(
         () => {
+          this.loading = false
+          console.log(this.loading)
           if(this.idCompanyShareHolder !== null && this.idCompanyShareHolder !== 0){
             this.datosEmpresaService.getDatosEmpresaPorId(this.idCompanyShareHolder).subscribe(
               (response) => {
@@ -190,6 +193,7 @@ export class AgregarAccionistaComponent implements OnInit{
       )
     }else{
 
+      this.loading = false
     }
   }
   relationIngles(relation : string){
@@ -375,15 +379,12 @@ export class AgregarAccionistaComponent implements OnInit{
         heightAuto: true
       }).then((result) => {
         if (result.value) {
-          const loader = document.getElementById('pagina-detalle-persona') as HTMLElement | null;
-          if(loader){
-            loader.classList.remove('hide-loader');
-          }
+          this.loading = true
+
           this.sociosEmpresaService.addCompanyShareHolder(this.modeloNuevo[0]).subscribe((response) => {
           if(response.isSuccess === true && response.isWarning === false){
-            if(loader){
-              loader.classList.add('hide-loader');
-            }
+            this.loading = false
+
             Swal.fire({
               title: 'Se guardaron los cambios correctamente',
               text: "",
@@ -401,9 +402,8 @@ export class AgregarAccionistaComponent implements OnInit{
               }
             )
           }else{
-            if(loader){
-              loader.classList.add('hide-loader');
-            }
+            this.loading = false
+
             Swal.fire({
               title: 'Ocurrió un problema.',
               text: 'Comunicarse con Sistemas',
@@ -415,9 +415,8 @@ export class AgregarAccionistaComponent implements OnInit{
             }).then(() => {
             })
           }
-          if(loader){
-            loader.classList.add('hide-loader');
-          }
+          this.loading = false
+
         })
         }
       });
@@ -436,15 +435,12 @@ export class AgregarAccionistaComponent implements OnInit{
         heightAuto: true
       }).then((result) => {
         if (result.value) {
-          const loader = document.getElementById('loader-lista-empresas') as HTMLElement | null;
           this.sociosEmpresaService.addCompanyShareHolder(this.modeloNuevo[0]).subscribe((response) => {
-            if(loader){
-              loader.classList.remove('hide-loader');
-            }
+            this.loading = true
+
             if(response.isSuccess === true && response.isWarning === false){
-              if(loader){
-                loader.classList.add('hide-loader');
-              }
+              this.loading = false
+
               Swal.fire({
                 title: 'Se agregó el registro correctamente',
                 text: "",
@@ -460,9 +456,8 @@ export class AgregarAccionistaComponent implements OnInit{
                 })
               })
             }else{
-              if(loader){
-                loader.classList.add('hide-loader');
-              }
+              this.loading = false
+
               Swal.fire({
                 title: 'Ocurrió un problema.',
                 text: 'Comunicarse con Sistemas',
@@ -474,14 +469,12 @@ export class AgregarAccionistaComponent implements OnInit{
               }).then(() => {
               })
             }
-            if(loader){
-              loader.classList.add('hide-loader');
-            }
+            this.loading = false
+
             console.log(response)
           }, (error) => {
-            if(loader){
-              loader.classList.add('hide-loader');
-            }
+            this.loading = false
+
             Swal.fire({
               title: 'Ocurrió un problema. Comunicarse con Sistemas',
               text: error,

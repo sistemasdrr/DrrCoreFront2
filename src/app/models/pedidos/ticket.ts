@@ -381,3 +381,13 @@ export interface TicketHistoryCount{
   startDate : Date
   endDate : Date
 }
+
+export interface PendingTask{
+  asignedTo : string
+  count : number
+}
+export interface ObservedTickets{
+  asignedTo : string
+  idTicket : number
+  ticket : string
+}

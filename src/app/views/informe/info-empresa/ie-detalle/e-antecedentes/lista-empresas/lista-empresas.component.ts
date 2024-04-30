@@ -63,7 +63,6 @@ export class ListaEmpresasComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,private datosEmpresaService : DatosEmpresaService,private router : Router, private paisService : PaisService,public dialogRef: MatDialogRef<ListaEmpresasComponent>,){
     this.dataSource = new MatTableDataSource()
     this.filterPais = new Observable<Pais[]>()
-    this.loading = true
     if(data){
       this.idCompanyRelacion = data.idCompany
     }
@@ -71,12 +70,16 @@ export class ListaEmpresasComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loading = true
     this.dataSource = new MatTableDataSource()
 
     this.paisService.getPaises().subscribe((response) => {
       if (response.isSuccess == true) {
         this.paises = response.data;
       }
+    },(error) => {
+      console.log(error)
+      this.loading = false
     }).add(() => {
       if(localStorage.getItem('busquedaEmpresas')){
         const busqueda = JSON.parse(localStorage.getItem('busquedaEmpresas')+'')
@@ -92,6 +95,7 @@ export class ListaEmpresasComponent implements OnInit {
         this.paisSeleccionado = this.paises.filter(x => x.id === busqueda.idPais)[0]
         this.chkConInforme = busqueda.conInforme
         this.filtrarEmpresas()
+        this.loading = false
       }
     })
 
@@ -158,10 +162,8 @@ export class ListaEmpresasComponent implements OnInit {
     this.filtrarEmpresas()
   }
   filtrarEmpresas(){
-    const listaEmpresas = document.getElementById('loader-lista-empresas') as HTMLElement | null;
-    if(listaEmpresas){
-      listaEmpresas.classList.remove('hide-loader');
-    }
+    this.loading = true
+
     const busqueda = {
       razonSocial : this.razonSocial,
       filtro : this.filtroRB,
@@ -177,9 +179,8 @@ export class ListaEmpresasComponent implements OnInit {
           this.dataSource.paginator = this.paginator
         }
       },(error) => {
-        if(listaEmpresas){
-          listaEmpresas.classList.add('hide-loader');
-        }
+        this.loading = false
+
         Swal.fire({
           title: 'Ocurrió un problema. Comunicarse con Sistemas.',
           text: error,
@@ -191,9 +192,8 @@ export class ListaEmpresasComponent implements OnInit {
         }).then(() => {
         })
       }).add(() => {
-        if(listaEmpresas){
-          listaEmpresas.classList.add('hide-loader');
-        }
+        this.loading = false
+
       })
 
   }
