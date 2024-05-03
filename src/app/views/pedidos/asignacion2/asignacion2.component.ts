@@ -17,6 +17,7 @@ import { TicketService } from 'app/services/pedidos/ticket.service';
 import Swal from 'sweetalert2';
 import { ReferenciasComercialesComponent } from './referencias-comerciales/referencias-comerciales.component';
 import { UsuarioService } from 'app/services/usuario.service';
+import { HistorialPedidoComponent } from 'app/views/situacion/lista/historial-pedido/historial-pedido.component';
 
 
 @Component({
@@ -46,7 +47,7 @@ export class Asignacion2Component implements OnInit {
 
   //TABLA
   dataSource: MatTableDataSource<ListTicket2>;
-  columnsToDisplay = ['number', 'busineesName','status','subscriberCode', 'reportType', 'procedureType', 'quality', 'orderDate', 'expireDate', 'Acciones' ];
+  columnsToDisplay = ['number','subscriber','country', 'busineesName','status','subscriberCode', 'reportType', 'procedureType', 'quality', 'orderDate', 'expireDate', 'Acciones' ];
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
   expandedOrder: ListTicket2 | null = null;
     selection = new SelectionModel<ListTicket2>(true, []);
@@ -97,6 +98,13 @@ export class Asignacion2Component implements OnInit {
       }
     });
     return active
+  }
+  verHistorial(idTicket : number) {
+    const dialogRef = this.dialog.open(HistorialPedidoComponent, {
+      data : {
+          idTicket : idTicket
+      },
+    });
   }
   asignarTrabajador(order : ListTicket2){
     console.log(order)
@@ -254,8 +262,8 @@ export class Asignacion2Component implements OnInit {
     //   }
     // });
   }
-  eliminar(id : number, asignedTo : string, numberAssign : number){
-    console.log(id)
+  eliminar(idTicket : number, asignedTo : string, numberAssign : number){
+    console.log(idTicket)
     console.log(asignedTo)
     console.log(numberAssign)
     Swal.fire({
@@ -271,7 +279,7 @@ export class Asignacion2Component implements OnInit {
       heightAuto : true
     }).then((result) => {
       if(result.value){
-        this.ticketService.deleteTicketHistory(id,asignedTo,numberAssign).subscribe(
+        this.ticketService.deleteTicketHistory(idTicket,asignedTo,numberAssign).subscribe(
           (response) => {
             if(response.isSuccess === true && response.isWarning === false){
               Swal.fire({
@@ -280,7 +288,11 @@ export class Asignacion2Component implements OnInit {
                 icon: 'success',
                 width: '20rem',
                 heightAuto : true
-              })
+              }).then(
+                () => {
+                  this.ngOnInit();
+                }
+              )
             }
           }
         )

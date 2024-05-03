@@ -34,8 +34,7 @@
               </div>
               <div id="showResponse" class="col-md-12" *ngIf="!loading">
                 <div class="w-100 h-100" *ngIf="copilot[0]?.webPages?.value">
-                    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
-                      <mat-tab label="Paginas Web">
+
                         <div class="card card-body" *ngFor="let item of copilot[0].webPages.value">
                           <div class="row">
                             <div class="col-md-2" *ngIf="item.thumbnailUrl !== null && item.thumbnailUrl !== ''">
@@ -53,21 +52,7 @@
                             </ul>
                           </div>
                         </div>
-                      </mat-tab>
-                      <mat-tab label="Videos">
-                        <div class="card card-body" *ngFor="let item of copilot[0].videos.value">
-                          <div class="row">
-                            <div class="col-md-3">
-                              <img [src]="item.thumbnailUrl" alt="">
-                            </div>
-                            <div class="col-md-9">
-                              <a style="color: rgb(38, 38, 161); text-decoration: underline;" [href]="item.contentUrl"  [target]="'_blank'" matListItemTitle><h4>{{ item.name }}</h4></a>
-                              <span>{{ item.description }}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </mat-tab>
-                    </mat-tab-group>
+                     
 
                 </div>
 

@@ -205,6 +205,7 @@ export interface ListTicket2{
   taxType : string
   taxCode : string
   investigatedContinent : string
+  investigatedIsoCountry : string
   investigatedCountry : string
   investigatedFlag : string
   city : string

@@ -35,7 +35,7 @@
                     <mat-button-toggle [ngClass]="{'bg-blue': activeList === 7}" value="Agente" (click)="filtrarDatos('AG'); activeList = 7; type ='AG';balance=false;observaciones = ''" >Agente</mat-button-toggle>
                     <mat-button-toggle [ngClass]="{'bg-blue': activeList === 3}" value="Referencista" (click)="filtrarDatos('RF'); activeList = 3; type ='RF'; referencias = false;">Referencista</mat-button-toggle>
                     <mat-button-toggle [ngClass]="{'bg-blue': activeList === 4}" value="Digitadora" (click)="filtrarDatos('DI'); activeList = 4; type ='DI'; referencias = false;">Digitadora</mat-button-toggle>
-                    <mat-button-toggle [ngClass]="{'bg-blue': activeList === 5}" value="Traductora" (click)="filtrarDatos('TR'); activeList = 5; type ='TR'; referencias = false;">Traductora</mat-button-toggle>
+                    <mat-button-toggle  [ngClass]="{'bg-blue': activeList === 5}" value="Traductora" (click)="filtrarDatos('TR'); activeList = 5; type ='TR'; referencias = false;">Traductora</mat-button-toggle>
                     <mat-button-toggle [ngClass]="{'bg-blue': activeList === 1}" value="Supervisor" (click)="filtrarDatos('SU'); activeList = 1; type ='SU'; referencias = false;">Supervisor</mat-button-toggle>
 
                   </mat-button-toggle-group>
@@ -46,7 +46,7 @@
                   <mat-selection-list #asignacion [multiple]="false" [disabled]="estado === 'editar'" style="width: 100%; max-height: 400px; overflow-y: auto;" (selectionChange)="seleccionarTrabajador(asignacion.selectedOptions.selected[0].value.code,asignacion.selectedOptions.selected[0].value.fullname,asignacion.selectedOptions.selected[0].value.idUserLogin,asignacion.selectedOptions.selected[0].value.internal)" >
                     <mat-list-option *ngFor="let asig of datos2" [value]="asig">
                       <div style="font-size: 12px; border-radius: 14px;" >
-                        <div class="d-flex" style="color: red; font-size: 16px;">{{asig.porcentaje + '%'}} <div style="color:black; font-size: 13px !important;">{{ ' - ' + asig.code}} || {{asig.fullname}}</div></div>
+                        <div class="d-flex" style="color: red; font-size: 16px;">{{asig.porcentaje + ' '}} <div style="color:black; font-size: 13px !important;">{{ ' - ' + asig.code}} || {{asig.fullname}}</div></div>
                       </div>
                     </mat-list-option>
                   </mat-selection-list>
@@ -101,6 +101,11 @@
                 <div class="col-md-6">
                   <mat-slide-toggle *ngIf="activeList === 2 || activeList === 7" class="example-margin" [(ngModel)]="referencias" >
                     Referencias Comerciales?
+                    </mat-slide-toggle>
+                </div>
+                <div class="col-md-6">
+                  <mat-slide-toggle *ngIf="activeList === 5" class="example-margin" [(ngModel)]="traduccion" (ngModelChange)="traduccion === true ? observaciones = 'REALIZAR TRADUCCION DIRECTA\n============================\n' + observaciones : observaciones = ''" >
+                    Traducción Directa
                     </mat-slide-toggle>
                 </div>
                 <div class="col-md-6">

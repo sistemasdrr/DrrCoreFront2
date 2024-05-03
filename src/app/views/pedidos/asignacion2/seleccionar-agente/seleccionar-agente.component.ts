@@ -51,6 +51,7 @@ export class SeleccionarAgenteComponent implements OnInit {
   idTicket = 0
   balance = false
   referencias = false
+  traduccion = false
   reportType = ''
   calidad = ""
   fechaAsignacion = ""
@@ -191,19 +192,28 @@ export class SeleccionarAgenteComponent implements OnInit {
       })
     }else{
       this.datos.forEach(element => {
-        const num =  ((this.ticketHistory.filter(x => x.asignedTo.trim() === element.code.trim()).length / this.numAsig) * 100)
-        element.porcentaje = parseFloat(num.toFixed(1));
+        const num =  (this.ticketHistory.filter(x => x.asignedTo.trim() === element.code.trim()).length)
+        element.porcentaje = num;
       })
     }
 
     if (tipo === "DI" || tipo === "TR") {
+      this.datos2 = []
       // Encuentra el elemento especial crodriguez, si existe
-      const crodriguez = this.datos.find(x =>
+      if(this.userFrom === '42'){
+        const crodriguez = this.datos.find(x =>
           x.type === tipo && (x.code.includes("D15") || x.code.includes("T14"))
-      );
+        );
+        this.datos2 = this.datos.filter(x => x.type === tipo && x !== crodriguez);
+      }else{
+        const crodriguez = this.datos.find(x =>
+          x.type === tipo && (x.code.includes("D15") || x.code.includes("T14"))
+        );
+        if (crodriguez) {
+          this.datos2.unshift(crodriguez);
+        }
+      }
 
-      // Filtra los datos según el tipo y excluye a crodriguez de esta lista inicialmente si se encontró
-      this.datos2 = this.datos.filter(x => x.type === tipo && x !== crodriguez);
 
       // Ordena primero por porcentaje de forma descendente y luego por código de forma ascendente
       this.datos2.sort((a, b) => {
@@ -218,9 +228,7 @@ export class SeleccionarAgenteComponent implements OnInit {
       });
 
       // Si crodriguez existe, agrega al inicio de la lista ordenada
-      if (crodriguez) {
-          this.datos2.unshift(crodriguez);
-      }
+
   } else {
       // Caso para otros tipos que no son 'DI' o 'TR'
       this.datos2 = this.datos.filter(x => x.type === tipo);

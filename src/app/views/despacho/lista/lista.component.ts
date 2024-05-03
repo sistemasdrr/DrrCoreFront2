@@ -10,6 +10,7 @@ import { ListTicket } from 'app/models/pedidos/ticket';
 import { TicketService } from 'app/services/pedidos/ticket.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import Swal from 'sweetalert2';
+import { DatosEmpresaService } from 'app/services/informes/empresa/datos-empresa.service';
 
 
 
@@ -56,7 +57,7 @@ export class ListaComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
 
 
-  constructor(private ticketService : TicketService,public dialog: MatDialog){
+  constructor(private ticketService : TicketService,public dialog: MatDialog, private datosEmpresaService : DatosEmpresaService){
     this.dataSource = new MatTableDataSource()
     const auth = JSON.parse(localStorage.getItem('authCache')+'')
     if(auth){
@@ -156,6 +157,27 @@ export class ListaComponent implements OnInit {
   }
   consultar(ticket : ListTicket){
 
+  }
+  descargarDocumento(idCompany : number, oldCode : string, idioma : string, formato:string){
+    const listaEmpresas = document.getElementById('loader-lista-despacho') as HTMLElement | null;
+    if(listaEmpresas){
+      listaEmpresas.classList.remove('hide-loader');
+    }
+    this.datosEmpresaService.downloadReportF8(idCompany,"E","pdf").subscribe(response=>{
+      let blob : Blob = response.body as Blob;
+      let a =document.createElement('a');
+      const language = idioma === "I" ? "ENG" : "SPA"
+      const extension = formato === "pdf" ? '.pdf' : formato === "word" ? '.doc' : '.xls'
+      a.download= oldCode+"_"+language+"_"+Date.now()+extension;
+      a.href=window.URL.createObjectURL(blob);
+      a.click();
+    }).add(
+      () => {
+        if(listaEmpresas){
+          listaEmpresas.classList.add('hide-loader');
+        }
+      }
+    );
   }
   getColor(arg0: boolean,arg1: number): string {
 
