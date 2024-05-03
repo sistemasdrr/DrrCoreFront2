@@ -12,6 +12,7 @@ export class HistorialPedidoComponent implements OnInit {
 
   idTicket = 0
   timeLine : TimeLineTicket[] = []
+  loading = false
 
   constructor(public dialogRef: MatDialogRef<HistorialPedidoComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,private ticketService : TicketService){
@@ -22,11 +23,16 @@ export class HistorialPedidoComponent implements OnInit {
  }
 
  ngOnInit(): void {
+  this.loading = true
   this.ticketService.getTimeLine(this.idTicket).subscribe(
     (response) => {
       if(response.isSuccess === true && response.isWarning === false){
         this.timeLine = response.data
       }
+    }
+  ).add(
+    () => {
+      this.loading = false
     }
   )
  }

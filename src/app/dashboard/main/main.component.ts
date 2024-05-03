@@ -18,6 +18,8 @@ import {
   ApexStates,
 } from 'ng-apexcharts';
 import { Router } from '@angular/router';
+import { DashboardService } from 'app/services/Dashboard/dashboard.service';
+import { SeriesDashboard } from 'app/models/dashboard';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -68,12 +70,12 @@ export class MainComponent implements OnInit {
 
   breadscrums = [
     {
-      title: 'Dashboad',
+      title: 'Dashboard',
       items: ['Home'],
       active: 'Dashboard',
     },
   ];
-  constructor(private ticketService : TicketService, private router: Router) {
+  constructor(private ticketService : TicketService, private router: Router, private dashboardService : DashboardService) {
     const auth = JSON.parse(localStorage.getItem('authCache')+'')
     if(auth){
       this.idUser = auth.idUser
@@ -82,8 +84,9 @@ export class MainComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    this.ticketService.PendingTask(this.idUser).subscribe(
+    this.chart1();
+    this.chart2();
+    this.dashboardService.PendingTask(this.idUser).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.pendingTask = response.data
@@ -97,21 +100,21 @@ export class MainComponent implements OnInit {
         }
       }
     )
-    this.ticketService.DailyProduction(this.idUser).subscribe(
+    this.dashboardService.DailyProduction(this.idUser).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.dailyProduction = response.data
         }
       }
     )
-    this.ticketService.MonthlyProduction(this.idUser).subscribe(
+    this.dashboardService.MonthlyProduction(this.idUser).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.monthlyProduction = response.data
         }
       }
     )
-    this.ticketService.ObservedTickets(this.idEmployee).subscribe(
+    this.dashboardService.ObservedTickets(this.idEmployee).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.observedTickets = response.data
@@ -124,14 +127,14 @@ export class MainComponent implements OnInit {
           })
         }
       }
+    ).add(
+      () => {
+
+    this.chart2Rel()
+      }
     )
 
-    this.cardChart1();
-    this.cardChart2();
-    this.cardChart3();
-    this.cardChart4();
-    this.chart1();
-    this.chart2();
+
   }
   redirigir(){
     this.router.navigate(['/pedidos/asignacion-empleados']);
@@ -371,20 +374,12 @@ export class MainComponent implements OnInit {
     this.barChartOptions = {
       series: [
         {
-          name: 'Project 1',
-          data: [44, 55, 41, 37, 22, 43, 21],
+          name: 'T1',
+          data: [44, 55, 41, 37],
         },
         {
-          name: 'Project 2',
-          data: [53, 32, 33, 52, 13, 43, 32],
-        },
-        {
-          name: 'Project 3',
-          data: [12, 17, 11, 9, 15, 11, 20],
-        },
-        {
-          name: 'Project 4',
-          data: [9, 7, 5, 8, 6, 9, 4],
+          name: 'T2',
+          data: [53, 32, 33, 52],
         },
       ],
       chart: {
@@ -404,9 +399,9 @@ export class MainComponent implements OnInit {
         colors: ['#fff'],
       },
       xaxis: {
-        categories: [2008, 2009, 2010, 2011, 2012, 2013, 2014],
+        categories: ['OR', 'RV', 'EF', 'DF'],//OR RV EF DF
         labels: {
-          formatter: function (val: string) {
+          /*formatter: function (val: string) {
             return val + 'K';
           },
         },
@@ -427,9 +422,9 @@ export class MainComponent implements OnInit {
           show: true,
         },
         y: {
-          formatter: function (val: number) {
+          /*formatter: function (val: number) {
             return val + 'K';
-          },
+          },*/
         },
       },
       fill: {
@@ -441,5 +436,77 @@ export class MainComponent implements OnInit {
         offsetX: 40,
       },
     };
+  }
+  seriesDashboard : SeriesDashboard[] = []
+  private chart2Rel() {
+    this.dashboardService.SeriesDashboard().subscribe(
+      (response) => {
+        if(response.isSuccess === true && response.isWarning === false){
+          this.seriesDashboard[0] = response.data
+          console.log(response.data)
+          console.log(this.seriesDashboard[0])
+        }
+      }
+    ).add(
+      () => {
+        this.barChartOptions = {
+          series: this.seriesDashboard[0].series,
+          chart: {
+            type: 'bar',
+            height: 350,
+            stacked: true,
+            foreColor: '#9aa0ac',
+          },
+          colors: ['#5048e5', '#f43f5e', '#3c6494', '#a5a5a5'],
+          plotOptions: {
+            bar: {
+              horizontal: true,
+            },
+          },
+          stroke: {
+            width: 1,
+            colors: ['#fff'],
+          },
+          xaxis: {
+            categories: this.seriesDashboard[0].categories,//OR RV EF DF
+            labels: {
+              /*formatter: function (val: string) {
+                return val + 'K';
+              },*/
+            },
+          },
+          yaxis: {
+            title: {
+              text: undefined,
+            },
+          },
+          grid: {
+            show: true,
+            borderColor: '#9aa0ac',
+            strokeDashArray: 1,
+          },
+          tooltip: {
+            theme: 'dark',
+            marker: {
+              show: true,
+            },
+            y: {
+              /*formatter: function (val: number) {
+                return val + 'K';
+              },*/
+            },
+          },
+          fill: {
+            opacity: 1,
+          },
+          legend: {
+            position: 'top',
+            horizontalAlign: 'left',
+            offsetX: 40,
+          },
+        };
+      }
+    )
+
   }
 }

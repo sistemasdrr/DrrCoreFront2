@@ -236,6 +236,7 @@ export class RightSidebarComponent
         if(response !== null){
           this.loading = false
           this.copilot[0] = response
+          console.log(response)
           const input = document.getElementById('buscador') as HTMLElement | null;
           if(input){
             input.focus()

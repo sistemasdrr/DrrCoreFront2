@@ -24,8 +24,8 @@
             </li>
             <li class="tbl-header-btn">
               <div class="m-l-10" >
-                <button mat-icon-button #tooltip="matTooltip" class="btn shadow" (click)="downloadZip()" [ngClass]="adjuntos.length > 0 ? 'bg-blue' : 'bg-grey'" matTooltip="Descargar Todos" [disabled]="adjuntos.length === 0">
-                  <i class="fa-solid fa-file-zipper" style="font-size: 16px; color: white;"></i>
+                <button mat-mini-fab #tooltip="matTooltip"   style="margin: 0 .5rem .5rem .5rem;" class="btn shadow" (click)="downloadZip()" [ngClass]="adjuntos.length > 0 ? 'bg-blue' : 'bg-grey'" matTooltip="Descargar Todos" [disabled]="adjuntos.length === 0">
+                  <mat-icon class="col-white">folder_zip</mat-icon>
                 </button>
               </div>
             </li>

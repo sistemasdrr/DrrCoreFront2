@@ -14,15 +14,15 @@
             <ul class="tbl-export-btn">
               <li class="tbl-header-btn">
                 <div class="m-l-10" >
-                  <button mat-icon-button #tooltip="matTooltip" class="btn bg-red shadow" matTooltip="Salir"  (click)="cerrarDialog()">
-                    <i class="fa-solid fa-right-from-bracket" style="font-size: 20px; color: white;"></i>
+                  <button mat-mini-fab class="bg-red" style="margin: 0 .5rem .5rem .5rem;" #tooltip="matTooltip" matTooltip="Salir" (click)="cerrarDialog()">
+                    <mat-icon class="material-icons-outlined col-white" matSuffix>logout</mat-icon>
                   </button>
                 </div>
               </li>
               <li class="tbl-header-btn">
                 <div class="m-l-10" >
-                  <button mat-icon-button #tooltip="matTooltip" class="btn btn-primary shadow" matTooltip="Guardar" (click)="guardar()">
-                    <i class="fa-regular fa-floppy-disk" style="font-size: 20px; color: white;"></i>
+                  <button mat-mini-fab class="bg-cyan" style="margin: 0 .5rem .5rem .5rem;" #tooltip="matTooltip" matTooltip="Guardar"  (click)="guardar()">
+                    <mat-icon class="material-icons-outlined col-white" matSuffix>save</mat-icon>
                   </button>
                 </div>
               </li>

@@ -14,7 +14,7 @@ import { TicketService } from 'app/services/pedidos/ticket.service';
 export class ReferenciasComercialesComponent  implements OnInit {
 
   idTicket = 0
-
+  loading = false
   dataSource = new MatTableDataSource<ProviderByTicket>
   columnsToDisplay = ['name','telephone','country']
 
@@ -29,13 +29,21 @@ export class ReferenciasComercialesComponent  implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loading = true
     this.ticketService.getProvidersByTicket(this.idTicket).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
+          this.loading = false
           this.dataSource.data = response.data
           this.dataSource.paginator = this.paginator
           this.dataSource.sort = this.sort
+        }else{
+          this.loading = false
         }
+      }
+    ).add(
+      () => {
+        this.loading = false
       }
     )
   }

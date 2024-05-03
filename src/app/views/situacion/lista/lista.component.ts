@@ -62,6 +62,7 @@ export class ListaSituacionComponent implements  OnInit {
   columnsToDisplaySelect = [ 'ticket', 'requestedName', 'status', 'subscriberCode','procedureType'
   , 'reportType', 'language', 'orderDate', 'endDate', 'dispatchDate', 'Acciones' ];
 
+  loading = false
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -79,10 +80,7 @@ export class ListaSituacionComponent implements  OnInit {
   }
 
   applyFilter() {
-    const loader = document.getElementById('loader-lista-situacion') as HTMLElement | null;
-    if(loader){
-      loader.classList.remove('hide-loader');
-    }
+    this.loading = true
     this.ticketService.getSearchSituation(this.about,this.typeSearch,this.name,0).subscribe(
       (response) =>{
         if(response.isSuccess === true && response.isWarning === false){
@@ -93,9 +91,8 @@ export class ListaSituacionComponent implements  OnInit {
       }
     ).add(
       () => {
-        if(loader){
-          loader.classList.add('hide-loader');
-        }
+        this.loading = false
+
       }
     )
   }
@@ -121,9 +118,8 @@ export class ListaSituacionComponent implements  OnInit {
   }
   seleccionar(id : number, oldCode : string){
     const loader = document.getElementById('loader-lista-situacion') as HTMLElement | null;
-    if(loader){
-      loader.classList.remove('hide-loader');
-    }
+    this.loading = true
+
     this.ticketService.getTicketByCompanyOrPerson(this.about,id,oldCode).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
@@ -134,9 +130,8 @@ export class ListaSituacionComponent implements  OnInit {
       }
     ).add(
       () => {
-        if(loader){
-          loader.classList.add('hide-loader');
-        }
+        this.loading = false
+
       }
     )
   }

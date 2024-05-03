@@ -1,6 +1,12 @@
+
 <div class="container" style="min-width: 45rem; max-height: 45rem;" >
-    <div class="row">
+
+  <div class="row">
     <div class="col-md-12">
+      <div id="loader-lista-cupon" class="d-flex justify-content-center align-items-center loader-container" [ngClass]="{'hide-loader': !loading}">
+        <span class="loader"></span><br>
+        <h2 style="color: white;">&nbsp;Cargando...</h2>
+      </div>
       <br>
       <h5>Referencias Comerciales de la Empresa</h5><br>
       <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8" matSort>

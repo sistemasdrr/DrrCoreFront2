@@ -38,6 +38,7 @@ export class ListaAbonadosComponent implements OnInit{
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.dataSource.data = response.data
+          this.dataSource.paginator = this.paginator
         }
       }
     ).add(

@@ -1,5 +1,5 @@
 <section class="content">
-  <div id="loader-lista-situacion" class="d-flex justify-content-center align-items-center loader-container hide-loader" >
+  <div id="loader" class="d-flex justify-content-center align-items-center loader-container" [ngClass]="{'hide-loader': !loading}">
     <span class="loader"></span><br>
     <h2 style="color: white;">&nbsp;Cargando...</h2>
   </div>
@@ -47,9 +47,7 @@
                     <input matInput  [(ngModel)]="name" (keypress)="enter($event)">
                   </mat-form-field>
                 </div>
-                <div class="col-md-2"> <button mat-icon-button class="tbl-action-btn " (click)="verObservacion(17)" matTooltip="Ver Historial">
-                  <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-pdf'"></app-feather-icons>
-                </button></div>
+
                 <div class="col-md-1 d-flex justify-content-center align-items-center">
                   <button mat-mini-fab [class]="'bg-primary'" matTooltip="Aplicar Filtros" (click)="applyFilter()" [disabled]="">
                     <i class="fa-solid fa-magnifying-glass col-white"></i>
@@ -111,7 +109,7 @@
           <ng-container matColumnDef="status" >
             <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Situación</th>
             <td mat-cell *matCellDef="let order" class="text-center">
-              <span class="float-end progress-percent label {{order.color}}  shadow" style="width: 150px;{{order.color === 'label' ? 'color : black;' : ''}}" >
+              <span class="float-end progress-percent label {{order.color}}  shadow" style="width: 160px;{{order.color === 'label' ? 'color : black;' : ''}}" >
                 {{order.status}}
               </span>
             </td>

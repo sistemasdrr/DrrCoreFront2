@@ -107,12 +107,28 @@ export class ListaComponent implements OnInit {
           (response) => {
             if(response.isSuccess === true && response.isWarning === false){
                 Swal.fire({
-                  text : 'El Pedido se envio correctamente',
+                  title : 'El Pedido se envio correctamente',
                   icon : 'success',
                   width: '20rem',
                   heightAuto : true
                 });
+            }else{
+              Swal.fire({
+                title : 'Ocurrio un error al enviar el informe',
+                text: response.message,
+                icon : 'warning',
+                width: '20rem',
+                heightAuto : true
+              });
             }
+          },(error) => {
+            Swal.fire({
+              title : 'Ocurrio un error al enviar el informe',
+              text: error,
+              icon : 'error',
+              width: '20rem',
+              heightAuto : true
+            });
           }
         ).add(
           () => {

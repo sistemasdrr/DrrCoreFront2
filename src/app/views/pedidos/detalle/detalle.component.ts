@@ -271,9 +271,14 @@ export class DetalleComponent implements OnInit {
                               const tipoReporte = response.data
                               if(tipoReporte){
                                 this.reportType = tipoReporte.typeReport
+                                console.log(tipoReporte.lastSearchedDate)
                                 if(tipoReporte.lastSearchedDate !== "" && tipoReporte.lastSearchedDate !== null){
+
                                   const lastSearched = tipoReporte.lastSearchedDate.split("/")
                                   if(lastSearched.length > 0){
+                                    console.log(parseInt(lastSearched[2]))
+                                    console.log(parseInt(lastSearched[1])-1)
+                                    console.log(parseInt(lastSearched[0]))
                                     this.fechaInformeDate = new Date(parseInt(lastSearched[2]),parseInt(lastSearched[1])-1,parseInt(lastSearched[0]))
                                   }else{
                                     this.fechaInformeDate = null

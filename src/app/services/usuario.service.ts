@@ -10,6 +10,7 @@ export interface CopilotModel{
   _type : string
   queryContext : QueryContext
   webPages : WebPages
+  videos : VideosCop
   relatedSearches : RelatedSearches
 }
 export interface RelatedSearches{
@@ -33,6 +34,7 @@ export interface CopilotValue{
   id : string
   name : string
   url : string
+  thumbnailUrl : string
   isFamilyFriendly : boolean
   displayUrl : string
   snippet : string
@@ -53,6 +55,32 @@ export interface CopilotValueRichFacts{
 export interface CopilotText{
   text : string
 }
+export interface VideosCop{
+  id : string
+  readLink : string
+  webSearchUrl : string
+  value : VideosCopValue[]
+}
+export interface VideosCopValue{
+  webSearchUrl : string
+  name : string
+  description : string
+  thumbnailUrl : string
+  datePublished : string
+  publisher : Publisher[]
+  creator : string
+  contentUrl : string
+  hostPageUrl : string
+  hostPageDisplayUrl : string
+  motionThumbnailUrl : string
+  embedHtml : string
+
+}
+export interface Publisher{
+  name : string
+}
+
+
 @Injectable({
   providedIn: 'root'
 })
