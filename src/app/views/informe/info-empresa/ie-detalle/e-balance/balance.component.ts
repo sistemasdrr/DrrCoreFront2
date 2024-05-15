@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 import * as moment from 'moment';
 import { TraduccionDialogComponent } from '@shared/components/traduccion-dialog/traduccion-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { VerPdfComponent } from '@shared/components/ver-pdf/ver-pdf.component';
 
 @Component({
   selector: 'app-balance',
@@ -151,6 +152,14 @@ export class BalanceComponent implements OnInit {
         }
       }
     })
+  }
+  verPdf(){
+    const dialogRef = this.dialog.open(VerPdfComponent,{
+      data: {
+        idCompany : this.idCompany,
+        section : "BALANCES"
+      },
+    });
   }
   armarModelo(){
     this.modeloModificado[0] = {

@@ -17,6 +17,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { VerPdfComponent } from '@shared/components/ver-pdf/ver-pdf.component';
 
 export interface data {
   name: string;
@@ -220,6 +221,14 @@ export class FinanzasComponent implements OnInit, OnDestroy{
         tabFinanzas.classList.remove('tab-cambios');
       }
     }
+  }
+  verPdf(){
+    const dialogRef = this.dialog.open(VerPdfComponent,{
+      data: {
+        idCompany : this.idCompany,
+        section : "FINANZAS"
+      },
+    });
   }
   ngOnDestroy(): void {
     clearInterval(this.compararModelosF);

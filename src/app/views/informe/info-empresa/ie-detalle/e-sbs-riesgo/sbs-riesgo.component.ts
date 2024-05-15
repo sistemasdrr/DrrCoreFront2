@@ -17,6 +17,7 @@ import { TraduccionDialogComponent } from '@shared/components/traduccion-dialog/
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import * as moment from 'moment';
+import { VerPdfComponent } from '@shared/components/ver-pdf/ver-pdf.component';
 
 @Component({
   selector: 'app-sbs-riesgo',
@@ -234,7 +235,14 @@ export class SbsRiesgoComponent implements OnInit{
       }
     }
   }
-
+  verPdf(){
+    const dialogRef = this.dialog.open(VerPdfComponent,{
+      data: {
+        idCompany : this.idCompany,
+        section : "SBS"
+      },
+    });
+  }
   armarModeloActual(){
     this.modeloActual[0] = {
       id : this.id,

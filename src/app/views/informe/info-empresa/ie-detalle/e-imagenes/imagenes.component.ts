@@ -10,6 +10,7 @@ import { ImageEditorEComponent } from 'app/views/informe/info-persona/ip-detalle
 import { catchError, map, of } from 'rxjs';
 import Swal from 'sweetalert2';
 import { ImageEditorComponent } from './image-editor/image-editor.component';
+import { VerPdfComponent } from '@shared/components/ver-pdf/ver-pdf.component';
 
 @Component({
   selector: 'app-imagenes',
@@ -132,6 +133,14 @@ export class ImagenesComponent implements OnInit{
     input.click();
   }
 
+  verPdf(){
+    const dialogRef = this.dialog.open(VerPdfComponent,{
+      data: {
+        idCompany : this.idCompany,
+        section : "IMAGENES"
+      },
+    });
+  }
   pegarImagen() {
     const clipboardData = navigator.clipboard;
     if (!clipboardData) {

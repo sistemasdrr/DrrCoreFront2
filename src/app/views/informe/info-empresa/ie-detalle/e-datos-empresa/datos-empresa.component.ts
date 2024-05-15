@@ -19,6 +19,7 @@ import { ComboData, PoliticaPagos, Reputacion, RiesgoCrediticio } from 'app/mode
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import * as moment from 'moment';
+import { VerPdfComponent } from '@shared/components/ver-pdf/ver-pdf.component';
 
 @Component({
   selector: 'app-datos-empresa',
@@ -613,7 +614,14 @@ export class DatosEmpresaComponent implements OnInit, OnDestroy {
     this.controlDuracion.reset();
   }
 
-
+  verPdf(){
+    const dialogRef = this.dialog.open(VerPdfComponent,{
+      data: {
+        idCompany : this.id,
+        section : "IDENTIFICACION"
+      },
+    });
+  }
   agregarComentario(titulo: string, subtitulo: string, comentario_es: string, comentario_en: string, input: string) {
     const dialogRef = this.dialog.open(TraduccionDialogComponent, {
       data: {

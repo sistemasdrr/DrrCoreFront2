@@ -5,6 +5,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { TraduccionDialogComponent } from '@shared/components/traduccion-dialog/traduccion-dialog.component';
+import { VerPdfComponent } from '@shared/components/ver-pdf/ver-pdf.component';
 import { OpinionCredito } from 'app/models/informes/empresa/opinion-credito';
 import Swal from 'sweetalert2';
 
@@ -109,7 +110,14 @@ export class OpinionCreditoComponent implements OnInit {
       }
     }
   }
-
+  verPdf(){
+    const dialogRef = this.dialog.open(VerPdfComponent,{
+      data: {
+        idCompany : this.idCompany,
+        section : "OPINION-CREDITO"
+      },
+    });
+  }
   armarModeloActual(){
     this.modeloActual[0] = {
       id : this.id,

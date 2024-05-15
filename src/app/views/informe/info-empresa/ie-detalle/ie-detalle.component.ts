@@ -76,24 +76,24 @@ export class IEDetalleComponent implements OnInit {
       tabCompany.classList.remove('tab-cambios')
     }
     if(this.id > 0){
-      this.datosEmpresaService.getStatus(this.id).subscribe(
-        (response) => {
-          if(response.isSuccess === true && response.isWarning === false){
-            const status = response.data
-            if(status){
-              this.company = status.company
-              this.background = status.background
-              this.branch = status.branch
-              this.financial = status.financial
-              this.balance = status.balance
-              this.sbs = status.sbs
-              this.opinion = status.opinion
-              this.infoGeneral = status.infoGeneral
-              this.images = status.images
-            }
-          }
-        }
-      )
+      // this.datosEmpresaService.getStatus(this.id).subscribe(
+      //   (response) => {
+      //     if(response.isSuccess === true && response.isWarning === false){
+      //       const status = response.data
+      //       if(status){
+      //         this.company = status.company
+      //         this.background = status.background
+      //         this.branch = status.branch
+      //         this.financial = status.financial
+      //         this.balance = status.balance
+      //         this.sbs = status.sbs
+      //         this.opinion = status.opinion
+      //         this.infoGeneral = status.infoGeneral
+      //         this.images = status.images
+      //       }
+      //     }
+      //   }
+      // )
       this.datosEmpresaService.getDatosEmpresaPorId(this.id).subscribe((response) => {
         if(response.isSuccess === true && response.isWarning === false){
           const DatosEmpresa = response.data

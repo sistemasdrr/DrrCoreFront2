@@ -41,6 +41,7 @@ import { AgregarHistorialTrabajadorComponent } from './agregar-historial-trabaja
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import { MatPaginator } from '@angular/material/paginator';
+import { VerPdfComponent } from '@shared/components/ver-pdf/ver-pdf.component';
 
 export interface data {
   name: string;
@@ -234,6 +235,7 @@ export class RamoComponent implements OnInit{
       this.ramoNegocioService.getRamoNegocioByIdCompany(this.idCompany).subscribe(
         (response) => {
           if(response.isSuccess === true && response.isWarning === false){
+            console.log(response.data)
             const ramoNegocio = response.data
             if(ramoNegocio){
               this.id = ramoNegocio.id
@@ -393,6 +395,14 @@ export class RamoComponent implements OnInit{
     this.compararModelosF = setInterval(() => {
       this.compararModelos();
     }, 2000);
+  }
+  verPdf(){
+    const dialogRef = this.dialog.open(VerPdfComponent,{
+      data: {
+        idCompany : this.idCompany,
+        section : "RAMO"
+      },
+    });
   }
   compararModelos(){
     this.armarModeloModificado()

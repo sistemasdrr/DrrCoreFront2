@@ -59,4 +59,7 @@ export class DatosEmpresaService {
   downloadReportF8(idCompany : number, language : string, format : string){
     return this.http.get(this.url + this.controllerCompany + '/getf8?idCompany='+idCompany+'&language='+language+'&format='+format,{observe:'response',responseType:'blob'});
   }
+  downloadReportSection(idCompany : number, section : string, language : string){
+    return this.http.get(this.url + this.controllerCompany + '/DownloadSubReportCompany?idCompany='+idCompany+'&section='+section+'&language='+language,{observe:'response',responseType:'blob'});
+  }
 }

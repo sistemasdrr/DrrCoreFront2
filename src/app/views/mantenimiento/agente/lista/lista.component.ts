@@ -59,6 +59,8 @@ export class ListaAgenteComponent implements OnInit{
           this.dataSource = new MatTableDataSource(response.data)
           this.dataSource.sort = this.sort
           this.dataSource.paginator = this.paginator
+
+          this.dataSource.sortData(this.dataSource.data, this.dataSource.sort);
         }
       },(error) => {
         if(listaAgentes){

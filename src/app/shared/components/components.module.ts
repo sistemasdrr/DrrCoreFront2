@@ -14,6 +14,9 @@ import { CuadroImpoExpoComponent } from './cuadro-impo-expo/cuadro-impo-expo.com
 import { AgregarEditarComponent } from './cuadro-impo-expo/agregar-editar/agregar-editar.component';
 import { NgScrollbarModule } from "ngx-scrollbar";
 import { FeatherIconsModule } from "./feather-icons/feather-icons.module";
+import { VerPdfComponent } from './ver-pdf/ver-pdf.component';
+
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @NgModule({
   declarations: [
@@ -24,6 +27,7 @@ import { FeatherIconsModule } from "./feather-icons/feather-icons.module";
     TraduccionDialogComponent,
     CuadroImpoExpoComponent,
     AgregarEditarComponent,
+    VerPdfComponent,
   ],
   imports: [
     SharedModule,
@@ -35,6 +39,7 @@ import { FeatherIconsModule } from "./feather-icons/feather-icons.module";
     ReactiveFormsModule,
     NgScrollbarModule,
     FeatherIconsModule,
+    PdfViewerModule
 
   ],
   exports: [

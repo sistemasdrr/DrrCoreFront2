@@ -3,9 +3,14 @@
     <div class="row counter-box shadow mb-2">
       <div class="w-100 d-flex justify-content-between align-items-center">
         <h4>Ramo de Negocio</h4>
-        <button mat-mini-fab class="bg-cyan" style="margin: 0 .5rem .5rem .5rem;" (click)="guardar()" #tooltip="matTooltip" matTooltip="Guardar">
-          <mat-icon class="col-white">save</mat-icon>
-        </button>
+        <div>
+          <button *ngIf="idCompany !== 0" mat-mini-fab color="warn" style="margin: 0 .5rem .5rem .5rem;" (click)="verPdf()" #tooltip="matTooltip" matTooltip="Visualizar PDF">
+            <mat-icon class="col-white">picture_as_pdf</mat-icon>
+          </button>
+          <button mat-mini-fab class="bg-cyan" style="margin: 0 .5rem .5rem .5rem;" (click)="guardar()" #tooltip="matTooltip" matTooltip="Guardar">
+            <mat-icon class="col-white">save</mat-icon>
+          </button>
+        </div>
       </div>
       <hr>
       <div class="col-md-6">

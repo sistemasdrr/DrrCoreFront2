@@ -1,4 +1,8 @@
 <section class="content">
+  <div id="loader-lista-empresas" class="d-flex justify-content-center align-items-center loader-container" [ngClass]="{'hide-loader': !loading}">
+    <span class="loader"></span><br>
+    <h2 style="color: white;">&nbsp;Cargando...</h2>
+  </div>
   <div class="container-fluid" style="overflow: auto; width: 100%;">
     <div class="block-header" *ngFor="let breadscrum of breadscrums">
       <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [codigoInforme]="''" [active_item]="breadscrum.active">
@@ -7,7 +11,7 @@
   </div>
   <div class="row m-0 p-1">
     <div class="col-md-4 ">
-      <mat-tab-group class="card card-body">
+      <mat-tab-group class="card card-body" (selectedIndexChange)="clear($event)">
         <mat-tab label="Por Facturar">
           <br>
           <div class="row m-0 p-0 ">
@@ -15,33 +19,43 @@
               <mat-form-field class="w-100">
                 <mat-label>Fecha de Despacho</mat-label>
                 <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
-                  <input matStartDate formControlName="start" placeholder="Start date">
-                  <input matEndDate formControlName="end" placeholder="End date">
+                  <input matStartDate formControlName="start" placeholder="Desde" (dateChange)="selectStartDate($event)">
+                  <input matEndDate formControlName="end" placeholder="Hasta" (dateChange)="selectEndDate($event)">
                 </mat-date-range-input>
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-date-range-picker #picker></mat-date-range-picker>
               </mat-form-field>
             </div>
             <div class="col-md-2">
-              <button mat-mini-fab class="bg-blue" style="margin: .5rem 1rem 0 0rem;" matTooltip="Buscar">
+              <button mat-mini-fab class="bg-blue" style="margin: .5rem 1rem 0 0rem;" matTooltip="Buscar" (click)="buscarPorFacturar()">
                 <mat-icon class="col-white">search</mat-icon>
               </button>
             </div>
           </div>
           <div class="row m-0 p-0">
-            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100" >
-              <ng-container matColumnDef="code">
-                <th mat-header-cell *matHeaderCellDef class="text-center" style="width: 25%; font-size: 18px;"> Código </th>
-                <td mat-cell *matCellDef="let subscriber" class="text-center" >{{subscriber.code}}</td>
+            <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8 w-100" matSort>
+              <ng-container  matColumnDef="subscriberCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="width: 20%; font-size: 18px;"> Código </th>
+                <td mat-cell *matCellDef="let subscriber" class="text-center" >{{subscriber.subscriberCode}}</td>
               </ng-container>
-              <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef class="text-center" style="width: 75%; font-size: 18px;"> Nombre</th>
-                <td mat-cell *matCellDef="let subscriber" class="text-center" > {{subscriber.name}} </td>
+              <ng-container matColumnDef="subscriberName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-left" style="width: 60%; font-size: 18px;"> Nombre</th>
+                <td mat-cell *matCellDef="let subscriber" class="text-left" > {{subscriber.subscriberName}} </td>
+              </ng-container>
+              <ng-container matColumnDef="opciones">
+                <th mat-header-cell *matHeaderCellDef class="text-left" style="width: 20%; font-size: 18px;"> </th>
+                <td mat-cell *matCellDef="let subscriber" class="text-left" >
+                  <button  mat-mini-fab class="bg-white" matTooltip="Seleccionar"  (click)="selectSubscriber(subscriber.idSubscriber)">
+                    <app-feather-icons [icon]="'check-circle'" class="tbl-fav-web"></app-feather-icons>
+                  </button>
+                </td>
               </ng-container>
 
               <tr mat-header-row *matHeaderRowDef="columnsDS"></tr>
               <tr mat-row *matRowDef="let row; columns: columnsDS;"></tr>
             </table>
+            <mat-paginator [pageSizeOptions]="[5, 10]" aria-label="" class="w-100"></mat-paginator>
+
           </div>
         </mat-tab>
         <mat-tab label="Por Cobrar">
@@ -73,28 +87,37 @@
               </mat-form-field>
             </div>
             <div class="col-md-2">
-              <button mat-mini-fab class="bg-blue" style="margin: .5rem 1rem 0 0rem;" matTooltip="Buscar">
+              <button mat-mini-fab class="bg-blue" style="margin: .5rem 1rem 0 0rem;" matTooltip="Buscar" (click)="buscarPorCobrar()">
                 <mat-icon class="col-white">search</mat-icon>
               </button>
             </div>
           </div>
           <div class="row m-0 p-0">
-            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100" >
-              <ng-container matColumnDef="code">
-                <th mat-header-cell *matHeaderCellDef class="text-center" style="width: 25%; font-size: 18px;"> Código </th>
-                <td mat-cell *matCellDef="let subscriber" class="text-center" >{{subscriber.code}}</td>
+            <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8 w-100" matSort>
+              <ng-container matColumnDef="subscriberCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="width: 20%; font-size: 18px;"> Código </th>
+                <td mat-cell *matCellDef="let subscriber" class="text-center" >{{subscriber.subscriberCode}}</td>
               </ng-container>
-              <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef class="text-center" style="width: 75%; font-size: 18px;"> Nombre</th>
-                <td mat-cell *matCellDef="let subscriber" class="text-center" > {{subscriber.name}} </td>
+              <ng-container matColumnDef="subscriberName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-left" style="width: 60%; font-size: 18px;"> Nombre</th>
+                <td mat-cell *matCellDef="let subscriber" class="text-left" > {{subscriber.subscriberName}} </td>
               </ng-container>
-
+              <ng-container matColumnDef="opciones">
+                <th mat-header-cell *matHeaderCellDef class="text-left" style="width: 20%; font-size: 18px;"> </th>
+                <td mat-cell *matCellDef="let subscriber"  class="text-left" >
+                  <button  mat-mini-fab class="bg-white" matTooltip="Seleccionar"  (click)="selectSubscriber(subscriber.idSubscriber)">
+                    <app-feather-icons [icon]="'check-circle'" class="tbl-fav-web"></app-feather-icons>
+                  </button>
+                </td>
+              </ng-container>
               <tr mat-header-row *matHeaderRowDef="columnsDS"></tr>
               <tr mat-row *matRowDef="let row; columns: columnsDS;"></tr>
             </table>
+            <mat-paginator [pageSizeOptions]="[5, 10]" aria-label="" class="w-100"></mat-paginator>
+
           </div>
         </mat-tab>
-        <mat-tab label="Cobradas">
+        <mat-tab label="Cobradas" >
           <br>
           <div class="row m-0 p-0 ">
             <div class="col-md-6">
@@ -123,25 +146,40 @@
               </mat-form-field>
             </div>
             <div class="col-md-2">
-              <button mat-mini-fab class="bg-blue" style="margin: .5rem 1rem 0 0rem;" matTooltip="Buscar">
+              <button mat-mini-fab class="bg-blue" style="margin: .5rem 1rem 0 0rem;" matTooltip="Buscar" (click)="buscarCobradas()">
                 <mat-icon class="col-white">search</mat-icon>
               </button>
             </div>
           </div>
           <div class="row m-0 p-0">
-            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100" >
-              <ng-container matColumnDef="code">
-                <th mat-header-cell *matHeaderCellDef class="text-center" style="width: 25%; font-size: 18px;"> Código </th>
-                <td mat-cell *matCellDef="let subscriber" class="text-center" >{{subscriber.code}}</td>
+            <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8 w-100" matSort>
+              <ng-container matColumnDef="subscriberCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="width: 20%; font-size: 18px;"> Código </th>
+                <td mat-cell *matCellDef="let subscriber" class="text-center" >{{subscriber.subscriberCode}}</td>
               </ng-container>
-              <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef class="text-center" style="width: 75%; font-size: 18px;"> Nombre</th>
-                <td mat-cell *matCellDef="let subscriber" class="text-center" > {{subscriber.name}} </td>
+              <ng-container matColumnDef="subscriberName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-left" style="width: 60%; font-size: 18px;"> Nombre</th>
+                <td mat-cell *matCellDef="let subscriber" class="text-left" > {{subscriber.subscriberName}} </td>
               </ng-container>
-
+              <ng-container matColumnDef="opciones">
+                <th mat-header-cell *matHeaderCellDef class="text-left" style="width: 20%; font-size: 18px;"> </th>
+                <td mat-cell *matCellDef="let subscriber" class="text-left" >
+                  <button  mat-mini-fab class="bg-white" matTooltip="Seleccionar"  (click)="selectSubscriber(subscriber.idSubscriber)">
+                    <app-feather-icons [icon]="'check-circle'" class="tbl-fav-web"></app-feather-icons>
+                  </button>
+                </td>
+              </ng-container>
+              <!--ng-container matColumnDef="pais" >
+                <th mat-header-cell *matHeaderCellDef class="text-center" style="width: 15%; font-size: 18px;"> País</th>
+                <td mat-cell *matCellDef="let subscriber" class="text-center">
+                  {{subscriber.country}} <span class="fi fi-{{subscriber.flagCountry}}" style="font-size: 20px;"></span>
+                </td>
+              </!--ng-container-->
               <tr mat-header-row *matHeaderRowDef="columnsDS"></tr>
               <tr mat-row *matRowDef="let row; columns: columnsDS;"></tr>
             </table>
+            <mat-paginator [pageSizeOptions]="[5, 10]" aria-label="" class="w-100"></mat-paginator>
+
           </div>
         </mat-tab>
       </mat-tab-group>
@@ -173,13 +211,13 @@
           </div>
           <hr>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           <mat-form-field class="w-100">
             <mat-label>Factura N°</mat-label>
             <input matInput placeholder="" [(ngModel)]="invoiceNumber">
           </mat-form-field>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <mat-form-field color="primary" style="width: 100%;">
             <mat-label>Fecha de Facturación</mat-label>
             <input matInput [matDatepicker]="invoice_Date" [(ngModel)]="invoiceDate">
@@ -187,21 +225,46 @@
             <mat-datepicker #invoice_Date color="primary"></mat-datepicker>
           </mat-form-field>
         </div>
+        <div class="col-md-3">
+          <mat-form-field style="width: 100%;">
+            <mat-label>Idioma</mat-label>
+            <mat-select [(ngModel)]="language">
+              <mat-option [value]="'E'">
+                <span class="fi fi-es"></span>
+                ESPAÑOL
+              </mat-option>
+              <mat-option [value]="'I'">
+                <span class="fi fi-us"></span>
+                INGLÉS
+              </mat-option>
+            </mat-select>
+            <button class="btn-traduccion" matSuffix mat-icon-button>
+              <span class="fi fi-es" style="font-size: 24px;" *ngIf="language === 'E'"></span>
+              <span class="fi fi-us" style="font-size: 24px;" *ngIf="language  === 'I'"></span>
+            </button>
+          </mat-form-field>
+        </div>
         <div class="col-md-2">
           <button mat-mini-fab class="bg-blue" style="margin: .5rem 1rem 0 0rem;" matTooltip="Factura Electronica">
             <mat-icon class="col-white">description</mat-icon>
           </button>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-6">
           <mat-form-field class="w-100">
             <mat-label>Abonado</mat-label>
             <input matInput placeholder="" [(ngModel)]="name">
           </mat-form-field>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
           <mat-form-field class="w-100">
             <mat-label>Código</mat-label>
             <input matInput placeholder="" [(ngModel)]="code">
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field class="w-100">
+            <mat-label>Reg. Tributario</mat-label>
+            <input matInput placeholder="" [(ngModel)]="taxTypeCode">
           </mat-form-field>
         </div>
         <div class="col-md-6">
@@ -210,48 +273,69 @@
             <input matInput placeholder="" [(ngModel)]="address">
           </mat-form-field>
         </div>
-        <div class="col-md-6">
-          <mat-form-field class="w-100">
-            <mat-label>Atención</mat-label>
-            <input matInput placeholder="" [(ngModel)]="attendedBy">
-          </mat-form-field>
-        </div>
-        <div class="col-md-4">
-          <mat-form-field class="w-100">
-            <mat-label>Continente</mat-label>
-            <input matInput placeholder="" [(ngModel)]="idContinent">
-          </mat-form-field>
-        </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <mat-form-field class="w-100">
             <mat-label>País</mat-label>
-            <input matInput placeholder="" [(ngModel)]="idCountry">
+            <mat-select [(ngModel)]="idCountry" placeholder="">
+              <mat-option *ngFor="let pais of paises" [value]="pais.id" (onSelectionChange)="bandera = pais.bandera">
+                <span class="fi fi-{{pais.bandera}}"></span>
+                {{pais.valor}}
+
+              </mat-option>
+            </mat-select>
+            <button class="btn-traduccion" matSuffix mat-icon-button>
+              <span class="fi fi-{{bandera}}" style="font-size: 20px;"></span>
+            </button>
           </mat-form-field>
         </div>
-        <div class="col-md-4">
-          <mat-form-field class="w-100">
+        <div class="col-md-3">
+          <mat-form-field style="width: 100%;">
             <mat-label>Moneda</mat-label>
-            <input matInput placeholder="" [(ngModel)]="idCountry">
+            <mat-select [(ngModel)]="idCurrency">
+              <mat-option [value]="31">
+                S/.-Sol(PEN)
+              </mat-option>
+              <mat-option [value]="1">
+                US$-Dólar estadounidense(USD)
+              </mat-option>
+              <mat-option [value]="2">
+                €-Euro(EUR)
+              </mat-option>
+            </mat-select>
           </mat-form-field>
         </div>
         <div class="col-md-4">
           <mat-form-field class="w-100">
-            <mat-label>Idioma</mat-label>
-            <input matInput placeholder="" [(ngModel)]="language">
+            <mat-label>Atención</mat-label>
+            <input matInput placeholder="" [(ngModel)]="attendedByName">
           </mat-form-field>
         </div>
         <div class="col-md-4">
+          <mat-form-field class="w-100">
+            <mat-label>Correo</mat-label>
+            <input matInput placeholder="" [(ngModel)]="attendedByEmail">
+          </mat-form-field>
+        </div>
+        <div class="col-md-2">
           <mat-form-field class="w-100">
             <mat-label>T.C. Sol - Dolar</mat-label>
             <input matInput placeholder="" [(ngModel)]="exchangeRateSD">
           </mat-form-field>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
           <mat-form-field class="w-100">
             <mat-label>T.C. Euro - Dolar</mat-label>
             <input matInput placeholder="" [(ngModel)]="exchangeRateED">
           </mat-form-field>
         </div>
+        <!--div class="col-md-4">
+          <mat-form-field class="w-100">
+            <mat-label>Continente</mat-label>
+            <input matInput placeholder="" [(ngModel)]="idContinent">
+          </mat-form-field>
+        </!--div-->
+
+
         <div class="col-md-5">
           <mat-form-field class="w-100">
             <mat-label>Observaciones</mat-label>
@@ -277,6 +361,48 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <div class="col-md-12 card card-body">
+      <h5>Detalle de Pedidos Atendidos del Abonado - </h5><hr>
+      <div class="row m-0 p-0">
+        <table mat-table [dataSource]="dataSourcePedido" class="mat-elevation-z8 w-100" >
+          <ng-container matColumnDef="ticket">
+            <th mat-header-cell *matHeaderCellDef class="text-center" style="font-size: 18px;"> Código </th>
+            <td mat-cell *matCellDef="let order" class="text-center" >{{order.number}}</td>
+          </ng-container>
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef class="text-center" style="font-size: 18px;"> Nombre</th>
+            <td mat-cell *matCellDef="let order" class="text-center" > {{order.requestedName}} </td>
+          </ng-container>
+          <ng-container matColumnDef="orderDate">
+            <th mat-header-cell *matHeaderCellDef class="text-center" style="font-size: 18px;"> Fecha de Pedido</th>
+            <td mat-cell *matCellDef="let order" class="text-center" > {{order.orderDate}} </td>
+          </ng-container>
+          <ng-container matColumnDef="dispatchDate">
+            <th mat-header-cell *matHeaderCellDef class="text-center" style="font-size: 18px;"> Fecha de Despacho</th>
+            <td mat-cell *matCellDef="let order" class="text-center" > {{order.dispatchDate}} </td>
+          </ng-container>
+          <ng-container matColumnDef="procedureType">
+            <th mat-header-cell *matHeaderCellDef class="text-center" style="font-size: 18px;"> Trámite</th>
+            <td mat-cell *matCellDef="let order" class="text-center" > {{order.procedureType}} </td>
+          </ng-container>
+          <ng-container matColumnDef="country">
+            <th mat-header-cell *matHeaderCellDef class="text-center" style="font-size: 18px;"> País</th>
+            <td mat-cell *matCellDef="let order" class="text-center" >
+              {{order.country}}
+              <span class="fi fi-{{order.flagCountry}}" style="font-size: 20px;"></span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef class="text-center" style="font-size: 18px;"> Precio</th>
+            <td mat-cell *matCellDef="let order" class="text-center" > {{order.price}} </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="columnsDSP"></tr>
+          <tr mat-row *matRowDef="let row; columns: columnsDSP;"></tr>
+        </table>
       </div>
     </div>
     <div class="col-md-12 card card-body">
@@ -320,9 +446,9 @@
         <div class="col-md-3">
           <mat-form-field color="primary" style="width: 100%;">
             <mat-label>Fecha de Despacho</mat-label>
-            <input matInput [matDatepicker]="pedido_date" [(ngModel)]="orderDate">
-            <mat-datepicker-toggle matIconSuffix [for]="pedido_date"></mat-datepicker-toggle>
-            <mat-datepicker #pedido_date color="primary"></mat-datepicker>
+            <input matInput [matDatepicker]="dispatch_date" [(ngModel)]="orderDate">
+            <mat-datepicker-toggle matIconSuffix [for]="dispatch_date"></mat-datepicker-toggle>
+            <mat-datepicker #dispatch_date color="primary"></mat-datepicker>
           </mat-form-field>
         </div>
         <div class="col-md-3">
@@ -346,44 +472,6 @@
         </div>
         <div class="co-md-4"></div>
         <div class="co-md-4"></div>
-      </div>
-    </div>
-    <div class="col-md-12 card card-body">
-      <h5>Detalle de Pedidos Atendidos del Abonado - </h5><hr>
-      <div class="row m-0 p-0">
-        <table mat-table [dataSource]="dataSourcePedido" class="mat-elevation-z8 w-100" >
-          <ng-container matColumnDef="ticket">
-            <th mat-header-cell *matHeaderCellDef class="text-center" style="font-size: 18px;"> Código </th>
-            <td mat-cell *matCellDef="let order" class="text-center" >{{order.cupon}}</td>
-          </ng-container>
-          <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef class="text-center" style="font-size: 18px;"> Nombre</th>
-            <td mat-cell *matCellDef="let order" class="text-center" > {{order.name}} </td>
-          </ng-container>
-          <ng-container matColumnDef="orderDate">
-            <th mat-header-cell *matHeaderCellDef class="text-center" style="font-size: 18px;"> Fecha de Pedido</th>
-            <td mat-cell *matCellDef="let order" class="text-center" > {{order.orderDate}} </td>
-          </ng-container>
-          <ng-container matColumnDef="dispatchDate">
-            <th mat-header-cell *matHeaderCellDef class="text-center" style="font-size: 18px;"> Fecha de Despacho</th>
-            <td mat-cell *matCellDef="let order" class="text-center" > {{order.dispatchDate}} </td>
-          </ng-container>
-          <ng-container matColumnDef="procedureType">
-            <th mat-header-cell *matHeaderCellDef class="text-center" style="font-size: 18px;"> Trámite</th>
-            <td mat-cell *matCellDef="let order" class="text-center" > {{order.procedureType}} </td>
-          </ng-container>
-          <ng-container matColumnDef="country">
-            <th mat-header-cell *matHeaderCellDef class="text-center" style="font-size: 18px;"> País</th>
-            <td mat-cell *matCellDef="let order" class="text-center" > {{order.country}} </td>
-          </ng-container>
-          <ng-container matColumnDef="price">
-            <th mat-header-cell *matHeaderCellDef class="text-center" style="font-size: 18px;"> Precio</th>
-            <td mat-cell *matCellDef="let order" class="text-center" > {{order.price}} </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="columnsDSP"></tr>
-          <tr mat-row *matRowDef="let row; columns: columnsDSP;"></tr>
-        </table>
       </div>
     </div>
   </div>
