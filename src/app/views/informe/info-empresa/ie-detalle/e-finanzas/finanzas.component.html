@@ -167,7 +167,7 @@
       <div class="col-md-12">
         <mat-form-field class="w-100">
           <mat-label>Comentario Financiero Elegido</mat-label>
-          <textarea matInput placeholder="" style="min-height: 8rem;" [(ngModel)]="financialCommentarySelected"></textarea>
+          <textarea matInput placeholder="" style="min-height:9rem;" [(ngModel)]="financialCommentarySelected"></textarea>
           <button class="btn-traduccion" matSuffix mat-icon-button [class]="financialCommentarySelectedEng === '' ? 'sin-traduccion' : ''" (click)="agregarComentario(tituloComentarioFinanciero,'',financialCommentarySelected,financialCommentarySelectedEng , 'comentarioElegido')">
             <span class="fi fi-us" style="font-size: 24px;"></span>
           </button>
@@ -183,7 +183,7 @@
       <div class="col-md-12">
         <mat-form-field class="w-100 mb-4">
           <mat-label>Comentario de la Entrevista.</mat-label>
-          <textarea matInput placeholder="" style="min-height: 5rem;" [(ngModel)]="interviewCommentary"></textarea>
+          <textarea matInput placeholder="" style="min-height: 8rem;" [(ngModel)]="interviewCommentary"></textarea>
           <button class="btn-traduccion" matSuffix mat-icon-button [class]="interviewCommentaryEng === '' ? 'sin-traduccion' : ''" (click)="agregarComentario(tituloComentarioEntrevista,'',interviewCommentary,interviewCommentaryEng, 'comentarioEntrevista')">
             <span class="fi fi-us" style="font-size: 24px;"></span>
           </button>
@@ -193,7 +193,7 @@
       <div class="col-md-12">
         <mat-form-field class="w-100">
           <mat-label>Comentario del Analista</mat-label>
-          <textarea matInput placeholder="" style="min-height: 5rem;" [(ngModel)]="analystCommentary"></textarea>
+          <textarea matInput placeholder="" style="min-height: 8rem;" [(ngModel)]="analystCommentary"></textarea>
           <button class="btn-traduccion" matSuffix mat-icon-button [class]="analystCommentaryEng === '' ? 'sin-traduccion' : ''"  (click)="agregarComentario(tituloComentarioAnalista,'',analystCommentary,analystCommentaryEng,'comentarioAnalista')">
             <span class="fi fi-us" style="font-size: 24px;"></span>
           </button>

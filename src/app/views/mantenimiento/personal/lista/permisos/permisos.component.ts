@@ -27,11 +27,15 @@ export class PermisosComponent implements OnInit{
   listaProduccion : UserProcess[] = []
   listaAdministracion : UserProcess[] = []
   listaFacturacion : UserProcess[] = []
+  listaConsultas : UserProcess[] = []
+  listaReportes : UserProcess[] = []
 
   allComplete1: boolean = false;
   allComplete2: boolean = false;
   allComplete3: boolean = false;
   allComplete4: boolean = false;
+  allComplete5: boolean = false;
+  allComplete6: boolean = false;
   constructor(public dialogRef: MatDialogRef<PermisosComponent>,private usuarioService : UsuarioService,@Inject(MAT_DIALOG_DATA) public data: any,){
     if(data){
       this.idEmployee = data.id
@@ -47,11 +51,14 @@ export class PermisosComponent implements OnInit{
             this.listaProduccion = permisos.produccion
             this.listaAdministracion = permisos.administracion
             this.listaFacturacion = permisos.facturacion
+            this.listaConsultas = permisos.consultas
+            this.listaReportes = permisos.reportes
           }
         }
       }
     );
   }
+
 
   setAllGerencia(completed: boolean) {
     this.allComplete1 = completed;
@@ -69,6 +76,8 @@ export class PermisosComponent implements OnInit{
   updateAllCompleteGerencia() {
     this.allComplete1 = this.listaGerencia[0].subLevel != null && this.listaGerencia[0].subLevel.every(t => t.enable);
   }
+
+
   setAllProduccion(completed: boolean) {
     this.allComplete2 = completed;
     if (this.listaProduccion == null) {
@@ -85,6 +94,8 @@ export class PermisosComponent implements OnInit{
   updateAllCompleteProduccion() {
     this.allComplete2 = this.listaProduccion[0].subLevel != null && this.listaProduccion[0].subLevel.every(t => t.enable);
   }
+
+
   setAllAdministracion(completed: boolean) {
     this.allComplete3 = completed;
     if (this.listaAdministracion == null) {
@@ -101,22 +112,61 @@ export class PermisosComponent implements OnInit{
   updateAllCompleteAdministracion() {
     this.allComplete3 = this.listaAdministracion[0].subLevel != null && this.listaAdministracion[0].subLevel.every(t => t.enable);
   }
+
+
   setAllFacturacion(completed: boolean) {
-    this.allComplete4 = completed;
+    this.allComplete3 = completed;
     if (this.listaFacturacion == null) {
       return;
     }
-    this.listaFacturacion[0].subLevel.forEach(t => (t.enable = completed));
+    this.listaAdministracion[0].subLevel.forEach(t => (t.enable = completed));
   }
   someCompleteFacturacion(): boolean {
     if (this.listaFacturacion[0].subLevel == null) {
       return false;
     }
-    return this.listaFacturacion[0].subLevel.filter(t => t.enable).length > 0 && !this.allComplete4;
+    return this.listaFacturacion[0].subLevel.filter(t => t.enable).length > 0 && !this.allComplete3;
   }
   updateAllCompleteFacturacion() {
-    this.allComplete4 = this.listaFacturacion[0].subLevel != null && this.listaFacturacion[0].subLevel.every(t => t.enable);
+    this.allComplete3 = this.listaFacturacion[0].subLevel != null && this.listaFacturacion[0].subLevel.every(t => t.enable);
   }
+
+  setAllConsultas(completed: boolean) {
+    this.allComplete5 = completed;
+    if (this.listaConsultas == null) {
+      return;
+    }
+    this.listaConsultas[0].subLevel.forEach(t => (t.enable = completed));
+  }
+  someCompleteConsultas(): boolean {
+    if (this.listaConsultas[0].subLevel == null) {
+      return false;
+    }
+    return this.listaConsultas[0].subLevel.filter(t => t.enable).length > 0 && !this.allComplete4;
+  }
+  updateAllCompleteConsultas() {
+    this.allComplete4 = this.listaConsultas[0].subLevel != null && this.listaConsultas[0].subLevel.every(t => t.enable);
+  }
+
+
+  setAllReportes(completed: boolean) {
+    this.allComplete4 = completed;
+    if (this.listaReportes == null) {
+      return;
+    }
+    this.listaReportes[0].subLevel.forEach(t => (t.enable = completed));
+  }
+  someCompleteReportes(): boolean {
+    if (this.listaReportes[0].subLevel == null) {
+      return false;
+    }
+    return this.listaReportes[0].subLevel.filter(t => t.enable).length > 0 && !this.allComplete4;
+  }
+  updateAllCompleteReportes() {
+    this.allComplete5 = this.listaReportes[0].subLevel != null && this.listaReportes[0].subLevel.every(t => t.enable);
+  }
+
+
   salir(){
     this.dialogRef.close()
   }
@@ -125,6 +175,8 @@ export class PermisosComponent implements OnInit{
     let enableProduccion = false
     let enableAdministracion = false
     let enableFacturacion = false
+    let enableConsultas = false
+    let enableReportes = false
     this.listaGerencia[0].subLevel.forEach(element => {
       if(element.enable === true){
         enableGerencia = true
@@ -145,21 +197,37 @@ export class PermisosComponent implements OnInit{
         enableFacturacion = true
       }
     });
+    this.listaConsultas[0].subLevel.forEach(element => {
+      if(element.enable === true){
+        enableConsultas = true
+      }
+    });
+    this.listaReportes[0].subLevel.forEach(element => {
+      if(element.enable === true){
+        enableReportes = true
+      }
+    });
     this.listaGerencia[0].enable = enableGerencia
     this.listaProduccion[0].enable = enableProduccion
     this.listaAdministracion[0].enable = enableAdministracion
     this.listaFacturacion[0].enable = enableFacturacion
+    this.listaConsultas[0].enable = enableConsultas
+    this.listaReportes[0].enable = enableReportes
     const permisos : UserPermission= {
       gerencia: this.listaGerencia,
       produccion: this.listaProduccion,
       administracion: this.listaAdministracion,
-      facturacion: this.listaFacturacion
+      facturacion: this.listaFacturacion,
+      consultas: this.listaConsultas,
+      reportes: this.listaReportes,
     };
 
     console.log(this.listaGerencia)
     console.log(this.listaProduccion)
     console.log(this.listaAdministracion)
     console.log(this.listaFacturacion)
+    console.log(this.listaConsultas)
+    console.log(this.listaReportes)
 
       Swal.fire({
         title: '¿Está seguro de guardar los cambios?',

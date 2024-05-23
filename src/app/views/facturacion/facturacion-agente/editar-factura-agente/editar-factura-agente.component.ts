@@ -106,7 +106,11 @@ export class EditarFacturaAgenteComponent implements OnInit{
                   this.loading = false
                   this.dialogRef.close({
                     success : true,
-                    price : this.price
+                    requestedName : this.requestedName,
+                    procedureType : this.procedureType,
+                    shippingDate : this.shippingDate,
+                    price : this.price,
+
                   })
                 }
               )

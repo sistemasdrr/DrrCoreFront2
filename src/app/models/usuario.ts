@@ -18,6 +18,8 @@ export interface UserPermission{
   produccion : UserProcess[]
   administracion : UserProcess[]
   facturacion : UserProcess[]
+  consultas : UserProcess[]
+  reportes : UserProcess[]
 }
 export interface UserProcess{
   id : number

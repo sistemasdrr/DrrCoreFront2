@@ -29,6 +29,10 @@ export interface CompanyRelation{
   idCompany : number
   idCompanyRelation : number
 }
+export interface AddListCompanyRelation{
+  idCompany : number
+  idsCompanyRelation : number[]
+}
 export interface CompanyRelationT{
   id : number
   idCompany : number

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Background, CompanyRelation, CompanyRelationT } from 'app/models/informes/empresa/antecendentes-legales';
+import { AddListCompanyRelation, Background, CompanyRelation, CompanyRelationT } from 'app/models/informes/empresa/antecendentes-legales';
 import { Response } from 'app/models/response';
 import { environment } from 'environments/environment';
 import { Observable, catchError, throwError } from 'rxjs';
@@ -26,6 +26,9 @@ export class AntecedentesLegalesService {
   }
   addCompanyRelation(obj : CompanyRelation): Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url + this.controllerCompany + '/addCompanyRelation',obj)
+  }
+  addListCompanyRelation(obj : AddListCompanyRelation): Observable<Response<boolean>>{
+    return this.http.post<Response<boolean>>(this.url + this.controllerCompany + '/addListCompanyRelation',obj)
   }
   getCompanyRelation(id : number): Observable<Response<CompanyRelation>>{
     return this.http.get<Response<CompanyRelation>>(this.url + this.controllerCompany + '/getCompanyRelation?id='+id)

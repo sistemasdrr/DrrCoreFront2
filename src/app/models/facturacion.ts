@@ -1,4 +1,4 @@
-export interface InvoiceSubcriberList{
+export interface InvoiceSubcriberListByBill{
   idTicket : number
   number : string
   requestedName : string
@@ -17,6 +17,67 @@ export interface InvoiceSubcriberList{
   subscriberCode : string
   idInvoiceState : number
 }
+export interface InvoiceSubcriberListToCollect{
+  id : number
+  invoiceCode : string
+  idCurrency : number
+  idSubscriber : number
+  subscriberName : string
+  subscriberCode : string
+  invoiceEmitDate : Date | null
+  details : InvoiceDetailsSubcriberToCollect[]
+}
+export interface InvoiceSubcriberListPaids{
+  id : number
+  idSubscriber : number
+  subscriberName : string
+  subscriberCode : string
+  details : InvoiceDetailsSubcriberPaids[]
+}
+
+export interface InvoiceDetailsSubcriberToCollect{
+  idSubscriberInvoiceDetails : number
+  idSubscriberInvoice : number
+  idTicket : number
+  number : string
+  requestedName : string
+  orderDate : string
+  dispatchDate : string
+  referenceNUmber : string
+  IdCountry : string
+  country : string
+  flagCountry : string
+  procedureType : string
+  reportType : string
+  price : number
+}
+export interface InvoiceDetailsSubcriberPaids{
+  idTicket : number
+  number : string
+  requestedName : string
+  orderDate : string
+  dispatchDate : string
+  referenceNUmber : string
+  IdCountry : string
+  country : string
+  flagCountry : string
+  procedureType : string
+  reportType : string
+  price : number
+}
+
+
+export interface AddInvoiceSubscriber{
+  invoiceCode : string
+  invoiceDate : Date | null
+  language : string
+  idCurrency : number
+  idSubscriber : number
+  attendedByName : string
+  attendedByEmail : string
+  invoiceSubscriberList : InvoiceSubcriberListByBill[]
+}
+
 export interface InvoiceAgentList{
   idTicket : number
   idTicketHistory : number

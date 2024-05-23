@@ -148,6 +148,70 @@
               </li>
             </ul>
           </li>
+            <!-- Top Most level menu -->
+            <li *ngFor="let item1 of listaConsultas"
+            [routerLinkActive]="item1.subLevel.length !== 0 ? 'active' : 'active-top'">
+            <div class="header" ></div>
+            <a [routerLink]="null"
+              [ngClass]="'menu-toggle'" (click)="callToggleMenu($event, item1.subLevel.length)"
+              class="menu-top">
+              <i class="{{item1.icon}}"></i>&nbsp;
+              <span class="hide-menu">{{item1.name}}
+              </span>
+            </a>
+            <ul class="ml-menu" *ngIf="item1.subLevel.length > 0">
+              <li *ngFor="let item2 of item1.subLevel"
+                [routerLinkActive]="item2.subLevel.length > 0 ? '' : 'active'">
+                <a [routerLink]="item2.subLevel.length > 0 ? null : [item2.path]" *ngIf="item2.enable"
+                  (click)="callToggleMenu($event,item2.subLevel.length)" [ngClass]="item2.subLevel.length > 0 ? 'menu-toggle' : 'ml-menu'">
+                  <i class="{{item2.icon}}"></i>&nbsp;
+                  {{item2.name}}
+                </a>
+                <ul class="ml-menu-2" *ngIf="item2.subLevel.length > 0" >
+                  <li *ngFor="let item3 of item2.subLevel"
+                  [routerLinkActive]="'active-top'">
+                    <a [routerLink]="[item3.path]" *ngIf="item3.enable"
+                     [ngClass]=" 'ml-menu'">
+                     <i class="{{item3.icon}}"></i>&nbsp;
+                      {{item3.name}}
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+            <!-- Top Most level menu -->
+            <li *ngFor="let item1 of listaReportes"
+            [routerLinkActive]="item1.subLevel.length !== 0 ? 'active' : 'active-top'">
+            <div class="header" ></div>
+            <a [routerLink]="null"
+              [ngClass]="'menu-toggle'" (click)="callToggleMenu($event, item1.subLevel.length)"
+              class="menu-top">
+              <i class="{{item1.icon}}"></i>&nbsp;
+              <span class="hide-menu">{{item1.name}}
+              </span>
+            </a>
+            <ul class="ml-menu" *ngIf="item1.subLevel.length > 0">
+              <li *ngFor="let item2 of item1.subLevel"
+                [routerLinkActive]="item2.subLevel.length > 0 ? '' : 'active'">
+                <a [routerLink]="item2.subLevel.length > 0 ? null : [item2.path]" *ngIf="item2.enable"
+                  (click)="callToggleMenu($event,item2.subLevel.length)" [ngClass]="item2.subLevel.length > 0 ? 'menu-toggle' : 'ml-menu'">
+                  <i class="{{item2.icon}}"></i>&nbsp;
+                  {{item2.name}}
+                </a>
+                <ul class="ml-menu-2" *ngIf="item2.subLevel.length > 0" >
+                  <li *ngFor="let item3 of item2.subLevel"
+                  [routerLinkActive]="'active-top'">
+                    <a [routerLink]="[item3.path]" *ngIf="item3.enable"
+                     [ngClass]=" 'ml-menu'">
+                     <i class="{{item3.icon}}"></i>&nbsp;
+                      {{item3.name}}
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
            <!-- Top Most level menu -->
            <li *ngFor="let item1 of listaAbonado"
            [routerLinkActive]="item1.subLevel.length !== 0 ? 'active' : 'active'">

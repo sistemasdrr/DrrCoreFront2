@@ -7,12 +7,12 @@ import { Pais } from 'app/models/combo';
 import { ComboService } from 'app/services/combo.service';
 import { DatosEmpresaService } from 'app/services/informes/empresa/datos-empresa.service';
 import { Observable, map, startWith } from 'rxjs';
-import { ListaEmpresasComponent } from '../../../ie-detalle/e-antecedentes/lista-empresas/lista-empresas.component';
 import Swal from 'sweetalert2';
 import { AccionistasEmpresa } from 'app/models/informes/empresa/socios-empresa';
 import { SociosEmpresaService } from 'app/services/informes/empresa/socios-empresa.service';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter } from '@angular/material/core';
+import { ListaEmpresas2Component } from './lista-empresas/lista-empresas.component';
 
 
 @Component({
@@ -290,7 +290,7 @@ export class AgregarAccionistaComponent implements OnInit{
     this.language = idioma;
   }
   seleccionarEmpresa(){
-    const dialogRef = this.dialog.open(ListaEmpresasComponent, {
+    const dialogRef = this.dialog.open(ListaEmpresas2Component, {
       data : {
         idCompany : this.idCompany
       }

@@ -22,8 +22,10 @@ import { FeatherIconsModule } from '@shared/components/feather-icons/feather-ico
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { EditarFacturaAgenteComponent } from './facturacion-agente/editar-factura-agente/editar-factura-agente.component';
-import { EditarPorCobrarComponent } from './facturacion-agente/editar-por-cobrar/editar-por-cobrar.component';
 import { CancelarFacturaComponent } from './facturacion-agente/cancelar-factura/cancelar-factura.component';
+import { CancelarFacturaAbonadoComponent } from './facturacion-abonado/facturacion-mensual/cancelar-factura-abonado/cancelar-factura-abonado.component';
+import { EditarPorFacturarComponent } from './facturacion-abonado/facturacion-mensual/editar-por-facturar/editar-por-facturar.component';
+import { EditarPorCobrarAbonadoComponent } from './facturacion-abonado/facturacion-mensual/editar-por-cobrar/editar-por-cobrar.component';
 
 
 @NgModule({
@@ -32,8 +34,10 @@ import { CancelarFacturaComponent } from './facturacion-agente/cancelar-factura/
     FacturacionMensualComponent,
     FacturacionConCuponesComponent,
     EditarFacturaAgenteComponent,
-    EditarPorCobrarComponent,
-    CancelarFacturaComponent
+    EditarPorCobrarAbonadoComponent,
+    CancelarFacturaComponent,
+    CancelarFacturaAbonadoComponent,
+    EditarPorFacturarComponent
   ],
   imports: [
     CommonModule,
@@ -57,7 +61,7 @@ import { CancelarFacturaComponent } from './facturacion-agente/cancelar-factura/
     MatSortModule,
     FeatherIconsModule,
     MatPaginatorModule,
-    
+
   ]
 })
 export class FacturacionModule { }

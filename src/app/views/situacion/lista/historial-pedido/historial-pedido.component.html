@@ -1,4 +1,4 @@
-<div mat-dialog-content class="row m-0 p-0" style="min-width: 50rem; min-height: 35rem; overflow-y: auto; overflow-x: none;">
+<div mat-dialog-content class="row m-0 p-0" style="min-width: 60rem; min-height: 40rem; overflow: hidden; ">
   <div id="loader" class="d-flex justify-content-center align-items-center loader-container" [ngClass]="{'hide-loader': !loading}">
     <span class="loader"></span><br>
     <h2 style="color: white;">&nbsp;Cargando...</h2>
@@ -42,7 +42,7 @@
                       <span class="progress-percent label {{item.color}} mb-2 shadow" style="width: 200px;{{item.color === 'label' ? 'color : black;' : 'color : white;'}}" >
                         {{item.status}}
                       </span><br>
-                      <span>{{item.assignedTo}} : {{item.assignedToName}} </span>
+                      <span>{{item.assignedTo !== null && item.assignedTo !== '' ? item.assignedTo + ' : ' : '' }} {{item.assignedToName}} </span>
                     </div>
                   </li>
                 </ul>

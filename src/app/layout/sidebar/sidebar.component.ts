@@ -50,6 +50,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
   listaProduccion : UserProcess[] = []
   listaAdministracion : UserProcess[] = []
   listaFacturacion : UserProcess[] = []
+  listaConsultas : UserProcess[] = []
+  listaReportes : UserProcess[] = []
   listaAbonado : UserProcess[] = [
     {
       id : 0,
@@ -172,6 +174,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
             this.listaProduccion = response.data.produccion
             this.listaAdministracion = response.data.administracion
             this.listaFacturacion = response.data.facturacion
+            this.listaConsultas = response.data.consultas
+            this.listaReportes = response.data.reportes
             console.log(response.data)
           }
         }

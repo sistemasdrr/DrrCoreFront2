@@ -60,7 +60,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { SeleccionarCalidadComponent } from './info-empresa/ie-detalle/e-datos-empresa/seleccionar-calidad/seleccionar-calidad.component';
 import { AvalesComponent } from './info-empresa/ie-detalle/e-sbs-riesgo/avales/avales.component';
 import { DialogComercioComponent } from './info-empresa/ie-detalle/e-ramo/dialog-comercio/dialog-comercio.component';
-import { ListaEmpresasComponent } from './info-empresa/ie-detalle/e-antecedentes/lista-empresas/lista-empresas.component';
+import { ListaEmpresas1Component } from './info-empresa/ie-detalle/e-antecedentes/lista-empresas/lista-empresas.component';
 import { AgregarEditarRamoNegocioComponent } from './info-empresa/ie-detalle/e-ramo/ramo-actividad/agregar-editar/agregar-editar.component';
 import { MatSortModule } from '@angular/material/sort';
 import { SociosEmpresaComponent } from './info-empresa/ie-lista/socios-empresa/socios-empresa.component';
@@ -80,6 +80,7 @@ import { ImageEditorComponent } from './info-empresa/ie-detalle/e-imagenes/image
 import { ReferencistaComponent } from './referencista/referencista.component';
 import { DetallePComponent } from './referencista/detalle-p/detalle-p.component';
 import { DetalleEComponent } from './referencista/detalle-e/detalle-e.component';
+import { ListaEmpresas2Component } from './info-empresa/ie-lista/socios-empresa/agregar-accionista/lista-empresas/lista-empresas.component';
 
 @NgModule({
   declarations: [
@@ -119,7 +120,8 @@ import { DetalleEComponent } from './referencista/detalle-e/detalle-e.component'
     SeleccionarCalidadComponent,
     AvalesComponent,
     DialogComercioComponent,
-    ListaEmpresasComponent,
+    ListaEmpresas1Component,
+    ListaEmpresas2Component,
     RamoComponent,
     RamoActividadDialogComponent,
     AgregarEditarRamoNegocioComponent,
@@ -169,7 +171,8 @@ import { DetalleEComponent } from './referencista/detalle-e/detalle-e.component'
 
   ],
   exports: [
-    ListaEmpresasComponent
+    ListaEmpresas1Component,
+    ListaEmpresas2Component
   ],
   providers: [provideNgxMask()],
 })

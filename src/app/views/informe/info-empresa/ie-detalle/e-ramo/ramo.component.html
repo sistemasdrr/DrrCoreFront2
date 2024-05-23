@@ -291,7 +291,7 @@
       <div class="col-md-12">
         <mat-form-field class="w-100">
           <mat-label>Otros Locales (Plantas, Almacenes, Depósitos, Sucursales)</mat-label>
-          <textarea matInput placeholder="" style="min-height: 5rem;" [(ngModel)]="otherLocations"></textarea>
+          <textarea matInput placeholder="" style="min-height: 10rem;" [(ngModel)]="otherLocations"></textarea>
             <button class="btn-traduccion" matSuffix mat-icon-button [class]="otherLocationsEng === '' ? 'sin-traduccion' : ''" (click)="agregarComentario(tituloOtrosLocales,subtituloOtrosLocales, otherLocations, otherLocationsEng,'otrosLocales')">
               <span class="fi fi-us" style="font-size: 24px;"></span>
             </button>
@@ -307,7 +307,7 @@
       <div class="col-md-12">
         <mat-form-field class="w-100">
           <mat-label>Detalle de Actividad Principal u Objetivo Social</mat-label>
-          <textarea matInput placeholder="" style="min-height: 5.8rem;" [(ngModel)]="activityDetailCommentary"></textarea>
+          <textarea matInput placeholder="" style="min-height: 8.4rem;" [(ngModel)]="activityDetailCommentary"></textarea>
             <button class="btn-traduccion" matSuffix mat-icon-button [class]="activityDetailCommentaryEng === '' ? 'sin-traduccion' : ''"  (click)="agregarComentario('Detalle de Actividad Principal u Objetivo Social','', activityDetailCommentary, activityDetailCommentaryEng,'comentarioActividadPrincipal')">
               <span class="fi fi-us" style="font-size: 24px;"></span>
             </button>
@@ -316,7 +316,7 @@
       <div class="col-md-12">
         <mat-form-field class="w-100">
           <mat-label>Comentario Adicional de Negocio</mat-label>
-          <textarea matInput placeholder="" style="min-height: 5.8rem;" [(ngModel)]="aditionalCommentary"></textarea>
+          <textarea matInput placeholder="" style="min-height: 8.4rem;" [(ngModel)]="aditionalCommentary"></textarea>
             <button class="btn-traduccion" matSuffix mat-icon-button [class]="aditionalCommentaryEng === '' ? 'sin-traduccion' : ''" (click)="agregarComentario('Comentario Adicional de Negocio','', aditionalCommentary, aditionalCommentaryEng,'comentarioNegocio')">
               <span class="fi fi-us" style="font-size: 24px;"></span>
             </button>

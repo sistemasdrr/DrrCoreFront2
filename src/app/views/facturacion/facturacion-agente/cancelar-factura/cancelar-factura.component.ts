@@ -74,7 +74,7 @@ export class CancelarFacturaComponent {
     }).then((result) => {
       if (result.value) {
         this.loading = true
-        this.invoiceService.CancelInvoiceToCollect(this.idAgentInvoice,this.cancelDate).subscribe(
+        this.invoiceService.CancelAgentInvoiceToCollect(this.idAgentInvoice,this.cancelDate).subscribe(
           (response) => {
             if(response.isSuccess === true && response.isWarning === false){
               Swal.fire({

@@ -17,6 +17,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import Swal from 'sweetalert2';
 import { CancelarFacturaComponent } from './cancelar-factura/cancelar-factura.component';
+import { selection } from 'd3';
 
 @Component({
   selector: 'app-facturacion-agente',
@@ -110,8 +111,8 @@ export class FacturacionAgenteComponent implements OnInit {
   month = this.date.getMonth() + 1;
   year = this.date.getFullYear();
 
-  startDate = this.day + "/" + this.month + "/" + this.year;
-  endDate = this.day + "/" + this.month + "/" + this.year;
+  startDate = this.day.toString().padStart(2, '0') + "/" + this.month.toString().padStart(2, '0') + "/" + this.year;
+  endDate = this.day.toString().padStart(2, '0') + "/" + this.month.toString().padStart(2, '0') + "/" + this.year;
 
   //POR COBRAR
   range2 = new FormGroup({
@@ -271,6 +272,9 @@ armarModelo(){
     }
   }
   selectAgent(idAgent : number){
+
+    this.selection1.clear();
+    this.dataSourcePedido1.data = []
     this.dataSourcePedido1.data = this.datosPorFacturar.filter(x => x.idAgent === idAgent)
     this.dataSourcePedido1.sort = this.sort
     this.dataSourcePedido1.paginator = this.paginator
@@ -300,6 +304,10 @@ armarModelo(){
     this.dataSourcePedido2.data = obj.details
     this.dataSourcePedido2.sort = this.sort
     this.dataSourcePedido2.paginator = this.paginator
+    this.totalSelectedPrice2 = 0
+    this.dataSourcePedido2.data.forEach(element => {
+      this.totalSelectedPrice2 += element.price
+    });
     this.idAgent = obj.idAgent
     this.idAgentInvoice = obj.id
     this.invoiceNumber = obj.invoiceCode
@@ -327,6 +335,10 @@ armarModelo(){
     this.dataSourcePedido3.data = obj.details
     this.dataSourcePedido3.sort = this.sort
     this.dataSourcePedido3.paginator = this.paginator
+    this.totalSelectedPrice3 = 0
+    this.dataSourcePedido3.data.forEach(element => {
+      this.totalSelectedPrice3 += element.price
+    });
     this.idAgent = obj.idAgent
     this.idAgentInvoice = obj.id
     this.invoiceNumber = obj.invoiceCode
@@ -365,55 +377,11 @@ armarModelo(){
     dialogRef.afterClosed().subscribe(
       (data) => {
         if(data.success){
-          console.log(data)
-          this.loading = true
-          price = data.price !== null || data.price !== undefined ? data.price : 0
-          this.invoiceService.GetByBillInvoiceAgentList(this.startDate,this.endDate).subscribe(
-            (response) => {
-              if(response.isSuccess === true && response.isWarning === false){
-                this.datosPorFacturar = response.data
-                if(this.datosPorFacturar !== null){
-                  this.dataSourcePorFacturar = new MatTableDataSource<InvoiceAgentList>(this.filterByDistinctAgent(this.datosPorFacturar))
-                }else{
-                  this.dataSourcePorFacturar.data = []
-                }
-                this.dataSourcePorFacturar.paginator = this.paginator
-                this.dataSourcePorFacturar.sort = this.sort
-              }
-            },(error) => {
-              console.log(error)
-              this.loading = false
-            }
-          ).add(
-            () => {
-              this.dataSourcePedido1.data = this.dataSourcePorFacturar.data.filter(x => x.idAgent === this.idAgent)
-              this.dataSourcePedido1.sort = this.sort
-              this.dataSourcePedido1.paginator = this.paginator
+          this.dataSourcePedido1.data.filter(x => x.idTicketHistory === idTicketHistory)[0].requestedName = data.requestedName
+          this.dataSourcePedido1.data.filter(x => x.idTicketHistory === idTicketHistory)[0].procedureType = data.procedureType
+          this.dataSourcePedido1.data.filter(x => x.idTicketHistory === idTicketHistory)[0].shippingDate = data.shippingDate
+          this.dataSourcePedido1.data.filter(x => x.idTicketHistory === idTicketHistory)[0].price = data.price
 
-              this.agenteService.getAgentePorId(this.idAgent).subscribe(
-                (response) => {
-                  if(response.isSuccess === true && response.isWarning === false){
-                    this.name = response.data.name
-                    this.code = response.data.code
-                    this.address = response.data.address
-                    this.language = response.data.language
-                    this.idCountry = response.data.idCountry
-                    this.attendedByName = response.data.supervisor
-                    this.attendedByEmail = response.data.email
-                  }
-                },(error) => {
-                  console.log(error)
-                  this.loading = false
-                }
-              ).add(
-                () => {
-                  console.log(idTicketHistory)
-                  this.dataSourcePedido1.data.filter(x => x.idTicketHistory === idTicketHistory)[0].price = price
-                  this.loading = false
-                }
-              )
-            }
-          )
         }
       }
     )
@@ -505,30 +473,8 @@ armarModelo(){
             }
           ).add(
             () => {
-              this.dataSourcePedido2.data = this.dataSourcePorCobrar.data.filter(x => x.idAgent === this.idAgent)[0].details
-              this.dataSourcePedido2.sort = this.sort
-              this.dataSourcePedido2.paginator = this.paginator
 
-              this.agenteService.getAgentePorId(this.idAgent).subscribe(
-                (response) => {
-                  if(response.isSuccess === true && response.isWarning === false){
-                    this.name = response.data.name
-                    this.code = response.data.code
-                    this.address = response.data.address
-                    this.language = response.data.language
-                    this.idCountry = response.data.idCountry
-                    this.attendedByName = response.data.supervisor
-                    this.attendedByEmail = response.data.email
-                  }
-                },(error) => {
-                  console.log(error)
-                  this.loading = false
-                }
-              ).add(
-                () => {
-                  this.loading = false
-                }
-              )
+              this.loading = false
             }
           )
         }
@@ -610,6 +556,17 @@ armarModelo(){
     ).add(
       () => {
         this.loading = false
+        this.idAgentInvoice = 0
+        this.invoiceNumber = ""
+        this.name = ""
+        this.code = ""
+        this.address = ""
+        this.attendedByName = ""
+        this.attendedByEmail = ""
+        this.idCountry = 0
+        this.bandera = ""
+        this.language = ""
+        this.observations = ""
       }
     )
   }
@@ -619,14 +576,51 @@ armarModelo(){
       this.byBill = true
       this.toCollect = false
       this.paids = false
+      if(this.range1.controls.start.value !== null && this.range1.controls.end.value !== null ){
+        const startDateValue = new Date(this.range1.controls.start.value);
+        const endDateValue = new Date(this.range1.controls.end.value);
+
+        this.startDate = startDateValue.getDate().toString().padStart(2, '0') + "/"
+          + (startDateValue.getMonth() + 1).toString().padStart(2, '0') + "/"
+          + startDateValue.getFullYear();
+
+        this.endDate = endDateValue.getDate().toString().padStart(2, '0') + "/"
+          + (endDateValue.getMonth() + 1).toString().padStart(2, '0') + "/"
+          + endDateValue.getFullYear();
+      }
+
     }else if(index === 1){
       this.byBill = false
       this.toCollect = true
       this.paids = false
+      if(this.range2.controls.start.value !== null && this.range2.controls.end.value !== null ){
+        const startDateValue = new Date(this.range2.controls.start.value);
+        const endDateValue = new Date(this.range2.controls.end.value);
+
+        this.startDate = startDateValue.getDate().toString().padStart(2, '0') + "/"
+          + (startDateValue.getMonth() + 1).toString().padStart(2, '0') + "/"
+          + startDateValue.getFullYear();
+
+        this.endDate = endDateValue.getDate().toString().padStart(2, '0') + "/"
+          + (endDateValue.getMonth() + 1).toString().padStart(2, '0') + "/"
+          + endDateValue.getFullYear();
+      }
     }else if(index === 2){
       this.byBill = false
       this.toCollect = false
       this.paids = true
+      if(this.range3.controls.start.value !== null && this.range3.controls.end.value !== null ){
+        const startDateValue = new Date(this.range3.controls.start.value);
+        const endDateValue = new Date(this.range3.controls.end.value);
+
+        this.startDate = startDateValue.getDate().toString().padStart(2, '0') + "/"
+          + (startDateValue.getMonth() + 1).toString().padStart(2, '0') + "/"
+          + startDateValue.getFullYear();
+
+        this.endDate = endDateValue.getDate().toString().padStart(2, '0') + "/"
+          + (endDateValue.getMonth() + 1).toString().padStart(2, '0') + "/"
+          + endDateValue.getFullYear();
+      }
     }
     this.idAgentInvoice = 0
     this.dataSourcePorFacturar.data = []
@@ -684,6 +678,7 @@ armarModelo(){
                 () => {
                   this.loading = false
                   this.buscarPorFacturar()
+                  this.clear(0)
                 }
               )
             }

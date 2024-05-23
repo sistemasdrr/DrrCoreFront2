@@ -16,7 +16,7 @@ import { Background, CompanyRelationT } from 'app/models/informes/empresa/antece
 import { ComboService } from 'app/services/combo.service';
 import { ComboData } from 'app/models/combo';
 import Swal from 'sweetalert2';
-import { ListaEmpresasComponent } from './lista-empresas/lista-empresas.component';
+import { ListaEmpresas1Component } from './lista-empresas/lista-empresas.component';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import * as moment from 'moment';
@@ -346,51 +346,21 @@ constructor(
     });
   }
   empresasRelacionadas(){
-    const dialogRef = this.dialog.open(ListaEmpresasComponent, {
+    const dialogRef = this.dialog.open(ListaEmpresas1Component, {
       data : {
-        idCompany : this.idCompany
+        idCompany : this.idCompany,
+        listRelatedCompanies : this.dataSource.data
       }
     });
     dialogRef.afterClosed().subscribe((data) => {
-      if (data && data.idCompany !== null && data.idCompany !== 0) {
-        console.log({
-          id : 0,
-          idCompany : this.idCompany,
-          idCompanyRelation : data.idCompany
-        });
-        this.antecedentesLegalesService.addCompanyRelation({
-          id : 0,
-          idCompany : this.idCompany,
-          idCompanyRelation : data.idCompany
-        }).subscribe(
-          (response) => {
-            if(response.isSuccess === true && response.isWarning === false){
-              Swal.fire({
-                title: 'Se agregó el registro correctamente',
-                text: "",
-                icon: 'success',
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Ok',
-                width: '30rem',
-                heightAuto: true
-              }).then(
-                () => {
-                  this.antecedentesLegalesService.getListCompanyRelation(this.idCompany).subscribe(
-                    (response) => {
-                      if(response.isSuccess === true && response.isWarning === false){
-                        this.dataSource.data = response.data
-                      }
-                    }
-                  )
-                }
-              )
-            }
+      this.antecedentesLegalesService.getListCompanyRelation(this.idCompany).subscribe(
+        (response) => {
+          if(response.isSuccess === true && response.isWarning === false){
+            this.dataSource.data = response.data
           }
-        )
-      }
-    });
-
+        }
+      )
+    })
   }
   agregarTraduccion(titulo : string, subtitulo : string, comentario_es : string, comentario_en : string, input : string) {
     const dialogRef = this.dialog.open(TraduccionDialogComponent, {

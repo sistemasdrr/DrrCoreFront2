@@ -1,3 +1,4 @@
+import { AddListCompanyRelation, CompanyRelationT } from './../../../../../../models/informes/empresa/antecendentes-legales';
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -13,6 +14,8 @@ import { Observable, map, startWith } from 'rxjs';
 import Swal from 'sweetalert2';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
+import { SelectionModel } from '@angular/cdk/collections';
+import { AntecedentesLegalesService } from 'app/services/informes/empresa/antecedentes-legales.service';
 
 @Component({
   selector: 'app-lista-empresas',
@@ -28,7 +31,7 @@ import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FOR
     {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS}
   ]
 })
-export class ListaEmpresasComponent implements OnInit {
+export class ListaEmpresas1Component implements OnInit {
 
   idCompanyRelacion = 0
 
@@ -53,20 +56,49 @@ export class ListaEmpresasComponent implements OnInit {
   idPais = 0
   chkConInforme = true
 
+  isAllSelected1() {
+    const numSelected = this.selection1.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+  toggleAllRows1() {
+    if (this.isAllSelected1()) {
+      this.selection1.clear();
+      return;
+    }
+    this.selection1.select(...this.dataSource.data);
+  }
+  checkboxLabel1(row?: TCompany): string {
+    if (!row) {
+      return `${this.isAllSelected1() ? 'deselect' : 'select'} all`;
+    }
+    return `${this.selection1.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
+  }
+  onCheckboxChange1(row: TCompany) {
+    this.selection1.toggle(row);
+  }
+
 
   dataSource: MatTableDataSource<TCompany>;
+  selection1 = new SelectionModel<TCompany>(true, []);
+
+  listIdCompany : number[] = []
+  listRelatedCompanies : CompanyRelationT[] = []
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('filter') filter!: ElementRef;
-  columnsToDisplay = ['rc', 'idioma', 'rucInit', 'razonSocial', 'datosAl', 'pais', 'traduccion', 'calificacion','ejecPrincipal','acciones' ];
+  columnsToDisplay = ['select','rc', 'idioma', 'rucInit', 'razonSocial', 'datosAl', 'pais', 'traduccion', 'calificacion','ejecPrincipal','acciones' ];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any,private datosEmpresaService : DatosEmpresaService,private router : Router, private paisService : PaisService,public dialogRef: MatDialogRef<ListaEmpresasComponent>,){
+  constructor(private antecedentesService : AntecedentesLegalesService,@Inject(MAT_DIALOG_DATA) public data: any,private datosEmpresaService : DatosEmpresaService,private router : Router, private paisService : PaisService,public dialogRef: MatDialogRef<ListaEmpresas1Component>,){
     this.dataSource = new MatTableDataSource()
     this.filterPais = new Observable<Pais[]>()
     if(data){
       this.idCompanyRelacion = data.idCompany
+      this.listRelatedCompanies = data.listRelatedCompanies
     }
     console.log(this.idCompanyRelacion)
+    console.log(this.listRelatedCompanies)
   }
 
   ngOnInit(): void {
@@ -111,6 +143,10 @@ export class ListaEmpresasComponent implements OnInit {
   private _filterPais(description: string): Pais[] {
     const filterValue = description.toLowerCase();
     return this.paises.filter(pais => pais.valor.toLowerCase().includes(filterValue));
+  }
+  verificarId(id: number): boolean {
+    const index = this.listRelatedCompanies.findIndex(x => x.idCompanyRelation === id);
+    return index === -1;
   }
   displayPais(pais: Pais): string {
     return pais && pais.valor ? pais.valor : '';
@@ -234,7 +270,6 @@ export class ListaEmpresasComponent implements OnInit {
   }
 
   seleccionarEmpresa(idCompany : number){
-
     console.log(idCompany)
     Swal.fire({
       title: '¿Está seguro de relacionar esta empresa?',
@@ -256,5 +291,60 @@ export class ListaEmpresasComponent implements OnInit {
         )
       }
     });
+  }
+  seleccionarVariasEmpresas(){
+
+    this.listIdCompany = []
+    this.selection1.selected.forEach(element => {
+      this.listIdCompany.push(element.id)
+    });
+    console.log(this.idCompanyRelacion)
+    console.log(this.listIdCompany)
+    let request : AddListCompanyRelation[] = []
+    request[0] = {
+      idCompany : this.idCompanyRelacion,
+      idsCompanyRelation : this.listIdCompany
+    }
+    Swal.fire({
+      title: '¿Está seguro de relacionar esta empresa?',
+      text: "",
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText : 'No',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí',
+      width: '20rem',
+      heightAuto : true
+    }).then((result) => {
+      if (result.value) {
+        this.loading = true
+        this.antecedentesService.addListCompanyRelation(request[0]).subscribe(
+          (response) => {
+            if(response.isSuccess === true && response.isWarning === false){
+              Swal.fire({
+                title :'¡La operación se realizo con exito!',
+                icon : 'success',
+                width: '20rem',
+                heightAuto : true
+              }).then(
+                () => {
+                  this.loading = false
+                  this.dialogRef.close({
+                    success : true
+                  })
+                }
+              )
+            }
+          },(error) => {
+            this.loading = false
+          }
+        ).add(
+          () => {
+            this.loading = false
+          }
+        )
+      }
+    })
   }
 }
