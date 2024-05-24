@@ -67,10 +67,18 @@ export interface Query1_3BySubscriber{
 }
 
 //4
+export interface Query1_4Subscriber{
+  idSubscriber : number
+  name : string
+  code : string
+  idCountry : number
+  country : string
+  flagIso : string
+}
 export interface Query1_4{
   query1_4ByCountries : Query1_4Country[]
-  query1_4ByProcedureType : Query1_4Procedure
-  query1_4ByReportType : Query1_4ReportType
+  query1_4ByProcedureType : Query1_4Procedure[]
+  query1_4ByReportType : Query1_4ReportType[]
 }
 
 export interface Query1_4Country{

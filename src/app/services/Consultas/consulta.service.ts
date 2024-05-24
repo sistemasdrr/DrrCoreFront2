@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Query1_1, Query1_10, Query1_11BySubscriber, Query1_11Subscriber, Query1_1ByMonth, Query1_2ByYear, Query1_3BySubscriber, Query1_4, Query1_5, Query1_6, Query1_7, Query1_8, Query1_9 } from 'app/models/consulta';
+import { Query1_1, Query1_10, Query1_11BySubscriber, Query1_11Subscriber, Query1_1ByMonth, Query1_2ByYear, Query1_3BySubscriber, Query1_4, Query1_4Subscriber, Query1_5, Query1_6, Query1_7, Query1_8, Query1_9 } from 'app/models/consulta';
 import { Response } from 'app/models/response';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
@@ -26,8 +26,11 @@ export class ConsultaService {
   GetQuery1_3BySubscriber(idSubscriber: number, year : number) : Observable<Response<Query1_3BySubscriber[]>>{
     return this.http.get<Response<Query1_3BySubscriber[]>>(this.url + this.controller + '/GetQuery1_3BySubscriber?idSubscriber='+idSubscriber+'&year='+year);
   }
-  GetQuery1_4(idSubscriber: number, year : number) : Observable<Response<Query1_4[]>>{
-    return this.http.get<Response<Query1_4[]>>(this.url + this.controller + '/GetQuery1_4?idSubscriber='+idSubscriber+'&year='+year);
+  GetQuery1_4Subscribers() : Observable<Response<Query1_4Subscriber[]>>{
+    return this.http.get<Response<Query1_4Subscriber[]>>(this.url + this.controller + '/GetQuery1_4Subscribers');
+  }
+  GetQuery1_4(idSubscriber: number, year : number) : Observable<Response<Query1_4>>{
+    return this.http.get<Response<Query1_4>>(this.url + this.controller + '/GetQuery1_4?idSubscriber='+idSubscriber+'&year='+year);
   }
   GetQuery1_5(startDate: string, endDate : string) : Observable<Response<Query1_5[]>>{
     return this.http.get<Response<Query1_5[]>>(this.url + this.controller + '/GetQuery1_5?startDate='+startDate+'&endDate='+endDate);

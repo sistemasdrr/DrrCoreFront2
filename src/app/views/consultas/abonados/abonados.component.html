@@ -14,7 +14,7 @@
     <div class="col-md-12  m-0 p-0">
       <div class="card card-body shadow " style="padding-bottom: 0px;">
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-5">
             <mat-form-field class="w-100">
               <mat-label>Consulta de </mat-label>
               <mat-select [(ngModel)]="idQuery" placeholder="">
@@ -32,7 +32,8 @@
               </mat-select>
             </mat-form-field>
           </div>
-          <div class="col-md-2"></div>
+          <div class="col-md-1"></div>
+          <!--1_1-->
           <div class="col-md-2" *ngIf="idQuery === 1">
             <mat-form-field class="w-100">
               <mat-label>Año </mat-label>
@@ -68,74 +69,88 @@
               <mat-icon class="col-white">search</mat-icon>
             </button>
           </div>
+
+          <!--1_2-->
+          <div class="col-md-2" *ngIf="idQuery === 2">
+            <mat-form-field class="w-100" >
+              <mat-label>Año </mat-label>
+              <input matInput type="number" [(ngModel)]="query1_2_year">
+            </mat-form-field>
+          </div>
+          <div class="col-md-1"  *ngIf="idQuery === 2">
+            <button mat-mini-fab style="margin-top: .4rem;" color="primary" (click)="searchQuery1_2ByYear()" [disabled]="query1_2_year === 0">
+              <mat-icon class="col-white">search</mat-icon>
+            </button>
+          </div>
+
+          <!--1_3-->
+          <div class="col-md-2" *ngIf="idQuery === 3">
+            <mat-form-field class="w-100" >
+              <mat-label>Año </mat-label>
+              <input matInput type="number" [(ngModel)]="query1_3_year" [disabled]="query1_3_idSubscriber === 0">
+            </mat-form-field>
+          </div>
+          <div class="col-md-1"  *ngIf="idQuery === 3">
+            <button mat-mini-fab style="margin-top: .4rem;" color="primary" (click)="searchQuery1_3ByYear()" [disabled]="query1_3_idSubscriber === 0">
+              <mat-icon class="col-white">search</mat-icon>
+            </button>
+          </div>
+
+
+          <!--1_4-->
+          <div class="col-md-2" *ngIf="idQuery === 4">
+            <mat-form-field class="w-100" >
+              <mat-label>Año </mat-label>
+              <input matInput type="number" [(ngModel)]="query1_3_year" [disabled]="query1_4_idSubscriber === 0">
+            </mat-form-field>
+          </div>
+          <div class="col-md-1"  *ngIf="idQuery === 4">
+            <button mat-mini-fab style="margin-top: .4rem;" color="primary" (click)="searchQuery1_4()" [disabled]="query1_4_idSubscriber === 0">
+              <mat-icon class="col-white">search</mat-icon>
+            </button>
+          </div>
+
         </div>
 
       </div>
     </div>
   </div>
   <div class="row  m-0 p-0" style="height: auto;">
-    <div class="col-md-12 m-0 p-0" style="overflow: auto;">
+    <div class="col-md-12 m-0 p-0" >
       <div class="card card-body shadow mt-3 w-100">
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-12" style="overflow-y: scroll; overflow-x: hidden; max-height: 35rem;" >
             <!--QUERY 1-->
-            <div style="" class=" mb-3">
-              <table mat-table [dataSource]="DTQuery1_1ByYear" *ngIf="idQuery === 1" class="mat-elevation-z8 w-100" matSort>
+            <div class=" mb-3" *ngIf="idQuery === 1">
+              <table mat-table [dataSource]="DTQuery1_1ByYear" class="mat-elevation-z8 w-100" matSort>
                 <ng-container matColumnDef="subscriberName">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> Abonado </th>
-                  <td mat-cell *matCellDef="let query" class="text-center" >{{query.subscriberName}}</td>
+                  <td mat-cell *matCellDef="let query" class="text-left" >{{query.subscriberName}}</td>
+                  <td mat-footer-cell *matFooterCellDef> <b>Totales</b> </td>
                 </ng-container>
-                <ng-container matColumnDef="january">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> ENE </th>
-                  <td mat-cell *matCellDef="let query" class="text-center" >{{query.january}}</td>
+
+                <ng-container *ngFor="let month of ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']" [matColumnDef]="month">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;">
+                    {{
+                    (month | uppercase | slice:0:3) === 'JAN' ? 'ENE' :
+                    (month | uppercase | slice:0:3) === 'APR' ? 'ABR' :
+                    (month | uppercase | slice:0:3) === 'AUG' ? 'AGO' :
+                    (month | uppercase | slice:0:3) === 'DEC' ? 'DIC' :
+                    (month | uppercase | slice:0:3)
+                    }}
+                  </th>
+                  <td mat-cell *matCellDef="let query" class="text-center">{{ query[month] }}</td>
+                  <td mat-footer-cell *matFooterCellDef class="text-center"><b>{{ query1_1totals[month] }}</b></td>
                 </ng-container>
-                <ng-container matColumnDef="february">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> FEB </th>
-                  <td mat-cell *matCellDef="let query" class="text-center" >{{query.february}}</td>
-                </ng-container>
-                <ng-container matColumnDef="march">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> MAR </th>
-                  <td mat-cell *matCellDef="let query" class="text-center" >{{query.march}}</td>
-                </ng-container>
-                <ng-container matColumnDef="april">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> ABR </th>
-                  <td mat-cell *matCellDef="let query" class="text-center" >{{query.april}}</td>
-                </ng-container>
-                <ng-container matColumnDef="may">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> MAY </th>
-                  <td mat-cell *matCellDef="let query" class="text-center" >{{query.may}}</td>
-                </ng-container>
-                <ng-container matColumnDef="june">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> JUN </th>
-                  <td mat-cell *matCellDef="let query" class="text-center" >{{query.june}}</td>
-                </ng-container>
-                <ng-container matColumnDef="july">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> JUL </th>
-                  <td mat-cell *matCellDef="let query" class="text-center" >{{query.july}}</td>
-                </ng-container>
-                <ng-container matColumnDef="august">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> AGO </th>
-                  <td mat-cell *matCellDef="let query" class="text-center" >{{query.august}}</td>
-                </ng-container>
-                <ng-container matColumnDef="september">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> SEP </th>
-                  <td mat-cell *matCellDef="let query" class="text-center" >{{query.september}}</td>
-                </ng-container>
-                <ng-container matColumnDef="october">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> OCT </th>
-                  <td mat-cell *matCellDef="let query" class="text-center" >{{query.october}}</td>
-                </ng-container>
-                <ng-container matColumnDef="november">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> NOV </th>
-                  <td mat-cell *matCellDef="let query" class="text-center" >{{query.november}}</td>
-                </ng-container>
-                <ng-container matColumnDef="december">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> DIC </th>
-                  <td mat-cell *matCellDef="let query" class="text-center" >{{query.december}}</td>
+                <ng-container matColumnDef="%">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> % </th>
+                  <td mat-cell *matCellDef="let query" class="text-center" >{{ (query.total / query1_1TotalInformesAtendidos * 100) | number: '1.2-2' }}%</td>
+                  <td mat-footer-cell *matFooterCellDef class="text-center"><b>100%</b></td>
                 </ng-container>
                 <ng-container matColumnDef="total">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> TOTAL </th>
                   <td mat-cell *matCellDef="let query" class="text-center" >{{query.total}}</td>
+                  <td mat-footer-cell *matFooterCellDef class="text-center"><b>{{ query1_1totals.total }}</b></td>
                 </ng-container>
                 <ng-container matColumnDef="options">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;">  </th>
@@ -143,24 +158,27 @@
                     <button  mat-mini-fab class="bg-white" matTooltip="Seleccionar"  (click)="query1_1_idSubscriber = query.idSubscriber">
                       <app-feather-icons [icon]="'check-circle'" class="tbl-fav-web"></app-feather-icons>
                     </button></td>
+                    <td mat-footer-cell *matFooterCellDef></td>
                 </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="columnsQuery1_1ByYear"></tr>
-                <tr mat-row *matRowDef="let row; columns: columnsQuery1_1ByYear;"></tr>
+                <tr mat-row style="{{query1_1_idSubscriber === row.idSubscriber ? 'background-color : rgba(1,1,1,0.2);' : '' }}" *matRowDef="let row; columns: columnsQuery1_1ByYear;"></tr>
+
+                <tr mat-footer-row style="background-color:  rgba(1,1,1,0.1);"  *matFooterRowDef="columnsQuery1_1ByYear; sticky: true"></tr>
               </table>
-              <mat-paginator *ngIf="idQuery === 1" [pageSizeOptions]="[5, 10]" aria-label="" class="w-100"></mat-paginator>
+              <mat-paginator [pageSizeOptions]="[5, 10]" aria-label="" class="w-100"></mat-paginator>
 
             </div>
 
-            <div style="height: 20rem;" class=" mb-3">
-              <table mat-table [dataSource]="DTQuery1_1ByMonth" *ngIf="idQuery === 1" class="mat-elevation-z8 w-100" matSort>
+            <div style="height: 20rem;" class=" mb-3" *ngIf="idQuery === 1">
+              <table mat-table [dataSource]="DTQuery1_1ByMonth" class="mat-elevation-z8 w-100" matSort>
                 <ng-container matColumnDef="requestedName">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> Informe Solicitado </th>
-                  <td mat-cell *matCellDef="let query" class="text-center" >{{query.requestedName}}</td>
+                  <td mat-cell *matCellDef="let query" class="text-left" >{{query.requestedName}}</td>
                 </ng-container>
                 <ng-container matColumnDef="country">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> País </th>
-                  <td mat-cell *matCellDef="let query" class="text-center" >{{query.country}}</td>
+                  <td mat-cell *matCellDef="let query" class="text-center" >{{query.country}}<span class="fi fi-{{query.flagCountry}}" style="font-size: 20px;"></span></td>
                 </ng-container>
                 <ng-container matColumnDef="orderDate">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> F. Pedido </th>
@@ -202,14 +220,276 @@
                 </div>
               </div>
             </div>
+
+            <!--QUERY 2-->
+            <div class="row" *ngIf="idQuery === 2">
+              <div class="col-md-4">
+                <h5>Total de Paises = {{query1_2TotalCountries}}</h5>
+              </div>
+              <div class="col-md-4">
+                <h5>Reportes Totales = {{query1_2totalReports}}</h5>
+              </div>
+              <div class="col-md-4">
+              </div>
+            </div>
+            <div class=" mb-3" *ngIf="idQuery === 2"  >
+              <table mat-table [dataSource]="DTQuery1_2ByYear"  class="mat-elevation-z8 w-100" matSort>
+                <ng-container matColumnDef="country">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="width: 10%; font-size: 18px;"> País </th>
+                  <td mat-cell *matCellDef="let query" class="text-left" >{{query.country}}<span class="fi fi-{{query.flagCountry}}" style="font-size: 20px;"></span></td>
+                  <td mat-footer-cell *matFooterCellDef> <b>Totales</b> </td>
+                </ng-container>
+                <ng-container *ngFor="let month of ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']" [matColumnDef]="month">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;">
+                    {{
+                    (month | uppercase | slice:0:3) === 'JAN' ? 'ENE' :
+                    (month | uppercase | slice:0:3) === 'APR' ? 'ABR' :
+                    (month | uppercase | slice:0:3) === 'AUG' ? 'AGO' :
+                    (month | uppercase | slice:0:3) === 'DEC' ? 'DIC' :
+                    (month | uppercase | slice:0:3)
+                    }}
+                  </th>
+                  <td mat-cell *matCellDef="let query" class="text-center">{{ query[month] }}</td>
+                  <td mat-footer-cell *matFooterCellDef class="text-center"><b>{{ query1_2totals[month] }}</b> </td>
+                </ng-container>
+                <ng-container matColumnDef="%">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> % </th>
+                  <td mat-cell *matCellDef="let query" class="text-center" >{{ (query.total / query1_2totalReports * 100) | number: '1.2-2' }}%</td>
+                  <td mat-footer-cell *matFooterCellDef class="text-center"><b>100%</b></td>
+                </ng-container>
+                <ng-container matColumnDef="total">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> TOTAL </th>
+                  <td mat-cell *matCellDef="let query" class="text-center" >{{query.total}}</td>
+                  <td mat-footer-cell *matFooterCellDef class="text-center"><b>{{ query1_2totals.total }}</b></td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="columnsQuery1_2ByYear"></tr>
+                <tr mat-row  *matRowDef="let row; columns: columnsQuery1_2ByYear;"></tr>
+                <tr mat-footer-row style="background-color:  rgba(1,1,1,0.1);" *matFooterRowDef="columnsQuery1_2ByYear; sticky: true"></tr>
+
+              </table>
+              <mat-paginator *ngIf="idQuery === 2" [pageSizeOptions]="[5, 10]" aria-label="" class="w-100"></mat-paginator>
+            </div>
+
+            <!--QUERY 3-->
+            <div class="row" *ngIf="idQuery === 3">
+              <div class="col-md-4">
+              </div>
+              <div class="col-md-4">
+                <h5>Total de Paises = {{query1_3TotalCountries}}</h5>
+              </div>
+              <div class="col-md-4">
+                <h5>Total de Informes Solicitados = {{query1_3totalReports}}</h5>
+              </div>
+            </div>
+            <div class="mb-3" *ngIf="idQuery === 3">
+              <div class="row">
+                <div class="col-md-3" style="overflow-y: scroll; overflow-x: hidden; max-height: 30rem;">
+                  <table mat-table [dataSource]="DTQuery1_3"  class="mat-elevation-z8 w-100"  matSort>
+
+                    <ng-container matColumnDef="name">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> Abonado </th>
+                      <td mat-cell *matCellDef="let query" class="text-left" ><b>{{query.code}}</b> || {{query.country}}<span class="fi fi-{{query.flagCountry}}" style="font-size: 20px;"></span> - {{query.name}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="options">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;">  </th>
+                      <td mat-cell *matCellDef="let query" class="text-center" >
+                        <button  mat-mini-fab class="bg-white" matTooltip="Seleccionar"  (click)="query1_3_idSubscriber = query.id">
+                          <app-feather-icons [icon]="'check-circle'" class="tbl-fav-web"></app-feather-icons>
+                        </button>
+                      </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="columnsQuery1_3"></tr>
+                    <tr  mat-row style="{{query1_3_idSubscriber === row.id ? 'background-color : rgba(1,1,1,0.2);' : '' }}" *matRowDef="let row; columns: columnsQuery1_3;"></tr>
+                  </table>
+                </div>
+                <div class="col-md-9"  style="overflow-y: hidden; overflow-x: hidden; max-height: 30rem;">
+                  <table mat-table [dataSource]="DTQuery1_3ByYear"  class="mat-elevation-z8 w-100" matSort>
+                    <ng-container matColumnDef="country">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="width: 10%; font-size: 18px;"> País </th>
+                      <td mat-cell *matCellDef="let query" class="text-left" >{{query.country}}<span class="fi fi-{{query.flagCountry}}" style="font-size: 20px;"></span></td>
+                      <td mat-footer-cell *matFooterCellDef> <b>Totales</b> </td>
+                    </ng-container>
+                    <ng-container *ngFor="let month of ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']" [matColumnDef]="month">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;">
+                        {{
+                        (month | uppercase | slice:0:3) === 'JAN' ? 'ENE' :
+                        (month | uppercase | slice:0:3) === 'APR' ? 'ABR' :
+                        (month | uppercase | slice:0:3) === 'AUG' ? 'AGO' :
+                        (month | uppercase | slice:0:3) === 'DEC' ? 'DIC' :
+                        (month | uppercase | slice:0:3)
+                        }}
+                      </th>
+                      <td mat-cell *matCellDef="let query" class="text-center">{{ query[month] }}</td>
+                      <td mat-footer-cell *matFooterCellDef class="text-center"><b>{{ query1_3totals[month] }}</b> </td>
+                    </ng-container>
+                    <ng-container matColumnDef="%">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> % </th>
+                      <td mat-cell *matCellDef="let query" class="text-center" >{{ (query.total / query1_3totalReports * 100) | number: '1.2-2' }}%</td>
+                      <td mat-footer-cell *matFooterCellDef class="text-center"><b>100%</b></td>
+                    </ng-container>
+                    <ng-container matColumnDef="total">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> TOTAL </th>
+                      <td mat-cell *matCellDef="let query" class="text-center" >{{query.total}}</td>
+                      <td mat-footer-cell *matFooterCellDef class="text-center"><b>{{ query1_3totals.total }}</b></td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="columnsQuery1_3ByYear"></tr>
+                    <tr mat-row  *matRowDef="let row; columns: columnsQuery1_3ByYear;"></tr>
+                    <tr mat-footer-row style="background-color:  rgba(1,1,1,0.1);" *matFooterRowDef="columnsQuery1_3ByYear; sticky: true"></tr>
+
+                  </table>
+                </div>
+              </div>
+            </div>
+
+             <!--QUERY 4-->
+             <div class="row" *ngIf="idQuery === 4">
+              <div class="col-md-4">
+              </div>
+              <div class="col-md-4">
+                <h5>Total de Paises = {{query1_4TotalCountries}}</h5>
+              </div>
+              <div class="col-md-4">
+                <h5>Total de Informes Solicitados = {{query1_4totalReports}}</h5>
+              </div>
+            </div>
+            <div class="mb-3" *ngIf="idQuery === 4">
+              <div class="row">
+                <div class="col-md-3" style="overflow-y: scroll; overflow-x: hidden; max-height: 30rem;">
+                  <table mat-table [dataSource]="DTQuery1_4"  class="mat-elevation-z8 w-100"  matSort>
+
+                    <ng-container matColumnDef="name">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> Abonado </th>
+                      <td mat-cell *matCellDef="let query" class="text-left" ><b>{{query.code}}</b> || {{query.country}}<span class="fi fi-{{query.flagCountry}}" style="font-size: 20px;"></span> - {{query.name}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="options">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;">  </th>
+                      <td mat-cell *matCellDef="let query" class="text-center" >
+                        <button  mat-mini-fab class="bg-white" matTooltip="Seleccionar"  (click)="query1_4_idSubscriber = query.idSubscriber">
+                          <app-feather-icons [icon]="'check-circle'" class="tbl-fav-web"></app-feather-icons>
+                        </button>
+                      </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="columnsQuery1_3"></tr>
+                    <tr  mat-row style="{{query1_4_idSubscriber === row.idSubscriber ? 'background-color : rgba(1,1,1,0.2);' : '' }}" *matRowDef="let row; columns: columnsQuery1_3;"></tr>
+                  </table>
+                </div>
+                <div class="col-md-9"  style="overflow-y: auto; overflow-x: hidden; max-height: 40rem;">
+                  <table mat-table [dataSource]="DTQuery1_4Country"  class="mat-elevation-z8 w-100" matSort>
+                    <ng-container matColumnDef="country">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="width: 10%; font-size: 18px;"> País </th>
+                      <td mat-cell *matCellDef="let query" class="text-left" >{{query.country}}<span class="fi fi-{{query.flagCountry}}" style="font-size: 20px;"></span></td>
+                      <td mat-footer-cell *matFooterCellDef> <b>Totales</b> </td>
+                    </ng-container>
+                    <ng-container *ngFor="let month of ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']" [matColumnDef]="month">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;">
+                        {{
+                        (month | uppercase | slice:0:3) === 'JAN' ? 'ENE' :
+                        (month | uppercase | slice:0:3) === 'APR' ? 'ABR' :
+                        (month | uppercase | slice:0:3) === 'AUG' ? 'AGO' :
+                        (month | uppercase | slice:0:3) === 'DEC' ? 'DIC' :
+                        (month | uppercase | slice:0:3)
+                        }}
+                      </th>
+                      <td mat-cell *matCellDef="let query" class="text-center">{{ query[month] }}</td>
+                      <td mat-footer-cell *matFooterCellDef class="text-center"><b>{{ query1_4totalsCountry[month] }}</b> </td>
+                    </ng-container>
+                    <ng-container matColumnDef="total">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> TOTAL </th>
+                      <td mat-cell *matCellDef="let query" class="text-center" >{{query.total}}</td>
+                      <td mat-footer-cell *matFooterCellDef class="text-center"><b>{{query1_4totalReports}}</b> </td>
+                    </ng-container>
+                    <ng-container matColumnDef="%">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> % </th>
+                      <td mat-cell *matCellDef="let query" class="text-center" >{{ (query.total / query1_4totalReports * 100) | number: '1.2-2' }}%</td>
+                      <td mat-footer-cell *matFooterCellDef class="text-center"><b>100%</b></td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="columnsQuery1_4Country"></tr>
+                    <tr mat-row  *matRowDef="let row; columns: columnsQuery1_4Country;"></tr>
+                    <tr mat-footer-row style="background-color:  rgba(1,1,1,0.1);" *matFooterRowDef="columnsQuery1_4Country; sticky: true"></tr>
+                  </table>
+
+                  <table mat-table [dataSource]="DTQuery1_4Procedure"  class="mat-elevation-z8 mt-3 w-100" matSort>
+                    <ng-container matColumnDef="procedureType">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="width: 10%; font-size: 18px;"> Tramite </th>
+                      <td mat-cell *matCellDef="let query" class="text-left" >{{query.procedureType}}</td>
+                      <td mat-footer-cell *matFooterCellDef> <b>Totales</b> </td>
+                    </ng-container>
+                    <ng-container *ngFor="let month of ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']" [matColumnDef]="month">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;">
+                        {{
+                        (month | uppercase | slice:0:3) === 'JAN' ? 'ENE' :
+                        (month | uppercase | slice:0:3) === 'APR' ? 'ABR' :
+                        (month | uppercase | slice:0:3) === 'AUG' ? 'AGO' :
+                        (month | uppercase | slice:0:3) === 'DEC' ? 'DIC' :
+                        (month | uppercase | slice:0:3)
+                        }}
+                      </th>
+                      <td mat-cell *matCellDef="let query" class="text-center">{{ query[month] }}</td>
+                      <td mat-footer-cell *matFooterCellDef class="text-center"><b>{{ query1_4totalsProcedure[month] }}</b> </td>
+                    </ng-container>
+                    <ng-container matColumnDef="total">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> TOTAL </th>
+                      <td mat-cell *matCellDef="let query" class="text-center" >{{query.total}}</td>
+                      <td mat-footer-cell *matFooterCellDef class="text-center"><b>{{query1_4totalReports}}</b> </td>
+                    </ng-container>
+                    <ng-container matColumnDef="%">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> % </th>
+                      <td mat-cell *matCellDef="let query" class="text-center" >{{ (query.total / query1_4totalReports * 100) | number: '1.2-2' }}%</td>
+                      <td mat-footer-cell *matFooterCellDef class="text-center"><b>100%</b></td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="columnsQuery1_4Procedure"></tr>
+                    <tr mat-row  *matRowDef="let row; columns: columnsQuery1_4Procedure;"></tr>
+                    <tr mat-footer-row style="background-color:  rgba(1,1,1,0.1);" *matFooterRowDef="columnsQuery1_4Procedure; sticky: true"></tr>
+                  </table>
+
+                  <table mat-table [dataSource]="DTQuery1_4Report"  class="mat-elevation-z8 mt-3 w-100" matSort>
+                    <ng-container matColumnDef="reportType">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="width: 10%; font-size: 18px;"> Reporte </th>
+                      <td mat-cell *matCellDef="let query" class="text-left" >{{query.reportType}}</td>
+                      <td mat-footer-cell *matFooterCellDef> <b>Totales</b> </td>
+                    </ng-container>
+                    <ng-container *ngFor="let month of ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']" [matColumnDef]="month">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;">
+                        {{
+                        (month | uppercase | slice:0:3) === 'JAN' ? 'ENE' :
+                        (month | uppercase | slice:0:3) === 'APR' ? 'ABR' :
+                        (month | uppercase | slice:0:3) === 'AUG' ? 'AGO' :
+                        (month | uppercase | slice:0:3) === 'DEC' ? 'DIC' :
+                        (month | uppercase | slice:0:3)
+                        }}
+                      </th>
+                      <td mat-cell *matCellDef="let query" class="text-center">{{ query[month] }}</td>
+                      <td mat-footer-cell *matFooterCellDef class="text-center"><b>{{ query1_4totalsReport[month] }}</b> </td>
+                    </ng-container>
+                    <ng-container matColumnDef="total">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> TOTAL </th>
+                      <td mat-cell *matCellDef="let query" class="text-center" >{{query.total}}</td>
+                      <td mat-footer-cell *matFooterCellDef class="text-center"><b>{{query1_4totalReports}}</b> </td>
+                    </ng-container>
+                    <ng-container matColumnDef="%">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> % </th>
+                      <td mat-cell *matCellDef="let query" class="text-center" >{{ (query.total / query1_4totalReports * 100) | number: '1.2-2' }}%</td>
+                      <td mat-footer-cell *matFooterCellDef class="text-center"><b>100%</b></td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="columnsQuery1_4Report"></tr>
+                    <tr mat-row  *matRowDef="let row; columns: columnsQuery1_4Report;"></tr>
+                    <tr mat-footer-row style="background-color:  rgba(1,1,1,0.1);" *matFooterRowDef="columnsQuery1_4Report; sticky: true"></tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+
           </div>
-
-
-          <!--QUERY 2-->
-
         </div>
       </div>
     </div>
-
   </div>
 </section>
