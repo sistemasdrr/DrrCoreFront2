@@ -1,1 +1,75 @@
-<p>facturacion works!</p>
+<section class="content" >
+  <div class="d-flex justify-content-center align-items-center loader-container" [ngClass]="{'hide-loader': !loading}">
+    <span class="loader"></span><br>
+    <h2 style="color: white;">&nbsp;Cargando...</h2>
+  </div>
+  <div class="container-fluid" [ngClass]="{'show-form': loading}" style="overflow: auto; width: 100%;">
+    <div class="block-header" *ngFor="let breadscrum of breadscrums">
+      <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [codigoInforme]="''" [active_item]="breadscrum.active">
+      </app-breadcrumb>
+    </div>
+  </div>
+
+  <div class="row m-0 p-0" min>
+    <div class="col-md-12  m-0 p-0">
+      <div class="card card-body shadow " style="padding-bottom: 0px;">
+        <div class="row">
+          <div class="col-md-5">
+            <mat-form-field class="w-100">
+              <mat-label>Consulta de </mat-label>
+              <mat-select [(ngModel)]="idQuery" placeholder="">
+                  <mat-option [value]="1">1.- Listado de Facturas Por Cobrar Abonados</mat-option>
+                  <mat-option [value]="2">2.- Listado de Facturas Cobradas de Abonados</mat-option>
+                  <mat-option [value]="3">3.- Listado de Facturas Emitidas de Abonados</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-1">
+          </div>
+          <!--QUERY 4_1_1-->
+          <div class="col-md-2" *ngIf="idQuery === 1">
+            <mat-radio-group [(ngModel)]="to">
+              <mat-radio-button class="example-margin" [value]="'all'">Todos</mat-radio-button>
+              <mat-radio-button class="example-margin" [value]="'one'">Por Abonado</mat-radio-button>
+            </mat-radio-group>
+          </div>
+          <div class="col-md-3" *ngIf="to === 'one' && idQuery === 1">
+            <mat-form-field class="w-100">
+              <mat-label>Abonado </mat-label>
+              <mat-select [(ngModel)]="idSubscriber" placeholder="">
+                  <mat-option *ngFor="let item of subscribers" [value]="item.idSubscriber">{{item.code + ' - ' + item.name }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-1" *ngIf="idQuery === 1">
+            <button mat-mini-fab style="margin-top: .4rem;" color="primary" (click)="SendMail()" [disabled]="idSubscriber === 0">
+              <mat-icon class="col-white">mail</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row m-0 p-0">
+    <div class="col-md-12 m-0 p-0" >
+      <div class="card card-body shadow mt-3 w-100">
+        <div class="row" *ngIf="idQuery === 1">
+          <div class="col-md-3">
+            <mat-selection-list [multiple]="false">
+              <mat-list-option *ngFor="let item of subscribers"  (click)=" searchQueryChanged(item.name)">
+                <b>{{item.code}}</b> - {{item.name}}
+              </mat-list-option>
+            </mat-selection-list>
+
+
+          </div>
+          <div class="col-md-9" style="overflow-y: hidden; overflow-x: hidden; " >
+            <pdf-viewer  [src]="pdfSrc" [show-borders]="true" [render-text]="true" [original-size]="false" style="width: 100%;  height: {{loading === true ? '5rem' : '45rem'}}; "></pdf-viewer>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
