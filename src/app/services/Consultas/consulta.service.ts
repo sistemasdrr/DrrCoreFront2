@@ -1,4 +1,4 @@
-import { GetReporters, Query1_6, Query1_7Tickets, Query2_1ByMonth, Query2_1ByYear, Query2_2ByYear, Query3_1ByMonth, Query3_1ByYear, Query4_1 } from './../../models/consulta';
+import { GetReporters, Query1_6, Query1_7Tickets, Query2_1ByMonth, Query2_1ByYear, Query2_2ByYear, Query3_1ByMonth, Query3_1ByYear, Query4_1_1, Query4_1_2, Query4_1_3, Query4_1_4, Query4_2_1, Query4_2_2 } from './../../models/consulta';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Query1_1, Query1_10, Query1_11BySubscriber, Query1_11Subscriber, Query1_1ByMonth, Query1_2ByYear, Query1_3BySubscriber, Query1_4, Query1_4Subscriber, Query1_5, Query1_6ByIdSubscriber, Query1_7, Query1_8, Query1_9 } from 'app/models/consulta';
@@ -81,13 +81,46 @@ export class ConsultaService {
   GetQuery3_1ByMonth(asignedTo : string, year : number, month : number) : Observable<Response<Query3_1ByMonth[]>>{
     return this.http.get<Response<Query3_1ByMonth[]>>(this.url + this.controller + '/GetQuery3_1ByMonth?asignedTo='+asignedTo+'&year='+year+'&month='+month);
   }
-  GetQuery4_1() : Observable<Response<Query4_1[]>>{
-    return this.http.get<Response<Query4_1[]>>(this.url + this.controller + '/GetQuery4_1');
+  GetQuery4_1_1() : Observable<Response<Query4_1_1[]>>{
+    return this.http.get<Response<Query4_1_1[]>>(this.url + this.controller + '/GetQuery4_1_1');
   }
-  DownloadQuery_Fact_ByBill(format : string){
-    return this.http.get(this.url + this.controller + '/DownloadQuery_Fact_ByBill?format='+format,{observe:'response',responseType:'blob'});
+  DownloadQuery_Fact_4_1_1(format : string){
+    return this.http.get(this.url + this.controller + '/DownloadQuery_Fact_4_1_1?format='+format,{observe:'response',responseType:'blob'});
   }
   SendMailQuery_Fact_ByBill(to : string, idSubscriber : number, idUser : number): Observable<Response<boolean>>{
     return this.http.get<Response<boolean>>(this.url + this.controller + '/SendMailQuery4_1_1_Fact_ByBill?to='+to+'&idSubscriber='+idSubscriber+'&idUser='+idUser);
+  }
+  GetQuery4_1_2() : Observable<Response<Query4_1_2[]>>{
+    return this.http.get<Response<Query4_1_2[]>>(this.url + this.controller + '/GetQuery4_1_2');
+  }
+  DownloadQuery_Fact_4_1_2(format : string){
+    return this.http.get(this.url + this.controller + '/DownloadQuery_Fact_4_1_2?format='+format,{observe:'response',responseType:'blob'});
+  }
+  GetQuery4_1_3(startDate : string, endDate : string) : Observable<Response<Query4_1_3[]>>{
+    return this.http.get<Response<Query4_1_3[]>>(this.url + this.controller + '/GetQuery4_1_3?startDate='+startDate+'&endDate='+endDate);
+  }
+  DownloadQuery_Fact_4_1_3(format : string,startDate : string, endDate : string){
+    return this.http.get(this.url + this.controller + '/DownloadQuery_Fact_4_1_3?format='+format+'&startDate='+startDate+'&endDate='+endDate,{observe:'response',responseType:'blob'});
+  }
+  GetQuery4_1_4(month : number, year : number) : Observable<Response<Query4_1_4[]>>{
+    return this.http.get<Response<Query4_1_4[]>>(this.url + this.controller + '/GetQuery4_1_4?month='+month+'&year='+year);
+  }
+  DownloadQuery_Fact_4_1_4(format : string,month : number, year : number){
+    return this.http.get(this.url + this.controller + '/DownloadQuery_Fact_4_1_4?format='+format+'&month='+month+'&year='+year,{observe:'response',responseType:'blob'});
+  }
+  DownloadQuery_Fact_4_1_5(format : string,orderBy : string, month : number, year : number){
+    return this.http.get(this.url + this.controller + '/DownloadQuery_Fact_4_1_5?format='+format+'&orderBy='+orderBy+'&month='+month+'&year='+year,{observe:'response',responseType:'blob'});
+  }
+  GetQuery4_2_1() : Observable<Response<Query4_2_1[]>>{
+    return this.http.get<Response<Query4_2_1[]>>(this.url + this.controller + '/GetQuery4_2_1');
+  }
+  DownloadQuery_Fact_4_2_1(format : string){
+    return this.http.get(this.url + this.controller + '/DownloadQuery_Fact_4_2_1?format='+format,{observe:'response',responseType:'blob'});
+  }
+  GetQuery4_2_2(startDate : string, endDate : string) : Observable<Response<Query4_2_2[]>>{
+    return this.http.get<Response<Query4_2_2[]>>(this.url + this.controller + '/GetQuery4_2_2?startDate='+startDate+'&endDate='+endDate);
+  }
+  DownloadQuery_Fact_4_2_2(format : string,startDate : string, endDate : string){
+    return this.http.get(this.url + this.controller + '/DownloadQuery_Fact_4_2_2?format='+format+'&startDate='+startDate+'&endDate='+endDate,{observe:'response',responseType:'blob'});
   }
 }

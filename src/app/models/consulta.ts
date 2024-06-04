@@ -393,10 +393,39 @@ export interface Query3_1ByMonth{
   reportType : string
   price : number
 }
-export interface Query4_1{
+export interface Query4_1_1{
   idSubscriber : number
   name : string
   code : string
 }
-
-
+export interface Query4_1_2{
+  date : string
+}
+export interface Query4_1_3{
+  idSubscriber : number
+  name : string
+  code : string
+  idCountry : number
+  country : string
+  flagCountry : string
+}
+export interface Query4_1_4{
+  idSubscriber : number
+  name : string
+  code : string
+  idCountry : number
+  country : string
+  flagCountry : string
+}
+export interface Query4_2_1{
+  name : string
+  code : string
+  country : string
+  flagCountry : string
+}
+export interface Query4_2_2{
+  name : string
+  code : string
+  country : string
+  flagCountry : string
+}

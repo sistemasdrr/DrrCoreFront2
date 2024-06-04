@@ -801,13 +801,17 @@ export class DetalleComponent implements OnInit {
         heightAuto : true
       }).then((result) => {
         if (result.value) {
-          const loader = document.getElementById('loader-detalle-cupon') as HTMLElement | null;
-          if(loader){
-            loader.classList.remove('hide-loader');
-          }
+          this.loading = true;
           this.ticketService.addTicket(this.modeloNuevo[0]).subscribe(
             (response) => {
               if(response.isSuccess === true && response.isWarning === false){
+
+                this.loading = false;
+                this.ticketService.downloadAndUploadF1(response.data).subscribe(
+                  (response) => {
+                    
+                  }
+                )
                 Swal.fire({
                   title: 'El registro se guardo correctamente.',
                   text: '',
@@ -818,13 +822,20 @@ export class DetalleComponent implements OnInit {
                   this.router.navigate(['pedidos/lista']);
                 })
                 //this.id = response.data
+              }else{
+                this.loading = false;
+                Swal.fire({
+                  title: 'Ocurrio un problema al guardar el pedido.',
+                  text: response.message,
+                  icon: 'success',
+                  width: '30rem',
+                  heightAuto: true
+                })
               }
             }
           ).add(
             () => {
-              if(loader){
-                loader.classList.add('hide-loader');
-              }
+              this.loading = false;
             }
           )
         }
@@ -845,13 +856,13 @@ export class DetalleComponent implements OnInit {
         heightAuto : true
       }).then((result) => {
         if (result.value) {
-          const loader = document.getElementById('loader-detalle-cupon') as HTMLElement | null;
-          if(loader){
-            loader.classList.remove('hide-loader');
-          }
+
+          this.loading = true;
           this.ticketService.addTicket(this.modeloModificado[0]).subscribe(
             (response) => {
               if(response.isSuccess === true && response.isWarning === false){
+
+                this.loading = false;
                 Swal.fire({
                   title: 'El registro se guardo correctamente.',
                   text: '',
@@ -866,9 +877,8 @@ export class DetalleComponent implements OnInit {
             }
           ).add(
             () => {
-              if(loader){
-                loader.classList.add('hide-loader');
-              }
+
+              this.loading = false;
             }
           )
         }

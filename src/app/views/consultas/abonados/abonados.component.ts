@@ -619,9 +619,9 @@ export class AbonadosComponent implements OnInit{
   month = this.date.getMonth() + 1;
   year = this.date.getFullYear();
 
-  startDate = this.day + "/" + this.month + "/" + this.year;
+  startDate = this.day.toString().padStart(2, '0') + "/" + this.month.toString().padStart(2, '0') + "/" + this.year;
   startDateD = new Date()
-  endDate = this.day + "/" + this.month + "/" + this.year;
+  endDate = this.day.toString().padStart(2, '0') + "/" + this.month.toString().padStart(2, '0') + "/" + this.year;
   endDateD = new Date()
 
   query1_5TotalReports = 0

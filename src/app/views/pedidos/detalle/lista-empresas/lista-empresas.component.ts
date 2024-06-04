@@ -167,6 +167,7 @@ export class ListaEmpresasComponent implements OnInit {
     this.datosEmpresaService.getDatosEmpresas(this.razonSocial.trim(), this.filtroRB, this.idPais, this.chkConInforme,this.filterBy).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
+
           console.log(response.data)
           this.dataSource = new MatTableDataSource(response.data)
           this.dataSource.sort = this.sort
@@ -174,9 +175,7 @@ export class ListaEmpresasComponent implements OnInit {
           this.loading=false;
         }
       },(error) => {
-        if(listaEmpresas){
-          listaEmpresas.classList.add('hide-loader');
-        }
+        this.loading=false;
         Swal.fire({
           title: 'Ocurrió un problema. Comunicarse con Sistemas.',
           text: error,
@@ -188,10 +187,7 @@ export class ListaEmpresasComponent implements OnInit {
         }).then(() => {
         })
       }).add(() => {
-        if(listaEmpresas){
-          listaEmpresas.classList.add('hide-loader');
-          this.loading=false;
-        }
+        this.loading=false;
       })
 
   }
