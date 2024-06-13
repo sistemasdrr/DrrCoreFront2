@@ -965,7 +965,7 @@
               </div>
             </div>
             <div class=" mb-3" *ngIf="idQuery === 11">
-              <table mat-table [dataSource]="DTQuery1_11" class="mat-elevation-z8 w-100" matSort>
+              <table mat-table  [dataSource]="DTQuery1_11" class="mat-elevation-z8 w-100" matSort>
                 <ng-container matColumnDef="subscriber">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> Abonado </th>
                   <td mat-cell *matCellDef="let query" class="text-left" ><b>{{query.code}}</b> || {{query.name}}</td>

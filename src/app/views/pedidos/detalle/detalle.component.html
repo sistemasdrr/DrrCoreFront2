@@ -52,8 +52,8 @@
                 </button>
                 <button id="btn-guardar-datos-empresa" mat-mini-fab class="bg-cyan shadow"
                (click)="guardar()" #tooltip="matTooltip" matTooltip="Guardar"
-                  [class]="idSubscriber === 0 || language === '' && idContinent === 0 || idCountry === 0 || procedureType === '' || reportType === '' ? 'bg-grey' : ''"
-                  [disabled]="idSubscriber === 0 || language === '' || idContinent === 0 || idCountry === 0 || procedureType === '' || reportType === ''  ? true : false">
+                  [class]="idSubscriber === 0 || language === '' && idContinent === 0 || idCountry === 0 || procedureType === '' || reportType === ''|| requestedName === '' ? 'bg-grey' : ''"
+                  [disabled]="idSubscriber === 0 || language === '' || idContinent === 0 || idCountry === 0 || procedureType === '' || reportType === '' || requestedName === ''  ? true : false">
                   <mat-icon class="col-white">save</mat-icon>
                 </button>
               </div>

@@ -15,7 +15,7 @@ import { MatTableModule } from '@angular/material/table';
 import { ComponentsModule } from '@shared/components/components.module';
 import { SharedModule } from '@shared';
 
-
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer'
 @NgModule({
   declarations: [
     AbonadosComponent,
@@ -33,7 +33,8 @@ import { SharedModule } from '@shared';
     ComponentsModule,
     MatTableModule,
     MatSortModule,
-    PdfViewerModule
+    PdfViewerModule,
+    NgxExtendedPdfViewerModule
   ]
 })
 export class CuadrosModule { }

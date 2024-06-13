@@ -13,6 +13,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer'
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     ComponentsModule,
     MatTableModule,
     MatSortModule,
-    PdfViewerModule
+    PdfViewerModule,
+    NgxExtendedPdfViewerModule
   ]
 })
 export class ConsultasModule { }
