@@ -6,7 +6,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { SelectionModel } from '@angular/cdk/collections';
-import { ComentarioComponent } from '@shared/components/comentario/comentario.component';
+
 import { MatDialog } from '@angular/material/dialog';
 import { AdjuntarArchivosComponent } from '@shared/components/adjuntar-archivos/adjuntar-archivos.component';
 import { ComboData } from 'app/models/combo';
@@ -15,6 +15,7 @@ import { TicketService } from 'app/services/pedidos/ticket.service';
 import { Pedido } from 'app/models/pedidos/pedido';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import Swal from 'sweetalert2';
+import { ComentarioComponent } from './comentario/comentario.component';
 
 
 

@@ -149,7 +149,9 @@ export class ConfirmarPedidoComponent implements OnInit {
       enable : true,
       requestedName : this.requestedName,
       price : 0,
-      userFrom : this.code
+      userFrom : this.code,
+      commentary : '',
+      webPage : ''
     }
   }
   cerrarDialog(){

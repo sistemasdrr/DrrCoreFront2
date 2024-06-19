@@ -134,6 +134,7 @@ constructor(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.listaMonedas = response.data
+          console.log(this.listaMonedas)
         }
       }
     ).add(() => {
@@ -421,7 +422,8 @@ constructor(
       () => {
         if(this.currentPaidCapitalCurrency !== 0) {
           const moneda = this.listaMonedas.filter(x => x.id === this.currentPaidCapitalCurrency)[0]
-          this.capitalPagadoActualInforme = moneda.valor + ' | ' + this.currentPaidCapital + ' | ' + this.currentPaidCapitalComentary
+          this.capitalPagadoActualInforme = (moneda !== null ? moneda.valor.substring(0,3) + ' | ' : '')  + this.currentPaidCapital + ' | ' + this.currentPaidCapitalComentary
+          console.log(moneda.valor.substring(0,3))
           const input = document.getElementById('input_fecha_constitucion') as HTMLElement | null;
           if(input){
             input.focus()
@@ -667,21 +669,22 @@ constructor(
         heightAuto: true
       }).then((result) => {
         if (result.value) {
-
           const paginaDetalleEmpresa = document.getElementById('pagina-detalle-empresa') as HTMLElement | null;
+          if(paginaDetalleEmpresa){
+            paginaDetalleEmpresa.classList.remove('hide-loader');
+          }
           this.antecedentesLegalesService.updateAntecedentesLegales(this.modeloModificado[0]).subscribe((response) => {
-            if(paginaDetalleEmpresa){
-              paginaDetalleEmpresa.classList.remove('hide-loader');
-            }
+
             if(response.isSuccess === true && response.isWarning === false){
+              if(paginaDetalleEmpresa){
+                paginaDetalleEmpresa.classList.add('hide-loader');
+              }
 
               const tabAntecedentes = document.getElementById('tab-antecedentes') as HTMLElement | null;
               if (tabAntecedentes) {
                 tabAntecedentes.classList.add('tab-con-datos')
               }
-              if(paginaDetalleEmpresa){
-                paginaDetalleEmpresa.classList.add('hide-loader');
-              }
+            
               Swal.fire({
                 title: 'Se agregó el registro correctamente',
                 text: "",
