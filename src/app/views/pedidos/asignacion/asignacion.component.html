@@ -177,13 +177,13 @@
                   <br>
                 </div>
                 <div class="card-header " style="background-color: rgb(180, 204, 252);">
-                  <h5>Datos de la Empresa</h5>
+                  <h5> {{ order.about === 'E' ? 'Datos de la Empresa a Investigar' : 'Datos de la Persona a Investigar' }} </h5>
                 </div>
                 <div class="card-body">
                   <div class="row">
                     <div class="col-md-4">
-                      <label><b>Nombre Real de la Empresa: </b>  {{order.busineesName}}</label><br>
-                      <label><b>Nombre Solicitado de la Empresa: </b>  {{order.requestedName}}</label><br>
+                      <label><b>{{ order.about === 'E' ? 'Nombre Real de la Empresa: ' : 'Nombre Real de la Persona: ' }} </b>  {{order.busineesName}}</label><br>
+                      <label><b>{{ order.about === 'E' ? 'Nombre Solicitado de la Empresa: ' : 'Nombre Solicitado de la Persona: ' }} </b>  {{order.requestedName}}</label><br>
                       <label><b>Registro Tributario: </b>  {{order.taxType}} - {{order.taxCode}}</label>
                     </div>
                     <div class="col-md-4">
@@ -195,6 +195,7 @@
                       <label><b>Dirección: </b>  {{order.address}}</label><br>
                       <label><b>Correo: </b> {{order.email}}</label><br>
                       <label><b>Telefono: </b>  {{order.telephone}}</label><br>
+                      <label *ngIf="order.about === 'E'"><b>Pagina Web: </b>  {{order.webPage}}</label><br>
                     </div>
                     <br>
                   </div>
@@ -207,6 +208,10 @@
                     <div class="col-md-4">
                       <label><b>Tipo de Trámite: </b>  {{order.procedureType}}</label><br>
                       <label><b>Fecha de Ingreso: </b>  {{order.orderDate}}</label><br>
+                      <label><b>Idioma: </b> {{order.language === 'E' ? 'Español' : 'Inglés'}}
+                        <span class="{{order.language === 'E' ? 'fi fi-es' : 'fi fi-us'}}"></span>
+                      </label><br>
+
                     </div>
                     <div class="col-md-4">
                       <label><b>Tipo de Informe: </b> {{order.reportType}}</label><br>

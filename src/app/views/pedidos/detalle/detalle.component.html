@@ -52,8 +52,8 @@
                 </button>
                 <button id="btn-guardar-datos-empresa" mat-mini-fab class="bg-cyan shadow"
                (click)="guardar()" #tooltip="matTooltip" matTooltip="Guardar"
-                  [class]="idSubscriber === 0 || language === '' && idContinent === 0 || idCountry === 0 || procedureType === '' || reportType === '' ? 'bg-grey' : ''"
-                  [disabled]="idSubscriber === 0 || language === '' || idContinent === 0 || idCountry === 0 || procedureType === '' || reportType === ''  ? true : false">
+                  [class]="idSubscriber === 0 || language === '' && idContinent === 0 || idCountry === 0 || procedureType === '' || reportType === ''|| requestedName === '' ? 'bg-grey' : ''"
+                  [disabled]="idSubscriber === 0 || language === '' || idContinent === 0 || idCountry === 0 || procedureType === '' || reportType === '' || requestedName === ''  ? true : false">
                   <mat-icon class="col-white">save</mat-icon>
                 </button>
               </div>
@@ -249,34 +249,61 @@
                     <mat-form-field class="w-100">
                       <mat-label>Ciudad</mat-label>
                       <input matInput placeholder="" [(ngModel)]="city">
+                      <button matSuffix *ngIf="city !== ''" mat-icon-button color="primary" style="background-color: rgba(0,0,0,0);"  (click)="city = ''" #tooltip="matTooltip" matTooltip="Limpiar">
+                        <i class="fa-solid fa-xmark" style="color: black; font-size: 20px;"></i>
+                      </button>
                     </mat-form-field>
                   </div>
                   <div class="col-md-6">
                     <mat-form-field class="" style="width: 35%;">
                       <mat-label>Tipo Reg. Trib.</mat-label>
                       <input matInput placeholder="" [(ngModel)]="taxType">
+                      <button matSuffix *ngIf="taxType !== ''" mat-icon-button color="primary" style="background-color: rgba(0,0,0,0);"  (click)="taxType = ''" #tooltip="matTooltip" matTooltip="Limpiar">
+                        <i class="fa-solid fa-xmark" style="color: black; font-size: 20px;"></i>
+                      </button>
                     </mat-form-field>
                     <mat-form-field class="" style="width: 65%;">
                       <mat-label>Código Reg. Trib.</mat-label>
                       <input matInput [(ngModel)]="taxCode">
+                      <button matSuffix *ngIf="taxCode !== ''" mat-icon-button color="primary" style="background-color: rgba(0,0,0,0);"  (click)="taxCode = ''" #tooltip="matTooltip" matTooltip="Limpiar">
+                        <i class="fa-solid fa-xmark" style="color: black; font-size: 20px;"></i>
+                      </button>
                     </mat-form-field>
                   </div>
                   <div class="col-md-6">
                     <mat-form-field class="w-100">
                       <mat-label>Email</mat-label>
                       <input matInput [(ngModel)]="email">
+                      <button matSuffix *ngIf="email !== ''" mat-icon-button color="primary" style="background-color: rgba(0,0,0,0);"  (click)="email = ''" #tooltip="matTooltip" matTooltip="Limpiar">
+                        <i class="fa-solid fa-xmark" style="color: black; font-size: 20px;"></i>
+                      </button>
                     </mat-form-field>
                   </div>
                   <div class="col-md-4">
                     <mat-form-field class="w-100">
                       <mat-label>Teléfono</mat-label>
                       <input matInput placeholder="" [(ngModel)]="telephone">
+                      <button matSuffix *ngIf="telephone !== ''" mat-icon-button color="primary" style="background-color: rgba(0,0,0,0);"  (click)="telephone = ''" #tooltip="matTooltip" matTooltip="Limpiar">
+                        <i class="fa-solid fa-xmark" style="color: black; font-size: 20px;"></i>
+                      </button>
                     </mat-form-field>
                   </div>
                   <div class="col-md-8">
                     <mat-form-field class="w-100">
                       <mat-label>Dirección</mat-label>
                       <input matInput placeholder="" [(ngModel)]="address">
+                      <button matSuffix *ngIf="address !== ''" mat-icon-button color="primary" style="background-color: rgba(0,0,0,0);"  (click)="address = ''" #tooltip="matTooltip" matTooltip="Limpiar">
+                        <i class="fa-solid fa-xmark" style="color: black; font-size: 20px;"></i>
+                      </button>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-12" >
+                    <mat-form-field class="w-100">
+                      <mat-label>Pagina Web</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="webPage">
+                      <button matSuffix *ngIf="webPage !== ''" mat-icon-button color="primary" style="background-color: rgba(0,0,0,0);"  (click)="webPage = ''" #tooltip="matTooltip" matTooltip="Limpiar">
+                        <i class="fa-solid fa-xmark" style="color: black; font-size: 20px;"></i>
+                      </button>
                     </mat-form-field>
                   </div>
                 </div>
@@ -333,7 +360,7 @@
                     <mat-label>Tipo </mat-label>
                     <input matInput type="text" [(ngModel)]="reportType">
                   </mat-form-field>
-                  
+
                 </div>
                 <div class="col-md-4 d-flex justify-content-center">
                   <mat-form-field color="primary" style="width: 100%;">
@@ -358,7 +385,18 @@
                         class="fa-solid fa-circle-check"></i>Trámite Seleccionado</mat-hint>
                   </mat-form-field>
                 </div>
-               
+
+              </div>
+            </div>
+            <div class="counter-box shadow m-1">
+              <div class="row">
+                <h4>Comentarios</h4>
+                <div class="col-md-12">
+                  <mat-form-field class="w-100">
+                    <mat-label>Comentario </mat-label>
+                    <textarea matInput type="text" [(ngModel)]="commentary" style="min-height: 6rem;"></textarea>
+                  </mat-form-field>
+                </div>
               </div>
             </div>
           </div>

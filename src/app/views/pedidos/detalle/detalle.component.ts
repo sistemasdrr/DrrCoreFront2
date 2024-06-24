@@ -129,6 +129,9 @@ export class DetalleComponent implements OnInit {
 
   idCreditRisk = 0
 
+  commentary = ''
+  webPage = ''
+
   //calificacionCrediticia : RiesgoCrediticio[] = []
 
   paisesAbonado : Pais[] = []
@@ -205,6 +208,7 @@ export class DetalleComponent implements OnInit {
               this.idCountry = ticket.idCountry
               this.reportType = ticket.reportType
               this.procedureType = ticket.procedureType
+              this.reportType = ticket.reportType
               this.idCompany = ticket.idCompany
               this.idPerson = ticket.idPerson
               this.busineesName = ticket.busineesName
@@ -222,6 +226,8 @@ export class DetalleComponent implements OnInit {
               this.orderDateD=ticket.orderDate
               this.expireDateD=ticket.expireDate
               this.realExpireDateD=ticket.realExpireDate
+              this.webPage = ticket.webPage
+              this.commentary = ticket.commentary
             }
           }
         }
@@ -237,9 +243,8 @@ export class DetalleComponent implements OnInit {
                   this.revealName = abonado.revealName
                   this.nameRevealed = abonado.name
                   this.estado = abonado.enable;
-                  this.indicacionesAbonado = this.indicacionesAbonado === null || this.indicacionesAbonado === '' ? abonado.indications : this.indicacionesAbonado;
-                  this.aditionalData === null || this.aditionalData === '' ? abonado.observations : this.aditionalData;
-                  this.language = abonado.language
+                  this.indicacionesAbonado = this.indicacionesAbonado !== null || this.indicacionesAbonado !== '' ? abonado.indications : this.indicacionesAbonado;
+                  this.aditionalData !== null || this.aditionalData !== '' ? abonado.observations : this.aditionalData;
                   this.tipoFacturacion=abonado.facturationType;
                 }
               }
@@ -270,7 +275,6 @@ export class DetalleComponent implements OnInit {
                             if(response.isSuccess === true && response.isWarning === false){
                               const tipoReporte = response.data
                               if(tipoReporte){
-                                this.reportType = tipoReporte.typeReport
                                 console.log(tipoReporte.lastSearchedDate)
                                 if(tipoReporte.lastSearchedDate !== "" && tipoReporte.lastSearchedDate !== null){
 
@@ -390,7 +394,9 @@ export class DetalleComponent implements OnInit {
       enable : true,
       requestedName : this.requestedName,
       price : this.precio,
-      userFrom : this.idUser.toString()
+      userFrom : this.idUser.toString(),
+      commentary : this.commentary,
+      webPage : this.webPage
     }
   }
   armarModeloModificado(){
@@ -428,7 +434,9 @@ export class DetalleComponent implements OnInit {
       enable : true,
       requestedName : this.requestedName,
       price : this.precio,
-      userFrom : this.idUser.toString()
+      userFrom : this.idUser.toString(),
+      commentary : this.commentary,
+      webPage : this.webPage
     }
   }
   selectContinente(){
@@ -582,6 +590,7 @@ export class DetalleComponent implements OnInit {
               this.idCountryCompany = datosEmpresa.idCountry === null ? 0 : datosEmpresa.idCountry
               this.procedureType = ""
               this.reportType = ""
+              this.webPage = datosEmpresa.webPage
             }
             this.buscarEnArreglo(this.idContinentCompany, this.idCountryCompany)
          //////
@@ -698,6 +707,7 @@ export class DetalleComponent implements OnInit {
               this.city = datosPersona.city
               this.address = datosPersona.address
               this.telephone = datosPersona.cellphone
+              this.webPage = ''
               this.idContinentPerson = datosPersona.idContinent === null ? 0 : datosPersona.idContinent
               this.idCountryPerson = datosPersona.idCountry === null ? 0 : datosPersona.idCountry
             }
@@ -801,13 +811,17 @@ export class DetalleComponent implements OnInit {
         heightAuto : true
       }).then((result) => {
         if (result.value) {
-          const loader = document.getElementById('loader-detalle-cupon') as HTMLElement | null;
-          if(loader){
-            loader.classList.remove('hide-loader');
-          }
+          this.loading = true;
           this.ticketService.addTicket(this.modeloNuevo[0]).subscribe(
             (response) => {
               if(response.isSuccess === true && response.isWarning === false){
+
+                this.loading = false;
+                this.ticketService.downloadAndUploadF1(response.data).subscribe(
+                  (response) => {
+
+                  }
+                )
                 Swal.fire({
                   title: 'El registro se guardo correctamente.',
                   text: '',
@@ -818,13 +832,20 @@ export class DetalleComponent implements OnInit {
                   this.router.navigate(['pedidos/lista']);
                 })
                 //this.id = response.data
+              }else{
+                this.loading = false;
+                Swal.fire({
+                  title: 'Ocurrio un problema al guardar el pedido.',
+                  text: response.message,
+                  icon: 'success',
+                  width: '30rem',
+                  heightAuto: true
+                })
               }
             }
           ).add(
             () => {
-              if(loader){
-                loader.classList.add('hide-loader');
-              }
+              this.loading = false;
             }
           )
         }
@@ -845,13 +866,13 @@ export class DetalleComponent implements OnInit {
         heightAuto : true
       }).then((result) => {
         if (result.value) {
-          const loader = document.getElementById('loader-detalle-cupon') as HTMLElement | null;
-          if(loader){
-            loader.classList.remove('hide-loader');
-          }
+
+          this.loading = true;
           this.ticketService.addTicket(this.modeloModificado[0]).subscribe(
             (response) => {
               if(response.isSuccess === true && response.isWarning === false){
+
+                this.loading = false;
                 Swal.fire({
                   title: 'El registro se guardo correctamente.',
                   text: '',
@@ -866,9 +887,8 @@ export class DetalleComponent implements OnInit {
             }
           ).add(
             () => {
-              if(loader){
-                loader.classList.add('hide-loader');
-              }
+
+              this.loading = false;
             }
           )
         }

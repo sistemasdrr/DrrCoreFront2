@@ -220,7 +220,7 @@ export class PTrabajoComponent implements OnInit{
             this.currentJob = data.comentario_es
             this.currentJobEng = data.comentario_en
           break
-          case 'fechaInicio':
+          case 'fechaIngreso':
             this.startDate = data.comentario_es
             this.startDateEng = data.comentario_en
           break

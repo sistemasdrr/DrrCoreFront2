@@ -307,7 +307,6 @@ export class DatosEmpresaComponent implements OnInit, OnDestroy {
             }else{
               this.limpiarSeleccionPersoneriaJuridica()
             }
-            this.taxTypeName = DatosEmpresa.taxTypeName == null ? "" : DatosEmpresa.taxTypeName
             this.taxTypeCode = DatosEmpresa.taxTypeCode == null ? "" : DatosEmpresa.taxTypeCode
             if(DatosEmpresa.idLegalRegisterSituation > 0 && DatosEmpresa.idLegalRegisterSituation !== null){
               this.idLegalRegisterSituation = DatosEmpresa.idLegalRegisterSituation
@@ -325,8 +324,9 @@ export class DatosEmpresaComponent implements OnInit, OnDestroy {
               this.subTelephone = this.paisSeleccionado.codCel
             }else{
               this.limpiarSeleccionPais()
+              this.subTelephone = DatosEmpresa.subTelephone == null ? "" : DatosEmpresa.subTelephone
+              this.taxTypeName = DatosEmpresa.taxTypeName == null ? "" : DatosEmpresa.taxTypeName
             }
-            this.subTelephone = DatosEmpresa.subTelephone == null ? "" : DatosEmpresa.subTelephone
             this.cellphone = DatosEmpresa.cellphone == null ? "" : DatosEmpresa.cellphone
             this.telephone = DatosEmpresa.telephone == null ? "" : DatosEmpresa.telephone
             this.postalCode = DatosEmpresa.postalCode == null ? "" : DatosEmpresa.postalCode
@@ -385,6 +385,8 @@ export class DatosEmpresaComponent implements OnInit, OnDestroy {
     }
   }
   compararModelos(): void {
+    // console.log(this.datosEmpresaActual)
+    // console.log(this.datosEmpresaModificado)
     this.armarModeloModificado();
     const tabDatosEmpresa = document.getElementById('tab-datos-empresa') as HTMLElement | null;
     if (JSON.stringify(this.datosEmpresaActual) !== JSON.stringify(this.datosEmpresaModificado)) {

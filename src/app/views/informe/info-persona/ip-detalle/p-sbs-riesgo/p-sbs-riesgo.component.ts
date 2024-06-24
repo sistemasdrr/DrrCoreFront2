@@ -240,6 +240,10 @@ export class PSbsRiesgoComponent implements OnInit{
           value : this.aditionalCommentaryRiskCenterEng
         },
         {
+          key : 'L_SBS_COMMENTSBS',
+          value : this.sbsCommentaryEng
+        },
+        {
           key : 'L_SBS_COMMENTBANK',
           value : this.bankingCommentaryEng
         },
@@ -275,6 +279,10 @@ export class PSbsRiesgoComponent implements OnInit{
           value : this.aditionalCommentaryRiskCenterEng
         },
         {
+          key : 'L_SBS_COMMENTSBS',
+          value : this.sbsCommentaryEng
+        },
+        {
           key : 'L_SBS_COMMENTBANK',
           value : this.bankingCommentaryEng
         },
@@ -307,6 +315,10 @@ export class PSbsRiesgoComponent implements OnInit{
           case 'comentarioBancario':
             this.bankingCommentary = data.comentario_es
             this.bankingCommentaryEng = data.comentario_en
+          break
+          case 'comentarioSBS':
+            this.sbsCommentary = data.comentario_es
+            this.sbsCommentaryEng = data.comentario_en
           break
         }
       }

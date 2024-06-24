@@ -37,6 +37,9 @@ export interface Ticket{
   requestedName : string
   price : number
   userFrom : string
+  commentary : string
+  webPage : string
+
 }
 export interface SearchSituation{
   idCompany : number
@@ -134,6 +137,7 @@ export interface ListTicket{
   email : string
   address : string
   telephone : string
+  webPage : string
   reportType : string
   procedureType : string
   price : number
@@ -229,6 +233,7 @@ export interface ListTicket2{
   endDate : string
   numberAssign : number
   references : number
+  webPage : string
 }
 export interface OtherUserCode{
   code : string

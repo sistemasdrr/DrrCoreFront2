@@ -1,0 +1,41 @@
+<section class="content" >
+  <div class="d-flex justify-content-center align-items-center loader-container" [ngClass]="{'hide-loader': !loading}">
+    <span class="loader"></span><br>
+    <h2 style="color: white;">&nbsp;Cargando...</h2>
+  </div>
+  <div class="container-fluid" [ngClass]="{'show-form': loading}" style="overflow: auto; width: 100%;">
+    <div class="block-header" *ngFor="let breadscrum of breadscrums">
+      <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [codigoInforme]="''" [active_item]="breadscrum.active">
+      </app-breadcrumb>
+    </div>
+  </div>
+
+  <div class="row m-0 p-0" min>
+    <div class="col-md-12  m-0 p-0">
+      <div class="card card-body shadow " style="padding-bottom: 0px;">
+        <div class="row">
+          <div class="col-md-5">
+            <mat-form-field class="w-100">
+              <mat-label>Consulta de </mat-label>
+              <mat-select [(ngModel)]="idQuery" placeholder="">
+                  <mat-option [value]="1">1.- Informes Facturados de Abonados de Mayor a Menor</mat-option>
+                  <mat-option [value]="2">2.- Informes Atentidos por Paises de Mayor a Menor</mat-option>
+                  <mat-option [value]="3">3.- Informes Solicitados por Abonado, País y Año</mat-option>
+                  <mat-option [value]="4">4.- Informes Facturados por Abonado, País y Año</mat-option>
+                  <mat-option [value]="5">5.- Informes Pendientes en General</mat-option>
+                  <mat-option [value]="6">6.- Informes Pendientes por Abonado</mat-option>
+                  <mat-option [value]="7">7.- Informes Solicitados por Abonado con Cupones</mat-option>
+                  <mat-option [value]="8">8.- Informes Facturados Mensualmente por Paises</mat-option>
+                  <mat-option [value]="9">9.- Informes Atendidos Mensualmente por Abonado</mat-option>
+                  <mat-option [value]="10">10.- Informes Solicitados por Abonado</mat-option>
+                  <mat-option [value]="11">11.- Informes Atendidos a Abonados de Mayor a Menor</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-1"></div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

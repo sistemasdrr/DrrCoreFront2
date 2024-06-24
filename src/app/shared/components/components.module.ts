@@ -49,7 +49,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     CuadroImpoExpoComponent,
     TraduccionDialogComponent,
     AgregarEditarComponent,
-
+    VerPdfComponent
   ],
 })
 export class ComponentsModule {}

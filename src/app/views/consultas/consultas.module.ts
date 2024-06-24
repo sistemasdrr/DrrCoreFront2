@@ -11,7 +11,9 @@ import { SharedModule } from '@shared';
 import { ComponentsModule } from '@shared/components/components.module';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer'
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { MatSortModule } from '@angular/material/sort';
     SharedModule,
     ComponentsModule,
     MatTableModule,
-    MatSortModule
+    MatSortModule,
+    PdfViewerModule,
+    NgxExtendedPdfViewerModule
   ]
 })
 export class ConsultasModule { }

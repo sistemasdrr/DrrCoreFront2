@@ -28,8 +28,14 @@ export class TicketService {
   getNumTicketById(idTicket : number) : Observable<Response<string>>{
     return this.http.get<Response<string>>(this.url + this.controllerTicket + '/getNumTicketById?idTicket='+idTicket);
   }
-  addTicket(obj : Ticket) : Observable<Response<boolean>>{
-    return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/add',obj);
+  addTicket(obj : Ticket) : Observable<Response<number>>{
+    return this.http.post<Response<number>>(this.url + this.controllerTicket + '/add',obj);
+  }
+  SaveTicketAsignations(idTicket : number,commentary : string) : Observable<Response<boolean>>{
+    return this.http.get<Response<boolean>>(this.url + this.controllerTicket + '/SaveTicketAsignations?idTicket='+idTicket+'&commentary='+commentary);
+  }
+  downloadAndUploadF1(idTicket : number) : Observable<Response<boolean>>{
+    return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/downloadAndUploadF1?idTicket='+idTicket,'');
   }
   addTicketByWeb(obj : Ticket) : Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/addByWeb',obj);

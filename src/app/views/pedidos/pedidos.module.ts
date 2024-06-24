@@ -13,7 +13,7 @@ import { MatSortModule} from '@angular/material/sort';
 import { MatTableModule} from '@angular/material/table';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { SharedModule } from '@shared';
 import { ComponentsModule } from '@shared/components/components.module';
 import { AsignacionComponent } from './asignacion/asignacion.component';
@@ -24,6 +24,14 @@ import { ConsultarComponent } from './lista/consultar/consultar.component';
 import { ListaAbonadosComponent } from './detalle/lista-abonados/lista-abonados.component';
 import { ListaPersonasComponent } from './detalle/lista-personas/lista-personas.component';
 import { ReferenciasComercialesComponent } from './asignacion2/referencias-comerciales/referencias-comerciales.component';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+
+import { MatSelectModule } from '@angular/material/select';
+import { MatListModule } from '@angular/material/list';
+import { NgScrollbarModule } from 'ngx-scrollbar';
+import { FeatherIconsModule } from '@shared/components/feather-icons/feather-icons.module';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ComentarioComponent } from './asignacion/comentario/comentario.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +44,8 @@ import { ReferenciasComercialesComponent } from './asignacion2/referencias-comer
     ConsultarComponent,
     ListaAbonadosComponent,
     ListaPersonasComponent,
-    ReferenciasComercialesComponent
+    ReferenciasComercialesComponent,
+    ComentarioComponent
   ],
   imports: [
     CommonModule,
@@ -50,7 +59,16 @@ import { ReferenciasComercialesComponent } from './asignacion2/referencias-comer
     MatInputModule,
     FormsModule,
     SharedModule,
-    ComponentsModule
+    ComponentsModule,
+    MatIconModule,
+    CKEditorModule,
+    FormsModule,
+    MatSelectModule,
+    MatListModule,
+    ReactiveFormsModule,
+    NgScrollbarModule,
+    FeatherIconsModule,
+    MatTooltipModule
   ]
 })
 export class PedidosModule { }

@@ -262,7 +262,7 @@ export class SeleccionarAgenteComponent implements OnInit {
       observations: this.observaciones,
       type: this.type,
       internal: this.interno,
-      balance: false,
+      balance: this.balance,
       startDate: this.fechaAsignacionString,
       endDate: this.fechaVencimientoString,
       idTicket: this.idTicket,

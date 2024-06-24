@@ -1,3 +1,4 @@
+import { CuadrosModule } from './views/cuadros/cuadros.module';
 import { ConsultasModule } from './views/consultas/consultas.module';
 
 import { NgModule } from '@angular/core';
@@ -98,6 +99,13 @@ const routes: Routes = [
         loadChildren: () =>
           import('./views/consultas/consultas.module').
           then((m) => m.ConsultasModule)
+            ,canActivate: [AuthGuard]
+      },
+      {
+        path: 'reportes',
+        loadChildren: () =>
+          import('./views/cuadros/cuadros.module').
+          then((m) => m.CuadrosModule)
             ,canActivate: [AuthGuard]
       },
     ],

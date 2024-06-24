@@ -277,7 +277,9 @@ export class PedidosOfflineComponent implements OnInit {
       enable : true,
       requestedName : this.requestedName,
       price : this.precio,
-      userFrom : this.subscriberCode
+      userFrom : this.subscriberCode,
+      commentary : '',
+      webPage : ''
     }
   }
   armarModeloModificado(){
@@ -315,7 +317,9 @@ export class PedidosOfflineComponent implements OnInit {
       enable : true,
       requestedName : this.requestedName,
       price : this.precio,
-      userFrom : this.subscriberCode
+      userFrom : this.subscriberCode,
+      commentary : '',
+      webPage : ''
     }
   }
   limpiarSeleccionPais() {
@@ -392,7 +396,7 @@ export class PedidosOfflineComponent implements OnInit {
                   width: '30rem',
                   heightAuto: true
                 }).then(() => {
-                  this.router.navigate(['pedidos/lista']);
+                  this.router.navigate(['abonado/i/pedidos/offline']);
                 })
                 //this.id = response.data
               }
@@ -436,7 +440,7 @@ export class PedidosOfflineComponent implements OnInit {
                   width: '30rem',
                   heightAuto: true
                 }).then(() => {
-                  this.router.navigate(['pedidos/lista']);
+                  this.router.navigate(['abonado/i/pedidos/offline']);
                 })
                 //this.id = response.data
               }

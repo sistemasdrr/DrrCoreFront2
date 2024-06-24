@@ -69,6 +69,7 @@
     "ngx-dropzone": "^3.1.0",
     "ngx-dropzone-wrapper": "^14.0.0",
     "ngx-echarts": "^16.0.0",
+    "ngx-extended-pdf-viewer": "^20.5.0-alpha.2",
     "ngx-gauge": "^8.0.0",
     "ngx-image-cropper": "^7.2.1",
     "ngx-image-editor": "^1.4.1",
