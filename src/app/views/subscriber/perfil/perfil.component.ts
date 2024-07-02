@@ -66,6 +66,11 @@ export class PerfilComponent implements OnInit {
   idCurrency = 0
   facturationType = ""
   normalPrice = false
+  reportInPdf = false
+  reportInWord = false
+  reportInExcel = false
+  reportInXml = false
+  reportInXmlCredendo = false
 
   continentes : ComboData[] = []
   rubros : ComboData[] = []
@@ -169,6 +174,11 @@ export class PerfilComponent implements OnInit {
                     this.idCurrency = abonado.idCurrency
                     this.facturationType = abonado.facturationType
                     this.normalPrice = abonado.normalPrice
+                    this.reportInPdf = abonado.reportInPdf
+                    this.reportInWord = abonado.reportInWord
+                    this.reportInExcel = abonado.reportInExcel
+                    this.reportInXml = abonado.reportInXml
+                    this.reportInXmlCredendo = abonado.reportInXmlCredendo
                     this.armarModeloActual()
                     this.armarModeloModificado()
                   }
@@ -279,7 +289,12 @@ export class PerfilComponent implements OnInit {
       facturationType : this.facturationType,
       normalPrice : this.normalPrice,
       enable : true,
-      remainingCoupons:0
+      remainingCoupons:0,
+      reportInPdf : this.reportInPdf,
+      reportInWord : this.reportInWord,
+      reportInExcel : this.reportInExcel,
+      reportInXml : this.reportInXml,
+      reportInXmlCredendo : this.reportInXmlCredendo
     }
   }
   armarModeloModificado(){
@@ -319,7 +334,12 @@ export class PerfilComponent implements OnInit {
       facturationType : this.facturationType,
       normalPrice : this.normalPrice,
       enable : true,
-      remainingCoupons:0
+      remainingCoupons:0,
+      reportInPdf : this.reportInPdf,
+      reportInWord : this.reportInWord,
+      reportInExcel : this.reportInExcel,
+      reportInXml : this.reportInXml,
+      reportInXmlCredendo : this.reportInXmlCredendo
     }
   }
   guardar(){

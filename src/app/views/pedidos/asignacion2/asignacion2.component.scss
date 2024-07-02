@@ -154,3 +154,17 @@ tr.example-element-row:not(.example-expanded-row):active {
     display: none;
   }
 }
+
+.mat-menu-quality {
+  width: 600px !important;
+  height: 300px !important;
+  overflow: auto;
+}
+
+::ng-deep.mat-mdc-menu-panel.mat-menu-quality {
+  padding: 5px;
+  min-width: 200px;
+  max-width: 350px;
+  overflow-x: hidden;
+}
+

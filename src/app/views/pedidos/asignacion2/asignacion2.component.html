@@ -33,7 +33,7 @@
       <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="w-100 mat-elevation-z8" style="table-layout:  auto !important;" matSort>
         <ng-container matColumnDef="number" >
         <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Cupón </th>
-        <td mat-cell *matCellDef="let order" class="text-center"> {{order.number}} </td>
+        <td mat-cell *matCellDef="let order" class="text-center" style="white-space: nowrap;"> {{order.number}} </td>
         </ng-container>
         <ng-container matColumnDef="subscriber" >
         <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Abonado </th>
@@ -129,13 +129,54 @@
         <ng-container matColumnDef="quality" >
           <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Calidad</th>
           <td mat-cell *matCellDef="let order" class="text-center">
-            <mat-select matInput [(ngModel)]="order.quality" placeholder="" *ngIf="activeQuality(order.otherUserCode)" (click)="$event.stopPropagation();" style="border: 2px solid black; border-radius: 10px; background-color: rgb(128, 248, 128);">
-                <mat-option [value]="''"></mat-option>
-                <mat-option [value]="'A'">A</mat-option>
-                <mat-option [value]="'B'">B</mat-option>
-                <mat-option [value]="'C'">C</mat-option>
-                <mat-option [value]="'D'">D</mat-option>
-            </mat-select><!--*ngIf="order.asignedTo.includes('S')"-->
+            <button  class="float-end progress-percent label shadow"
+            style="border: 2px solid black; color: black; border-radius: 10px; width: 50px; height: 30px; background-color: rgb(128, 248, 128);"
+        [matMenuTriggerFor]="quality" (click)="$event.stopPropagation();"
+        *ngIf="activeQuality(order.otherUserCode)">
+          {{order.quality}}
+            </button>
+            <mat-menu class="mat-menu-quality"  #quality="matMenu" [hasBackdrop]="true" appStopPropagation  >
+              <div class="row" appStopPropagation>
+                <div class="col-md-6 d-flex align-items-center" >
+                  <mat-form-field class="w-100" appStopPropagation>
+                    <mat-label>Calidad Final</mat-label>
+                    <mat-select matInput [(ngModel)]="order.quality" placeholder="" (ngModelChange)="order.qualityTranslator = order.quality; order.qualityTypist = order.quality;">
+                      <mat-option [value]="''"></mat-option>
+                      <mat-option [value]="'A'">A</mat-option>
+                      <mat-option [value]="'B'">B</mat-option>
+                      <mat-option [value]="'C'">C</mat-option>
+                      <mat-option [value]="'D'">D</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6" appStopPropagation>
+                  <div class="row">
+                    <mat-form-field class="w-100 m-0 p-0" appStopPropagation>
+                      <mat-label>Calidad de Digitador</mat-label>
+                      <mat-select matInput [(ngModel)]="order.qualityTypist" placeholder=""  (click)="$event.stopPropagation();">
+                        <mat-option [value]="''"></mat-option>
+                        <mat-option [value]="'A'">A</mat-option>
+                        <mat-option [value]="'B'">B</mat-option>
+                        <mat-option [value]="'C'">C</mat-option>
+                        <mat-option [value]="'D'">D</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <div class="row">
+                    <mat-form-field class="w-100 m-0 p-0">
+                      <mat-label>Calidad de Traductor</mat-label>
+                      <mat-select matInput [(ngModel)]="order.qualityTranslator" placeholder=""  (click)="$event.stopPropagation();" >
+                        <mat-option [value]="''"></mat-option>
+                        <mat-option [value]="'A'">A</mat-option>
+                        <mat-option [value]="'B'">B</mat-option>
+                        <mat-option [value]="'C'">C</mat-option>
+                        <mat-option [value]="'D'">D</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </mat-menu>
           </td>
         </ng-container>
 

@@ -120,8 +120,8 @@ export class TicketService {
   finishWord(obj : Asignacion) : Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/finishWork',obj);
   }
-  deleteTicketHistory(idTicket: number, assignedTo : string, numberAssign : number) : Observable<Response<boolean>>{
-    return this.http.get<Response<boolean>>(this.url + this.controllerTicket + '/deleteTicketHistory?idTicket='+idTicket+'&assignedTo='+assignedTo+'&numberAssign='+numberAssign);
+  deleteTicketHistory(idTicket: number, assignedTo : string, numberAssign : number, returnMessage : string) : Observable<Response<boolean>>{
+    return this.http.get<Response<boolean>>(this.url + this.controllerTicket + '/deleteTicketHistory?idTicket='+idTicket+'&assignedTo='+assignedTo+'&numberAssign='+numberAssign+'&returnMessage='+returnMessage);
   }
   getPersonalAssignation() : Observable<Response<PersonalAssignation[]>>{
     return this.http.get<Response<PersonalAssignation[]>>(this.url + this.controllerTicket + '/getPersonalAssignation');

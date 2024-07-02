@@ -194,6 +194,22 @@
           </div>
           <h4>Despacho</h4>
           <hr>
+          <h5>Formatos de Envio</h5>
+          <div class="col-md-2">
+            <mat-checkbox class="example-margin" [(ngModel)]="reportInPdf">PDF</mat-checkbox>
+          </div>
+          <div class="col-md-2">
+            <mat-checkbox class="example-margin" [(ngModel)]="reportInWord">Word</mat-checkbox>
+          </div>
+          <div class="col-md-2">
+            <mat-checkbox class="example-margin" [(ngModel)]="reportInExcel">Excel</mat-checkbox>
+          </div>
+          <div class="col-md-2">
+            <mat-checkbox class="example-margin" [(ngModel)]="reportInXml">Xml</mat-checkbox>
+          </div>
+          <div class="col-md-2 mb-3">
+            <mat-checkbox class="example-margin" [(ngModel)]="reportInXmlCredendo">Xml Credendo</mat-checkbox>
+          </div>
           <h5>Enviar Informe</h5>
           <div class="col-md-4">
             <mat-form-field class="w-100">

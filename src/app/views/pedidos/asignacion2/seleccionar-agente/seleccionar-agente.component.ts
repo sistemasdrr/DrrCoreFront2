@@ -62,6 +62,8 @@ export class SeleccionarAgenteComponent implements OnInit {
   loading=false;
   assginFromCode: any;
   quality = ""
+  qualityTypist = ""
+  qualityTranslator = ""
 
   seleccionarTrabajador(codigo : string, nombre : string, idUserLogin : number, internal : boolean){
     this.asignadoCodigo = codigo
@@ -83,6 +85,8 @@ export class SeleccionarAgenteComponent implements OnInit {
       this.order[0] = data.order
       this.numberAssign=data.numberAssign
       this.quality=data.quality
+      this.qualityTypist=data.qualityTypist
+      this.qualityTranslator=data.qualityTranslator
       this.assginFromCode=data.assginFromCode
       this.referencias = false
       this.fechaAsignacionDate=new Date()
@@ -268,7 +272,9 @@ export class SeleccionarAgenteComponent implements OnInit {
       idTicket: this.idTicket,
       numberAssign: this.numberAssign,
       assignedFromCode:this.assginFromCode,
-      quality:this.quality !== '' ? this.quality : null
+      quality:this.quality !== '' ? this.quality : null,
+      qualityTypist : this.qualityTypist !== '' ? this.qualityTypist : null,
+      qualityTranslator : this.qualityTranslator !== '' ? this.qualityTranslator : null,
     }
     this.asignacion.push(asign)
     this.dataSource.data = this.asignacion

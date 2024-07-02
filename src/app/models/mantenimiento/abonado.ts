@@ -47,6 +47,11 @@ export interface Abonado{
   normalPrice : boolean
   enable : boolean
   remainingCoupons:number
+  reportInPdf : boolean
+  reportInWord : boolean
+  reportInExcel : boolean
+  reportInXml : boolean
+  reportInXmlCredendo : boolean
 }
 export interface AbonadoUsr{
   id : number

@@ -32,7 +32,7 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
 import { FeatherIconsModule } from '@shared/components/feather-icons/feather-icons.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ComentarioComponent } from './asignacion/comentario/comentario.component';
-
+import { StopPropagationDirective } from './asignacion2/stop-propagation.directive';
 @NgModule({
   declarations: [
     ListaComponent,
@@ -45,7 +45,8 @@ import { ComentarioComponent } from './asignacion/comentario/comentario.componen
     ListaAbonadosComponent,
     ListaPersonasComponent,
     ReferenciasComercialesComponent,
-    ComentarioComponent
+    ComentarioComponent,
+    StopPropagationDirective
   ],
   imports: [
     CommonModule,

@@ -174,6 +174,8 @@ export interface Asignacion{
   numberAssign:number,
   assignedFromCode:string
   quality:string | null
+  qualityTypist : string | null
+  qualityTranslator : string | null
 }
 
 export interface ListTicket2{
@@ -224,6 +226,8 @@ export interface ListTicket2{
   realExpireDate : string
   dispatchDate : string
   quality : string
+  qualityTypist : string
+  qualityTranslator : string
   status : string
   statusColor : string
   statusFinalOwner : string

@@ -74,8 +74,12 @@ export class Asignacion2Component implements OnInit {
           this.dataSource.data = response.data
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
-          this.loading=false;
+
         }
+      }
+    ).add(
+      () => {
+        this.loading=false;
       }
     )
     this.usuarioService.getOtherUserCode(parseInt(this.userTo)).subscribe(
@@ -127,6 +131,8 @@ export class Asignacion2Component implements OnInit {
             numberAssign : order.numberAssign,
             assginFromCode : order.asignedTo,
             quality : quality === true ? order.quality : '',
+            qualityTypist : quality === true ? order.qualityTypist : '',
+            qualityTranslator : quality === true ? order.qualityTranslator : '',
             otherUserCode : order.otherUserCode,
             order : order
           },
@@ -275,11 +281,27 @@ export class Asignacion2Component implements OnInit {
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Sí',
-      width: '20rem',
-      heightAuto : true
+      width: '30rem',
+      heightAuto : true,
+      html: `
+      <hr>
+      <div class='w-100 d-flex justify-content-center'>
+      <div class='w-100'>
+      <label for="devolucion"><h4><b>Motivo de devolución</b></h4></label>
+      <textarea class='w-100 form-control shadow-lg' style='min-height:12rem;' id="devolucion"  placeholder="">--------------------------MENSAJE DE DEVOLUCIÓN DE ${asignedTo}--------------------------\n</textarea>
+      </div>
+      </div>
+
+      `,
+      preConfirm: () => {
+        const motivo = (document.getElementById('devolucion') as HTMLTextAreaElement).value;
+        console.log(motivo)
+        return { motivo: motivo };
+      }
     }).then((result) => {
       if(result.value){
-        this.ticketService.deleteTicketHistory(idTicket,asignedTo,numberAssign).subscribe(
+        const motivoDevolucion = result.value.motivo;
+        this.ticketService.deleteTicketHistory(idTicket,asignedTo,numberAssign,motivoDevolucion).subscribe(
           (response) => {
             if(response.isSuccess === true && response.isWarning === false){
               Swal.fire({
