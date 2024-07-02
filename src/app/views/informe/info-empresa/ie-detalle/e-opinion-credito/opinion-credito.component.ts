@@ -114,7 +114,17 @@ export class OpinionCreditoComponent implements OnInit {
     const dialogRef = this.dialog.open(VerPdfComponent,{
       data: {
         idCompany : this.idCompany,
-        section : "OPINION-CREDITO"
+        section : "OPINION-CREDITO",
+        language : "E"
+      },
+    });
+  }
+  verPdfIngles(){
+    const dialogRef = this.dialog.open(VerPdfComponent,{
+      data: {
+        idCompany : this.idCompany,
+        section : "OPINION-CREDITO",
+        language : "I"
       },
     });
   }

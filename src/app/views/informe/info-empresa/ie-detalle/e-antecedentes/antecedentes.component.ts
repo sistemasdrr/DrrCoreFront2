@@ -342,7 +342,17 @@ constructor(
     const dialogRef = this.dialog.open(VerPdfComponent,{
       data: {
         idCompany : this.idCompany,
-        section : "ANTECEDENTES"
+        section : "ANTECEDENTES",
+        language : "E"
+      },
+    });
+  }
+  verPdfIngles(){
+    const dialogRef = this.dialog.open(VerPdfComponent,{
+      data: {
+        idCompany : this.idCompany,
+        section : "ANTECEDENTES",
+        language : "I"
       },
     });
   }
@@ -684,7 +694,7 @@ constructor(
               if (tabAntecedentes) {
                 tabAntecedentes.classList.add('tab-con-datos')
               }
-            
+
               Swal.fire({
                 title: 'Se agregó el registro correctamente',
                 text: "",

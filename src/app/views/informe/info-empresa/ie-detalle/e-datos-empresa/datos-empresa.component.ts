@@ -620,7 +620,17 @@ export class DatosEmpresaComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(VerPdfComponent,{
       data: {
         idCompany : this.id,
-        section : "IDENTIFICACION"
+        section : "IDENTIFICACION",
+        language : "E"
+      },
+    });
+  }
+  verPdfIngles(){
+    const dialogRef = this.dialog.open(VerPdfComponent,{
+      data: {
+        idCompany : this.id,
+        section : "IDENTIFICACION",
+        language : "I"
       },
     });
   }

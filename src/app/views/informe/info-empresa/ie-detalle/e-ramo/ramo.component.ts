@@ -400,7 +400,17 @@ export class RamoComponent implements OnInit{
     const dialogRef = this.dialog.open(VerPdfComponent,{
       data: {
         idCompany : this.idCompany,
-        section : "RAMO"
+        section : "RAMO",
+        language : "E"
+      },
+    });
+  }
+  verPdfIngles(){
+    const dialogRef = this.dialog.open(VerPdfComponent,{
+      data: {
+        idCompany : this.idCompany,
+        section : "RAMO",
+        language : "I"
       },
     });
   }

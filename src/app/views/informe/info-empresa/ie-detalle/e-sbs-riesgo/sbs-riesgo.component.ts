@@ -239,7 +239,17 @@ export class SbsRiesgoComponent implements OnInit{
     const dialogRef = this.dialog.open(VerPdfComponent,{
       data: {
         idCompany : this.idCompany,
-        section : "SBS"
+        section : "SBS",
+        language : "E"
+      },
+    });
+  }
+  verPdfIngles(){
+    const dialogRef = this.dialog.open(VerPdfComponent,{
+      data: {
+        idCompany : this.idCompany,
+        section : "SBS",
+        language : "I"
       },
     });
   }

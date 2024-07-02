@@ -128,7 +128,7 @@ export class SeleccionarAgenteComponent implements OnInit {
               ).add(
                 () => {
 
-                  console.log(this.datos)
+                  console.log(this.datos.filter(x => x.type === 'AG'))
                   console.log(this.ticketHistory)
                 }
               )

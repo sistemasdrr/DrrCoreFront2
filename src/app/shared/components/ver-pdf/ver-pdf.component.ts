@@ -15,6 +15,7 @@ export class VerPdfComponent implements OnInit {
   idCompany = 0
   name = ""
   section = ""
+  language = ""
 
   constructor(public dialogRef: MatDialogRef<VerPdfComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
     private datosEmpresaService : DatosEmpresaService){
@@ -22,6 +23,7 @@ export class VerPdfComponent implements OnInit {
       if(data){
         this.idCompany = data.idCompany
         this.section = data.section
+        this.language = data.language
       }
     }
   ngOnInit(): void {
@@ -33,7 +35,7 @@ export class VerPdfComponent implements OnInit {
         }
       }
     )
-    this.datosEmpresaService.downloadReportSection(this.idCompany, this.section, "E").subscribe(response => {
+    this.datosEmpresaService.downloadReportSection(this.idCompany, this.section, this.language).subscribe(response => {
       this.pdfBlob = response.body as Blob;
       let reader = new FileReader();
       reader.onloadend = () => {

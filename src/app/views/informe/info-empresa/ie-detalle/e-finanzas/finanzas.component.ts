@@ -226,7 +226,17 @@ export class FinanzasComponent implements OnInit, OnDestroy{
     const dialogRef = this.dialog.open(VerPdfComponent,{
       data: {
         idCompany : this.idCompany,
-        section : "FINANZAS"
+        section : "FINANZAS",
+        language : "E"
+      },
+    });
+  }
+  verPdfIngles(){
+    const dialogRef = this.dialog.open(VerPdfComponent,{
+      data: {
+        idCompany : this.idCompany,
+        section : "FINANZAS",
+        language : "I"
       },
     });
   }
