@@ -71,8 +71,8 @@ export class TicketService {
   getTicketFiles(idTicket : number) : Observable<Response<TicketFile[]>>{
     return this.http.get<Response<TicketFile[]>>(this.url + this.controllerTicket + '/getFilesByIdTicket?idTicket='+idTicket);
   }
-  downloadFile(path : string){
-    return this.http.get(this.url + this.controllerTicket + '/getFileByPath?path='+path,{observe:'response',responseType:'blob'});
+  downloadFile(id : number){
+    return this.http.get(this.url + this.controllerTicket + '/DownloadFileById?id='+id,{observe:'response',responseType:'blob'});
   }
   getList() : Observable<Response<ListTicket[]>>{
     return this.http.get<Response<ListTicket[]>>(this.url + this.controllerTicket + '/getList');

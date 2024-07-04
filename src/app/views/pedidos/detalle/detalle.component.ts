@@ -452,6 +452,8 @@ export class DetalleComponent implements OnInit {
   }
   mostrarBandera(){
     this.iconoSeleccionado = this.paisesAbonado.filter(x => x.id === this.idCountry)[0].bandera
+    this.taxType = this.paisesAbonado.filter(x => x.id === this.idCountry)[0].regtrib
+    console.log(this.paisesAbonado.filter(x => x.id === this.idCountry)[0])
     this.abonadoService.getPreciosPorPais(this.idSubscriber,this.idContinent,this.idCountry).subscribe(
         (response) => {
           if(response.isSuccess === true && response.isWarning === false){
@@ -494,6 +496,16 @@ export class DetalleComponent implements OnInit {
   tipotramite(){
     this.tipoTramite = this.listaPrecio.filter(x => x.name === this.procedureType)[0]
     this.precio = this.tipoTramite.price
+    if(this.tipoTramite.days > 0  ){
+      if(this.tipoTramite.name !== "BC" ){
+        this.expireDateD = this.addDays(this.tipoTramite.days -1,new Date(this.orderDateD));
+        this.realExpireDateD = this.addDays(this.tipoTramite.days ,new Date(this.orderDateD));
+      }else{
+        this.expireDateD = this.addDays(5,new Date(this.orderDateD));
+        this.realExpireDateD = this.addDays(6 ,new Date(this.orderDateD));
+      }
+
+    }
     if(this.tipoTramite.price === 0){
       Swal.fire({
         title: 'El tipo de trámite seleccionado no tiene un precio asignado.',
@@ -600,8 +612,8 @@ export class DetalleComponent implements OnInit {
         () => {
           this.ticketService.getTipoReporte(data.idCompany, 'E').subscribe(
             (response) => {
-              console.log(response)
               if(response.isSuccess === true && response.isWarning === false){
+                console.log(response.data)
                 const tipoReporte = response.data
                 if(tipoReporte){
                   this.reportType = tipoReporte.typeReport
@@ -718,8 +730,8 @@ export class DetalleComponent implements OnInit {
         () => {
           this.ticketService.getTipoReporte(data.idPerson, 'P').subscribe(
             (response) => {
-              console.log(response)
               if(response.isSuccess === true && response.isWarning === false){
+                console.log(response.data)
                 const tipoReporte = response.data
                 if(tipoReporte){
                   this.reportType = tipoReporte.typeReport

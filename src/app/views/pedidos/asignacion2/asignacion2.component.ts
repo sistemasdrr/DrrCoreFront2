@@ -65,7 +65,9 @@ export class Asignacion2Component implements OnInit {
     const auth = JSON.parse(localStorage.getItem('authCache')+'')
     this.userTo = auth.idUser
   }
-
+  actualizar(){
+    this.ngOnInit()
+  }
   ngOnInit() {
     this.loading=true;
     this.ticketService.getTicketPreassigned(this.userTo).subscribe(

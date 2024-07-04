@@ -243,6 +243,7 @@ export class BalanceComponent implements OnInit {
   }
 
   updRatios(){
+    this.totalLiabilitiesPatrimony = this.totalPatrimony + this.totalLliabilities
     this.liquidityRatio = parseFloat((this.totalCurrentAssets / this.totalCurrentLiabilities).toFixed(2));
     this.debtRatio = parseFloat((this.totalPatrimony / this.totalCurrentLiabilities * 100).toFixed(2));
     this.profitabilityRatio = parseFloat((this.utilities / this.sales * 100).toFixed(2));

@@ -21,6 +21,13 @@ export class TraduccionDialogComponent{
   titulo : string
   subtitulo : string
 
+  listaClinton1 = false
+  text1 = '\n\nDebemos indicar que la presente Empresa investigada, SI APARECE EN LA LISTA CLINTON (Listado de empresas vinculadas al terrorismo y narcotráfico, publicado por la Oficina de Control de Activos Extranjeros del Departamento de Tesoro de Estados Unidos de N.A.'
+  textEng1 = '\n\nPlease be advised  that the investigated company appears in the list of companies linked to terrorism and drug trafficking published by OFAC, Office of Foreign Assets Control of the United States Department of the Treasury (Clinton List).'
+  listaClinton2 = false
+  text2 = '\n\nDebemos indicar que la presente Empresa investigada, NO APARECE EN LA LISTA CLINTON (Listado de empresas vinculadas al terrorismo y narcotráfico, publicado por la Oficina de Control de Activos Extranjeros del Departamento de Tesoro de Estados Unidos de N.A.'
+  textEng2 = '\n\nPlease be advised  that the investigated company DOES NOT appear in the list of companies linked to terrorism and drug trafficking published by OFAC, Office of Foreign Assets Control of the United States Department of the Treasury (Clinton List).'
+
   tipo : string = ""
   constructor(
     public dialogRef: MatDialogRef<TraduccionDialogComponent>,
@@ -30,6 +37,8 @@ export class TraduccionDialogComponent{
     this.tipo = this.data.tipo
     this.comentario_es = this.data.comentario_es
     this.comentario_en = this.data.comentario_en
+    if(this.comentario_es.includes(this.text1)) this.listaClinton1 = true;
+    if(this.comentario_es.includes(this.text2)) this.listaClinton2 = true;
   }
   realizarEnvio() {
     this.dialogRef.close({
@@ -40,6 +49,38 @@ export class TraduccionDialogComponent{
   //CKEDITOR
   public Editor: any = ClassicEditor;
 
+  ListaClinton1(lista : boolean){
+    if(lista === true){
+      if(this.comentario_es.includes(this.text2)){
+        this.comentario_es = this.comentario_es.replace(this.text2, '')
+        this.comentario_en = this.comentario_en.replace(this.textEng2, '')
+      }
+      this.comentario_es = this.comentario_es + this.text1
+      this.comentario_en = this.comentario_en + this.textEng1
+      this.listaClinton2 = false
+    }else{
+      if(this.comentario_es.includes(this.text1)){
+        this.comentario_es = this.comentario_es.replace(this.text1, '')
+        this.comentario_en = this.comentario_en.replace(this.textEng1, '')
+      }
+    }
+  }
+  ListaClinton2(lista : boolean){
+    if(lista === true){
+      if(this.comentario_es.includes(this.text1)){
+        this.comentario_es = this.comentario_es.replace(this.text1, '')
+        this.comentario_en = this.comentario_en.replace(this.textEng1, '')
+      }
+      this.comentario_es = this.comentario_es + this.text2
+      this.comentario_en = this.comentario_en + this.textEng2
+      this.listaClinton1 = false
+    }else{
+      if(this.comentario_es.includes(this.text2)){
+        this.comentario_es = this.comentario_es.replace(this.text2, '')
+        this.comentario_en = this.comentario_es.replace(this.textEng2, '')
+      }
+    }
+  }
 
   cerrarDialog(){
     this.dialogRef.close()

@@ -12,9 +12,19 @@
       <div class="materialTableHeader" >
         <div class="left">
           <ul class="header-buttons-left ms-0">
-            <li class="tbl-title">
-              <h2>Listado de Pedidos para Asignar</h2>
-            </li>
+            <div class="d-flex w-100 justify-content-between align-items-center">
+              <li class="tbl-title">
+                <h2>Listado de Pedidos para Asignar</h2>
+              </li>
+              <li class="tbl-title">
+
+              <button  mat-mini-fab color="primary" style="margin: 0 .5rem .5rem .5rem;" (click)="actualizar()" #tooltip="matTooltip" matTooltip="Actualizar">
+                <mat-icon class="col-white">refresh</mat-icon>
+              </button>
+              </li>
+            </div>
+
+
           </ul>
         </div>
         <!-- <div class="left">

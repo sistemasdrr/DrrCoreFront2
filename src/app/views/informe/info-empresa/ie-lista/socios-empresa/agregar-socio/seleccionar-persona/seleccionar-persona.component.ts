@@ -171,6 +171,7 @@ export class SeleccionarPersonaComponent implements OnInit{
       conInforme : this.chkConInforme
     }
     localStorage.setItem('busquedaPersonas', JSON.stringify(busqueda))
+    console.log(busqueda)
     this.personaService.getList(this.nombreCompleto.trim(), this.filtroRB, this.idPais, this.chkConInforme).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){

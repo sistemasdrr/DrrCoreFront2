@@ -120,10 +120,10 @@ export class AdjuntarArchivosComponent implements OnInit {
     a.click();
     this.loading = false
   }
-  downloadFile(path : string, filename : string){
+  downloadFile(id : number, filename : string){
     const listaEmpresas = document.getElementById('loader-lista-cupon') as HTMLElement | null;
    this.loading=true;
-    this.ticketService.downloadFile(path).subscribe(response=>{
+    this.ticketService.downloadFile(id).subscribe(response=>{
       let blob : Blob = response.body as Blob;
       let a =document.createElement('a');
 
@@ -144,7 +144,7 @@ export class AdjuntarArchivosComponent implements OnInit {
     let count = 0;
 
     this.adjuntos.forEach(element => {
-      this.ticketService.downloadFile(element.path).subscribe(response => {
+      this.ticketService.downloadFile(element.id).subscribe(response => {
         let blob: Blob = response.body as Blob;
         zip.file(element.name, blob);
 
