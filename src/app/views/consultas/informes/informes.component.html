@@ -25,23 +25,23 @@
           </div>
           <div class="col-md-1"></div>
           <!--QUERY 1-->
-          <div class="col-md-4" *ngIf="idQuery === 1">
+          <div class="col-md-2" *ngIf="idQuery === 1">
             <mat-form-field class="w-100">
               <mat-label>Abonado </mat-label>
               <mat-select [(ngModel)]="query5_1_1_idSubscriber" placeholder="" (selectionChange)="query5_1_1_selectSubscriber(query5_1_1_idSubscriber)">
                   <mat-option  *ngFor="let item of abonados" [value]="item.id" >
-                    {{item.code}} ||<span class="fi fi-{{item.flagCountry}}" style="font-size: 24px;"></span>{{item.country}} {{item.name}}
+                    {{item.code}} <span class="fi fi-{{item.flagCountry}}" style="font-size: 24px;"></span>{{item.country}}
                   </mat-option>
               </mat-select>
             </mat-form-field>
           </div>
-          <div class="col-md-1" *ngIf="idQuery === 1">
+          <div class="col-md-2" *ngIf="idQuery === 1">
             <mat-form-field class="w-100">
               <mat-label>Cupón</mat-label>
               <input matInput placeholder="" [(ngModel)]="query5_1_1_number">
             </mat-form-field>
           </div>
-          <div class="col-md-2" *ngIf="idQuery === 1">
+          <div class="col-md-3" *ngIf="idQuery === 1">
             <mat-form-field class="w-100">
               <mat-label>Nombre Solicitado</mat-label>
               <input matInput placeholder="" [(ngModel)]="query5_1_1_name">
@@ -49,12 +49,12 @@
           </div>
           <div class="col-md-1 d-flex" *ngIf="idQuery === 1">
             <div class="" matTooltip="BUSCAR" style="margin: 0 .5rem 0 .5rem">
-              <button mat-mini-fab class="bg-blue" (click)="buscar()">
+              <button mat-mini-fab class="bg-blue" (click)="buscar1()">
                 <mat-icon class="col-white">search</mat-icon>
               </button>
             </div>
             <div class="" matTooltip="LIMPIAR" style="margin: 0 .5rem 0 .5rem">
-              <button mat-mini-fab class="bg-red" (click)="limpiar()">
+              <button mat-mini-fab class="bg-red" (click)="limpiar1()">
                 <mat-icon class="col-white">cleaning_services</mat-icon>
               </button>
             </div>
@@ -145,6 +145,9 @@
             <td mat-cell *matCellDef="let order" class="text-center" style="white-space: nowrap;">
               <button *ngIf="order.id > 0" mat-icon-button class="tbl-action-btn " (click)="$event.stopPropagation();verHistorial(order.id)" matTooltip="Ver Historial">
                 <app-feather-icons [icon]="'clock'" [class]="'tbl-fav-edit'"></app-feather-icons>
+              </button>
+              <button *ngIf="order.id > 0" mat-icon-button class="tbl-action-btn " (click)="$event.stopPropagation();enviarAlerta(order.id)" matTooltip="Enviar Alerta">
+                <app-feather-icons [icon]="'bell'" style="color: rgb(189, 189, 97);"></app-feather-icons>
               </button>
 
             </td>

@@ -478,3 +478,52 @@ export interface Query5_1_1Tickets{
   realExpireDate : string
   flag : number
 }
+
+export interface Query5_1_2{
+  id : number
+  name : string
+  code : string
+  country : string
+  flagCountry : string
+  flag : boolean
+  quantity : number
+  tickets : Query5_1_2Tickets[]
+}
+export interface Query5_1_2Tickets{
+  id : number
+  number : string
+  language : string
+  about : string
+  status : string
+  country : string
+  flagCountry : string
+  subscriberCode : string
+  subscriberName : string
+  subscriberCountry : string
+  subscriberFlag : string
+  queryCredit : string
+  timeLimit : string
+  revealName : boolean
+  nameRevealed : string
+  referenceNumber : string
+  aditionalData : string
+  subscriberIndications : string
+  busineesName : string
+  requestedName : string
+  taxType : string
+  taxCode : string
+  investigatedIsoCountry : string
+  investigatedCountry : string
+  investigatedFlag : string
+  city : string
+  email : string
+  address : string
+  telephone : string
+  webPage : string
+  reportType : string
+  procedureType : string
+  orderDate : string
+  expireDate : string
+  realExpireDate : string
+  flag : number
+}

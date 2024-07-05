@@ -4,9 +4,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Query5_1_1, Query5_1_1Tickets } from 'app/models/consulta';
+import { Query5_1_1, Query5_1_1Tickets,Query5_1_2,Query5_1_2Tickets } from 'app/models/consulta';
 import { ConsultaService } from 'app/services/Consultas/consulta.service';
 import { HistorialPedidoComponent } from 'app/views/situacion/lista/historial-pedido/historial-pedido.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-informes',
@@ -33,8 +34,10 @@ export class InformesComponent implements OnInit{
   loading = false
 
   abonados : Query5_1_1[] = []
+  abonados2 : Query5_1_2[] = []
 
   idQuery = 1
+  idUser = 0
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort!: MatSort;
@@ -42,6 +45,10 @@ export class InformesComponent implements OnInit{
 
   constructor(private consultaService : ConsultaService,public dialog: MatDialog){
     this.dataSource = new MatTableDataSource()
+    const auth = JSON.parse(localStorage.getItem('authCache')+'')
+    if(auth){
+      this.idUser = parseInt(auth.idUser)
+    }
   }
   ngOnInit(): void {
     this.consultaService.GetQuery5_1_1().subscribe(
@@ -51,15 +58,22 @@ export class InformesComponent implements OnInit{
         }
       }
     )
+    this.consultaService.GetQuery5_1_2(this.idUser+'').subscribe(
+      (response) => {
+        if(response.isSuccess === true && response.isWarning === false){
+          this.abonados2 = response.data
+        }
+      }
+    )
   }
 
-  limpiar(){
+  limpiar1(){
     this.query5_1_1_idSubscriber = 0
     this.query5_1_1_number = ""
     this.query5_1_1_name = ""
     this.dataSource.data = []
   }
-  buscar(){
+  buscar1(){
     let tickets : Query5_1_1Tickets[] = []
     this.abonados.forEach(element => {
       element.tickets.forEach(ticket => {
@@ -107,6 +121,56 @@ export class InformesComponent implements OnInit{
       data : {
           idTicket : idTicket
       },
+    });
+  }
+  enviarAlerta(idTicket : number){
+    Swal.fire({
+      title: '¿Está seguro de enviar una alerta?',
+      text: "",
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText : 'No',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí',
+      width: '20rem',
+      heightAuto : true
+    }).then((result) => {
+      if (result.value) {
+        this.loading = true
+        this.consultaService.SendTicketAlert(idTicket,this.idUser).subscribe(
+          (response) => {
+            if(response.isSuccess === true && response.isWarning === false){
+              this.loading = false
+              Swal.fire({
+
+                title : 'Se realizo correctamente el envio.',
+                icon : 'success',
+                width: '20rem',
+                heightAuto : true
+              });
+            }else{
+              this.loading = false
+              Swal.fire({
+                title : 'Error al realizar la solicitud',
+                icon : 'success',
+                width: '20rem',
+                heightAuto : true
+              });
+            }
+          },(error) => {
+            this.loading = false
+            Swal.fire({
+              text : error,
+              icon : 'success',
+              width: '20rem',
+              heightAuto : true
+            });
+          }
+        )
+
+
+      }
     });
   }
 }
