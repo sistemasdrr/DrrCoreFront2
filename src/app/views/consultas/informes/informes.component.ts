@@ -40,11 +40,12 @@ export class InformesComponent implements OnInit{
   idUser = 0
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort!: MatSort;
+  @ViewChild(MatSort) sort!: MatSort;
 
 
   constructor(private consultaService : ConsultaService,public dialog: MatDialog){
-    this.dataSource = new MatTableDataSource()
+    this.dataSource1 = new MatTableDataSource()
+    this.dataSource2 = new MatTableDataSource()
     const auth = JSON.parse(localStorage.getItem('authCache')+'')
     if(auth){
       this.idUser = parseInt(auth.idUser)
@@ -71,7 +72,7 @@ export class InformesComponent implements OnInit{
     this.query5_1_1_idSubscriber = 0
     this.query5_1_1_number = ""
     this.query5_1_1_name = ""
-    this.dataSource.data = []
+    this.dataSource1.data = []
   }
   buscar1(){
     let tickets : Query5_1_1Tickets[] = []
@@ -89,32 +90,58 @@ export class InformesComponent implements OnInit{
       return numberA - numberB;
     });
     this.query5_1_1_idSubscriber = 0
-    this.dataSource.data = tickets
-    this.dataSource.paginator = this.paginator
-    this.dataSource.sort = this.sort
+    this.dataSource1.data = tickets
+    this.dataSource1.paginator = this.paginator
+    this.dataSource1.sort = this.sort
+  }
+  limpiar2(){
+    this.query5_1_2_idSubscriber = 0
+    this.query5_1_2_number = ""
+    this.query5_1_2_name = ""
+    this.dataSource2.data = []
+  }
+  buscar2(){
+    let tickets : Query5_1_2Tickets[] = []
+    this.abonados2.forEach(element => {
+      element.tickets.forEach(ticket => {
+        if(ticket.requestedName.includes(this.query5_1_2_name) && ticket.number.includes(this.query5_1_2_number)){
+          tickets.push(ticket)
+        }
+      });
+    });
+    tickets.sort((a, b) => {
+      let numberA = parseInt(a.number, 10);
+      let numberB = parseInt(b.number, 10);
+
+      return numberA - numberB;
+    });
+    this.query5_1_2_idSubscriber = 0
+    this.dataSource2.data = tickets
+    this.dataSource2.paginator = this.paginator
+    this.dataSource2.sort = this.sort
   }
 
   query5_1_1_idSubscriber = 0
   query5_1_1_number = ""
   query5_1_1_name = ""
 
-  dataSource: MatTableDataSource<Query5_1_1Tickets>;
+  dataSource1: MatTableDataSource<Query5_1_1Tickets>;
 
-  columnsToDisplay = ['number','requestedName','status','country','reportType','procedureType','orderDate', 'expireDate', 'Acciones' ];
-  columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
+  columnsToDisplay1 = ['number','requestedName','status','country','reportType','procedureType','orderDate', 'expireDate', 'Acciones' ];
+  columnsToDisplayWithExpand1 = [...this.columnsToDisplay1, 'expand'];
   expandedOrder: Query5_1_1Tickets | null = null;
 
   query5_1_1_selectSubscriber(idSubscriber : number){
     console.log(this.abonados.filter(x => x.id === idSubscriber)[0].tickets)
-    this.dataSource.data = this.abonados.filter(x => x.id === idSubscriber)[0].tickets
-    this.dataSource.data.sort((a, b) => {
+    this.dataSource1.data = this.abonados.filter(x => x.id === idSubscriber)[0].tickets
+    this.dataSource1.data.sort((a, b) => {
       let numberA = parseInt(a.number, 10);
       let numberB = parseInt(b.number, 10);
 
       return numberA - numberB;
     });
-    this.dataSource.paginator = this.paginator
-    this.dataSource.sort = this.sort
+    this.dataSource1.paginator = this.paginator
+    this.dataSource1.sort = this.sort
   }
   verHistorial(idTicket : number) {
     const dialogRef = this.dialog.open(HistorialPedidoComponent, {
@@ -172,5 +199,30 @@ export class InformesComponent implements OnInit{
 
       }
     });
+  }
+
+
+
+  query5_1_2_idSubscriber = 0
+  query5_1_2_number = ""
+  query5_1_2_name = ""
+
+  dataSource2: MatTableDataSource<Query5_1_2Tickets>;
+
+  columnsToDisplay2 = ['number','requestedName','status','country','reportType','procedureType','orderDate', 'expireDate', 'Acciones' ];
+  columnsToDisplayWithExpand2 = [...this.columnsToDisplay1, 'expand'];
+  expandedOrder2: Query5_1_2Tickets | null = null;
+
+  query5_1_2_selectSubscriber(idSubscriber : number){
+    console.log(this.abonados2.filter(x => x.id === idSubscriber)[0].tickets)
+    this.dataSource2.data = this.abonados2.filter(x => x.id === idSubscriber)[0].tickets
+    this.dataSource2.data.sort((a, b) => {
+      let numberA = parseInt(a.number, 10);
+      let numberB = parseInt(b.number, 10);
+
+      return numberA - numberB;
+    });
+    this.dataSource2.paginator = this.paginator
+    this.dataSource2.sort = this.sort
   }
 }

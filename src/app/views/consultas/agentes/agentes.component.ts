@@ -36,7 +36,7 @@ export class AgentesComponent implements OnInit{
 
   idQuery = 1
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort!: MatSort;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(private consultaService : ConsultaService){
 

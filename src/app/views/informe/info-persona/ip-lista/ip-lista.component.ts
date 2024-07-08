@@ -68,7 +68,7 @@ export class IPListaComponent implements OnInit{
   columnsToDisplay = ['creditRisk', 'language', 'name', 'taxNumber', 'lastReportDate', 'country', 'traductionPercentage', 'quality','birthDate','profession','acciones' ];
   dataSource: MatTableDataSource<TPersona>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort!: MatSort;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(private dialog : MatDialog,private router : Router, private comboService : ComboService, private personaService : DatosGeneralesService){
     this.filterPais = new Observable<Pais[]>()

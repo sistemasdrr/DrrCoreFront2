@@ -139,6 +139,12 @@ export class MainComponent implements OnInit {
   redirigir(){
     this.router.navigate(['/pedidos/asignacion-empleados']);
   }
+  produccionDiaria(){
+    this.router.navigate(['/dashboard/produccion/diaria']);
+  }
+  produccionMensual(){
+    this.router.navigate(['/dashboard/produccion/mensual']);
+  }
   private cardChart1() {
     this.smallBarChart = {
       chart: {

@@ -64,7 +64,7 @@ export class FacturacionMensualComponent implements OnInit {
   dataSourcePedido2 = new MatTableDataSource<InvoiceDetailsSubcriberToCollect>()
   dataSourcePedido3 = new MatTableDataSource<InvoiceDetailsSubcriberToCollect>()
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort!: MatSort;
+  @ViewChild(MatSort) sort!: MatSort;
   columnsByBill : string[] = ['subscriberCode','subscriberName','opciones']
   columnsToCollect : string[] = ['invoiceCode','opciones']
   columnsPaids : string[] = ['invoiceCode','opciones']

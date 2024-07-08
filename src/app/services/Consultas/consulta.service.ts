@@ -134,4 +134,10 @@ export class ConsultaService {
   GetQuery5_1_2(idUser : string) : Observable<Response<Query5_1_2[]>>{
     return this.http.get<Response<Query5_1_2[]>>(this.url + this.controller + '/GetQuery5_1_2?idUser='+idUser);
   }
+  GetQuery5_1_2Daily(idUser : string) : Observable<Response<Query5_1_2[]>>{
+    return this.http.get<Response<Query5_1_2[]>>(this.url + this.controller + '/GetQuery5_1_2Daily?idUser='+idUser);
+  }
+  GetQuery5_1_2Monthly(idUser : string, month : number) : Observable<Response<Query5_1_2[]>>{
+    return this.http.get<Response<Query5_1_2[]>>(this.url + this.controller + '/GetQuery5_1_2Monthly?idUser='+idUser+'&month='+month);
+  }
 }

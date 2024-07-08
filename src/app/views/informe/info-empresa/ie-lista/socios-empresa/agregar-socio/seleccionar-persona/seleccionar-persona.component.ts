@@ -37,7 +37,7 @@ export class SeleccionarPersonaComponent implements OnInit{
   columnsToDisplay = ['creditRisk', 'language', 'name', 'taxNumber', 'lastReportDate', 'country', 'traductionPercentage', 'quality','birthDate','profession','acciones' ];
   dataSource: MatTableDataSource<TPersona>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort!: MatSort;
+  @ViewChild(MatSort) sort!: MatSort;
 
   controlPaises = new FormControl<string | Pais>('')
   paises: Pais[] = []

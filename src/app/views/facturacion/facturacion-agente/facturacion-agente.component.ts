@@ -52,7 +52,7 @@ export class FacturacionAgenteComponent implements OnInit {
   datosPorCobrar : GetAgentInvoice[] = []
   datosCobradas : GetAgentInvoice[] = []
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort!: MatSort;
+  @ViewChild(MatSort) sort!: MatSort;
 
   dataSourcePorFacturar = new MatTableDataSource<InvoiceAgentList>()
   dataSourcePorCobrar = new MatTableDataSource<GetAgentInvoice>()

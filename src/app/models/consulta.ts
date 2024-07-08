@@ -442,6 +442,7 @@ export interface Query5_1_1{
 }
 export interface Query5_1_1Tickets{
   id : number
+  idTicket : number
   number : string
   language : string
   about : string
@@ -491,6 +492,7 @@ export interface Query5_1_2{
 }
 export interface Query5_1_2Tickets{
   id : number
+  idTicket : number
   number : string
   language : string
   about : string

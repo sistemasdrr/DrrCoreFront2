@@ -17,22 +17,22 @@
         </button>
       </div>
       <div class="col-md-3 col-sm-6">
-        <div class="info-box7 bg-c-blue order-info-box7">
+        <button  (click)="produccionDiaria()" class="w-100 border-0 info-box7 bg-c-blue order-info-box7">
           <div class="info-box7-block">
             <h4 class="m-b-20">Producción Diaria</h4>
             <h2 class="text-end"><i class="fas fa-clipboard-check float-start"></i><span>{{dailyProduction}}</span></h2>
             <p class="m-b-0">{{dailyProduction}}</p>
           </div>
-        </div>
+        </button>
       </div>
       <div class="col-md-3 col-sm-6">
-        <div class="info-box7 bg-c-yellow order-info-box7">
+        <button (click)="produccionMensual()" class="w-100 border-0 info-box7 bg-c-yellow order-info-box7">
           <div class="info-box7-block">
             <h4 class="m-b-20">Producción Mensual</h4>
             <h2 class="text-end"><i class="fa-solid fa-calendar-days float-start"></i><span>{{monthlyProduction}}</span></h2>
             <p class="m-b-0">{{monthlyProduction}}</p>
           </div>
-        </div>
+        </button>
       </div>
       <div class="col-md-3 col-sm-6">
         <div class="info-box7 bg-c-pink order-info-box7">

@@ -62,7 +62,7 @@ export class FacturacionComponent implements OnInit{
 
   idQuery = 1
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort!: MatSort;
+  @ViewChild(MatSort) sort!: MatSort;
 
   to = "one"
   idSubscriber = 0

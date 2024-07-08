@@ -67,7 +67,7 @@ export class IEListaComponent implements OnInit{
 
   dataSource: MatTableDataSource<TCompany>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort!: MatSort;
+  @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('filter') filter!: ElementRef;
   columnsToDisplay = ['creditRisk', 'language', 'name', 'taxNumber', 'lastReportDate', 'isoCountry', 'traductionPercentage', 'quality','manager','acciones' ];
 

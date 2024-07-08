@@ -3,6 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { MainComponent } from './main/main.component';
 import { Dashboard2Component } from './dashboard2/dashboard2.component';
 import { Dashboard3Component } from './dashboard3/dashboard3.component';
+import { ProduccionDiariaComponent } from 'app/dashboard/produccion-diaria/produccion-diaria.component';
+import { ProduccionMensualComponent } from './produccion-mensual/produccion-mensual.component';
 
 const routes: Routes = [
   {
@@ -22,6 +24,14 @@ const routes: Routes = [
     path: 'dashboard3',
     component: Dashboard3Component,
   },
+  {
+    path: 'produccion/diaria', component: ProduccionDiariaComponent,
+    title : 'Producción Diaria - DRR Core V1'
+  },
+  {
+    path: 'produccion/mensual', component: ProduccionMensualComponent,
+    title : 'Producción Mensual - DRR Core V1'
+  }
 ];
 
 @NgModule({

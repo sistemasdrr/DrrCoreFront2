@@ -43,7 +43,7 @@ export class PedidosOnlineComponent implements OnInit{
 
   dataSource: MatTableDataSource<WCompany>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort!: MatSort;
+  @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('filter') filter!: ElementRef;
   columnsToDisplay = ['name', 'country', 'place', 'lastSearched', 'acciones' ];
 

@@ -19,7 +19,7 @@ export class ReferenciasComercialesComponent  implements OnInit {
   columnsToDisplay = ['name','telephone','country']
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort!: MatSort;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(public dialogRef: MatDialogRef<ReferenciasComercialesComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,private ticketService : TicketService){

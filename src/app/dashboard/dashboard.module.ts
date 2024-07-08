@@ -12,9 +12,13 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { ComponentsModule } from '../shared/components/components.module';
 import { SharedModule } from './../shared/shared.module';
+import { ProduccionDiariaComponent } from 'app/dashboard/produccion-diaria/produccion-diaria.component';
+import { ProduccionMensualComponent } from './produccion-mensual/produccion-mensual.component';
 
 @NgModule({
-  declarations: [MainComponent, Dashboard2Component, Dashboard3Component],
+  declarations: [MainComponent, Dashboard2Component, Dashboard3Component,
+    ProduccionDiariaComponent,
+    ProduccionMensualComponent],
   imports: [
     CommonModule,
     DashboardRoutingModule,
@@ -27,6 +31,7 @@ import { SharedModule } from './../shared/shared.module';
     NgxGaugeModule,
     ComponentsModule,
     SharedModule,
+
   ],
 })
 export class DashboardModule {}

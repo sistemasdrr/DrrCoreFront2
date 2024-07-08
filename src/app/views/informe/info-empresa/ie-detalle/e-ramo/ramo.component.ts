@@ -176,7 +176,7 @@ export class RamoComponent implements OnInit{
 
   columnsWorkerHistory : string[] = ['numberYear', 'numberWorker','acciones']
   dataSourceWorkerHistory : MatTableDataSource<WorkerHistory>
-  @ViewChild(MatSort, {static: true}) sort!: MatSort;
+  @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   public areaChartOptions!: Partial<ChartOptions>;
 
