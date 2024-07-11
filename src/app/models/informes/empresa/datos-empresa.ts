@@ -35,6 +35,7 @@ export interface Company{
   enable : boolean
   traductions : Traduction[]
   print : boolean
+  since : string
 }
 export interface TCompany{
   id : number

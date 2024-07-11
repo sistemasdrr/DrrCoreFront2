@@ -9,6 +9,7 @@ import { ComboService } from 'app/services/combo.service';
 import { BalanceFinancieroService } from 'app/services/informes/empresa/balance-financiero.service';
 import Swal from 'sweetalert2';
 import * as moment from 'moment';
+import { state, trigger, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-balance-situacional',
@@ -22,7 +23,14 @@ import * as moment from 'moment';
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
     },
     {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS}
-  ]
+  ],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class BalanceSituacionalComponent implements OnInit {
 
@@ -189,10 +197,13 @@ export class BalanceSituacionalComponent implements OnInit {
   }
 
   updRatios(){
+    this.totalLiabilitiesPatrimony = this.totalPatrimony + this.totalLliabilities
     this.liquidityRatio = parseFloat((this.totalCurrentAssets / this.totalCurrentLiabilities).toFixed(2));
     this.debtRatio = parseFloat((this.totalPatrimony / this.totalCurrentLiabilities * 100).toFixed(2));
     this.profitabilityRatio = parseFloat((this.utilities / this.sales * 100).toFixed(2));
     this.workingCapital = parseFloat((this.totalCurrentAssets - this.totalCurrentLiabilities).toFixed(2));
+    this.totalAssets = this.totalCurrentAssets + this.totalNonCurrentAssets
+    this.totalLliabilities = this.totalCurrentLiabilities + this.totalNonCurrentLiabilities
   }
 
   formatDate(date: moment.Moment): string {

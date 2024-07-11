@@ -7,6 +7,7 @@ import { DetalleAbonadoComponent } from './abonado/detalle/detalle.component';
 import { MantenedorComponent } from './mantenedor/mantenedor.component';
 import { ListaAgenteComponent } from './agente/lista/lista.component';
 import { DetalleAgenteComponent } from './agente/detalle/detalle.component';
+import { CalendarioComponent } from './calendario/calendario.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,10 @@ const routes: Routes = [
   {
     path : 'agente/detalle/:id', component : DetalleAgenteComponent,
     title : 'Detalles de Agente - DRR Core V1'
+  },
+  {
+    path : 'fechas-importantes', component : CalendarioComponent,
+    title : 'Fechas Importantes - DRR Core V1'
   },
   {
     path : 'general', component : MantenedorComponent,

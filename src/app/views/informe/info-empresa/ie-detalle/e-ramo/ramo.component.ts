@@ -131,6 +131,8 @@ export class RamoComponent implements OnInit{
   activityDetailCommentaryEng = ""
   aditionalCommentary = ""
   aditionalCommentaryEng = ""
+  descPrincipalAddress = ""
+  descPrincipalAddressEng = ""
   tabCommentary = ""
   countriesExport = ""
   countriesImport = ""
@@ -226,6 +228,14 @@ export class RamoComponent implements OnInit{
         (response) => {
           if(response.isSuccess === true && response.isWarning === false){
             this.dataSourceWorkerHistory.data = response.data
+            this.dataSourceWorkerHistory.data.sort((a, b) => {
+              let numberA = parseInt(a.numberYear.toString(), 10);
+              let numberB = parseInt(b.numberYear.toString(), 10);
+
+              return numberB - numberA;
+            });
+            this.workerNumber = this.dataSourceWorkerHistory.data[0].numberWorker
+            this.dataSourceWorkerHistory.sort = this.sort
             this.dataSourceWorkerHistory.sort = this.sort
             this.dataSourceWorkerHistory.paginator = this.paginator
           }
@@ -245,41 +255,43 @@ export class RamoComponent implements OnInit{
               this.specificActivitiesEng = ramoNegocio.specificActivitiesEng
               this.import = ramoNegocio.import
               this.export = ramoNegocio.export
-              this.cashSale = ramoNegocio.cashSalePercentage + '% | ' + ramoNegocio.cashSaleComentary
-              this.cashSalePercentage = ramoNegocio.cashSalePercentage
+
+              this.cashSalePercentage = ramoNegocio.cashSalePercentage !== null ? ramoNegocio.cashSalePercentage : 0
               this.cashSaleComentary = ramoNegocio.cashSaleComentary
+              this.cashSale = this.cashSalePercentage + '% | ' + ramoNegocio.cashSaleComentary
 
-              this.creditSale = ramoNegocio.creditSalePercentage + '% | ' + ramoNegocio.creditSaleComentary
-              this.creditSalePercentage = ramoNegocio.creditSalePercentage
+              this.creditSalePercentage = (ramoNegocio.creditSalePercentage !== null ? ramoNegocio.creditSalePercentage : 0)
               this.creditSaleComentary = ramoNegocio.creditSaleComentary
+              this.creditSale = this.creditSalePercentage + '% | ' + ramoNegocio.creditSaleComentary
 
-              this.territorySale = ramoNegocio.territorySalePercentage + '% | ' + ramoNegocio.territorySaleComentary
-              this.territorySalePercentage = ramoNegocio.territorySalePercentage
+              this.territorySalePercentage = ramoNegocio.territorySalePercentage !== null ? ramoNegocio.territorySalePercentage : 0
               this.territorySaleComentary = ramoNegocio.territorySaleComentary
+              this.territorySale = this.territorySalePercentage + '% | ' + ramoNegocio.territorySaleComentary
 
-              this.abroadSale = ramoNegocio.abroadSalePercentage + '% | ' + ramoNegocio.abroadSaleComentary
-              this.abroadSalePercentage = ramoNegocio.abroadSalePercentage
+              this.abroadSalePercentage = ramoNegocio.abroadSalePercentage !== null ? ramoNegocio.abroadSalePercentage : 0
               this.abroadSaleComentary = ramoNegocio.abroadSaleComentary
+              this.abroadSale = this.abroadSalePercentage + '% | ' + ramoNegocio.abroadSaleComentary
 
-              this.nationalPurchase = ramoNegocio.nationalPurchasesPercentage + '% | ' + ramoNegocio.nationalPurchasesComentary
-              this.nationalPurchasesPercentage = ramoNegocio.nationalPurchasesPercentage
+              this.nationalPurchasesPercentage = ramoNegocio.nationalPurchasesPercentage !== null ? ramoNegocio.nationalPurchasesPercentage : 0
               this.nationalPurchasesComentary = ramoNegocio.nationalPurchasesComentary
+              this.nationalPurchase = this.nationalPurchasesPercentage + '% | ' + ramoNegocio.nationalPurchasesComentary
 
-              this.internationPurchase = ramoNegocio.internationalPurchasesPercentage + '% | ' + ramoNegocio.internationalPurchasesComentary
-              this.internationalPurchasesPercentage = ramoNegocio.internationalPurchasesPercentage
+              this.internationalPurchasesPercentage = ramoNegocio.internationalPurchasesPercentage !== null ? ramoNegocio.internationalPurchasesPercentage : 0
               this.internationalPurchasesComentary = ramoNegocio.internationalPurchasesComentary
+              this.internationPurchase = this.internationalPurchasesPercentage + '% | ' + ramoNegocio.internationalPurchasesComentary
 
               this.countriesImportEng = ramoNegocio.countriesImportEng
               this.countriesExportEng = ramoNegocio.countriesExportEng
 
-              this.workerNumber = ramoNegocio.workerNumber
+              this.workerNumber = this.dataSourceWorkerHistory.data.length > 0 ? this.dataSourceWorkerHistory.data[0].numberWorker : ramoNegocio.workerNumber
               this.idLandOwnership = ramoNegocio.idLandOwnership
-              this.totalArea = ramoNegocio.totalArea
-              this.previousAddress = ramoNegocio.previousAddress
-              this.otherLocations = ramoNegocio.otherLocations
-              this.activityDetailCommentary = ramoNegocio.activityDetailCommentary
-              this.aditionalCommentary = ramoNegocio.aditionalCommentary
-              this.tabCommentary = ramoNegocio.tabCommentary
+              this.totalArea = ramoNegocio.totalArea?? ''
+              this.previousAddress = ramoNegocio.previousAddress?? ''
+              this.otherLocations = ramoNegocio.otherLocations?? ''
+              this.activityDetailCommentary = ramoNegocio.activityDetailCommentary?? ''
+              this.aditionalCommentary = ramoNegocio.aditionalCommentary?? ''
+              this.tabCommentary = ramoNegocio.tabCommentary?? ''
+              this.descPrincipalAddress = ramoNegocio.descPrincipalAddress ?? ''
 
               if(ramoNegocio.traductions.length > 0){
 
@@ -293,6 +305,7 @@ export class RamoComponent implements OnInit{
                 this.otherLocationsEng = ramoNegocio.traductions[7].value === null ? "" : ramoNegocio.traductions[7].value
                 this.activityDetailCommentaryEng = ramoNegocio.traductions[8].value === null ? "" : ramoNegocio.traductions[8].value
                 this.aditionalCommentaryEng = ramoNegocio.traductions[9].value === null ? "" : ramoNegocio.traductions[9].value
+                this.descPrincipalAddressEng = ramoNegocio.traductions[10].value === null ? "" : ramoNegocio.traductions[10].value
               }
               if(ramoNegocio.countriesImport !== '' && ramoNegocio.countriesImport !== null){
                 this.countriesImport = ramoNegocio.countriesImport
@@ -498,7 +511,7 @@ export class RamoComponent implements OnInit{
       this.dataSourceWorkerHistory.data.forEach(data => {
         listaFechas.push(data.numberYear+"");
 
-        const amount = parseInt(data.numberWorker+"");
+        const amount = data.numberWorker
 
         if (!isNaN(amount)) {
           listaNW.push(amount);
@@ -571,7 +584,15 @@ export class RamoComponent implements OnInit{
         this.ramoNegocioService.getListWorkerHistory(this.idCompany).subscribe(
           (response) => {
             if(response.isSuccess === true && response.isWarning === false){
+
               this.dataSourceWorkerHistory.data = response.data
+              this.dataSourceWorkerHistory.data.sort((a, b) => {
+                let numberA = parseInt(a.numberYear.toString(), 10);
+                let numberB = parseInt(b.numberYear.toString(), 10);
+
+                return numberB - numberA;
+              });
+              this.workerNumber = this.dataSourceWorkerHistory.data[0].numberWorker
               this.dataSourceWorkerHistory.sort = this.sort
               this.chart2()
             }
@@ -593,6 +614,13 @@ export class RamoComponent implements OnInit{
           (response) => {
             if(response.isSuccess === true && response.isWarning === false){
               this.dataSourceWorkerHistory.data = response.data
+              this.dataSourceWorkerHistory.data.sort((a, b) => {
+                let numberA = parseInt(a.numberYear.toString(), 10);
+                let numberB = parseInt(b.numberYear.toString(), 10);
+
+                return numberB - numberA;
+              });
+              this.workerNumber = this.dataSourceWorkerHistory.data[0].numberWorker
               this.dataSourceWorkerHistory.sort = this.sort
               this.chart2()
             }
@@ -601,8 +629,65 @@ export class RamoComponent implements OnInit{
       }
     })
   }
-  eliminarHistorialTrabajador(id : number){
 
+  eliminarHistorialTrabajador(id : number){
+    Swal.fire({
+      title: '¿Está seguro de eliminar este registro?',
+      text: "",
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText : 'No',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí',
+      width: '20rem',
+      heightAuto : true
+    }).then((result) => {
+      if (result.value) {
+        const paginaDetalleEmpresa = document.getElementById('pagina-detalle-empresa') as HTMLElement | null;
+        if(paginaDetalleEmpresa){
+          paginaDetalleEmpresa.classList.remove('hide-loader');
+        }
+        this.ramoNegocioService.deleteWorkerHistory(id).subscribe(
+          (response) => {
+            if(response.isSuccess === true && response.isWarning === false){
+              Swal.fire({
+                title: 'Se elimino el registro correctamente.',
+                text: "",
+                icon: 'success',
+                width: '20rem',
+                heightAuto : true
+              }).then(
+                () => {
+                  this.ramoNegocioService.getListWorkerHistory(this.idCompany).subscribe(
+                    (response) => {
+                      if(response.isSuccess === true && response.isWarning === false){
+                        this.dataSourceWorkerHistory.data = response.data
+                        this.dataSourceWorkerHistory.data.sort((a, b) => {
+                          let numberA = parseInt(a.numberYear.toString(), 10);
+                          let numberB = parseInt(b.numberYear.toString(), 10);
+
+                          return numberB - numberA;
+                        });
+                        this.workerNumber = this.dataSourceWorkerHistory.data[0].numberWorker
+                        this.dataSourceWorkerHistory.sort = this.sort
+                        this.chart2()
+                      }
+                    }
+                  )
+                }
+              )
+            }
+          }
+        ).add(
+        () => {
+          if(paginaDetalleEmpresa){
+            paginaDetalleEmpresa.classList.add('hide-loader');
+          }
+        }
+        )
+      }
+    })
   }
   armarModeloActual(){
     this.modeloActual[0] = {
@@ -638,6 +723,7 @@ export class RamoComponent implements OnInit{
       countriesImportEng : this.countriesImportEng,
       specificActivities : this.specificActivities,
       specificActivitiesEng : this.specificActivitiesEng,
+      descPrincipalAddress : this.descPrincipalAddress,
       traductions : [
         {
           key : 'S_R_SALEPER',
@@ -678,6 +764,10 @@ export class RamoComponent implements OnInit{
         {
           key : 'L_R_ADIBUS',
           value : this.aditionalCommentaryEng === null ? "" : this.aditionalCommentaryEng
+        },
+        {
+          key : 'L_R_DESCADD',
+          value : this.descPrincipalAddressEng === null ? "" : this.descPrincipalAddressEng
         },
       ]
     }
@@ -716,6 +806,7 @@ export class RamoComponent implements OnInit{
       countriesImportEng : this.countriesImportEng,
       specificActivities : this.specificActivities,
       specificActivitiesEng : this.specificActivitiesEng,
+      descPrincipalAddress : this.descPrincipalAddress,
       traductions : [
         {
           key : 'S_R_SALEPER',
@@ -756,6 +847,10 @@ export class RamoComponent implements OnInit{
         {
           key : 'L_R_ADIBUS',
           value : this.aditionalCommentaryEng === null ? "" : this.aditionalCommentaryEng
+        },
+        {
+          key : 'L_R_DESCADD',
+          value : this.descPrincipalAddressEng === null ? "" : this.descPrincipalAddressEng
         },
       ]
     }
@@ -964,6 +1059,10 @@ export class RamoComponent implements OnInit{
         case 'comentarioNegocio':
         this.aditionalCommentary = data.comentario_es;
         this.aditionalCommentaryEng = data.comentario_en;
+        break
+        case 'localPrincipal':
+        this.descPrincipalAddress = data.comentario_es;
+        this.descPrincipalAddressEng = data.comentario_en;
         break
 
       }

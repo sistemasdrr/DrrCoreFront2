@@ -36,8 +36,8 @@ export class TraduccionDialogComponent{
     this.subtitulo = this.data.subtitulo
     this.tipo = this.data.tipo
     console.log(this.tipo)
-    this.comentario_es = this.data.comentario_es
-    this.comentario_en = this.data.comentario_en
+    this.comentario_es = this.data.comentario_es ?? ''
+    this.comentario_en = this.data.comentario_en ?? ''
     if(this.tipo !== 'ckeditor'){
 
       if(this.comentario_es.includes(this.text1)) this.listaClinton1 = true;

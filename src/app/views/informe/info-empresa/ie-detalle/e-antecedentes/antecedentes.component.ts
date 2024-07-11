@@ -183,11 +183,11 @@ constructor(
             if(antecedentesLegales.currentPaidCapitalCurrency !== null && antecedentesLegales.currentPaidCapitalCurrency > 0){
               this.currentPaidCapitalCurrency = antecedentesLegales.currentPaidCapitalCurrency
               this.currentPaidCapitalCurrencyInforme = this.listaMonedas.filter(x => x.id === this.currentPaidCapitalCurrency)[0]
-              this.capitalPagadoActualInforme = this.currentPaidCapitalCurrencyInforme.valor + ' | ' + this.currentPaidCapital + ' | ' + this.currentPaidCapitalComentary
+              this.capitalPagadoActualInforme = this.currentPaidCapitalCurrencyInforme.valor + ' | ' + (this.currentPaidCapital !== null ? this.currentPaidCapital : '') + ' | ' + this.currentPaidCapitalComentary
 
             }else{
               this.currentPaidCapitalCurrency = 0
-              this.capitalPagadoActualInforme = ' | ' + this.currentPaidCapital + ' | ' + this.currentPaidCapitalComentary
+              this.capitalPagadoActualInforme = ' | ' + (this.currentPaidCapital !== null ? this.currentPaidCapital : '') + ' | ' + this.currentPaidCapitalComentary
 
             }
             if(antecedentesLegales.currency !== null && antecedentesLegales.currency > 0 ){

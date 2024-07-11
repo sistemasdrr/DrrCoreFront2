@@ -13,6 +13,11 @@ export interface ComboData3{
   valor : string
   valorEng : string
 }
+export interface ComboData4{
+  id : number
+  valor : string
+  flag : boolean
+}
 export interface ComboDataName{
   id : number
   name : string

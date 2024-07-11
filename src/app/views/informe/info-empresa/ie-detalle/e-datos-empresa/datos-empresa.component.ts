@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TraduccionDialogComponent } from '@shared/components/traduccion-dialog/traduccion-dialog.component';
-import { Pais } from 'app/models/combo';
+import { ComboData4, Pais } from 'app/models/combo';
 import { PaisService } from 'app/services/pais.service';
 import { Observable, map, startWith } from 'rxjs';
 import { HistoricoPedidosComponent } from './historico-pedidos/historico-pedidos.component';
@@ -40,9 +40,9 @@ export class DatosEmpresaComponent implements OnInit, OnDestroy {
 
   reputaciones: Reputacion[] = []
 
-  controlSituacionRUC = new FormControl<string | ComboData>('');
-  filterSituacionRuc: Observable<ComboData[]>
-  situacionRuc: ComboData[] = []
+  controlSituacionRUC = new FormControl<string | ComboData4>('');
+  filterSituacionRuc: Observable<ComboData4[]>
+  situacionRuc: ComboData4[] = []
 
   controlPersoneriaJuridica = new FormControl<string | ComboData>('');
   filterPersoneriaJuridica: Observable<ComboData[]>
@@ -66,9 +66,10 @@ export class DatosEmpresaComponent implements OnInit, OnDestroy {
     id: 0,
     valor: ''
   }
-  situacionRucInforme: ComboData = {
+  situacionRucInforme: ComboData4 = {
     id: 0,
-    valor: ''
+    valor: '',
+    flag : false
   }
   paisSeleccionado: Pais = {
     id: 0,
@@ -98,6 +99,7 @@ export class DatosEmpresaComponent implements OnInit, OnDestroy {
   taxTypeName = ""
   taxTypeCode = ""
   idLegalRegisterSituation = 0
+  legalRegisterSituationFlag = false
   address = ""
   duration = ""
   durationEng = ""
@@ -112,6 +114,7 @@ export class DatosEmpresaComponent implements OnInit, OnDestroy {
   webPage = ""
   idCreditRisk = 0
   print = false
+  since = ""
   riesgoCrediticioSeleccionado: RiesgoCrediticio = {
     id: 0,
     abreviation: '',
@@ -163,7 +166,7 @@ export class DatosEmpresaComponent implements OnInit, OnDestroy {
     private datosEmpresaService: DatosEmpresaService,
     private comboService: ComboService
   ) {
-    this.filterSituacionRuc = new Observable<ComboData[]>()
+    this.filterSituacionRuc = new Observable<ComboData4[]>()
     this.filterPersoneriaJuridica = new Observable<ComboData[]>()
     this.filterDuracion = new Observable<string[]>()
     this.filterPais = new Observable<Pais[]>()
@@ -315,6 +318,7 @@ export class DatosEmpresaComponent implements OnInit, OnDestroy {
               this.limpiarSeleccionSituacionRUC()
             }
             this.address = DatosEmpresa.address == null ? "" : DatosEmpresa.address
+            this.since = DatosEmpresa.since == null ? "" : DatosEmpresa.since
             this.duration = DatosEmpresa.duration == null ? "" : DatosEmpresa.duration
             this.place = DatosEmpresa.place == null ? "" : DatosEmpresa.place
             if(DatosEmpresa.idCountry > 0 && DatosEmpresa.idCountry !== null){
@@ -439,6 +443,7 @@ export class DatosEmpresaComponent implements OnInit, OnDestroy {
       newsComentary: this.newsComentary,
       identificacionCommentary: this.identificacionCommentary,
       enable : true,
+      since : this.since,
       traductions: [
         {
           key : 'L_E_COMIDE',
@@ -495,6 +500,7 @@ export class DatosEmpresaComponent implements OnInit, OnDestroy {
       newsComentary: this.newsComentary,
       identificacionCommentary: this.identificacionCommentary,
       enable : true,
+      since : this.since,
       traductions: [
         {
           key : 'L_E_COMIDE',
@@ -524,7 +530,7 @@ export class DatosEmpresaComponent implements OnInit, OnDestroy {
     const filterValue = description.toLowerCase();
     return this.reputaciones.filter(reputacion => reputacion.valor.toLowerCase().includes(filterValue));
   }
-  private _filterSituacionRuc(description: string): ComboData[] {
+  private _filterSituacionRuc(description: string): ComboData4[] {
     const filterValue = description.toLowerCase();
     return this.situacionRuc.filter(situacionRuc => situacionRuc.valor.toLowerCase().includes(filterValue));
   }
@@ -586,14 +592,16 @@ export class DatosEmpresaComponent implements OnInit, OnDestroy {
     this.controlSituacionRUC.reset();
     this.idLegalRegisterSituation = 0
   }
-  cambioSituacionRuc(situacionRuc: ComboData) {
+  cambioSituacionRuc(situacionRuc: ComboData4) {
     if (typeof situacionRuc === 'string' || situacionRuc === null) {
       this.msgSituacionRuc = "Seleccione una opción."
       this.idLegalRegisterSituation = 0
       this.colorMsgSituacionRuc = "red"
+      this.legalRegisterSituationFlag = false
     } else {
       this.msgSituacionRuc = "Opción Seleccionada."
       this.idLegalRegisterSituation = situacionRuc.id
+      this.legalRegisterSituationFlag = situacionRuc.flag
       this.colorMsgSituacionRuc = "green"
     }
   }
@@ -712,7 +720,8 @@ export class DatosEmpresaComponent implements OnInit, OnDestroy {
   historicoPedidos() {
     const dialog = this.dialog.open(HistoricoPedidosComponent, {
       data: {
-        titulo: "Histórico de Pedidos"
+        titulo: "Histórico de Pedidos",
+        id : this.id
       }
     });
   }

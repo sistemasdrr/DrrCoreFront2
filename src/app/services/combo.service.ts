@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ComboData, ComboData2, ComboData3, ComboDataName, PoliticaPagos, Reputacion, RiesgoCrediticio } from 'app/models/combo';
+import { ComboData, ComboData2, ComboData3, ComboData4, ComboDataName, PoliticaPagos, Reputacion, RiesgoCrediticio } from 'app/models/combo';
 import { Pais } from 'app/models/combo';
 import { Response } from 'app/models/response';
 import { environment } from 'environments/environment';
@@ -58,8 +58,8 @@ export class ComboService {
   getPoliticaPagos() : Observable<Response<PoliticaPagos[]>>{
     return this.http.get<Response<PoliticaPagos[]>>(this.url + this.controllerCombo + '/paymentpolicy');
   }
-  getSituacionRUC() : Observable<Response<ComboData[]>>{
-    return this.http.get<Response<ComboData[]>>(this.url + this.controllerCombo + '/legalregister');
+  getSituacionRUC() : Observable<Response<ComboData4[]>>{
+    return this.http.get<Response<ComboData4[]>>(this.url + this.controllerCombo + '/legalregister');
   }
   getPaises() : Observable<Response<Pais[]>>{
     return this.http.get<Response<Pais[]>>(this.url + this.controllerCombo + '/country');

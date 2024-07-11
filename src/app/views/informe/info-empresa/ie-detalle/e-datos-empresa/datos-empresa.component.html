@@ -1,12 +1,15 @@
 <div class="container-fluid"  style="width: 100%; margin: 0; padding: 0;">
     <div class="row " style="margin: 0 0 2rem 0; padding: 0 0 2rem 0;">
       <div class="col-md-12 mb-2">
-        <div class="row counter-box shadow ">
+        <div class="row counter-box shadow " style="padding-bottom: 0px;">
           <div class="w-100 d-flex justify-content-between align-items-center">
             <h4>Datos Comerciales</h4>
             <div>
               <button mat-mini-fab color="warn" style="margin: 0 .5rem .5rem .5rem;" (click)="salir()" #tooltip="matTooltip" matTooltip="Volver">
                 <mat-icon class="col-white">arrow_back</mat-icon>
+              </button>
+              <button mat-mini-fab color="primary" style="margin: 0 .5rem .5rem .5rem;" (click)="historicoPedidos()" #tooltip="matTooltip" matTooltip="Historial" *ngIf="id > 0">
+                <mat-icon class="col-white">history</mat-icon>
               </button>
               <button *ngIf="id !== 0" mat-mini-fab color="warn" style="margin: 0 .5rem .5rem .5rem;" (click)="verPdf()" #tooltip="matTooltip" matTooltip="Visualizar PDF">
                 <mat-icon class="col-white">picture_as_pdf</mat-icon>
@@ -136,27 +139,12 @@
             </div>
           </div>
 
-          <div class="col-md-7">
-            <mat-form-field class="w-100">
-              <mat-label>Tal cual fue Solicitado</mat-label>
-              <input matInput placeholder=""  [readonly]="true">
-            </mat-form-field>
-          </div>
-          <div class="col-md-5">
-            <mat-form-field class="w-100" >
-              <mat-label>Comentario de Identificación</mat-label>
-              <textarea matInput type="text" [(ngModel)]="identificacionCommentary" style="min-height: 5rem;"></textarea>
-              <button class="btn-traduccion" matSuffix mat-icon-button [class]="identificacionCommentaryEng === '' ? 'sin-traduccion' : ''" (click)="agregarComentario(tituloComentarioIdentificacion,'', identificacionCommentary, identificacionCommentaryEng,'comentarioIdentificacion')">
-                <span class="fi fi-us" style="font-size: 24px;"></span>
-              </button>
-            </mat-form-field>
-          </div>
           <div class="col-md-12">
             <div>
               <h5>Registro Tributario</h5>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-3 mb-0">
             <mat-form-field class="" style="width: 30%;">
               <mat-label>Tipo</mat-label>
               <input matInput placeholder="" [(ngModel)]="taxTypeName" maxlength="10">
@@ -166,7 +154,7 @@
               <input matInput placeholder="" [(ngModel)]="taxTypeCode" maxlength="50">
             </mat-form-field>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-3 mb-0">
             <mat-form-field class="w-100">
               <mat-label>Situación RUC</mat-label>
               <input type="text" matInput [formControl]="controlSituacionRUC"  [matAutocomplete]="auto2" [(ngModel)]="situacionRucInforme" (ngModelChange)="cambioSituacionRuc(situacionRucInforme)">
@@ -181,18 +169,26 @@
               </mat-autocomplete>
             </mat-form-field>
           </div>
-          <div class="col-md-4 d-flex justify-content-center">
-            <div>
-              <button class="btn bg-blue d-flex justify-content-center" style="color: white; width: 9rem; margin-top: 1rem;"  (click)="historicoPedidos()">
-                <i class="fa-solid fa-clock-rotate-left" style="font-size: 18px; margin-top: .1rem;"></i>
-                &nbsp;Historial
+          <div class="col-md-2 mb-0" *ngIf="legalRegisterSituationFlag === false"></div>
+          <div class="col-md-2 mb-0" *ngIf="legalRegisterSituationFlag === true">
+            <mat-form-field class="w-100">
+              <mat-label>Desde</mat-label>
+              <input matInput placeholder=""  [(ngModel)]="since">
+            </mat-form-field>
+          </div>
+          <div class="col-md-4 mb-0">
+            <mat-form-field class="w-100" >
+              <mat-label>Comentario de Identificación</mat-label>
+              <textarea matInput type="text" [(ngModel)]="identificacionCommentary" style="min-height: 7rem;"></textarea>
+              <button class="btn-traduccion" matSuffix mat-icon-button [class]="identificacionCommentaryEng === '' ? 'sin-traduccion' : ''" (click)="agregarComentario(tituloComentarioIdentificacion,'', identificacionCommentary, identificacionCommentaryEng,'comentarioIdentificacion')">
+                <span class="fi fi-us" style="font-size: 24px;"></span>
               </button>
-            </div>
+            </mat-form-field>
           </div>
         </div>
       </div>
-      <div class="col-md-12 mb-2">
-        <div class="row counter-box shadow">
+      <div class="col-md-12 mb-2" >
+        <div class="row counter-box shadow" style="padding-bottom: 0px;">
           <h4>Información de Contacto</h4>
           <div class="col-md-12">
             <mat-form-field class="w-100">
@@ -267,7 +263,7 @@
         </div>
       </div>
       <div class="col-md-12 mb-2">
-        <div class="row counter-box shadow">
+        <div class="row counter-box shadow" style="padding-bottom: 0px;">
           <h3>Comentarios</h3>
           <div class="col-md-8">
             <div class="col-md-12">

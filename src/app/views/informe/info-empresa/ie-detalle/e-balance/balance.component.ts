@@ -12,6 +12,7 @@ import * as moment from 'moment';
 import { TraduccionDialogComponent } from '@shared/components/traduccion-dialog/traduccion-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { VerPdfComponent } from '@shared/components/ver-pdf/ver-pdf.component';
+import { state, trigger, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-balance',
@@ -25,7 +26,14 @@ import { VerPdfComponent } from '@shared/components/ver-pdf/ver-pdf.component';
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
     },
     {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS}
-  ]
+  ],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class BalanceComponent implements OnInit {
 
@@ -113,6 +121,10 @@ export class BalanceComponent implements OnInit {
             if(response.isSuccess === true && response.isWarning === false && response.data.length > 0){
               this.listaBalances = response.data
               this.listaBalances.sort((b, a) => a.valor.localeCompare(b.valor));
+              this.limpiarBalance()
+              if(this.listaBalances.length > 0 ){
+                this.balanceSeleccionado = this.listaBalances[0].id
+              }
             }else{
               if(paginaDetalleEmpresa){
                 paginaDetalleEmpresa.classList.add('hide-loader');
@@ -248,6 +260,8 @@ export class BalanceComponent implements OnInit {
     this.debtRatio = parseFloat((this.totalPatrimony / this.totalCurrentLiabilities * 100).toFixed(2));
     this.profitabilityRatio = parseFloat((this.utilities / this.sales * 100).toFixed(2));
     this.workingCapital = parseFloat((this.totalCurrentAssets - this.totalCurrentLiabilities).toFixed(2));
+    this.totalAssets = this.totalCurrentAssets + this.totalNonCurrentAssets
+    this.totalLliabilities = this.totalCurrentLiabilities + this.totalNonCurrentLiabilities
   }
 
 
@@ -259,6 +273,9 @@ formatDate(date: moment.Moment): string {
 
   agregarBalance(){
     this.agregar = true
+    this.limpiarBalance();
+  }
+  limpiarBalance(){
     this.id = 0
     this.date = ""
     this.dateD = null
@@ -313,6 +330,51 @@ formatDate(date: moment.Moment): string {
   }
   editarBalance(){
     this.agregar = true
+  }
+  eliminarBalance(){
+    console.log(this.id)
+    Swal.fire({
+      title: '¿Está seguro de eliminar este balance?',
+      text: "",
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText : 'No',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí',
+      width: '20rem',
+      heightAuto : true
+    }).then((result) => {
+      if (result.value) {
+        this.balanceService.deleteBalance(this.id).subscribe(
+          (response) => {
+            if(response.isSuccess === true && response.isWarning === false){
+              Swal.fire({
+                title :'¡Se eliminó el balance correctamente!',
+                text : '',
+                icon : 'success',
+                width: '20rem',
+                heightAuto : true
+              }).then(() => {
+                this.balanceService.getBalances(this.idCompany, 'GENERAL').subscribe(
+                  (response) => {
+                    if(response.isSuccess === true && response.isWarning === false){
+                      this.listaBalances = response.data
+                      this.limpiarBalance()
+                      if(this.listaBalances.length > 0 ){
+                        this.balanceSeleccionado = this.listaBalances[0].id
+                      }
+                      this.agregar = false
+                    }
+                  }
+                )
+              });
+            }
+          }
+        )
+      }
+    });
+
   }
   confirmarAgregar(){
     this.armarModelo()

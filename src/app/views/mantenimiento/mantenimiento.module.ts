@@ -29,7 +29,20 @@ import { FacturacionWebComponent } from './abonado/detalle/facturacion-web/factu
 import { FacturacionPorCuponComponent } from './abonado/detalle/facturacion-por-cupon/facturacion-por-cupon.component';
 import { AgregarCuponComponent } from './abonado/detalle/facturacion-por-cupon/agregar-cupon/agregar-cupon.component';
 import { PermisosComponent } from './personal/lista/permisos/permisos.component';
+import { CalendarioComponent } from './calendario/calendario.component';
 
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { DetalleCalendarioComponent } from './calendario/detalle-calendario/detalle-calendario.component';
+import {
+  OwlDateTimeModule,
+  OwlNativeDateTimeModule,
+} from '@danielmoncada/angular-datetime-picker';
+
+import { LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+
+registerLocaleData(localeEs);
 
 @NgModule({
   declarations: [
@@ -52,6 +65,8 @@ import { PermisosComponent } from './personal/lista/permisos/permisos.component'
     FacturacionPorCuponComponent,
     AgregarCuponComponent,
     PermisosComponent,
+    CalendarioComponent,
+    DetalleCalendarioComponent,
   ],
   imports: [
     CommonModule,
@@ -64,9 +79,13 @@ import { PermisosComponent } from './personal/lista/permisos/permisos.component'
     MatSortModule,
     MatIconModule,
     FeatherIconsModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    FullCalendarModule,
+
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
   ],
-  providers: [provideNgxMask()],
+  providers: [provideNgxMask(),{ provide: LOCALE_ID, useValue: 'es' }],
 
 })
 export class MantenimientoModule { }
