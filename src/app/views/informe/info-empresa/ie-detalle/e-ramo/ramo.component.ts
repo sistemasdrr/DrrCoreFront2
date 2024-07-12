@@ -228,13 +228,15 @@ export class RamoComponent implements OnInit{
         (response) => {
           if(response.isSuccess === true && response.isWarning === false){
             this.dataSourceWorkerHistory.data = response.data
-            this.dataSourceWorkerHistory.data.sort((a, b) => {
-              let numberA = parseInt(a.numberYear.toString(), 10);
-              let numberB = parseInt(b.numberYear.toString(), 10);
+            if(this.dataSourceWorkerHistory.data.length > 0){
+              this.dataSourceWorkerHistory.data.sort((a, b) => {
+                let numberA = parseInt(a.numberYear.toString(), 10);
+                let numberB = parseInt(b.numberYear.toString(), 10);
 
-              return numberB - numberA;
-            });
-            this.workerNumber = this.dataSourceWorkerHistory.data[0].numberWorker
+                return numberB - numberA;
+              });
+              this.workerNumber = this.dataSourceWorkerHistory.data[0].numberWorker
+            }
             this.dataSourceWorkerHistory.sort = this.sort
             this.dataSourceWorkerHistory.sort = this.sort
             this.dataSourceWorkerHistory.paginator = this.paginator
@@ -586,13 +588,15 @@ export class RamoComponent implements OnInit{
             if(response.isSuccess === true && response.isWarning === false){
 
               this.dataSourceWorkerHistory.data = response.data
-              this.dataSourceWorkerHistory.data.sort((a, b) => {
-                let numberA = parseInt(a.numberYear.toString(), 10);
-                let numberB = parseInt(b.numberYear.toString(), 10);
+              if(this.dataSourceWorkerHistory.data.length > 0){
+                this.dataSourceWorkerHistory.data.sort((a, b) => {
+                  let numberA = parseInt(a.numberYear.toString(), 10);
+                  let numberB = parseInt(b.numberYear.toString(), 10);
 
-                return numberB - numberA;
-              });
-              this.workerNumber = this.dataSourceWorkerHistory.data[0].numberWorker
+                  return numberB - numberA;
+                });
+                this.workerNumber = this.dataSourceWorkerHistory.data[0].numberWorker
+              }
               this.dataSourceWorkerHistory.sort = this.sort
               this.chart2()
             }
@@ -614,13 +618,15 @@ export class RamoComponent implements OnInit{
           (response) => {
             if(response.isSuccess === true && response.isWarning === false){
               this.dataSourceWorkerHistory.data = response.data
-              this.dataSourceWorkerHistory.data.sort((a, b) => {
-                let numberA = parseInt(a.numberYear.toString(), 10);
-                let numberB = parseInt(b.numberYear.toString(), 10);
+              if(this.dataSourceWorkerHistory.data.length > 0){
+                this.dataSourceWorkerHistory.data.sort((a, b) => {
+                  let numberA = parseInt(a.numberYear.toString(), 10);
+                  let numberB = parseInt(b.numberYear.toString(), 10);
 
-                return numberB - numberA;
-              });
-              this.workerNumber = this.dataSourceWorkerHistory.data[0].numberWorker
+                  return numberB - numberA;
+                });
+                this.workerNumber = this.dataSourceWorkerHistory.data[0].numberWorker
+              }
               this.dataSourceWorkerHistory.sort = this.sort
               this.chart2()
             }

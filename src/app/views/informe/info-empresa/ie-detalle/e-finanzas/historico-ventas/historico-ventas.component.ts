@@ -31,7 +31,7 @@ export class HistoricoVentasComponent implements OnInit {
 
   accion = ""
   titulo = ""
-
+  separator = ','
   id = 0
   idCompany = 0
   idMoneda = 0

@@ -76,13 +76,13 @@
               <div class="col-md-4 m-0">
                 <mat-form-field class="w-100" style="margin: 0 .5rem 0 .5rem;">
                   <mat-label>Deuda en Moneda Nacional</mat-label>
-                  <input matInput [(ngModel)]="debtNc">
+                  <input matInput [(ngModel)]="debtNc" mask="separator.2" thousandSeparator="{{','}}">
                 </mat-form-field>
               </div>
               <div class="col-md-4 m-0">
                 <mat-form-field class="w-100" style="margin: 0 .5rem 0 .5rem;">
                   <mat-label>Deuda en Moneda Extranjera</mat-label>
-                  <input matInput [(ngModel)]="debtFc">
+                  <input matInput [(ngModel)]="debtFc" mask="separator.2" thousandSeparator="{{','}}">
                 </mat-form-field>
               </div>
               <div class="col-md-6 m-0">

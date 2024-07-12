@@ -17,6 +17,7 @@ import { FeatherIconsModule } from "./feather-icons/feather-icons.module";
 import { VerPdfComponent } from './ver-pdf/ver-pdf.component';
 
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { NgxMaskDirective, NgxMaskPipe } from "ngx-mask";
 
 @NgModule({
   declarations: [
@@ -39,8 +40,9 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     ReactiveFormsModule,
     NgScrollbarModule,
     FeatherIconsModule,
-    PdfViewerModule
-
+    PdfViewerModule,
+    NgxMaskPipe,
+    NgxMaskDirective,
   ],
   exports: [
     FileUploadComponent,

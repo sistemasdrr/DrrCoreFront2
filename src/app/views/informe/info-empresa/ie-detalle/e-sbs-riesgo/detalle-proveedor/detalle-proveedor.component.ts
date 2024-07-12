@@ -75,6 +75,12 @@ export class DetalleProveedorComponent implements OnInit {
   filterPais: Observable<Pais[]>
   paises: Pais[] = []
   monedas : ComboData[] = []
+  ctrlMoneda = new FormControl<string | ComboData>('');
+  filteredMoneda: Observable<ComboData[]>;
+  currencyInforme : ComboData =  {
+    id : 0,
+    valor  : '',
+  }
   paisSeleccionado: Pais = {
     id: 0,
     valor: '',
@@ -107,6 +113,8 @@ export class DetalleProveedorComponent implements OnInit {
       this.idTicket = parseInt(idTicket)
       console.log(this.idTicket)
     }
+    this.filteredMoneda = new Observable<ComboData[]>();
+
   }
   ngOnInit(): void {
     this.ticketService.getNumTicketById(this.idTicket).subscribe(
@@ -197,6 +205,13 @@ export class DetalleProveedorComponent implements OnInit {
         )
       }
     )
+    this.filteredMoneda = this.ctrlMoneda.valueChanges.pipe(
+      startWith(''),
+      map(value => {
+        const name = typeof value === 'string' ? value : value?.valor;
+        return name ? this._filter(name as string) : this.monedas.slice();
+      }),
+    );
     this.filterPais = this.controlPaises.valueChanges.pipe(
       startWith(''),
       map(value => {
@@ -204,6 +219,37 @@ export class DetalleProveedorComponent implements OnInit {
         return name ? this._filterPais(name as string) : this.paises.slice()
       }),
     )
+  }
+  displayFn(moneda: ComboData): string {
+    return moneda && moneda.valor ? moneda.valor : '';
+  }
+
+  private _filter(name: string): ComboData[] {
+    return this.monedas.filter(option => option.valor.toLowerCase().includes(name.toLowerCase()));
+  }
+  limpiarSeleccionTipoMoneda() {
+    this.ctrlMoneda.reset();
+    this.idCurrency = 0
+  }
+  msgTipoMoneda = ""
+  colorMsgTipoMoneda = ""
+  seleccionarTipoMoneda(moneda : ComboData){
+    if(moneda !== null){
+      console.log(moneda)
+      if (typeof moneda === 'string' || moneda.id === 0 || moneda === null || moneda === undefined ) {
+        this.msgTipoMoneda = "Seleccione una opción."
+        this.idCurrency = 0
+        this.colorMsgTipoMoneda = "red"
+      } else {
+        this.msgTipoMoneda = "Opción Seleccionada."
+        this.idCurrency = moneda.id
+        this.colorMsgTipoMoneda = "green"
+      }
+    }else{
+      this.idCurrency = 0
+      this.msgTipoMoneda = "Seleccione una opción."
+      this.colorMsgTipoMoneda = "red"
+    }
   }
   selectFecha(event: MatDatepickerInputEvent<Date>) {
     this.dateD = event.value!

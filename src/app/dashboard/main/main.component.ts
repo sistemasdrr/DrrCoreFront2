@@ -46,6 +46,7 @@ export type ChartOptions = {
 })
 export class MainComponent implements OnInit {
 
+  numPendingTask = 0
   pendingTask : PendingTask[] = []
   pendingTaskStr = ""
   dailyProduction = 0
@@ -91,6 +92,7 @@ export class MainComponent implements OnInit {
         if(response.isSuccess === true && response.isWarning === false){
           this.pendingTask = response.data
           this.pendingTask.forEach(element => {
+            this.numPendingTask += element.count
             if(element == this.pendingTask[this.pendingTask.length-1]){
               this.pendingTaskStr += element.asignedTo + '→' + element.count
             }else{

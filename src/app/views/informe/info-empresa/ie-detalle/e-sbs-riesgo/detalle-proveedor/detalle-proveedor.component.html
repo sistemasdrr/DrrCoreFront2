@@ -93,13 +93,18 @@
           </div>
           <h5 style="font-size: 20px;">Crédito Máximo Otorgado</h5>
             <div class="col-md-3 m-0">
-              <mat-form-field class="w-100" style="margin: 0 .5rem 0 .5rem;">
-                <mat-label>Moneda</mat-label>
-                <mat-select [(ngModel)]="idCurrency">
-                  <mat-option [value]="moneda.id" *ngFor="let moneda of monedas">
+              <mat-form-field class="w-100">
+                <mat-label>Moneda del País</mat-label>
+                <input type="text" matInput [formControl]="ctrlMoneda" [matAutocomplete]="auto" [ngClass]="colorMsgTipoMoneda === 'red' ? 'error': ''" [(ngModel)]="currencyInforme" (ngModelChange)="seleccionarTipoMoneda(currencyInforme)">
+                <mat-hint [ngClass]="colorMsgTipoMoneda === 'red' ? 'col-red': 'col-green'" ><i class="fa-solid fa-circle-exclamation" *ngIf="colorMsgTipoMoneda === 'red'"></i><i class="fa-solid fa-circle-check" *ngIf="colorMsgTipoMoneda === 'green'"></i>&nbsp;{{msgTipoMoneda}}</mat-hint>
+                <button matSuffix mat-icon-button color="primary" style="background-color: rgba(0,0,0,0);"  (click)="limpiarSeleccionTipoMoneda()" #tooltip="matTooltip" matTooltip="Limpiar">
+                  <i class="fa-solid fa-xmark" style="color: black; font-size: 20px;"></i>
+                </button>
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                  <mat-option *ngFor="let moneda of filteredMoneda | async" [value]="moneda">
                     {{moneda.valor}}
                   </mat-option>
-                </mat-select>
+                </mat-autocomplete>
               </mat-form-field>
             </div>
             <div class="col-md-3 m-0">

@@ -148,16 +148,19 @@
             <mat-menu class="mat-menu-quality"  #quality="matMenu" [hasBackdrop]="true" appStopPropagation  >
               <div class="row" appStopPropagation>
                 <div class="col-md-6 d-flex align-items-center" >
-                  <mat-form-field class="w-100" appStopPropagation>
-                    <mat-label>Calidad Final</mat-label>
-                    <mat-select matInput [(ngModel)]="order.quality" placeholder="" (ngModelChange)="order.qualityTranslator = order.quality; order.qualityTypist = order.quality;">
-                      <mat-option [value]="''"></mat-option>
-                      <mat-option [value]="'A'">A</mat-option>
-                      <mat-option [value]="'B'">B</mat-option>
-                      <mat-option [value]="'C'">C</mat-option>
-                      <mat-option [value]="'D'">D</mat-option>
-                    </mat-select>
-                  </mat-form-field>
+                  <div>
+                    <mat-form-field class="w-100" appStopPropagation>
+                      <mat-label>Calidad Del Reportero</mat-label>
+                      <mat-select matInput [(ngModel)]="order.quality" placeholder="" (ngModelChange)="order.qualityTranslator = order.quality; order.qualityTypist = order.quality;">
+                        <mat-option [value]="''"></mat-option>
+                        <mat-option [value]="'A'">A</mat-option>
+                        <mat-option [value]="'B'">B</mat-option>
+                        <mat-option [value]="'C'">C</mat-option>
+                        <mat-option [value]="'D'">D</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-checkbox class="example-margin" [(ngModel)]="order.hasBalance">Tiene Balance?</mat-checkbox>
+                  </div>
                 </div>
                 <div class="col-md-6" appStopPropagation>
                   <div class="row">
@@ -192,11 +195,11 @@
 
         <ng-container matColumnDef="orderDate" >
           <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Fecha de Ingreso </th>
-          <td mat-cell *matCellDef="let order" class="text-center"> {{order.orderDate}} </td>
+          <td mat-cell *matCellDef="let order" class="text-center"> {{order.startDate}} </td>
         </ng-container>
         <ng-container matColumnDef="expireDate" >
           <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Fecha de Vencimiento </th>
-          <td mat-cell *matCellDef="let order" class="text-center"> {{order.expireDate}} </td>
+          <td mat-cell *matCellDef="let order" class="text-center"> {{order.endDate}} </td>
         </ng-container>
 
         <ng-container matColumnDef="Acciones" >
@@ -214,7 +217,10 @@
             <button mat-icon-button *ngIf="order.comment !== ''" (click)="$event.stopPropagation();agregarComentario(order.id, order.number, order.commentary)" #tooltip="matTooltip" matTooltip="Comentario">
               <mat-icon style="{{order.commentary !== null && order.commentary !== '' ? 'color: red;' : 'color: gray;'}}">chat</mat-icon>
             </button>
-            <button mat-icon-button (click)="$event.stopPropagation()" (click)="$event.stopPropagation();eliminar(order.idTicket,order.asignedTo,order.numberAssign)" class="tbl-action-btn"  matTooltip="Eliminar">
+            <button mat-icon-button *ngIf="order.status === 'ASIG AGE ESPERA'" (click)="$event.stopPropagation()" (click)="$event.stopPropagation();eliminarPorId(order.id)" class="tbl-action-btn"  matTooltip="Trabajo Entregado">
+                <app-feather-icons [icon]="'check'" [class]="'tbl-fav-success'"></app-feather-icons>
+            </button>
+            <button mat-icon-button *ngIf="order.status !== 'ASIG AGE ESPERA'" (click)="$event.stopPropagation()" (click)="$event.stopPropagation();eliminar(order.idTicket,order.asignedTo,order.numberAssign)" class="tbl-action-btn"  matTooltip="Eliminar">
                 <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
             </button>
           </td>
@@ -248,7 +254,8 @@
                     </div>
                     <div class="col-md-4">
                       <label><b>Fecha de Asignación:</b> {{order.startDate}}</label><br>
-                      <label><b>Fecha de Vencimiento: </b> {{order.endDate}}</label>
+                      <label><b>Fecha de Vencimiento: </b> {{order.endDate}}</label><br>
+                      <label><b>Número de Asignación: </b> {{order.numberAssign}}</label>
                     </div>
                     <div class="col-md-4">
                       <label><b>Observaciones: </b> {{order.observations}}</label>
@@ -308,14 +315,14 @@
                   <div class="row">
                     <div class="col-md-4">
                       <label><b>Tipo de Trámite: </b>  {{order.procedureType}}</label><br>
-                      <label><b>Fecha de Ingreso: </b>  {{order.orderDate}}</label><br>
+                      <!--label><b>Fecha de Ingreso: </b>  {{order.orderDate}}</!--label><br-->
                     </div>
                     <div class="col-md-4">
                       <label><b>Tipo de Informe: </b> {{order.reportType}}</label><br>
-                      <label><b>Fecha de Vencimiento: </b> {{order.expireDate}}</label><br>
+                      <!--label><b>Fecha de Vencimiento: </b> {{order.expireDate}}</!--label><br-->
                     </div>
                     <div class="col-md-4">
-                      <label><b>Fecha de Vencimiento Real: </b>  {{order.realExpireDate}}</label><br>
+                      <!--label><b>Fecha de Vencimiento Real: </b>  {{order.realExpireDate}}</!--label><br-->
                       <label><b>Idioma: </b> {{order.language === 'E' ? 'Español' : 'Inglés'}}
                         <span class="{{order.language === 'E' ? 'fi fi-es' : 'fi fi-us'}}"></span>
                       </label>

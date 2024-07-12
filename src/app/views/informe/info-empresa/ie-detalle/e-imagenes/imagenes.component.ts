@@ -52,7 +52,7 @@ export class ImagenesComponent implements OnInit{
   base64 = ""
   desc : string = ""
   descIng : string = ""
-  print = false
+  print = true
 
   imgSeleccionadaCheck : boolean = false
   imgSeleccionada : string = ""

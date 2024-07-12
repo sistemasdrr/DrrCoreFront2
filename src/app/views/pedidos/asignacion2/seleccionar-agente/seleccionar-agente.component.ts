@@ -64,6 +64,7 @@ export class SeleccionarAgenteComponent implements OnInit {
   quality = ""
   qualityTypist = ""
   qualityTranslator = ""
+  hasBalance = false
 
   seleccionarTrabajador(codigo : string, nombre : string, idUserLogin : number, internal : boolean){
     this.asignadoCodigo = codigo
@@ -87,6 +88,7 @@ export class SeleccionarAgenteComponent implements OnInit {
       this.quality=data.quality
       this.qualityTypist=data.qualityTypist
       this.qualityTranslator=data.qualityTranslator
+      this.hasBalance=data.hasBalance
       this.assginFromCode=data.assginFromCode
       this.referencias = false
       this.fechaAsignacionDate=new Date()
@@ -247,10 +249,7 @@ export class SeleccionarAgenteComponent implements OnInit {
           if (a.code > b.code) return 1;
           return 0;
       });
-  }
-
-
-
+    }
     this.asignado = ""
   }
   addAsignacion(){
@@ -275,6 +274,7 @@ export class SeleccionarAgenteComponent implements OnInit {
       quality:this.quality !== '' ? this.quality : null,
       qualityTypist : this.qualityTypist !== '' ? this.qualityTypist : null,
       qualityTranslator : this.qualityTranslator !== '' ? this.qualityTranslator : null,
+      hasBalance : this.hasBalance,
     }
     this.asignacion.push(asign)
     this.dataSource.data = this.asignacion

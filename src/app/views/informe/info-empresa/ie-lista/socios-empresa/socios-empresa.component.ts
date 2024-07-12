@@ -10,6 +10,7 @@ import { AgregarSocioComponent } from './agregar-socio/agregar-socio.component';
 import { AgregarAccionistaComponent } from './agregar-accionista/agregar-accionista.component';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-socios-empresa',
@@ -116,7 +117,38 @@ export class SociosEmpresaComponent implements OnInit{
     )
   }
   eliminarSociosEmpresa(id : number){
-
+    Swal .fire({
+      title: '¿Está seguro de eliminar a este socio?',
+      text: "",
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText : 'No',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí',
+      width: '20rem',
+      heightAuto : true
+    }).then((result) => {
+      if (result.value) {
+        this.sociosEmpresaService.deleteCompanyPartner(id).subscribe(
+          (response) => {
+            if(response.isSuccess === true && response.isWarning === false){
+              Swal .fire({
+                title: 'Se elimino correctamente el socio',
+                text: "",
+                icon: 'warning',
+                width: '20rem',
+                heightAuto : true
+              }).then(
+                () => {
+                  this.dataSourcePartners.data = this.dataSourcePartners.data.filter(x => x.id !== id)
+                }
+              )
+            }
+          }
+        )
+      }
+    })
   }
   agregarAccionistasEmpresa(){
     console.log(this.idCompany)

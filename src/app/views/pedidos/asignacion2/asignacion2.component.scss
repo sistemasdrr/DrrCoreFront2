@@ -156,15 +156,15 @@ tr.example-element-row:not(.example-expanded-row):active {
 }
 
 .mat-menu-quality {
-  width: 600px !important;
-  height: 300px !important;
+  width: 700px !important;
+  height: 400px !important;
   overflow: auto;
 }
 
 ::ng-deep.mat-mdc-menu-panel.mat-menu-quality {
   padding: 5px;
-  min-width: 200px;
-  max-width: 350px;
+  min-width: 300px;
+  max-width: 450px;
   overflow-x: hidden;
 }
 

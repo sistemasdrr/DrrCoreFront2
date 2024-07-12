@@ -276,13 +276,13 @@
                   <div class="col-md-6">
                     <mat-form-field class="w-100" style="margin: 0 .5rem 0 .5rem;">
                       <mat-label>Totales Moneda Nacional</mat-label>
-                      <input matInput [(ngModel)]="totalesMN">
+                      <input matInput [(ngModel)]="totalesMN" type="text" mask="separator.2" thousandSeparator="{{','}}">
                     </mat-form-field>
                   </div>
                   <div class="col-md-6">
                     <mat-form-field class="w-100" style="margin: 0 .5rem 0 .5rem;">
                       <mat-label>Totales Moneda Extranjera</mat-label>
-                      <input matInput [(ngModel)]="totalesME">
+                      <input matInput [(ngModel)]="totalesME" type="text" mask="separator.2" thousandSeparator="{{','}}">
                     </mat-form-field>
                   </div>
                 </div>
@@ -290,7 +290,7 @@
                   <div class="col-md-6">
                     <mat-form-field class="w-100" style="margin: 0 .5rem 0 .5rem;">
                       <mat-label>Totales MN Equivalente a USD$</mat-label>
-                      <input matInput  [(ngModel)]="totalesMD" >
+                      <input matInput  [(ngModel)]="totalesMD" type="text" mask="separator.2" thousandSeparator="{{','}}">
                     </mat-form-field>
                   </div>
                 </div>
@@ -298,13 +298,13 @@
                   <div class="col-md-6">
                     <mat-form-field class="w-100" style="margin: 0 .5rem 0 .5rem;">
                       <mat-label>Garantías Ofrecidas MN</mat-label>
-                      <input matInput [(ngModel)]="guaranteesOfferedNc" type="number">
+                      <input matInput [(ngModel)]="guaranteesOfferedNc" type="text" mask="separator.2" thousandSeparator="{{','}}">
                     </mat-form-field>
                   </div>
                   <div class="col-md-6">
                     <mat-form-field class="w-100" style="margin: 0 .5rem 0 .5rem;">
                       <mat-label>Garantías Ofrecidas ME</mat-label>
-                      <input matInput [(ngModel)]="guaranteesOfferedFc" type="number">
+                      <input matInput [(ngModel)]="guaranteesOfferedFc" type="text" mask="separator.2" thousandSeparator="{{','}}">
                     </mat-form-field>
                   </div>
                 </div>

@@ -176,6 +176,7 @@ export interface Asignacion{
   quality:string | null
   qualityTypist : string | null
   qualityTranslator : string | null
+  hasBalance : boolean
 }
 
 export interface ListTicket2{
@@ -228,6 +229,7 @@ export interface ListTicket2{
   quality : string
   qualityTypist : string
   qualityTranslator : string
+  qualityReport : string
   status : string
   statusColor : string
   statusFinalOwner : string
@@ -238,6 +240,7 @@ export interface ListTicket2{
   numberAssign : number
   references : number
   webPage : string
+  hasBalance : boolean
 }
 export interface OtherUserCode{
   code : string

@@ -60,13 +60,13 @@
               <div class="col-md-3 m-0">
                 <mat-form-field class="w-100" style="margin: 0 .5rem 0 .5rem;">
                   <mat-label>Monto en Moneda Nacional</mat-label>
-                  <input matInput [(ngModel)]="amountNc" type="number">
+                  <input matInput [(ngModel)]="amountNc" type="text" mask="separator.2" thousandSeparator="{{','}}">
                 </mat-form-field>
               </div>
               <div class="col-md-3 m-0">
                 <mat-form-field class="w-100" style="margin: 0 .5rem 0 .5rem;">
                   <mat-label>Monto en Moneda Extranjera</mat-label>
-                  <input matInput [(ngModel)]="amountUs" type="number">
+                  <input matInput [(ngModel)]="amountUs" type="text" mask="separator.2" thousandSeparator="{{','}}">
                 </mat-form-field>
               </div>
               <div class="col-md-6 m-0">

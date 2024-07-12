@@ -82,7 +82,7 @@ export class TraduccionDialogComponent{
     }else{
       if(this.comentario_es.includes(this.text2)){
         this.comentario_es = this.comentario_es.replace(this.text2, '')
-        this.comentario_en = this.comentario_es.replace(this.textEng2, '')
+        this.comentario_en = this.comentario_en.replace(this.textEng2, '')
       }
     }
   }

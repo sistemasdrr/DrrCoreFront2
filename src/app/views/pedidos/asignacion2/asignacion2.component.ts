@@ -124,7 +124,9 @@ export class Asignacion2Component implements OnInit {
     console.log(quality)
 
     if(quality){
-      if(order.quality !== null && order.quality !== ''){
+      if((order.quality !== null && order.quality.trim() !== '') && (order.qualityReport !== null && order.qualityReport.trim() !== '')){
+        console.log(order.quality)
+        console.log(order.qualityReport)
         const dialogRef = this.dialog.open(SeleccionarAgenteComponent, {
           data: {
             id : order.id,
@@ -135,15 +137,23 @@ export class Asignacion2Component implements OnInit {
             quality : quality === true ? order.quality : '',
             qualityTypist : quality === true ? order.qualityTypist : '',
             qualityTranslator : quality === true ? order.qualityTranslator : '',
+            hasBalance : quality === true ? order.hasBalance : false,
             otherUserCode : order.otherUserCode,
             order : order
           },
         }).afterClosed().subscribe(() => {
              this.ngOnInit();
            });
-      }else{
+      }else if(order.quality === null || order.quality.trim() === ''){
         Swal.fire({
           title :'¡Calidad no seleccionada!',
+          icon : 'error',
+          width: '20rem',
+          heightAuto : true
+        });
+      }else if(order.qualityReport === null || order.qualityReport.trim() === ''){
+        Swal.fire({
+          title : order.about === 'E' ? '¡Calidad de la Empresa no seleccionada!' : '¡Calidad de la Persona no seleccionada!',
           icon : 'error',
           width: '20rem',
           heightAuto : true
@@ -269,6 +279,41 @@ export class Asignacion2Component implements OnInit {
     //     this.asignarDatosAbonado()
     //   }
     // });
+  }
+  eliminarPorId(id : number){
+    console.log(id)
+    Swal.fire({
+      title: '¿El agente a entregado la información complementaria?',
+      text: "",
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText : 'No',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí',
+      width: '30rem',
+      heightAuto : true,
+    }).then((result) => {
+      if(result.value){
+        this.ticketService.DeleteTicketHistoryById(id).subscribe(
+          (response) => {
+            if(response.isSuccess === true && response.isWarning === false){
+              Swal.fire({
+                title: 'Por favor, avisar al analista que la documentación ha sido actualizada.',
+                text: "",
+                icon: 'success',
+                width: '20rem',
+                heightAuto : true
+              }).then(
+                () => {
+                  this.ngOnInit();
+                }
+              )
+            }
+          }
+        )
+      }
+    })
   }
   eliminar(idTicket : number, asignedTo : string, numberAssign : number){
     console.log(idTicket)

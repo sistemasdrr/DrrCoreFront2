@@ -18,6 +18,8 @@ import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FOR
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { VerPdfComponent } from '@shared/components/ver-pdf/ver-pdf.component';
+import { Observable } from 'rxjs';
+import { FormControl } from '@angular/forms';
 
 export interface data {
   name: string;
@@ -79,6 +81,7 @@ export class FinanzasComponent implements OnInit, OnDestroy{
   tabCommentary = ""
   tabCommentaryEng = ""
   traductions : Traduction[] = []
+  riskCenter = ""
 
   checkComentarioConBalance : boolean = false
   checkComentarioSinBalance : boolean = false
@@ -88,6 +91,9 @@ export class FinanzasComponent implements OnInit, OnDestroy{
 
   listaGradoColaboracion : ComboData[] = []
   listaSituacionFinanciera : ComboData2[] = []
+
+
+
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -102,6 +108,7 @@ export class FinanzasComponent implements OnInit, OnDestroy{
 
   constructor(private router : Router, private historicoVentasService : HistoricoVentasService,private dialog : MatDialog,
     private comboService : ComboService, private finanzasService : FinanzasService, private activatedRoute : ActivatedRoute){
+
       const id = this.activatedRoute.snapshot.paramMap.get('id');
       if (id?.includes('nuevo')) {
         this.idCompany = 0
@@ -147,6 +154,7 @@ export class FinanzasComponent implements OnInit, OnDestroy{
                     this.interviewCommentary = finanzas.interviewCommentary
                     this.auditors = finanzas.auditors
                     this.idFinancialSituacion = finanzas.idFinancialSituacion
+                    this.riskCenter = this.idFinancialSituacion === 8 ? '' : this.idFinancialSituacion === 9 ? 'A+ : SIN RIESGO (Solventes, Situación Financiera Muy Buena)' :this.idFinancialSituacion === 10 ? 'A- : RIESGO MINIMO (Solventes, Situación Financiera Satisfactoria)' :this.idFinancialSituacion === 11 ? 'B : RIESGO MODERADO (Situación Financiera levemente extendida)' :this.idFinancialSituacion === 12 ? 'C : RIESGO ALTO (Situación Extendida. Se recomienda garantía colateral)' :this.idFinancialSituacion === 13 ? 'D : RIESGO MUY ALTO (Situación Financiera Pesada. Pérdidas)' :this.idFinancialSituacion === 15 ? 'E : RIESGO MUY ALTO (Inoperativa o Liquidada o Quebrada)' :this.idFinancialSituacion === 14 ? 'NN : RIESGO INDETERMINADO (Información insuficiente o inexistente).' : ''
                     this.selectSituacionFinanciera(this.idFinancialSituacion)
                     this.reportCommentWithBalance = finanzas.reportCommentWithBalance
                     this.reportCommentWithoutBalance = finanzas.reportCommentWithoutBalance
