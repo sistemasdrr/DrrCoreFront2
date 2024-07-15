@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -31,7 +31,7 @@ import * as moment from 'moment';
     {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS}
   ]
 })
-export class PSbsRiesgoComponent implements OnInit{
+export class PSbsRiesgoComponent implements OnInit, OnDestroy{
   id = 0
   idPerson = 0
   aditionalCommentaryRiskCenter = ""
@@ -200,6 +200,11 @@ export class PSbsRiesgoComponent implements OnInit{
     this.compararModelosF = setInterval(() => {
       this.compararModelos();
     }, 2000);
+  }
+  ngOnDestroy(): void {
+    if (this.compararModelosF) {
+      clearInterval(this.compararModelosF);
+    }
   }
   compararModelos(){
     this.armarModeloModificado()

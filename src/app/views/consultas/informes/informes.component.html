@@ -124,6 +124,10 @@
               style="width: 150px;{{order.statusColor === 'label' ? 'color : black;' : ''}}" >{{order.status}}</span>
             </td>
             </ng-container>
+            <ng-container matColumnDef="quality" >
+              <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Calidad </th>
+              <td mat-cell *matCellDef="let order" class="text-center" style="white-space: nowrap;"> {{order.quality}} </td>
+              </ng-container>
             <ng-container matColumnDef="reportType" >
               <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Tipo </th>
               <td mat-cell *matCellDef="let order" class="text-center" style="white-space: nowrap; width: 100px;">
@@ -293,7 +297,14 @@
             </ng-container>
             <ng-container matColumnDef="requestedName" >
             <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Nombre Solicitado </th>
-            <td mat-cell *matCellDef="let order" class="text-left" style="white-space: nowrap;width: 25%;"> {{order.requestedName}} </td>
+            <td mat-cell *matCellDef="let order" class="text-left" style="white-space: nowrap;width: 25%;">
+              <a *ngIf="order.about === 'E'" [target]="'_blank'" [routerLink]="'../../informes/empresa/detalle/'+order.idCompany">
+                {{order.requestedName}}
+              </a>
+              <a *ngIf="order.about === 'P'" [target]="'_blank'" [routerLink]="'../../informes/persona/detalle/'+order.idPerson">
+                {{order.requestedName}}
+              </a>
+            </td>
             </ng-container>
             <ng-container matColumnDef="country" >
               <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> País </th>
@@ -305,6 +316,10 @@
               <span class="float-end progress-percent label {{order.statusColor}}  shadow"
               style="width: 150px;{{order.statusColor === 'label' ? 'color : black;' : ''}}" >{{order.status}}</span>
             </td>
+            </ng-container>
+            <ng-container matColumnDef="quality" >
+              <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Calidad </th>
+              <td mat-cell *matCellDef="let order" class="text-center" style="white-space: nowrap;"> {{order.quality}} </td>
             </ng-container>
             <ng-container matColumnDef="reportType" >
               <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Tipo </th>
@@ -356,6 +371,9 @@
             <td mat-cell *matCellDef="let order" class="text-center" style="white-space: nowrap;">
               <button *ngIf="order.id > 0" mat-icon-button class="tbl-action-btn " (click)="$event.stopPropagation();verHistorial(order.idTicket)" matTooltip="Ver Historial">
                 <app-feather-icons [icon]="'clock'" [class]="'tbl-fav-edit'"></app-feather-icons>
+              </button>
+              <button *ngIf="order.idStatusTicket === 9 || order.idStatusTicket === 23" mat-icon-button class="tbl-action-btn " (click)="$event.stopPropagation();enviarComplemento(order.idTicket)" matTooltip="Ver Historial">
+                <app-feather-icons [icon]="'add'" [class]="'tbl-fav-edit'"></app-feather-icons>
               </button>
 
             </td>

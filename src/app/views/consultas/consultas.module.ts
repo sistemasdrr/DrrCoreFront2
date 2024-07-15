@@ -13,7 +13,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 
-import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer'
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+import { ComplementoComponent } from './informes/complemento/complemento.component'
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer'
     ReporterosComponent,
     AgentesComponent,
     FacturacionComponent,
-    InformesComponent
+    InformesComponent,
+    ComplementoComponent
   ],
   imports: [
     CommonModule,

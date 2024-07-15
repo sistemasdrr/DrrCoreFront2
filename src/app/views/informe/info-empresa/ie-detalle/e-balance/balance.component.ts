@@ -13,6 +13,8 @@ import { TraduccionDialogComponent } from '@shared/components/traduccion-dialog/
 import { MatDialog } from '@angular/material/dialog';
 import { VerPdfComponent } from '@shared/components/ver-pdf/ver-pdf.component';
 import { state, trigger, style, transition, animate } from '@angular/animations';
+import { FormControl } from '@angular/forms';
+import { Observable, map, startWith } from 'rxjs';
 
 @Component({
   selector: 'app-balance',
@@ -41,7 +43,6 @@ export class BalanceComponent implements OnInit {
   editar = false;
   balanceSeleccionado = 0
   listaBalances : ComboData[] = []
-  listaMonedas : ComboData[] = []
   separator = ','
   modeloModificado : Balance[] = []
 
@@ -55,6 +56,15 @@ export class BalanceComponent implements OnInit {
   duration = ""
   durationEng = ""
   idCurrency = 0
+
+  currencyInforme : ComboData =  {
+    id : 0,
+    valor  : '',
+  }
+  ctrlMoneda = new FormControl<string | ComboData>('');
+  listaMonedas : ComboData[] = []
+  filteredMoneda: Observable<ComboData[]>;
+
   exchangeRate = 0
   sales = 0
   utilities = 0
@@ -101,6 +111,8 @@ export class BalanceComponent implements OnInit {
       } else {
         this.idCompany = parseInt(id + '')
       }
+      this.filteredMoneda = new Observable<ComboData[]>();
+
   }
 
   ngOnInit(): void {
@@ -116,6 +128,13 @@ export class BalanceComponent implements OnInit {
       }
     ).add(
       () => {
+        this.filteredMoneda = this.ctrlMoneda.valueChanges.pipe(
+          startWith(''),
+          map(value => {
+            const name = typeof value === 'string' ? value : value?.valor;
+            return name ? this._filter(name as string) : this.listaMonedas.slice();
+          }),
+        );
         this.balanceService.getBalances(this.idCompany, 'GENERAL').subscribe(
           (response) => {
             if(response.isSuccess === true && response.isWarning === false && response.data.length > 0){
@@ -142,6 +161,37 @@ export class BalanceComponent implements OnInit {
         )
       }
     )
+  }
+  displayFn(moneda: ComboData): string {
+    return moneda && moneda.valor ? moneda.valor : '';
+  }
+
+  private _filter(name: string): ComboData[] {
+    return this.listaMonedas.filter(option => option.valor.toLowerCase().includes(name.toLowerCase()));
+  }
+  msgTipoMoneda = ""
+  colorMsgTipoMoneda = ""
+  seleccionarTipoMoneda(moneda : ComboData){
+    if(moneda !== null){
+      console.log(moneda)
+      if (typeof moneda === 'string' || moneda.id === 0 || moneda === null || moneda === undefined ) {
+        this.msgTipoMoneda = "Seleccione una opción."
+        this.idCurrency = 0
+        this.colorMsgTipoMoneda = "red"
+      } else {
+        this.msgTipoMoneda = "Opción Seleccionada."
+        this.idCurrency = moneda.id
+        this.colorMsgTipoMoneda = "green"
+      }
+    }else{
+      this.idCurrency = 0
+      this.msgTipoMoneda = "Seleccione una opción."
+      this.colorMsgTipoMoneda = "red"
+    }
+  }
+  limpiarSeleccionTipoMoneda() {
+    this.ctrlMoneda.reset();
+    this.idCurrency = 0
   }
   agregarTraduccion(titulo : string, subtitulo : string, comentario_es : string, comentario_en : string, input : string) {
     const dialogRef = this.dialog.open(TraduccionDialogComponent, {
@@ -255,12 +305,15 @@ export class BalanceComponent implements OnInit {
   }
 
   updRatios(){
+    console.log(this.totalAssets)
     this.totalLiabilitiesPatrimony = this.totalPatrimony + this.totalLliabilities
     this.liquidityRatio = parseFloat((this.totalCurrentAssets / this.totalCurrentLiabilities).toFixed(2));
     this.debtRatio = parseFloat((this.totalPatrimony / this.totalCurrentLiabilities * 100).toFixed(2));
     this.profitabilityRatio = parseFloat((this.utilities / this.sales * 100).toFixed(2));
     this.workingCapital = parseFloat((this.totalCurrentAssets - this.totalCurrentLiabilities).toFixed(2));
-    this.totalAssets = this.totalCurrentAssets + this.totalNonCurrentAssets
+    if(this.totalCurrentAssets !== 0 || this.totalNonCurrentAssets !== 0){
+      this.totalAssets = this.totalCurrentAssets + this.totalNonCurrentAssets
+    }
     this.totalLliabilities = this.totalCurrentLiabilities + this.totalNonCurrentLiabilities
   }
 

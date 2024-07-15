@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import { MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter } from '@angular/material/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
@@ -28,7 +28,7 @@ import * as moment from 'moment';
     {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS}
   ]
 })
-export class PTrabajoComponent implements OnInit{
+export class PTrabajoComponent implements OnInit, OnDestroy{
   id = 0
   idPerson = 0
   idCompany = 0
@@ -147,6 +147,11 @@ export class PTrabajoComponent implements OnInit{
     this.compararModelosF = setInterval(() => {
       this.compararModelos();
     }, 2000);
+  }
+  ngOnDestroy(): void {
+    if (this.compararModelosF) {
+      clearInterval(this.compararModelosF);
+    }
   }
 
   compararModelos(){

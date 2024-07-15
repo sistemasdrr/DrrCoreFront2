@@ -1,5 +1,5 @@
 import { OpinionCreditoService } from './../../../../../services/informes/empresa/opinion-credito.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -23,7 +23,7 @@ import Swal from 'sweetalert2';
     {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS}
   ]
 })
-export class OpinionCreditoComponent implements OnInit {
+export class OpinionCreditoComponent implements OnInit, OnDestroy {
 
   id = 0
   idCompany = 0
@@ -95,6 +95,11 @@ export class OpinionCreditoComponent implements OnInit {
     this.compararModelosF = setInterval(() => {
       this.compararModelos();
     }, 2000);
+  }
+  ngOnDestroy(): void {
+    if (this.compararModelosF) {
+      clearInterval(this.compararModelosF);
+    }
   }
   compararModelos(){
     this.armarModeloModificado()

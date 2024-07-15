@@ -444,6 +444,7 @@ export interface Query5_1_1Tickets{
   id : number
   idTicket : number
   number : string
+  quality : string
   language : string
   about : string
   status : string
@@ -493,9 +494,13 @@ export interface Query5_1_2{
 export interface Query5_1_2Tickets{
   id : number
   idTicket : number
+  idCompany : number
+  idPerson : number
   number : string
+  quality : string
   language : string
   about : string
+  idStatusTicket : number
   status : string
   country : string
   flagCountry : string

@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { CuadroImpoExpoComponent } from '@shared/components/cuadro-impo-expo/cuadro-impo-expo.component';
@@ -80,7 +80,7 @@ export type ChartOptions = {
 })
 
 
-export class RamoComponent implements OnInit{
+export class RamoComponent implements OnInit, OnDestroy{
 
   id = 0
   idCompany = 0
@@ -410,6 +410,11 @@ export class RamoComponent implements OnInit{
     this.compararModelosF = setInterval(() => {
       this.compararModelos();
     }, 2000);
+  }
+  ngOnDestroy(): void {
+    if (this.compararModelosF) {
+      clearInterval(this.compararModelosF);
+    }
   }
   verPdf(){
     const dialogRef = this.dialog.open(VerPdfComponent,{

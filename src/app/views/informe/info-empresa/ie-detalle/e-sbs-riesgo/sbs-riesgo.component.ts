@@ -1,6 +1,6 @@
 import { CompanySbs, ProveedorHistory } from './../../../../../models/informes/empresa/sbs-riesgo';
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { DetalleProveedorComponent } from './detalle-proveedor/detalle-proveedor.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -33,7 +33,7 @@ import { VerPdfComponent } from '@shared/components/ver-pdf/ver-pdf.component';
     {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS}
   ]
 })
-export class SbsRiesgoComponent implements OnInit{
+export class SbsRiesgoComponent implements OnInit, OnDestroy{
 
   id = 0
   idCompany = 0
@@ -220,6 +220,11 @@ export class SbsRiesgoComponent implements OnInit{
     this.compararModelosF = setInterval(() => {
       this.compararModelos();
     }, 2000);
+  }
+  ngOnDestroy(): void {
+    if (this.compararModelosF) {
+      clearInterval(this.compararModelosF);
+    }
   }
   compararModelos(){
     this.armarModeloModificado()

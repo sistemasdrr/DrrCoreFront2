@@ -10,6 +10,8 @@ import { BalanceFinancieroService } from 'app/services/informes/empresa/balance-
 import Swal from 'sweetalert2';
 import * as moment from 'moment';
 import { state, trigger, style, transition, animate } from '@angular/animations';
+import { FormControl } from '@angular/forms';
+import { Observable, map, startWith } from 'rxjs';
 
 @Component({
   selector: 'app-balance-situacional',
@@ -39,7 +41,6 @@ export class BalanceSituacionalComponent implements OnInit {
   editar = false;
   balanceSeleccionado = 0
   listaBalances : ComboData[] = []
-  listaMonedas : ComboData[] = []
   separator = ','
   modeloModificado : Balance[] = []
 
@@ -52,6 +53,17 @@ export class BalanceSituacionalComponent implements OnInit {
   duration = ""
   durationEng = ""
   idCurrency = 0
+
+
+  currencyInforme : ComboData =  {
+    id : 0,
+    valor  : '',
+  }
+  ctrlMoneda = new FormControl<string | ComboData>('');
+  listaMonedas : ComboData[] = []
+  filteredMoneda: Observable<ComboData[]>;
+
+
   exchangeRate = 0
   sales = 0
   utilities = 0
@@ -100,6 +112,8 @@ export class BalanceSituacionalComponent implements OnInit {
     if(data){
       this.idCompany = data
     }
+    this.filteredMoneda = new Observable<ComboData[]>();
+
   }
 
   ngOnInit(): void {
@@ -124,6 +138,44 @@ export class BalanceSituacionalComponent implements OnInit {
         })
       }
     )
+    this.filteredMoneda = this.ctrlMoneda.valueChanges.pipe(
+      startWith(''),
+      map(value => {
+        const name = typeof value === 'string' ? value : value?.valor;
+        return name ? this._filter(name as string) : this.listaMonedas.slice();
+      }),
+    );
+  }
+  displayFn(moneda: ComboData): string {
+    return moneda && moneda.valor ? moneda.valor : '';
+  }
+
+  private _filter(name: string): ComboData[] {
+    return this.listaMonedas.filter(option => option.valor.toLowerCase().includes(name.toLowerCase()));
+  }
+  msgTipoMoneda = ""
+  colorMsgTipoMoneda = ""
+  seleccionarTipoMoneda(moneda : ComboData){
+    if(moneda !== null){
+      console.log(moneda)
+      if (typeof moneda === 'string' || moneda.id === 0 || moneda === null || moneda === undefined ) {
+        this.msgTipoMoneda = "Seleccione una opción."
+        this.idCurrency = 0
+        this.colorMsgTipoMoneda = "red"
+      } else {
+        this.msgTipoMoneda = "Opción Seleccionada."
+        this.idCurrency = moneda.id
+        this.colorMsgTipoMoneda = "green"
+      }
+    }else{
+      this.idCurrency = 0
+      this.msgTipoMoneda = "Seleccione una opción."
+      this.colorMsgTipoMoneda = "red"
+    }
+  }
+  limpiarSeleccionTipoMoneda() {
+    this.ctrlMoneda.reset();
+    this.idCurrency = 0
   }
   armarModelo(){
     this.modeloModificado[0] = {
@@ -197,12 +249,15 @@ export class BalanceSituacionalComponent implements OnInit {
   }
 
   updRatios(){
+
     this.totalLiabilitiesPatrimony = this.totalPatrimony + this.totalLliabilities
     this.liquidityRatio = parseFloat((this.totalCurrentAssets / this.totalCurrentLiabilities).toFixed(2));
     this.debtRatio = parseFloat((this.totalPatrimony / this.totalCurrentLiabilities * 100).toFixed(2));
     this.profitabilityRatio = parseFloat((this.utilities / this.sales * 100).toFixed(2));
     this.workingCapital = parseFloat((this.totalCurrentAssets - this.totalCurrentLiabilities).toFixed(2));
-    this.totalAssets = this.totalCurrentAssets + this.totalNonCurrentAssets
+    if(this.totalCurrentAssets !== 0 || this.totalNonCurrentAssets !== 0){
+      this.totalAssets = this.totalCurrentAssets + this.totalNonCurrentAssets
+    }
     this.totalLliabilities = this.totalCurrentLiabilities + this.totalNonCurrentLiabilities
   }
 

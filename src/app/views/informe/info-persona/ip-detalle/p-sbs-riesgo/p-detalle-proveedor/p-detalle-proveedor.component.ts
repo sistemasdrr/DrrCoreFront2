@@ -47,6 +47,15 @@ export class PDetalleProveedorComponent implements OnInit{
   telephone = ""
   attendedBy = ""
   idCurrency = 0
+
+  currencyInforme : ComboData =  {
+    id : 0,
+    valor  : '',
+  }
+  ctrlMoneda = new FormControl<string | ComboData>('');
+  listaMonedas : ComboData[] = []
+  filteredMoneda: Observable<ComboData[]>;
+
   maximumAmount = ""
   maximumAmountEng = ""
   timeLimit = ""
@@ -74,7 +83,6 @@ export class PDetalleProveedorComponent implements OnInit{
   controlPaises = new FormControl<string | Pais>('')
   filterPais: Observable<Pais[]>
   paises: Pais[] = []
-  monedas : ComboData[] = []
   paisSeleccionado: Pais = {
     id: 0,
     valor: '',
@@ -88,6 +96,7 @@ export class PDetalleProveedorComponent implements OnInit{
     @Inject(MAT_DIALOG_DATA) public data: any, private PersonSbsService : PersonSbsService,
     private ticketService : TicketService, private activatedRoute : ActivatedRoute
   ) {
+    this.filteredMoneda = new Observable<ComboData[]>();
 
     this.filterPais = new Observable<Pais[]>()
     if (data.accion == "AGREGAR") {
@@ -120,7 +129,7 @@ export class PDetalleProveedorComponent implements OnInit{
         this.comboService.getTipoMoneda().subscribe(
           (response) => {
             if(response.isSuccess === true && response.isWarning === false){
-              this.monedas = response.data
+              this.listaMonedas = response.data
             }
           }
         ).add(
@@ -184,6 +193,45 @@ export class PDetalleProveedorComponent implements OnInit{
         return name ? this._filterPais(name as string) : this.paises.slice()
       }),
     )
+    this.filteredMoneda = this.ctrlMoneda.valueChanges.pipe(
+      startWith(''),
+      map(value => {
+        const name = typeof value === 'string' ? value : value?.valor;
+        return name ? this._filter(name as string) : this.listaMonedas.slice();
+      }),
+    );
+  }
+
+  displayFn(moneda: ComboData): string {
+    return moneda && moneda.valor ? moneda.valor : '';
+  }
+
+  private _filter(name: string): ComboData[] {
+    return this.listaMonedas.filter(option => option.valor.toLowerCase().includes(name.toLowerCase()));
+  }
+  msgTipoMoneda = ""
+  colorMsgTipoMoneda = ""
+  seleccionarTipoMoneda(moneda : ComboData){
+    if(moneda !== null){
+      console.log(moneda)
+      if (typeof moneda === 'string' || moneda.id === 0 || moneda === null || moneda === undefined ) {
+        this.msgTipoMoneda = "Seleccione una opción."
+        this.idCurrency = 0
+        this.colorMsgTipoMoneda = "red"
+      } else {
+        this.msgTipoMoneda = "Opción Seleccionada."
+        this.idCurrency = moneda.id
+        this.colorMsgTipoMoneda = "green"
+      }
+    }else{
+      this.idCurrency = 0
+      this.msgTipoMoneda = "Seleccione una opción."
+      this.colorMsgTipoMoneda = "red"
+    }
+  }
+  limpiarSeleccionTipoMoneda() {
+    this.ctrlMoneda.reset();
+    this.idCurrency = 0
   }
   selectFecha(event: MatDatepickerInputEvent<Date>) {
     this.dateD = event.value!

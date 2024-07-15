@@ -250,10 +250,7 @@ export class FinanzasComponent implements OnInit, OnDestroy{
   }
   ngOnDestroy(): void {
     clearInterval(this.compararModelosF);
-    const tabFinanzas = document.getElementById('tab-finanzas') as HTMLElement | null;
-    if (tabFinanzas) {
-      tabFinanzas.classList.remove('tab-cambios')
-    }
+
   }
   private chart1() {
     this.areaChartOptions = {

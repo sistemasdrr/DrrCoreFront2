@@ -31,7 +31,4 @@ export class ImagenesService {
   uploadImages(formData : FormData) : Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url + this.controllerCompany + '/uploadImage',formData)
   }
-  downloadImage(path : string){
-    return this.http.get(this.url + this.controllerCompany + '/getImageByPath?path='+path,{observe:'response',responseType:'blob'});
-  }
 }

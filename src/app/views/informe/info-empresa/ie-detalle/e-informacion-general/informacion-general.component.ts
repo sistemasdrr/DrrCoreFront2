@@ -1,5 +1,5 @@
 import { T } from '@angular/cdk/keycodes';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { ActivatedRoute } from '@angular/router';
@@ -21,7 +21,7 @@ import Swal from 'sweetalert2';
     {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS}
   ]
 })
-export class InformacionGeneralComponent implements OnInit {
+export class InformacionGeneralComponent implements OnInit, OnDestroy{
   informacionGeneral = "";
   informacionIngGeneral = "";
 
@@ -82,6 +82,11 @@ export class InformacionGeneralComponent implements OnInit {
     this.compararModelosF = setInterval(() => {
       this.compararModelos();
     }, 2000);
+  }
+  ngOnDestroy(): void {
+    if (this.compararModelosF) {
+      clearInterval(this.compararModelosF);
+    }
   }
   compararModelos(){
     this.armarModeloModificado()

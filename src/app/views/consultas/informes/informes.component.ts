@@ -8,6 +8,7 @@ import { Query5_1_1, Query5_1_1Tickets,Query5_1_2,Query5_1_2Tickets } from 'app/
 import { ConsultaService } from 'app/services/Consultas/consulta.service';
 import { HistorialPedidoComponent } from 'app/views/situacion/lista/historial-pedido/historial-pedido.component';
 import Swal from 'sweetalert2';
+import { ComplementoComponent } from './complemento/complemento.component';
 
 @Component({
   selector: 'app-informes',
@@ -127,7 +128,7 @@ export class InformesComponent implements OnInit{
 
   dataSource1: MatTableDataSource<Query5_1_1Tickets>;
 
-  columnsToDisplay1 = ['number','requestedName','status','country','reportType','procedureType','orderDate', 'expireDate', 'Acciones' ];
+  columnsToDisplay1 = ['number','requestedName','status','quality','country','reportType','procedureType','orderDate', 'expireDate', 'Acciones' ];
   columnsToDisplayWithExpand1 = [...this.columnsToDisplay1, 'expand'];
   expandedOrder: Query5_1_1Tickets | null = null;
 
@@ -145,6 +146,13 @@ export class InformesComponent implements OnInit{
   }
   verHistorial(idTicket : number) {
     const dialogRef = this.dialog.open(HistorialPedidoComponent, {
+      data : {
+          idTicket : idTicket
+      },
+    });
+  }
+  enviarComplemento(idTicket : number) {
+    const dialogRef = this.dialog.open(ComplementoComponent, {
       data : {
           idTicket : idTicket
       },
@@ -209,7 +217,7 @@ export class InformesComponent implements OnInit{
 
   dataSource2: MatTableDataSource<Query5_1_2Tickets>;
 
-  columnsToDisplay2 = ['number','requestedName','status','country','reportType','procedureType','orderDate', 'expireDate', 'Acciones' ];
+  columnsToDisplay2 = ['number','requestedName','status','quality','country','reportType','procedureType','orderDate', 'expireDate', 'Acciones' ];
   columnsToDisplayWithExpand2 = [...this.columnsToDisplay1, 'expand'];
   expandedOrder2: Query5_1_2Tickets | null = null;
 

@@ -291,12 +291,15 @@
         <div class="col-md-4">
           <mat-form-field class="w-100">
             <mat-label>Profesión</mat-label>
-            <mat-select [(ngModel)]="profession" placeholder="">
-                <mat-option [value]="item.valor" *ngFor="let item of profesion">
-                  {{item.valor}}
-                </mat-option>
-            </mat-select>
-            <button class="btn-traduccion" [class]="professionEng === '' || professionEng === null ? 'sin-traduccion' : ''" matSuffix mat-icon-button (click)="agregarTraduccion('Traducción de Profesión','', profession,professionEng, 'profesion')">
+            <input type="text" matInput [formControl]="ctrlProfesion" [matAutocomplete]="auto" [(ngModel)]="profesionInforme" (ngModelChange)="seleccionarProfesion(profesionInforme)">
+            <mat-hint [ngClass]="colorMsgProfesion === 'red' ? 'col-red': 'col-green'" ><i class="fa-solid fa-circle-exclamation" *ngIf="colorMsgProfesion === 'red'"></i><i class="fa-solid fa-circle-check" *ngIf="colorMsgProfesion === 'green'"></i>&nbsp;{{msgProfesion}}</mat-hint>
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+              <mat-option *ngFor="let moneda of filteredProfesion | async" [value]="moneda">
+                {{moneda.valor}}
+              </mat-option>
+            </mat-autocomplete>
+
+            <button class="btn-traduccion" [class]="professionEng === '' || professionEng === null ? 'sin-traduccion' : ''" matSuffix mat-icon-button (click)="$event.stopPropagation(); agregarTraduccion('Traducción de Profesión','', profession,professionEng, 'profesion')">
               <span class="fi fi-us" style="font-size: 24px;"></span>
             </button>
           </mat-form-field>

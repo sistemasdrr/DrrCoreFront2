@@ -263,8 +263,11 @@ constructor(
       this.compararModelos();
     }, 2000);
   }
+
   ngOnDestroy(): void {
-    clearInterval(this.compararModelosF)
+    if (this.compararModelosF) {
+      clearInterval(this.compararModelosF);
+    }
   }
   msgTipoMoneda = ""
   colorMsgTipoMoneda = ""

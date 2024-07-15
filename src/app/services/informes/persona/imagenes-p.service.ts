@@ -23,7 +23,7 @@ export class ImagenesPService {
     return this.http.post<Response<boolean>>(this.url + this.controllerPersona + '/uploadImage',formData)
   }
   downloadImage(path : string){
-    return this.http.get(this.url + this.controllerPersona + '/getImageByPath?path='+path,{observe:'response',responseType:'blob'});
+    return this.http.get(this.url + this.controllerPersona + '/?path='+path,{observe:'response',responseType:'blob'});
   }
   addPhoto(obj : PersonPhoto): Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url + this.controllerPersona + '/addPhoto',obj)

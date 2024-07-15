@@ -171,5 +171,8 @@ export class TicketService {
   ObservedTickets(idEmployee : number) : Observable<Response<ObservedTickets[]>>{
     return this.http.get<Response<ObservedTickets[]>>(this.url + this.controllerTicket + '/ObservedTickets?idEmployee='+idEmployee);
   }
+  GetSupervisorTicket(idTicket : number) : Observable<Response<string>>{
+    return this.http.get<Response<string>>(this.url + this.controllerTicket + '/GetSupervisorTicket?idTicket='+idTicket);
+  }
 
 }

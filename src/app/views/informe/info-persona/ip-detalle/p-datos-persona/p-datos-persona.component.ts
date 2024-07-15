@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TraduccionDialogComponent } from '@shared/components/traduccion-dialog/traduccion-dialog.component';
@@ -32,7 +32,7 @@ import * as moment from 'moment';
     {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS}
   ]
 })
-export class PDatosPersonaComponent implements OnInit{
+export class PDatosPersonaComponent implements OnInit, OnDestroy{
 
   //LISTAS
 
@@ -40,7 +40,6 @@ export class PDatosPersonaComponent implements OnInit{
   situacionPersona : ComboData[] = []
   tipoDocumento : ComboData[] = []
   estadoCivil : ComboData[] = []
-  profesion : ComboData[] = []
 
   controlSituacionRUC = new FormControl<string | ComboData>('');
   filterSituacionRuc: Observable<ComboData[]>
@@ -152,6 +151,14 @@ export class PDatosPersonaComponent implements OnInit{
   modeloActual : Persona[] = []
   modeloModificado : Persona[] = []
 
+  profesionInforme : ComboData =  {
+    id : 0,
+    valor  : '',
+  }
+  ctrlProfesion = new FormControl<string | ComboData>('');
+  listaProfesion : ComboData[] = []
+  filteredProfesion: Observable<ComboData[]>;
+
 constructor(private dialog : MatDialog, private comboService : ComboService,
   private personaService : DatosGeneralesService,private activatedRoute: ActivatedRoute, private router : Router) {
   this.filterSituacionRuc = new Observable<ComboData[]>()
@@ -164,6 +171,8 @@ constructor(private dialog : MatDialog, private comboService : ComboService,
       this.id = parseInt(id + '')
     }
     console.log(this.id)
+    this.filteredProfesion = new Observable<ComboData[]>();
+
  }
 compararModelosF : any
   ngOnInit() {
@@ -206,7 +215,7 @@ compararModelosF : any
         this.comboService.getProfesion().subscribe(
           (response) => {
             if(response.isSuccess === true && response.isWarning === false){
-              this.profesion = response.data
+              this.listaProfesion = response.data
             }
           }
         )
@@ -267,6 +276,10 @@ compararModelosF : any
                   this.email = persona.email
                   this.cellphone = persona.cellphone
                   this.profession = persona.profession
+                  this.profesionInforme=  {
+                    id : 1,
+                    valor  : persona.profession,
+                  }
                   this.clubMember = persona.clubMember
                   this.insurance = persona.insurance
                   this.newsCommentary = persona.newsCommentary
@@ -338,8 +351,6 @@ compararModelosF : any
                 this.colorReputacion = this.reputacionSeleccionada.color
               }
 
-
-
             }
           )
         }
@@ -360,14 +371,52 @@ compararModelosF : any
         return name ? this._filterPais(name as string) : this.paises.slice()
       }),
     )
+    this.filteredProfesion = this.ctrlProfesion.valueChanges.pipe(
+      startWith(''),
+      map(value => {
+        const name = typeof value === 'string' ? value : value?.valor;
+        return name ? this._filter(name as string) : this.listaProfesion.slice();
+      }),
+    );
     this.compararModelosF = setInterval(() => {
       this.compararModelos();
     }, 2000);
   }
+  displayFn(moneda: ComboData): string {
+    return moneda && moneda.valor ? moneda.valor : '';
+  }
+
+  private _filter(name: string): ComboData[] {
+    return this.listaProfesion.filter(option => option.valor.toLowerCase().includes(name.toLowerCase()));
+  }
+  msgProfesion = ""
+  colorMsgProfesion = ""
+  seleccionarProfesion(profesion : ComboData){
+    if(profesion !== null){
+      console.log(profesion)
+      if (typeof profesion === 'string' || profesion.id === 0 || profesion === null || profesion === undefined ) {
+        this.msgProfesion = "Seleccione una opción."
+        this.profession = ''
+        this.colorMsgProfesion = "red"
+      } else {
+        this.msgProfesion = "Opción Seleccionada."
+        this.profession = profesion.valor
+        this.colorMsgProfesion = "green"
+      }
+    }else{
+      this.profession = ''
+      this.msgProfesion = "Seleccione una opción."
+      this.colorMsgProfesion = "red"
+    }
+  }
+  ngOnDestroy(): void {
+    if (this.compararModelosF) {
+      clearInterval(this.compararModelosF);
+    }
+  }
   compararModelos(){
     this.armarModeloModificado()
-    console.log(this.modeloActual)
-    console.log(this.modeloModificado)
+
     if(JSON.stringify(this.modeloActual) !== JSON.stringify(this.modeloModificado)){
       const tabPersona = document.getElementById('tab-persona') as HTMLElement | null;
       if (tabPersona) {
