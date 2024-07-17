@@ -74,6 +74,9 @@ export class TicketService {
   downloadFile(id : number){
     return this.http.get(this.url + this.controllerTicket + '/DownloadFileById?id='+id,{observe:'response',responseType:'blob'});
   }
+  DownloadZipByIdTicket(idTicket : number){
+    return this.http.get(this.url + this.controllerTicket + '/DownloadZipByIdTicket?idTicket='+idTicket,{observe:'response',responseType:'blob'});
+  }
   getList() : Observable<Response<ListTicket[]>>{
     return this.http.get<Response<ListTicket[]>>(this.url + this.controllerTicket + '/getList');
   }
@@ -173,6 +176,9 @@ export class TicketService {
   }
   GetSupervisorTicket(idTicket : number) : Observable<Response<string>>{
     return this.http.get<Response<string>>(this.url + this.controllerTicket + '/GetSupervisorTicket?idTicket='+idTicket);
+  }
+  DeleteFile(id : number) : Observable<Response<boolean>>{
+    return this.http.get<Response<boolean>>(this.url + this.controllerTicket + '/DeleteFile?id='+id);
   }
 
 }

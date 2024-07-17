@@ -9,6 +9,7 @@ import { AgregarSocioComponent } from 'app/views/informe/info-empresa/ie-lista/s
 import { AgregarSocioPersonaComponent } from './agregar-socio/agregar-socio.component';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import { MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter } from '@angular/material/core';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -95,6 +96,37 @@ export class SociosPersonaComponent implements OnInit{
     )
   }
   eliminarSociosPersona(id : number){
-
+    Swal.fire({
+      title: '¿Está seguro de eliminar a este socio?',
+      text: "",
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText : 'No',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí',
+      width: '20rem',
+      heightAuto : true
+    }).then((result) => {
+      if (result.value) {
+        this.sociosPersonaService.deletePersonPartner(id).subscribe(
+          (response) => {
+            if(response.isSuccess === true && response.isWarning === false){
+              Swal .fire({
+                title: 'Se elimino correctamente el socio',
+                text: "",
+                icon: 'success',
+                width: '20rem',
+                heightAuto : true
+              }).then(
+                () => {
+                  this.dataSourcePartners.data = this.dataSourcePartners.data.filter(x => x.id !== id)
+                }
+              )
+            }
+          }
+        )
+      }
+    })
   }
 }

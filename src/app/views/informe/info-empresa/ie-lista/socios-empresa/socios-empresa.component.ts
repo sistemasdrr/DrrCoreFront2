@@ -136,12 +136,13 @@ export class SociosEmpresaComponent implements OnInit{
               Swal .fire({
                 title: 'Se elimino correctamente el socio',
                 text: "",
-                icon: 'warning',
+                icon: 'success',
                 width: '20rem',
                 heightAuto : true
               }).then(
                 () => {
                   this.dataSourcePartners.data = this.dataSourcePartners.data.filter(x => x.id !== id)
+                  this.dataSourcePartners.sort = this.sort
                 }
               )
             }
@@ -196,7 +197,39 @@ export class SociosEmpresaComponent implements OnInit{
     )
   }
   eliminarAccionistasEmpresa(id : number){
-
+    Swal .fire({
+      title: '¿Está seguro de eliminar a este accionista?',
+      text: "",
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText : 'No',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí',
+      width: '20rem',
+      heightAuto : true
+    }).then((result) => {
+      if (result.value) {
+        this.sociosEmpresaService.deleteCompanyShareHolder(id).subscribe(
+          (response) => {
+            if(response.isSuccess === true && response.isWarning === false){
+              Swal .fire({
+                title: 'Se elimino correctamente al accionista',
+                text: "",
+                icon: 'success',
+                width: '20rem',
+                heightAuto : true
+              }).then(
+                () => {
+                  this.dataSourceShareHolder.data = this.dataSourceShareHolder.data.filter(x => x.id !== id)
+                  this.dataSourceShareHolder.sort = this.sort
+                }
+              )
+            }
+          }
+        )
+      }
+    })
   }
   salir(){
     this.dialog.closeAll()

@@ -79,7 +79,7 @@ export class InformesComponent implements OnInit{
     let tickets : Query5_1_1Tickets[] = []
     this.abonados.forEach(element => {
       element.tickets.forEach(ticket => {
-        if(ticket.requestedName.includes(this.query5_1_1_name) && ticket.number.includes(this.query5_1_1_number)){
+        if(ticket.requestedName.toLocaleLowerCase().includes(this.query5_1_1_name.toLocaleLowerCase()) && ticket.number.includes(this.query5_1_1_number)){
           tickets.push(ticket)
         }
       });
@@ -105,7 +105,7 @@ export class InformesComponent implements OnInit{
     let tickets : Query5_1_2Tickets[] = []
     this.abonados2.forEach(element => {
       element.tickets.forEach(ticket => {
-        if(ticket.requestedName.includes(this.query5_1_2_name) && ticket.number.includes(this.query5_1_2_number)){
+        if(ticket.requestedName.toLocaleLowerCase().includes(this.query5_1_2_name.toLocaleLowerCase()) && ticket.number.includes(this.query5_1_2_number)){
           tickets.push(ticket)
         }
       });

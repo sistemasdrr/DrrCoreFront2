@@ -122,6 +122,7 @@ export class Asignacion2Component implements OnInit {
       }
     });
     console.log(quality)
+    console.log(order.quality)
 
     if(quality){
       if((order.quality !== null && order.quality.trim() !== '') && (order.qualityReport !== null && order.qualityReport.trim() !== '')){

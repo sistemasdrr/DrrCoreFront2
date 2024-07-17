@@ -177,6 +177,7 @@ export interface Asignacion{
   qualityTypist : string | null
   qualityTranslator : string | null
   hasBalance : boolean
+  sendZip : boolean
 }
 
 export interface ListTicket2{

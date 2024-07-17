@@ -3,7 +3,7 @@
     <div class="d-flex justify-content-between">
       <h4 class="p-2">{{titulo}}</h4>
       <div>
-        <button mat-mini-fab class="bg-cyan" (click)="guardar()" matTooltip="Agregar" >
+        <button mat-mini-fab [class]="idPerson === 0 ? 'bg-gray' : 'bg-cyan'" [disabled]="idPerson === 0 ? true : false" (click)="guardar()" matTooltip="Agregar" >
           <mat-icon class="col-white">save</mat-icon>
         </button>
         <button mat-mini-fab color="warn" (click)="salir()" matTooltip="Cerrar" >

@@ -61,7 +61,7 @@
                   Editar Asignación
                 </div>
                 <div>
-                  <button mat-mini-fab style="margin: 0 .5rem .5rem .5rem;" [class]="asignado === '' ? 'bg-grey' : 'bg-blue'"  *ngIf="estado === 'agregar'" [disabled]="asignado === ''" #tooltip="matTooltip" matTooltip="Agregar" (click)="addAsignacion(); datos2 = [];">
+                  <button mat-mini-fab style="margin: 0 .5rem .5rem .5rem;" [class]="asignado === '' ? 'bg-grey' : 'bg-blue'"  *ngIf="estado === 'agregar'" [disabled]="asignado === ''" #tooltip="matTooltip" matTooltip="Agregar" (click)="addAsignacion(); asignacion.deselectAll(); datos2 = [];">
                     <mat-icon class="material-icons-outlined col-white" matSuffix>add</mat-icon>
                   </button>
                   <button mat-mini-fab class="bg-red" *ngIf="estado === 'editar'" #tooltip="matTooltip" matTooltip="Cancelar" (click)="limpiar()">
@@ -98,20 +98,30 @@
                     <textarea matInput [(ngModel)]="observaciones"  style="min-height: 12rem;"></textarea>
                   </mat-form-field>
                 </div>
-                <div class="col-md-6">
-                  <mat-slide-toggle *ngIf="activeList === 2 || activeList === 7" class="example-margin" [(ngModel)]="referencias" >
-                    Referencias Comerciales?
-                    </mat-slide-toggle>
+                <div class="row">
+                  <div class="col-md-6">
+                    <mat-slide-toggle *ngIf="activeList === 2 || activeList === 7" class="example-margin" [(ngModel)]="referencias" style="white-space: nowrap;" >
+                      Referencias Comerciales?
+                      </mat-slide-toggle>
+                  </div>
+                  <div class="col-md-6">
+                    <mat-slide-toggle *ngIf="activeList === 5" class="example-margin" [(ngModel)]="traduccion" (ngModelChange)="traduccion === true ? observaciones = 'REALIZAR TRADUCCION DIRECTA\n============================\n' + observaciones : observaciones = ''" >
+                      Traducción Directa
+                      </mat-slide-toggle>
+                  </div>
                 </div>
-                <div class="col-md-6">
-                  <mat-slide-toggle *ngIf="activeList === 5" class="example-margin" [(ngModel)]="traduccion" (ngModelChange)="traduccion === true ? observaciones = 'REALIZAR TRADUCCION DIRECTA\n============================\n' + observaciones : observaciones = ''" >
-                    Traducción Directa
-                    </mat-slide-toggle>
-                </div>
+                <div class="row">
+
                 <div class="col-md-6">
                   <mat-slide-toggle *ngIf="type === 'AG'" class="example-margin" [(ngModel)]="balance" (ngModelChange)="balance === true ? observaciones = 'ASIGNACION DE SOLO BALANCE\n============================\n' + observaciones : observaciones = ''">
-                  Solo Balance?
+                    Solo Balance?
                   </mat-slide-toggle>
+                </div>
+                <div class="col-md-6">
+                  <mat-slide-toggle *ngIf="type === 'AG'" class="example-margin" [(ngModel)]="sendZip">
+                    Enviar Carpeta Completa
+                  </mat-slide-toggle>
+                </div>
                 </div>
               </div>
             </div>

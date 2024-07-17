@@ -65,6 +65,7 @@ export class SeleccionarAgenteComponent implements OnInit {
   qualityTypist = ""
   qualityTranslator = ""
   hasBalance = false
+  sendZip = false
 
   seleccionarTrabajador(codigo : string, nombre : string, idUserLogin : number, internal : boolean){
     this.asignadoCodigo = codigo
@@ -275,6 +276,7 @@ export class SeleccionarAgenteComponent implements OnInit {
       qualityTypist : this.qualityTypist !== '' ? this.qualityTypist : null,
       qualityTranslator : this.qualityTranslator !== '' ? this.qualityTranslator : null,
       hasBalance : this.hasBalance,
+      sendZip : this.sendZip,
     }
     this.asignacion.push(asign)
     this.dataSource.data = this.asignacion
@@ -289,6 +291,7 @@ export class SeleccionarAgenteComponent implements OnInit {
     this.observaciones = ""
     this.activeList = 0
     this.interno = false
+
     this.estado = 'agregar'
   }
 

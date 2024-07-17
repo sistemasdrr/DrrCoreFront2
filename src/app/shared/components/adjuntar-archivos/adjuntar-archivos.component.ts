@@ -41,6 +41,8 @@ export class AdjuntarArchivosComponent implements OnInit {
   }
 
   borrarAttachment(id : number){
+
+    console.log(id)
     Swal.fire({
       title: '¿Está seguro de eliminar este registro?',
       text: "",
@@ -54,14 +56,23 @@ export class AdjuntarArchivosComponent implements OnInit {
       heightAuto : true
     }).then((result) => {
       if (result.value) {
-        Swal.fire({
-          title :'¡Eliminado!',
-          text : 'El registro se elimino correctamente.',
-          icon : 'success',
-          width: '20rem',
-          heightAuto : true
-        });
-        this.attachments = this.attachments.filter(x => x.id !== id)
+        this.loading=true;
+        this.ticketService.DeleteFile(id).subscribe(
+          (response) => {
+            if(response.isSuccess === true && response.isWarning === false){
+              Swal.fire({
+                title :'¡Eliminado!',
+                text : 'El registro se elimino correctamente.',
+                icon : 'success',
+                width: '20rem',
+                heightAuto : true
+              });
+              this.adjuntos = this.adjuntos.filter(x => x.id !== id)
+              this.loading = false
+            }
+          }
+        )
+
 
       }
     });
@@ -137,31 +148,20 @@ export class AdjuntarArchivosComponent implements OnInit {
     );
   }
   downloadZip() {
-  this.loading=true;
-    let zip = new JSZip();
-    let zipBlob = new Blob();
-
-    let count = 0;
-
-    this.adjuntos.forEach(element => {
-      this.ticketService.downloadFile(element.id).subscribe(response => {
-        let blob: Blob = response.body as Blob;
-        zip.file(element.name, blob);
-
-        count++;
-
-        if (count === this.adjuntos.length) {
-          setTimeout(() => {
-            zip.generateAsync({ type: 'blob' }).then(content => {
-              zipBlob = content;
-            }).then(() => {
-              saveAs(zipBlob, 'adjuntos_'+this.cupon+'.zip');
-             this.loading=false;
-            });
-          }, 5000);
-        }
-      });
-    });
+    const listaEmpresas = document.getElementById('loader-lista-cupon') as HTMLElement | null;
+    this.loading=true;
+     this.ticketService.DownloadZipByIdTicket(this.idTicket).subscribe(response=>{
+       let blob : Blob = response.body as Blob;
+       let a =document.createElement('a');
+      console.log(response.body?.name)
+       a.download= response.body?.name ?? this.cupon;
+       a.href=window.URL.createObjectURL(blob);
+       a.click();
+     }).add(
+       () => {
+         this.loading=false;
+       }
+     );
   }
 
 
