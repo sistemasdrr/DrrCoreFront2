@@ -4,6 +4,7 @@ export interface SociosEmpresa{
   idPerson : number
   mainExecutive : boolean
   profession : string
+  professionEng : string
   participation : number
   startDate : string
 }

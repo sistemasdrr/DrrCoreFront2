@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ComboData, ComboData2, ComboData3, ComboData4, ComboDataName, PoliticaPagos, Reputacion, RiesgoCrediticio } from 'app/models/combo';
+import { ComboData, ComboData2, ComboData3, ComboData4, ComboDataCode, ComboDataName, PoliticaPagos, Reputacion, RiesgoCrediticio } from 'app/models/combo';
 import { Pais } from 'app/models/combo';
 import { Response } from 'app/models/response';
 import { environment } from 'environments/environment';
@@ -16,6 +16,9 @@ export class ComboService {
 
   constructor(private http : HttpClient) { }
 
+  getOccupations() : Observable<Response<ComboDataCode[]>>{
+    return this.http.get<Response<ComboDataCode[]>>(this.url + this.controllerCombo + '/occupations');
+  }
   getTipoDocumento() : Observable<Response<ComboData[]>>{
     return this.http.get<Response<ComboData[]>>(this.url + this.controllerCombo + '/doctype');
   }

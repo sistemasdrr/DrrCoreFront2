@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ComboData } from 'app/models/combo';
+import { ComboData, ComboDataCode } from 'app/models/combo';
 import { ComboService } from 'app/services/combo.service';
 import { SociosEmpresaService } from 'app/services/informes/empresa/socios-empresa.service';
 import { Observable, map, startWith } from 'rxjs';
@@ -51,6 +51,7 @@ export class AgregarSocioComponent implements OnInit {
   idPerson = 0
   mainExecutive = false
   profession = ""
+  professionEng = ""
   participation = 0
   startDate = ""
   startDateD : Date | null = null
@@ -69,11 +70,13 @@ export class AgregarSocioComponent implements OnInit {
   colorMsgSituacionRuc = ""
 
   controlProfesion = new FormControl<string | ComboData>('');
-  filterProfesion: Observable<ComboData[]>
-  listaProfesion: ComboData[] = []
-  profesion: ComboData = {
+  filterProfesion: Observable<ComboDataCode[]>
+  listaProfesion: ComboDataCode[] = []
+  profesion: ComboDataCode = {
     id: 0,
-    valor: ''
+    valor: '',
+    valorEng: '',
+    code: '',
   }
   msgProfesion = ""
   colorMsgProfesion = ""
@@ -90,10 +93,10 @@ export class AgregarSocioComponent implements OnInit {
     }
     this.idCompany = data.idCompany
     this.filterSituacionRuc = new Observable<ComboData[]>()
-    this.filterProfesion = new Observable<ComboData[]>()
+    this.filterProfesion = new Observable<ComboDataCode[]>()
   }
   ngOnInit(): void {
-    this.comboService.getProfesion().subscribe(
+    this.comboService.getOccupations().subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.listaProfesion = response.data
@@ -132,6 +135,7 @@ export class AgregarSocioComponent implements OnInit {
               this.idPerson = socio.idPerson
               this.mainExecutive = socio.mainExecutive
               this.profession = socio.profession
+              this.professionEng = socio.professionEng
               this.participation = socio.participation
               if(socio.startDate !== null && socio.startDate !== ""){
                 const fecha = socio.startDate.split("/")
@@ -212,8 +216,9 @@ export class AgregarSocioComponent implements OnInit {
       idPerson : this.idPerson,
       mainExecutive : this.mainExecutive,
       profession : this.profession,
+      professionEng : this.professionEng,
       participation : this.participation,
-      startDate : this.startDate
+      startDate : this.startDate,
     }
   }
   selectIdioma(idioma: string) {
@@ -265,19 +270,20 @@ export class AgregarSocioComponent implements OnInit {
     }
     console.log(this.idLegalRegisterSituation)
   }
-  private _filterProfesion(description: string): ComboData[] {
+  private _filterProfesion(description: string): ComboDataCode[] {
     const filterValue = description.toLowerCase();
     return this.listaProfesion.filter(profesion => profesion.valor.toLowerCase().includes(filterValue));
   }
 
-  displayProfesion(profesion : ComboData): string {
+  displayProfesion(profesion : ComboDataCode): string {
     return profesion && profesion.valor ? profesion.valor : '';
   }
   limpiarSeleccionProfesion() {
     this.controlProfesion.reset();
     this.profession = ""
+    this.professionEng = ""
   }
-  cambioProfesion(profesion: any) {
+  cambioProfesion(profesion: ComboDataCode) {
     console.log(profesion)
     if (typeof profesion === 'string' || profesion === null) {
       this.msgProfesion = "Seleccione una opción."
@@ -286,6 +292,7 @@ export class AgregarSocioComponent implements OnInit {
     } else {
       this.msgProfesion = "Opción Seleccionada."
       this.profession = profesion.valor
+      this.professionEng = profesion.valorEng
       this.colorMsgProfesion = "green"
     }
     console.log(this.profession)
