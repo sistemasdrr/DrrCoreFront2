@@ -149,6 +149,7 @@ export class AgentesComponent implements OnInit{
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.DTQuery3_1ByYear.data = response.data
+          this.DTQuery3_1ByYear.sort = this.sort
           this.DTQuery3_1ByYear.data.forEach(element => {
             this.query3_1TotalAgents++;
             this.query3_1TotalReports += element.total
@@ -168,6 +169,12 @@ export class AgentesComponent implements OnInit{
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.DTQuery3_1ByMonth.data = response.data
+          this.DTQuery3_1ByMonth.sort = this.sort
+          this.query3_1TotalOR = 0;
+          this.query3_1TotalRV = 0;
+          this.query3_1TotalEF = 0;
+          this.query3_1TotalPrice = 0;
+
           this.DTQuery3_1ByMonth.data.forEach(element => {
             this.query3_1TotalPrice += element.price
             if(element.reportType === "OR"){
