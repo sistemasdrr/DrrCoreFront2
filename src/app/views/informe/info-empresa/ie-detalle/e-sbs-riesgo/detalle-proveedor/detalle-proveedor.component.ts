@@ -198,6 +198,9 @@ export class DetalleProveedorComponent implements OnInit {
                   if(this.idCountry !== 0){
                     this.paisSeleccionado = this.paises.filter(x => x.id === this.idCountry)[0]
                   }
+                  if(this.idCurrency !== 0){
+                    this.currencyInforme = this.monedas.filter(x => x.id === this.idCurrency)[0]
+                  }
                 }
               )
             }

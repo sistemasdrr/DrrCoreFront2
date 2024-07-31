@@ -10,6 +10,7 @@ import { PersonSbsService } from 'app/services/informes/persona/person-sbs.servi
 import { TicketService } from 'app/services/pedidos/ticket.service';
 import { DetalleEComponent } from './detalle-e/detalle-e.component';
 import { DetallePComponent } from './detalle-p/detalle-p.component';
+import { ReferenciasComercialesRefComponent } from './referencias-comerciales-ref/referencias-comerciales-ref.component';
 
 @Component({
   selector: 'app-referencista',
@@ -297,7 +298,13 @@ agregarProveedor() {
       }
     })
   }
-
+  listarProveedores(idTicket : number){
+    const dialogRef = this.dialog.open(ReferenciasComercialesRefComponent, {
+      data: {
+        idTicket: idTicket
+      },
+    });
+  }
   guardar(){
     this.dataSourceProveedor.data.forEach(element => {
       element.idTicket = this.idTicket
@@ -325,7 +332,11 @@ agregarProveedor() {
                 text: "",
                 icon: 'success',
                 width: '20rem',
-              })
+              }).then(
+                () => {
+                  this.ngOnInit()
+                }
+              )
             }
           }
         )

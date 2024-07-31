@@ -81,6 +81,7 @@ import { ReferencistaComponent } from './referencista/referencista.component';
 import { DetallePComponent } from './referencista/detalle-p/detalle-p.component';
 import { DetalleEComponent } from './referencista/detalle-e/detalle-e.component';
 import { ListaEmpresas2Component } from './info-empresa/ie-lista/socios-empresa/agregar-accionista/lista-empresas/lista-empresas.component';
+import { ReferenciasComercialesRefComponent } from './referencista/referencias-comerciales-ref/referencias-comerciales-ref.component';
 
 @NgModule({
   declarations: [
@@ -137,7 +138,8 @@ import { ListaEmpresas2Component } from './info-empresa/ie-lista/socios-empresa/
     ImageEditorComponent,
     ReferencistaComponent,
     DetallePComponent,
-    DetalleEComponent
+    DetalleEComponent,
+    ReferenciasComercialesRefComponent
   ],
   imports: [
     CommonModule,

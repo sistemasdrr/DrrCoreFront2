@@ -464,6 +464,12 @@ export class BalanceSituacionalComponent implements OnInit {
           }
         }
       }
+    ).add(
+      () => {
+        if(this.idCurrency !== null && this.idCurrency !== 0){
+          this.currencyInforme = this.listaMonedas.filter(x => x.id === this.idCurrency)[0]
+        }
+      }
     )
   }
 

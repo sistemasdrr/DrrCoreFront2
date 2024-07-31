@@ -86,23 +86,7 @@
                   </div>
                 </div>
               </div>
-
-              <div class="col-md-5">
-                <mat-form-field style="width: 100%;">
-                  <mat-label>Referencista o Analista que lo realizó</mat-label>
-                  <input matInput type="text" [(ngModel)]="referentOrAnalyst">
-                </mat-form-field>
-              </div>
-              <div class="col-md-3 ">
-                <mat-form-field color="primary" class="w-100">
-                  <mat-label>Fecha</mat-label>
-                  <input matInput [matDatepicker]="fecha" [ngModel]="dateD" (dateChange)="selectFecha1($event)">
-                  <mat-datepicker-toggle matIconSuffix [for]="fecha"></mat-datepicker-toggle>
-                  <mat-datepicker #fecha color="primary"></mat-datepicker>
-                </mat-form-field>
-              </div>
             </div>
-
           </div>
         </ng-template>
       </mat-tab>

@@ -36,3 +36,43 @@ mat-form-field{
 .sin-traduccion{
   filter: contrast(.3);
 }
+.input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 80px;
+  max-width: 100px;
+}
+.circle-0 {
+  width: 1rem;
+  height: 1rem;
+  background-color: green;
+  border: 1px solid black;
+  border-radius: 50%;
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.circle-1 {
+  width: 1rem;
+  height: 1rem;
+  background-color: yellow;
+  border-radius: 50%;
+  border: 1px solid black;
+  position: absolute;
+  right: 8px;
+  top: 60%;
+  transform: translateY(-50%);
+}
+.circle-2 {
+  width: 1rem;
+  height: 1rem;
+  background-color: red;
+  border: 1px solid black;
+  border-radius: 50%;
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+}

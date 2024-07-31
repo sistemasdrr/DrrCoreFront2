@@ -33,7 +33,7 @@
                     <ng-container matColumnDef="country">
                       <th mat-header-cell *matHeaderCellDef class="text-center" style="font-size: 18px;"> Pais</th>
                       <td mat-cell *matCellDef="let proveedor" class="text-center">
-                        {{proveedor.country}}
+                        <label> {{proveedor.country}} <span style="font-size: 20px;"  class="fi fi-{{proveedor.flagCountry}}"></span></label>
                       </td>
                     </ng-container>
                     <ng-container matColumnDef="maximumAmount">
@@ -57,9 +57,14 @@
                       <td mat-cell *matCellDef="let proveedor" class="text-center"> {{proveedor.date}} </td>
                     </ng-container>
                     <ng-container matColumnDef="productsTheySell">
-                      <th mat-header-cell *matHeaderCellDef class="text-center" style="font-size: 18px;"> Articulos
+                      <th mat-header-cell *matHeaderCellDef class="text-center" style="font-size: 18px;"> Dio Referencia
                       </th>
-                      <td mat-cell *matCellDef="let proveedor" class="text-center"> {{proveedor.productsTheySell}} </td>
+                      <td mat-cell *matCellDef="let proveedor" class="text-center">
+                        <div class="input-container">
+                          <div class="circle-0" *ngIf="proveedor.qualification === 'Dió referencia'"></div>
+                          <div class="circle-2" *ngIf="proveedor.qualification !== 'Dió referencia'"></div>
+                        </div>
+                      </td>
                     </ng-container>
                     <ng-container matColumnDef="attendedBy">
                       <th mat-header-cell *matHeaderCellDef class="text-center" style="font-size: 18px;"> Atendio </th>
@@ -119,8 +124,11 @@
                       <td mat-cell *matCellDef="let historico" class="text-center"> {{historico.ticket}} </td>
                     </ng-container>
                     <ng-container matColumnDef="numReferences">
-                      <th mat-header-cell *matHeaderCellDef class="text-center" style="font-size: 18px;"> # de Referencias </th>
-                      <td mat-cell *matCellDef="let proveedor" class="text-center"> {{proveedor.numReferences}} </td>
+                      <th mat-header-cell *matHeaderCellDef class="text-center" style="font-size: 18px;"> # de Referencias Validas </th>
+                      <td mat-cell *matCellDef="let proveedor" class="text-center">
+                        <a *ngIf="proveedor.numReferences > 0" href="#" (click)="$event.stopPropagation(); listarProveedores(proveedor.idTicket)">{{proveedor.numReferences}}</a>
+                        <p *ngIf="proveedor.numReferences > 0">0</p>
+                      </td>
                     </ng-container>
                     <ng-container matColumnDef="referentName">
                       <th mat-header-cell *matHeaderCellDef class="text-center" style="font-size: 18px;"> Referencista</th>

@@ -141,6 +141,9 @@ export class TicketService {
   getProvidersByTicket(idTicket : number) : Observable<Response<ProviderByTicket[]>>{
     return this.http.get<Response<ProviderByTicket[]>>(this.url + this.controllerTicket + '/providerByIdTicket?idTicket='+idTicket );
   }
+  providerHistoryByIdTicket(idTicket : number) : Observable<Response<ProviderByTicket[]>>{
+    return this.http.get<Response<ProviderByTicket[]>>(this.url + this.controllerTicket + '/providerHistoryByIdTicket?idTicket='+idTicket );
+  }
   getTicketHistoryCount() : Observable<Response<TicketHistoryCount[]>>{
     return this.http.get<Response<TicketHistoryCount[]>>(this.url + this.controllerTicket + '/getCountAsignation' );
   }

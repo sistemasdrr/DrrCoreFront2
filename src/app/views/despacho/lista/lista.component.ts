@@ -11,6 +11,7 @@ import { TicketService } from 'app/services/pedidos/ticket.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import Swal from 'sweetalert2';
 import { DatosEmpresaService } from 'app/services/informes/empresa/datos-empresa.service';
+import { AdjuntarArchivosComponent } from '@shared/components/adjuntar-archivos/adjuntar-archivos.component';
 
 
 
@@ -83,7 +84,22 @@ export class ListaComponent implements OnInit {
         }
       })
   }
-
+  agregarAdjuntos(cod : string,cupon:string) {
+    console.log(cod);
+    const dialogRef = this.dialog.open(AdjuntarArchivosComponent, {
+      data: {
+        id: cod,
+        cupon: cupon,
+      },
+  });
+  console.log(dialogRef)
+    // dialogRef.afterClosed().subscribe((codAbonado) => {
+    //   if (codAbonado) {
+    //     this.codAbonado = codAbonado.codigoAbonado
+    //     this.asignarDatosAbonado()
+    //   }
+    // });
+  }
   enviarInforme(id : number){
     const loader = document.getElementById('loader-lista-despacho') as HTMLElement | null;
 

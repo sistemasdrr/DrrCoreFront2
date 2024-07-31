@@ -31,6 +31,9 @@ export class SbsRiesgoService {
   getProviderHistory(type : string,id : number): Observable<Response<ProveedorHistory[]>>{
     return this.http.get<Response<ProveedorHistory[]>>(this.url  + this.controllerCompany + '/getProviderHistory?type='+type+'&id='+id)
   }
+  GetListProviderHistoryByIdTicket(idTicket : number): Observable<Response<ProveedorHistory[]>>{
+    return this.http.get<Response<ProveedorHistory[]>>(this.url  + this.controllerCompany + '/GetListProviderHistoryByIdTicket?idTicket='+idTicket)
+  }
   getProviderById(id : number): Observable<Response<Proveedor>>{
     return this.http.get<Response<Proveedor>>(this.url + this.controllerCompany + '/getProviderById?id='+id)
   }
