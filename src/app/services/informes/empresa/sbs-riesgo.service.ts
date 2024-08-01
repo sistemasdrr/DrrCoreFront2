@@ -22,8 +22,8 @@ export class SbsRiesgoService {
   addProvider(obj : Proveedor): Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url  + this.controllerCompany + '/addOrUpdateProvider',obj)
   }
-  addListProvider(obj : ProveedorT[], idCompany : number,user:string): Observable<Response<boolean>>{
-    return this.http.post<Response<boolean>>(this.url  + this.controllerCompany + '/addListProvider?idCompany='+idCompany+'&user='+user,obj)
+  addListProvider(obj : ProveedorT[], idCompany : number,user:string, idTicket : number): Observable<Response<boolean>>{
+    return this.http.post<Response<boolean>>(this.url  + this.controllerCompany + '/addListProvider?idCompany='+idCompany+'&user='+user+'&idTicket='+idTicket,obj)
   }
   getProviderByIdCompany(idCompany : number): Observable<Response<ProveedorT[]>>{
     return this.http.get<Response<ProveedorT[]>>(this.url  + this.controllerCompany + '/getListProvider?idCompany='+idCompany)

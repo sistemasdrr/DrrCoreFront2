@@ -12,6 +12,7 @@ import { ConsultarComponent } from './consultar/consultar.component';
 import { ListTicket } from 'app/models/pedidos/ticket';
 import { TicketService } from 'app/services/pedidos/ticket.service';
 import Swal from 'sweetalert2';
+import { AdjuntarArchivosComponent } from '@shared/components/adjuntar-archivos/adjuntar-archivos.component';
 
 @Component({
   selector: 'app-lista',
@@ -75,6 +76,22 @@ export class ListaComponent implements OnInit {
         this.loading = false
       }
     )
+  }
+  agregarAdjuntos(cod : string,cupon:string) {
+    console.log(cod);
+    const dialogRef = this.dialog.open(AdjuntarArchivosComponent, {
+      data: {
+        id: cod,
+        cupon: cupon,
+      },
+  });
+  console.log(dialogRef)
+    // dialogRef.afterClosed().subscribe((codAbonado) => {
+    //   if (codAbonado) {
+    //     this.codAbonado = codAbonado.codigoAbonado
+    //     this.asignarDatosAbonado()
+    //   }
+    // });
   }
   getColor(arg0: boolean,arg1: number): string {
 

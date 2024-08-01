@@ -324,7 +324,7 @@ agregarProveedor() {
       heightAuto : true
     }).then((result) => {
       if (result.value) {
-        this.sbsService.addListProvider(this.dataSourceProveedor.data, this.id,this.user).subscribe(
+        this.sbsService.addListProvider(this.dataSourceProveedor.data, this.id,this.user,this.idTicket).subscribe(
           (response) => {
             if(response.isSuccess === true && response.isWarning === false){
               Swal.fire({
