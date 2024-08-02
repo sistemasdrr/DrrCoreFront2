@@ -369,11 +369,14 @@
             <ng-container matColumnDef="Acciones" >
             <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Acciones </th>
             <td mat-cell *matCellDef="let order" class="text-center" style="white-space: nowrap;">
+              <button mat-icon-button (click)="$event.stopPropagation();agregarAdjuntos(order.idTicket,order.number)" #tooltip="matTooltip" matTooltip="Adjuntos">
+                <mat-icon style="{{order.hasFiles === true ? 'color: red;' : 'color: gray;'}}">attach_file</mat-icon>
+              </button>
               <button *ngIf="order.id > 0" mat-icon-button class="tbl-action-btn " (click)="$event.stopPropagation();verHistorial(order.idTicket)" matTooltip="Ver Historial">
                 <app-feather-icons [icon]="'clock'" [class]="'tbl-fav-edit'"></app-feather-icons>
               </button>
-              <button *ngIf="order.idStatusTicket === 9 || order.idStatusTicket === 23" mat-icon-button class="tbl-action-btn " (click)="$event.stopPropagation();enviarComplemento(order.idTicket)" matTooltip="Ver Historial">
-                <app-feather-icons [icon]="'plus'" [class]="'tbl-fav-edit'"></app-feather-icons>
+              <button *ngIf="order.idStatusTicket === 9 || order.idStatusTicket === 23" mat-icon-button class="tbl-action-btn " (click)="$event.stopPropagation();enviarComplemento(order.idTicket)" matTooltip="Enviar Complemento">
+                <B style="color: red;">C</B>
               </button>
 
             </td>

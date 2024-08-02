@@ -533,4 +533,5 @@ export interface Query5_1_2Tickets{
   expireDate : string
   realExpireDate : string
   flag : number
+  hasFiles : boolean
 }

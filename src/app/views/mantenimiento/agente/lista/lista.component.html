@@ -90,9 +90,6 @@
               <a [routerLink]="'/mantenimiento/agente/detalle/'+agente.id" mat-mini-fab class="btn bg-white" matTooltip="Editar">
                 <app-feather-icons [icon]="'edit'" class="tbl-fav-edit"></app-feather-icons>
               </a>
-              <button  mat-mini-fab class="bg-white" matTooltip="Socios">
-                <app-feather-icons [icon]="'users'" class="tbl-fav-socios"></app-feather-icons>
-              </button>
               <button  mat-mini-fab class="bg-white" matTooltip="Eliminar">
                 <app-feather-icons [icon]="'trash-2'"  (click)="eliminarAgente(agente.id)" class="tbl-fav-delete"></app-feather-icons>
               </button>

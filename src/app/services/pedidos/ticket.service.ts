@@ -184,4 +184,7 @@ export class TicketService {
     return this.http.get<Response<boolean>>(this.url + this.controllerTicket + '/DeleteFile?id='+id);
   }
 
+  SendComplement(idTicket : number, idUser : number, digited : boolean, file : boolean, observations : string) : Observable<Response<string>>{
+    return this.http.get<Response<string>>(this.url + this.controllerTicket + '/SendComplement?idTicket='+idTicket+'&idUser='+idUser+'&digited='+digited+'&file='+file+'&observations='+observations);
+  }
 }

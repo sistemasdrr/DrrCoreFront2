@@ -9,6 +9,7 @@ import { ConsultaService } from 'app/services/Consultas/consulta.service';
 import { HistorialPedidoComponent } from 'app/views/situacion/lista/historial-pedido/historial-pedido.component';
 import Swal from 'sweetalert2';
 import { ComplementoComponent } from './complemento/complemento.component';
+import { AdjuntarArchivosComponent } from '@shared/components/adjuntar-archivos/adjuntar-archivos.component';
 
 @Component({
   selector: 'app-informes',
@@ -121,7 +122,22 @@ export class InformesComponent implements OnInit{
     this.dataSource2.paginator = this.paginator
     this.dataSource2.sort = this.sort
   }
-
+  agregarAdjuntos(cod : string,cupon:string) {
+    console.log(cod);
+    const dialogRef = this.dialog.open(AdjuntarArchivosComponent, {
+      data: {
+        id: cod,
+        cupon: cupon,
+      },
+  });
+  console.log(dialogRef)
+    // dialogRef.afterClosed().subscribe((codAbonado) => {
+    //   if (codAbonado) {
+    //     this.codAbonado = codAbonado.codigoAbonado
+    //     this.asignarDatosAbonado()
+    //   }
+    // });
+  }
   query5_1_1_idSubscriber = 0
   query5_1_1_number = ""
   query5_1_1_name = ""
