@@ -174,12 +174,12 @@ export class ListaComponent implements OnInit {
   consultar(ticket : ListTicket){
 
   }
-  descargarDocumento(idCompany : number, oldCode : string, idioma : string, formato:string){
+  descargarDocumento(idTicket : number, oldCode : string, idioma : string, formato:string){
     const listaEmpresas = document.getElementById('loader-lista-despacho') as HTMLElement | null;
     if(listaEmpresas){
       listaEmpresas.classList.remove('hide-loader');
     }
-    this.datosEmpresaService.downloadReportF8(idCompany,"E","pdf").subscribe(response=>{
+    this.ticketService.DownloadF8ByIdTicket(idTicket,"E","pdf").subscribe(response=>{
       let blob : Blob = response.body as Blob;
       let a =document.createElement('a');
       const language = idioma === "I" ? "ENG" : "SPA"

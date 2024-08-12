@@ -110,6 +110,9 @@ export class TicketService {
   downloadReport(){
     return this.http.get(this.url + this.controllerTicket + '/report',{observe:'response',responseType:'blob'});
   }
+  DownloadF8ByIdTicket(idTicket : number, language : string, format : string){
+    return this.http.get(this.url + this.controllerTicket + '/DownloadF8ByIdTicket?idTicket='+idTicket+'&language='+language+'&format='+format,{observe:'response',responseType:'blob'});
+  }
 
   savePreassign(list : SaveTicketAssignation[]) : Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/saveTicketPreassignations',list);

@@ -90,7 +90,7 @@
             <button mat-icon-button (click)="$event.stopPropagation(); enviarInforme(order.id)" class="tbl-action-btn " matTooltip="Enviar Informe">
               <app-feather-icons [icon]="'send'" [class]="'tbl-fav-edit'"></app-feather-icons>
             </button>
-            <button  mat-icon-button  matTooltip="Generar Documento" (click)="$event.stopPropagation(); descargarDocumento(order.idCompany,order.busineesName,'E','pdf')">
+            <button  mat-icon-button  matTooltip="Generar Documento" (click)="$event.stopPropagation(); descargarDocumento(order.id,order.busineesName,'E','pdf')">
               <app-feather-icons [icon]="'file-text'" class="tbl-fav-pdf"></app-feather-icons>
             </button>
           </td>
