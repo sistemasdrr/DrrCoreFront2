@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SeriesDashboard } from 'app/models/dashboard';
-import { ObservedTickets, PendingTask } from 'app/models/pedidos/ticket';
+import { ObservedTickets, PendingTask, PendingTaskByUser, PendingTaskSupervisor } from 'app/models/pedidos/ticket';
 import { Response } from 'app/models/response';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
@@ -30,5 +30,8 @@ export class DashboardService {
   }
   SeriesDashboard() : Observable<Response<SeriesDashboard>>{
     return this.http.get<Response<SeriesDashboard>>(this.url + this.controllerDashboard + '/TicketsInCurrentMonth');
+  }
+  GetPendingTaskByUser(userTo : string) : Observable<Response<PendingTaskSupervisor[]>>{
+    return this.http.get<Response<PendingTaskSupervisor[]>>(this.url + this.controllerDashboard + '/GetPendingTaskByUser?userTo='+userTo);
   }
 }

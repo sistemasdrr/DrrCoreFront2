@@ -405,3 +405,25 @@ export interface ObservedTickets{
   idTicket : number
   ticket : string
 }
+export interface PendingTaskSupervisor{
+  name: string;
+  code: string;
+  details : PendingTaskByUser[];
+}
+export interface PendingTaskByUser{
+  asignedTo: string;
+  type: string;
+  name: string;
+  country: string;
+  flagCountry: string;
+  details : PendingTaskByUserDetails[];
+}
+export interface PendingTaskByUserDetails{
+  id: number;
+  number: string;
+  requestedName: string;
+  country: string;
+  flagCountry: string;
+  expireDate: string;
+  flag: number;
+}

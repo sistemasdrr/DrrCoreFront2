@@ -87,7 +87,7 @@
       <table  mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8" matSort>
         <ng-container matColumnDef="language" >
         <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Idioma</th>
-        <td mat-cell *matCellDef="let persona" class="text-center">
+        <td mat-cell *matCellDef="let persona" class="text-center" style="max-width: 5rem;">
           <span class="fi fi-es" style="font-size: 24px;" *ngIf="persona.language === 'E'"></span>
           <span class="fi fi-us" style="font-size: 24px;" *ngIf="persona.language === 'I'"></span>
           <span class="fi fi-us" style="font-size: 24px; background-image: url(./../../../../../../assets/images/us-es.png);" *ngIf="persona.language === 'A'"></span>

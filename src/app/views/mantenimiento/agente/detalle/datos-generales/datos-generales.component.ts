@@ -8,6 +8,7 @@ import { ComboService } from 'app/services/combo.service';
 import { AgenteService } from 'app/services/mantenimiento/agente.service';
 import { Observable, map, startWith } from 'rxjs';
 import Swal from 'sweetalert2';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-datos-generales-agente',
@@ -175,17 +176,14 @@ export class DatosGeneralesAgenteComponent implements OnInit {
   }
 
   selectFechaIngreso(event: MatDatepickerInputEvent<Date>) {
-    this.startDateD = event.value!
     const selectedDate = event.value;
-    if (selectedDate) {
+    if (moment.isMoment(selectedDate)) {
       this.startDate = this.formatDate(selectedDate);
     }
   }
-  formatDate(date: Date): string {
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear().toString();
-    return `${day}/${month}/${year}`;
+  formatDate(date: moment.Moment): string {
+    const formattedDate = date.format('DD/MM/YYYY');
+    return formattedDate;
   }
 
   armarAgenteActual(){
@@ -228,6 +226,7 @@ export class DatosGeneralesAgenteComponent implements OnInit {
   }
   guardar(){
     this.armarAgenteModificado()
+    console.log(this.agenteModificado[0])
     if(this.id > 0){
       Swal.fire({
         title: '¿Está seguro de guardar los cambios?',

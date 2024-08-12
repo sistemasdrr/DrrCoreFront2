@@ -350,12 +350,14 @@ export class DatosEmpresaComponent implements OnInit, OnDestroy {
             if(DatosEmpresa.idPaymentPolicy > 0 && DatosEmpresa.idPaymentPolicy !== null){
               this.idPaymentPolicy = DatosEmpresa.idPaymentPolicy
               this.politicaPagoSeleccionada = this.politicaPagos.filter(x => x.id === this.idPaymentPolicy)[0]
+              this.colorPoliticaPagos = this.politicaPagos.filter(x => x.id === this.idPaymentPolicy)[0].color
             }else{
               this.idPaymentPolicy = 0
             }
             if(DatosEmpresa.idReputation > 0 && DatosEmpresa.idReputation !== null){
               this.idReputation = DatosEmpresa.idReputation
               this.reputacionSeleccionada = this.reputaciones.filter(x => x.id === this.idReputation)[0]
+              this.colorReputacion = this.reputaciones.filter(x => x.id === this.idReputation)[0].color
             }else{
               this.idReputation = 0
             }
@@ -748,11 +750,13 @@ export class DatosEmpresaComponent implements OnInit, OnDestroy {
     this.calificacionRiesgoCrediticio = event.value.identifier;
   }
   selectPoliticaPagos(event: MatSelectChange) {
+    console.log(event.value)
     this.politicaPagoSeleccionada = event.value;
     this.idPaymentPolicy = event.value.id;
     this.colorPoliticaPagos = event.value.color;
   }
   selectReputacion(event: MatSelectChange) {
+    console.log(event.value)
     this.reputacionSeleccionada = event.value;
     this.idReputation = event.value.id;
     this.colorReputacion = event.value.color;

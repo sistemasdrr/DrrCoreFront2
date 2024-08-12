@@ -27,10 +27,10 @@ export class AgenteService {
     return this.http.get<Response<PrecioAgenteT[]>>(this.url + this.controllerAgente + '/GetPricesById?idAgent='+idAgente);
   }
   getPrecioPorId(idPrecio : number): Observable<Response<PrecioAgente>>{
-    return this.http.get<Response<PrecioAgente>>(this.url + this.controllerAgente + '/getPrecioById?id='+idPrecio);
+    return this.http.get<Response<PrecioAgente>>(this.url + this.controllerAgente + '/GetPriceById?id='+idPrecio);
   }
-  addPrecio(precio : PrecioAgente): Observable<Response<boolean>>{
-    return this.http.post<Response<boolean>>(this.url + this.controllerAgente + '/addPrecio',precio);
+  addOrUpdatePrice(precio : PrecioAgente): Observable<Response<boolean>>{
+    return this.http.post<Response<boolean>>(this.url + this.controllerAgente + '/addOrUpdatePrice',precio);
   }
   addAgente(agente : Agente): Observable<Response<number>>{
     return this.http.post<Response<number>>(this.url + this.controllerAgente + '/addOrUpdate',agente);

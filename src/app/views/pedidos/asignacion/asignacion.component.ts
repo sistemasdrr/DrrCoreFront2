@@ -74,7 +74,7 @@ export class AsignacionComponent implements OnInit {
   ]
   //TABLA
   dataSource: MatTableDataSource<TicketListPending>;
-  columnsToDisplay = ['position','number', 'busineesName','subscriberCode', 'reportType', 'procedureType', 'orderDate', 'expireDate', 'Acciones' ];
+  columnsToDisplay = ['position','number', 'busineesName','investigatedIsoCountry','subscriberCode', 'reportType', 'procedureType', 'orderDate', 'expireDate', 'Acciones' ];
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
   expandedOrder: Pedido | null = null;
   selection = new SelectionModel<TicketListPending>(true, []);

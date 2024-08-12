@@ -14,6 +14,7 @@ import { ObservacionComponent } from './observacion/observacion.component';
 import { ObservacionPedidoComponent } from './observacion-pedido/observacion-pedido.component';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { ComplementoComponent } from 'app/views/consultas/informes/complemento/complemento.component';
 
 
 const today = new Date();
@@ -63,6 +64,7 @@ export class ListaSituacionComponent implements  OnInit {
   , 'reportType', 'language', 'orderDate', 'endDate', 'dispatchDate', 'Acciones' ];
 
   loading = false
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -78,7 +80,13 @@ export class ListaSituacionComponent implements  OnInit {
   ngOnInit(): void {
 
   }
-
+  enviarComplemento(idTicket : number) {
+    const dialogRef = this.dialog.open(ComplementoComponent, {
+      data : {
+          idTicket : idTicket
+      },
+    });
+  }
   applyFilter() {
     this.loading = true
     this.ticketService.getSearchSituation(this.about,this.typeSearch,this.name,0).subscribe(

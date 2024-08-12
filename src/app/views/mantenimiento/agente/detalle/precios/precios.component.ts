@@ -48,14 +48,16 @@ export class PreciosAgenteComponent implements OnInit{
   agregarPrecio(){
     const dialogRef = this.dialog.open(AgregarEditarAgenteComponent, {
       data : {
-        id : 0
+        id : 0,
+        idAgent : this.id
       },
     });
   }
   editarPrecio(idPrecio : number){
     const dialogRef = this.dialog.open(AgregarEditarAgenteComponent, {
       data : {
-        id : idPrecio
+        id : idPrecio,
+        idAgent : this.id
       },
     });
   }

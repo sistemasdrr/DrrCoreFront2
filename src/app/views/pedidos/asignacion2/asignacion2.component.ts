@@ -255,8 +255,14 @@ export class Asignacion2Component implements OnInit {
       cupon : cupon,
       comentario : comentario
 
-    },
-  });
+      },
+    });
+    dialogRef.afterClosed().subscribe(
+      () => {
+        this.ngOnInit
+      }
+    )
+
   console.log(dialogRef)
     // dialogRef.afterClosed().subscribe((codAbonado) => {
     //   if (codAbonado) {

@@ -187,4 +187,7 @@ export class TicketService {
   SendComplement(idTicket : number, idUser : number, digited : boolean, file : boolean, observations : string) : Observable<Response<string>>{
     return this.http.get<Response<string>>(this.url + this.controllerTicket + '/SendComplement?idTicket='+idTicket+'&idUser='+idUser+'&digited='+digited+'&file='+file+'&observations='+observations);
   }
+  SaveTicketCommentary(idTicket : number, commentary : string) : Observable<Response<string>>{
+    return this.http.post<Response<string>>(this.url + this.controllerTicket + '/SaveTicketCommentary?idTicket='+idTicket+'&commentary='+commentary,'');
+  }
 }

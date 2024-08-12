@@ -1,6 +1,6 @@
-import { PendingTask, ObservedTickets } from './../../models/pedidos/ticket';
+import { PendingTask, ObservedTickets, PendingTaskByUser, PendingTaskByUserDetails, PendingTaskSupervisor } from './../../models/pedidos/ticket';
 import { TicketService } from 'app/services/pedidos/ticket.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   ApexAxisChartSeries,
   ApexChart,
@@ -20,7 +20,19 @@ import {
 import { Router } from '@angular/router';
 import { DashboardService } from 'app/services/Dashboard/dashboard.service';
 import { SeriesDashboard } from 'app/models/dashboard';
+import { MatSidenav } from '@angular/material/sidenav';
+import { MatTableDataSource } from '@angular/material/table';
+import Swal from 'sweetalert2';
+import { ConsultaService } from 'app/services/Consultas/consulta.service';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
+
+export interface DistinctSupervisor{
+  code : string
+  name : string
+  details : string
+}
 export type ChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -46,6 +58,8 @@ export type ChartOptions = {
 })
 export class MainComponent implements OnInit {
 
+  loading = false
+
   numPendingTask = 0
   pendingTask : PendingTask[] = []
   pendingTaskStr = ""
@@ -56,6 +70,13 @@ export class MainComponent implements OnInit {
 
   idUser = ''
   idEmployee = 0
+
+  supervisorSeleccionado = ""
+
+  pendingTaskSupervisor : PendingTaskSupervisor[] = []
+  pendingTaskPersonalSelected : PendingTaskByUser[] = []
+  pendingTaskAgent : PendingTaskByUser[] = []
+  pendingTaskReporter : PendingTaskByUser[] = []
 
   public areaChartOptions!: Partial<ChartOptions>;
   public barChartOptions!: Partial<ChartOptions>;
@@ -76,13 +97,15 @@ export class MainComponent implements OnInit {
       active: 'Dashboard',
     },
   ];
-  constructor(private ticketService : TicketService, private router: Router, private dashboardService : DashboardService) {
+  constructor(private consultaService : ConsultaService, private router: Router, private dashboardService : DashboardService) {
     const auth = JSON.parse(localStorage.getItem('authCache')+'')
     if(auth){
       this.idUser = auth.idUser
       this.idEmployee = parseInt(auth.idEmployee)
     }
   }
+
+  tipo = "RP"
 
   ngOnInit() {
     this.chart1();
@@ -116,6 +139,36 @@ export class MainComponent implements OnInit {
         }
       }
     )
+    this.dashboardService.GetPendingTaskByUser(this.idUser).subscribe(
+      (response) => {
+        if(response.isSuccess === true && response.isWarning === false){
+          this.pendingTaskSupervisor = response.data
+
+
+        }
+      }
+    ).add(
+      () => {
+        this.supervisorSeleccionado = this.pendingTaskSupervisor[0].code
+
+        if(this.pendingTaskSupervisor.length === 1){
+          this.pendingTaskReporter = this.pendingTaskSupervisor[0].details.filter(x => x.type === "RP")
+          this.pendingTaskAgent = this.pendingTaskSupervisor[0].details.filter(x => x.type === "AG")
+        }else if(this.pendingTaskSupervisor.length > 1){
+          this.supervisorSeleccionado = this.pendingTaskSupervisor[0].code
+          this.pendingTaskPersonalSelected = this.pendingTaskSupervisor[0].details
+          this.pendingTaskReporter = this.pendingTaskPersonalSelected.filter(x => x.type === "RP")
+          this.pendingTaskAgent = this.pendingTaskPersonalSelected.filter(x => x.type === "AG")
+        }
+
+        if(this.pendingTaskReporter.length > 0){
+          this.tipo = "RP"
+        }else{
+          this.tipo = "AG"
+        }
+      }
+    )
+
     this.dashboardService.ObservedTickets(this.idEmployee).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
@@ -137,6 +190,22 @@ export class MainComponent implements OnInit {
     )
 
 
+  }
+  sumPedidos(pendingTask : PendingTaskByUser[]) : number {
+    let value = 0
+    pendingTask.forEach(element => {
+      value += element.details.length
+    });
+    return value
+  }
+  selectSupervisor(code : string, type : string){
+    this.dataSource1.data = []
+    this.dataSource2.data = []
+    const personal = this.pendingTaskSupervisor.filter(x => x.code === code)[0]
+    console.log(personal)
+      this.pendingTaskPersonalSelected = personal.details
+      this.pendingTaskReporter = this.pendingTaskPersonalSelected.filter(x => x.type === "RP")
+      this.pendingTaskAgent = this.pendingTaskPersonalSelected.filter(x => x.type === "AG")
   }
   redirigir(){
     this.router.navigate(['/pedidos/asignacion-empleados']);
@@ -516,5 +585,76 @@ export class MainComponent implements OnInit {
       }
     )
 
+  }
+
+  columnsToDisplay1 : string[] = ['number','requestedName','country','expireDate','acciones']
+  dataSource1 = new MatTableDataSource<PendingTaskByUserDetails>;
+  dataSource2 = new MatTableDataSource<PendingTaskByUserDetails>;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  closeSlider(nav: MatSidenav) {
+    nav.close();
+  }
+  taskClick(task: PendingTaskByUser, nav: MatSidenav): void {
+    if(task.type == "RP"){
+      this.dataSource1.data = task.details
+      this.dataSource1.sort = this.sort
+    }else{
+      this.dataSource2.data = task.details
+      this.dataSource2.sort = this.sort
+    }
+    nav.open();
+  }
+  enviarAlerta(idTicket : number){
+    Swal.fire({
+      title: '¿Está seguro de enviar una alerta?',
+      text: "",
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText : 'No',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí',
+      width: '20rem',
+      heightAuto : true
+    }).then((result) => {
+      if (result.value) {
+        this.loading = true
+        this.consultaService.SendTicketAlert(idTicket,parseInt(this.idUser)).subscribe(
+          (response) => {
+            if(response.isSuccess === true && response.isWarning === false){
+              this.loading = false
+              Swal.fire({
+
+                title : 'Se realizo correctamente el envio.',
+                icon : 'success',
+                width: '20rem',
+                heightAuto : true
+              });
+            }else{
+              this.loading = false
+              Swal.fire({
+                title : 'Error al realizar la solicitud',
+                icon : 'success',
+                width: '20rem',
+                heightAuto : true
+              });
+            }
+          },(error) => {
+            this.loading = false
+            Swal.fire({
+              text : error,
+              icon : 'success',
+              width: '20rem',
+              heightAuto : true
+            });
+          }
+        )
+
+
+      }
+    });
   }
 }

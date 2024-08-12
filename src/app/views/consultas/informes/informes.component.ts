@@ -35,6 +35,7 @@ export class InformesComponent implements OnInit{
 
   loading = false
 
+
   abonados : Query5_1_1[] = []
   abonados2 : Query5_1_2[] = []
 

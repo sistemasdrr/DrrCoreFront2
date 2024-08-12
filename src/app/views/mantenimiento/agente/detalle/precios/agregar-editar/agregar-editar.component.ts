@@ -2,10 +2,16 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { throwToolbarMixedModesError } from '@angular/material/toolbar';
+import { ActivatedRoute } from '@angular/router';
+import { dA } from '@fullcalendar/core/internal-common';
 import { ComboData } from 'app/models/combo';
 import { Pais } from 'app/models/combo';
+import { PrecioAgente } from 'app/models/mantenimiento/agente';
 import { ComboService } from 'app/services/combo.service';
+import { AgenteService } from 'app/services/mantenimiento/agente.service';
 import { Observable, map, startWith } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-agregar-editar',
@@ -18,6 +24,7 @@ export class AgregarEditarAgenteComponent implements OnInit {
 
   //FORM
   id = 0
+  idAgent = 0
   date = ""
   dateD : Date | null = null
   idContinent = 0
@@ -55,9 +62,12 @@ export class AgregarEditarAgenteComponent implements OnInit {
   colorMsgPais = ""
   iconoSeleccionado = ""
 
-  constructor(public dialogRef: MatDialogRef<AgregarEditarAgenteComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private comboService : ComboService){
+  modelo : PrecioAgente[] = []
+
+  constructor( private activatedRoute: ActivatedRoute, private agenteService : AgenteService,public dialogRef: MatDialogRef<AgregarEditarAgenteComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private comboService : ComboService){
     if(data){
       this.id = data.id
+      this.idAgent = data.idAgent
     }
     this.filterPais = new Observable<Pais[]>
   }
@@ -69,12 +79,62 @@ export class AgregarEditarAgenteComponent implements OnInit {
         }
       }
     )
-    if(this.id > 0){
-      this.titulo = "Editar Precio"
-    }else{
-      this.titulo = "Agregar Precio"
-    }
+    if(this.id !== 0){
+      this.agenteService.getPrecioPorId(this.id).subscribe(
+        (response) => {
+          if(response.isSuccess === true && response.isWarning === false){
+            if(response.data.date !== null && response.data.date !== ""){
+              const date = response.data.date.split("/")
+              if(date.length > 0){
+                this.dateD = new Date(parseInt(date[2]), parseInt(date[1]) - 1, parseInt(date[0]))
+                this.date = response.data.date
+              }
+            }
+            this.idAgent = response.data.idAgent
+            this.idCurrency = response.data.idCurrency
+            this.idContinent = response.data.idContinent
+            if(response.data.idCountry !== null && response.data.idCountry !== 0){
+              this.comboService.getPaisesPorContinente(this.idContinent).subscribe(
+                (response) => {
+                  if(response.isSuccess === true && response.isWarning === false){
+                    this.paises = []
+                    this.paises = response.data
+                    console.log(response.data)
+                    this.limpiarSeleccionPais()
+                  }
+                }
+              ).add(
+                () => {
+                  console.log(response.data.idCountry)
+                  this.countryPrecio = this.paises.filter(x => x.id === response.data.idCountry)[0]
+                  console.log(this.countryPrecio)
+                  this.idCountry = response.data.idCountry
+                }
+              )
+            }
+            this.idCountry =
+            this.dayT1 = response.data.dayT1
+            this.dayT2 = response.data.dayT2
+            this.dayT3 = response.data.dayT3
+            this.priceT1 = response.data.priceT1
+            this.priceT2 = response.data.priceT2
+            this.priceT3 = response.data.priceT3
+            this.priceBD = response.data.priceBD
+            this.priceCR = response.data.priceCR
+            this.pricePN = response.data.pricePN
+            this.priceRP = response.data.priceRP
+            this.dayBD = response.data.dayBD
+            this.dayCR = response.data.dayCR
+            this.dayPN = response.data.dayPN
+            this.dayRP = response.data.dayRP
+          }
+        }
+      ).add(
+        () => {
 
+        }
+      )
+    }
     this.filterPais = this.controlPaises.valueChanges.pipe(
       startWith(''),
       map(value => {
@@ -135,11 +195,97 @@ export class AgregarEditarAgenteComponent implements OnInit {
       }
     )
   }
-  agregar(){
-
+  armarModelo(){
+    this.modelo[0] = {
+      id : this.id,
+      idAgent : this.idAgent,
+      date : this.date,
+      idContinent : this.idContinent,
+      idCountry : this.idCountry,
+      idCurrency : this.idCurrency,
+      priceT1 : this.priceT1,
+      priceT2 : this.priceT2,
+      priceT3 : this.priceT3,
+      priceBD : this.priceBD,
+      priceCR : this.priceCR,
+      pricePN : this.pricePN,
+      priceRP : this.priceRP,
+      dayT1 : this.dayT1,
+      dayT2 : this.dayT2,
+      dayT3 : this.dayT3,
+      dayBD : this.dayBD,
+      dayCR : this.dayCR,
+      dayPN : this.dayPN,
+      dayRP : this.dayRP,
+    }
   }
-  editar(){
+  guardar(){
+    this.armarModelo()
+    console.log(this.modelo[0])
+    if(this.id === 0){
+      Swal.fire({
+        title: '¿Está seguro de agregar este registro?',
+        text: "",
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText : 'No',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí',
+        width: '30rem',
+        heightAuto : true
+      }).then((result) => {
+        if (result.value) {
 
+          this.agenteService.addOrUpdatePrice(this.modelo[0]).subscribe(
+            (response) => {
+              if(response.isSuccess === true && response.isWarning === false){
+                Swal.fire({
+                  title :'',
+                  text : 'El registro se agregó correctamente.',
+                  icon : 'success',
+                  width: '30rem',
+                  heightAuto : true
+                }).then(() => {
+                  this.dialogRef.close()
+                });
+              }
+            }
+          )
+        }
+      })
+    }else{
+      Swal.fire({
+        title: '¿Está seguro de modificar este registro?',
+        text: "",
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText : 'No',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí',
+        width: '30rem',
+        heightAuto : true
+      }).then((result) => {
+        if (result.value) {
+          this.agenteService.addOrUpdatePrice(this.modelo[0]).subscribe(
+            (response) => {
+              if(response.isSuccess === true && response.isWarning === false){
+                Swal.fire({
+                  title :'',
+                  text : 'El registro se modificó correctamente.',
+                  icon : 'success',
+                  width: '30rem',
+                  heightAuto : true
+                }).then(() => {
+                  this.dialogRef.close()
+                });
+              }
+            }
+          )
+        }
+      })
+    }
   }
   salir(){
     this.dialogRef.close()

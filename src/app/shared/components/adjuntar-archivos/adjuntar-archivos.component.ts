@@ -128,6 +128,7 @@ export class AdjuntarArchivosComponent implements OnInit {
     a.download=this.cupon+"_"+filename;
     a.target='_blank';
     a.href=file;
+    console.log(a.href)
     a.click();
     this.loading = false
   }

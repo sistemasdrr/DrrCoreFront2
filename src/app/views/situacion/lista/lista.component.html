@@ -181,6 +181,10 @@
               <button mat-icon-button  class="tbl-action-btn " matTooltip="Observación" (click)="$event.stopPropagation();verObservacion(order.id)" *ngIf="order.idStatusTicket === 9"> <!-- -->
                 <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-delete'"></app-feather-icons>
               </button>
+
+              <button *ngIf="order.idStatusTicket === 9 || order.idStatusTicket === 23" mat-mini-fab class="tbl-action-btn " (click)="$event.stopPropagation();enviarComplemento(order.idTicket)" matTooltip="Enviar Complemento">
+                <B style="color: white;">C</B>
+              </button>
             </td>
           </ng-container>
           <tr mat-header-row *matHeaderRowDef="columnsToDisplaySelect"></tr>

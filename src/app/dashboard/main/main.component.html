@@ -1,4 +1,8 @@
 <section class="content">
+  <div class="d-flex justify-content-center align-items-center loader-container" [ngClass]="{'hide-loader': !loading}">
+    <span class="loader"></span><br>
+    <h2 style="color: white;">&nbsp;Cargando...</h2>
+  </div>
   <div class="container-fluid">
     <div class="block-header" *ngFor="let breadscrum of breadscrums">
       <!-- breadcrumb -->
@@ -111,563 +115,159 @@
         </div>
       </div>
     </div>
-    <div class="row clearfix">
-      <!-- Task Info >
-      <div-- class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
-        <div class="card">
-          <div class="header">
-            <h2>Clients Details</h2>
-            <button mat-icon-button [matMenuTriggerFor]="menu" class="header-dropdown">
-              <mat-icon>more_vert</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu">
-              <button mat-menu-item>
-                <mat-icon>add_circle_outline</mat-icon>
-                <span>Add</span>
+    <div class="row clearfix card card-body" *ngIf="pendingTaskSupervisor.length > 0">
+      <div class="row m-0 p-0">
+        <div class="col-md-4">
+          <h5>Informes Pendientes por Atender</h5>
+        </div>
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-4" *ngIf="pendingTaskSupervisor.length > 1">
+          <mat-form-field class="w-100">
+            <mat-label>Supervisor</mat-label>
+            <mat-select matInput [(ngModel)]="supervisorSeleccionado"  (ngModelChange)="selectSupervisor(supervisorSeleccionado,tipo)">
+              <mat-option [value]="item.code" *ngFor="let item of pendingTaskSupervisor">{{item.code}} - {{item.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4" *ngIf="pendingTaskSupervisor.length === 1"></div>
+        <div class="col-md-2 m-0 p-0">
+          <mat-form-field class="w-100">
+            <mat-label>Tipo</mat-label>
+            <mat-select matInput [(ngModel)]="tipo" placeholder="">
+              <mat-option [value]="'RP'" *ngIf="pendingTaskReporter.length > 0">Reporteros</mat-option>
+              <mat-option [value]="'AG'" *ngIf="pendingTaskAgent.length > 0">Agentes</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-md-12" *ngIf="tipo == 'RP'">
+        <mat-sidenav-container class="task-container">
+          <mat-sidenav #sidenav1  position="end">
+            <div class="header">
+              <button mat-icon-button (click)="closeSlider(sidenav1)">
+                <mat-icon>close</mat-icon>
               </button>
-              <button mat-menu-item disabled>
-                <mat-icon>delete_outline</mat-icon>
-                <span>Delete</span>
-              </button>
-              <button mat-menu-item>
-                <mat-icon>refresh</mat-icon>
-                <span>Refresh</span>
-              </button>
-            </mat-menu>
-          </div>
-          <div class="tableBody">
-            <div class="table-responsive">
-              <table class="table table-hover dashboard-task-infos">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Status</th>
-                    <th>Project Name</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="table-img">
-                      <img src="assets/images/user/user1.jpg" alt="">
-                    </td>
-                    <td>John Doe</td>
-                    <td>xyz@email.com</td>
-                    <td>
-                      <span class="badge col-green shadow-style">Active</span>
-                    </td>
-                    <td>ERP System</td>
-                    <td>
-                      <button mat-icon-button class="tbl-action-btn">
-                        <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                      </button>
-                      <button mat-icon-button class="tbl-action-btn">
-                        <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="table-img">
-                      <img src="assets/images/user/user2.jpg" alt="">
-                    </td>
-                    <td>Sarah Smith</td>
-                    <td>xyz@email.com</td>
-                    <td>
-                      <span class="badge col-red shadow-style">Inactive</span>
-                    </td>
-                    <td>Abc Website</td>
-                    <td>
-                      <button mat-icon-button class="tbl-action-btn">
-                        <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                      </button>
-                      <button mat-icon-button class="tbl-action-btn">
-                        <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="table-img">
-                      <img src="assets/images/user/user3.jpg" alt="">
-                    </td>
-                    <td>Airi Satou</td>
-                    <td>xyz@email.com</td>
-                    <td>
-                      <span class="badge col-green shadow-style">Active</span>
-                    </td>
-                    <td>Android App</td>
-                    <td>
-                      <button mat-icon-button class="tbl-action-btn">
-                        <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                      </button>
-                      <button mat-icon-button class="tbl-action-btn">
-                        <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="table-img">
-                      <img src="assets/images/user/user4.jpg" alt="">
-                    </td>
-                    <td>Angelica Ramos</td>
-                    <td>xyz@email.com</td>
-                    <td>
-                      <span class="badge col-green shadow-style">Active</span>
-                    </td>
-                    <td>Ios App</td>
-                    <td>
-                      <button mat-icon-button class="tbl-action-btn">
-                        <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                      </button>
-                      <button mat-icon-button class="tbl-action-btn">
-                        <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="table-img">
-                      <img src="assets/images/user/user5.jpg" alt="">
-                    </td>
-                    <td>Ashton Cox</td>
-                    <td>xyz@email.com</td>
-                    <td>
-                      <span class="badge col-red shadow-style">Inactive</span>
-                    </td>
-                    <td>Java Website</td>
-                    <td>
-                      <button mat-icon-button class="tbl-action-btn">
-                        <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                      </button>
-                      <button mat-icon-button class="tbl-action-btn">
-                        <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="table-img">
-                      <img src="assets/images/user/user6.jpg" alt="">
-                    </td>
-                    <td>Cara Stevens</td>
-                    <td>xyz@email.com</td>
-                    <td>
-                      <span class="badge col-green shadow-style">Active</span>
-                    </td>
-                    <td>Desktop App</td>
-                    <td>
-                      <button mat-icon-button class="tbl-action-btn">
-                        <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                      </button>
-                      <button mat-icon-button class="tbl-action-btn">
-                        <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
+            </div>
+            <div class="body">
+              <table mat-table [dataSource]="dataSource1" multiTemplateDataRows class="w-100 mat-elevation-z8" style="table-layout:  auto !important;" matSort>
+                <ng-container matColumnDef="number" >
+                <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Cupón </th>
+                <td mat-cell *matCellDef="let order" class="text-center" style="white-space: nowrap; width: 100px;"> {{order.number}} </td>
+                </ng-container>
+                <ng-container matColumnDef="requestedName" >
+                <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Nombre Solicitado </th>
+                <td mat-cell *matCellDef="let order" class="text-left" style="white-space: nowrap;width: 25%;"> {{order.requestedName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="country" >
+                  <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> País </th>
+                  <td mat-cell *matCellDef="let order" class="text-center" style="white-space: nowrap; width: 120px;"> <span class="fi fi-{{order.flagCountry}}" style="font-size: 24px;"></span>{{order.country}} </td>
+                </ng-container>
+                <ng-container matColumnDef="expireDate" >
+                  <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Fecha de Vencimiento </th>
+                  <td mat-cell *matCellDef="let order" class="text-center" >
+
+                    <div class="input-container">
+                      <div class="circle-0" *ngIf="order.flag === 0"></div>
+                      <div class="circle-1" *ngIf="order.flag === 1"></div>
+                      <div class="circle-2" *ngIf="order.flag === 2"></div>
+                      <div>{{order.expireDate}}</div>
+                    </div>
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="acciones" >
+                  <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Acciones </th>
+                  <td mat-cell *matCellDef="let order" class="text-center" style="white-space: nowrap;">
+                    <button *ngIf="order.id > 0" mat-icon-button class="tbl-action-btn " (click)="$event.stopPropagation();enviarAlerta(order.id)" matTooltip="Enviar Alerta">
+                      <app-feather-icons [icon]="'bell'" style="color: rgb(189, 189, 97);"></app-feather-icons>
+                    </button>
+                  </td>
+                </ng-container>
+                  <tr mat-header-row *matHeaderRowDef="columnsToDisplay1"></tr>
+                  <tr mat-row *matRowDef="let empresa; columns: columnsToDisplay1;"
+                    class=""></tr>
               </table>
             </div>
-          </div>
-        </div>
-      </div-->
-      <!-- #END# Task Info -->
-      <!-- Browser Usage >
-      <div-- class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-        <div class="card">
-          <div class="header">
-            <h2>New Projects</h2>
-            <button mat-icon-button [matMenuTriggerFor]="menu" class="header-dropdown">
-              <mat-icon>more_vert</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu">
-              <button mat-menu-item>
-                <mat-icon>add_circle_outline</mat-icon>
-                <span>Add</span>
+          </mat-sidenav>
+          <mat-sidenav-content>
+            <ng-scrollbar style="height: 400px" visibility="hover">
+              <div cdkDropList class="task-list" >
+                <div class="task-box" *ngFor="let task of pendingTaskReporter" (click)="task.details.length > 0 ? taskClick(task, sidenav1) : null" >
+                  <div >
+                    <span class="fi fi-{{task.flagCountry}}" style="font-size: 24px;"></span>{{task.country}} ||<b  style="font-size: 18px;">{{task.asignedTo}}</b> - {{task.name}} ||  <b style="color:green; font-size: 20px;">({{task.details.length}})</b>
+                  </div>
+                </div>
+              </div>
+            </ng-scrollbar>
+            <h5>Informes Pendientes Totales : {{sumPedidos(pendingTaskReporter)}}</h5>
+          </mat-sidenav-content>
+        </mat-sidenav-container>
+      </div>
+      <div class="col-md-12" *ngIf="tipo == 'AG'">
+        <mat-sidenav-container class="task-container">
+          <mat-sidenav #sidenav2  position="end">
+            <div class="header">
+              <button mat-icon-button (click)="closeSlider(sidenav2)">
+                <mat-icon>close</mat-icon>
               </button>
-              <button mat-menu-item disabled>
-                <mat-icon>delete_outline</mat-icon>
-                <span>Delete</span>
-              </button>
-              <button mat-menu-item>
-                <mat-icon>refresh</mat-icon>
-                <span>Refresh</span>
-              </button>
-            </mat-menu>
-          </div>
-          <div class="body">
-            <div id="new-orders" class="media-list position-relative">
-              <div class="table-responsive">
-                <table id="new-orders-table" class="table table-hover table-xl mb-0">
-                  <thead>
-                    <tr>
-                      <th class="border-top-0">Product</th>
-                      <th class="border-top-0">Employees</th>
-                      <th class="border-top-0">Cost</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td class="text-truncate">iPhone X</td>
-                      <td class="text-truncate">
-                        <ul class="list-unstyled order-list">
-                          <li class="avatar avatar-sm">
-                            <img class="rounded-circle" src="assets/images/user/user1.jpg" alt="user">
-                          </li>
-                          <li class="avatar avatar-sm">
-                            <img class="rounded-circle" src="assets/images/user/user2.jpg" alt="user">
-                          </li>
-                          <li class="avatar avatar-sm">
-                            <img class="rounded-circle" src="assets/images/user/user3.jpg" alt="user">
-                          </li>
-                          <li class="avatar avatar-sm">
-                            <span class="badge">+4</span>
-                          </li>
-                        </ul>
-                      </td>
-                      <td class="text-truncate">$8999</td>
-                    </tr>
-                    <tr>
-                      <td class="text-truncate">Pixel 2</td>
-                      <td class="text-truncate">
-                        <ul class="list-unstyled order-list">
-                          <li class="avatar avatar-sm">
-                            <img class="rounded-circle" src="assets/images/user/user1.jpg" alt="user">
-                          </li>
-                          <li class="avatar avatar-sm">
-                            <img class="rounded-circle" src="assets/images/user/user2.jpg" alt="user">
-                          </li>
-                          <li class="avatar avatar-sm">
-                            <img class="rounded-circle" src="assets/images/user/user3.jpg" alt="user">
-                          </li>
-                          <li class="avatar avatar-sm">
-                            <span class="badge">+4</span>
-                          </li>
-                        </ul>
-                      </td>
-                      <td class="text-truncate">$5550</td>
-                    </tr>
-                    <tr>
-                      <td class="text-truncate">OnePlus</td>
-                      <td class="text-truncate">
-                        <ul class="list-unstyled order-list">
-                          <li class="avatar avatar-sm">
-                            <img class="rounded-circle" src="assets/images/user/user1.jpg" alt="user">
-                          </li>
-                          <li class="avatar avatar-sm">
-                            <img class="rounded-circle" src="assets/images/user/user2.jpg" alt="user">
-                          </li>
-                          <li class="avatar avatar-sm">
-                            <img class="rounded-circle" src="assets/images/user/user3.jpg" alt="user">
-                          </li>
-                          <li class="avatar avatar-sm">
-                            <span class="badge">+4</span>
-                          </li>
-                        </ul>
-                      </td>
-                      <td class="text-truncate">$9000</td>
-                    </tr>
-                    <tr>
-                      <td class="text-truncate">Galaxy</td>
-                      <td class="text-truncate">
-                        <ul class="list-unstyled order-list">
-                          <li class="avatar avatar-sm">
-                            <img class="rounded-circle" src="assets/images/user/user1.jpg" alt="user">
-                          </li>
-                          <li class="avatar avatar-sm">
-                            <img class="rounded-circle" src="assets/images/user/user2.jpg" alt="user">
-                          </li>
-                          <li class="avatar avatar-sm">
-                            <img class="rounded-circle" src="assets/images/user/user3.jpg" alt="user">
-                          </li>
-                          <li class="avatar avatar-sm">
-                            <span class="badge">+4</span>
-                          </li>
-                        </ul>
-                      </td>
-                      <td class="text-truncate">$7500</td>
-                    </tr>
-                    <tr>
-                      <td class="text-truncate">Moto Z2</td>
-                      <td class="text-truncate">
-                        <ul class="list-unstyled order-list">
-                          <li class="avatar avatar-sm">
-                            <img class="rounded-circle" src="assets/images/user/user1.jpg" alt="user">
-                          </li>
-                          <li class="avatar avatar-sm">
-                            <img class="rounded-circle" src="assets/images/user/user2.jpg" alt="user">
-                          </li>
-                          <li class="avatar avatar-sm">
-                            <img class="rounded-circle" src="assets/images/user/user3.jpg" alt="user">
-                          </li>
-                          <li class="avatar avatar-sm">
-                            <span class="badge">+4</span>
-                          </li>
-                        </ul>
-                      </td>
-                      <td class="text-truncate">$8500</td>
-                    </tr>
-                    <tr>
-                      <td class="text-truncate">iPhone X</td>
-                      <td class="text-truncate">
-                        <ul class="list-unstyled order-list">
-                          <li class="avatar avatar-sm">
-                            <img class="rounded-circle" src="assets/images/user/user1.jpg" alt="user">
-                          </li>
-                          <li class="avatar avatar-sm">
-                            <img class="rounded-circle" src="assets/images/user/user2.jpg" alt="user">
-                          </li>
-                          <li class="avatar avatar-sm">
-                            <img class="rounded-circle" src="assets/images/user/user3.jpg" alt="user">
-                          </li>
-                          <li class="avatar avatar-sm">
-                            <span class="badge">+4</span>
-                          </li>
-                        </ul>
-                      </td>
-                      <td class="text-truncate">$8999</td>
-                    </tr>
-                    <tr>
-                      <td class="text-truncate">iPhone X</td>
-                      <td class="text-truncate">
-                        <ul class="list-unstyled order-list">
-                          <li class="avatar avatar-sm">
-                            <img class="rounded-circle" src="assets/images/user/user1.jpg" alt="user">
-                          </li>
-                          <li class="avatar avatar-sm">
-                            <img class="rounded-circle" src="assets/images/user/user2.jpg" alt="user">
-                          </li>
-                          <li class="avatar avatar-sm">
-                            <img class="rounded-circle" src="assets/images/user/user3.jpg" alt="user">
-                          </li>
-                          <li class="avatar avatar-sm">
-                            <span class="badge">+4</span>
-                          </li>
-                        </ul>
-                      </td>
-                      <td class="text-truncate">$8999</td>
-                    </tr>
-                  </tbody>
+            </div>
+            <div class="body">
+              <table mat-table [dataSource]="dataSource2" multiTemplateDataRows class="w-100 mat-elevation-z8" style="table-layout:  auto !important;" matSort>
+                <ng-container matColumnDef="number" >
+                <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Cupón </th>
+                <td mat-cell *matCellDef="let order" class="text-center" style="white-space: nowrap; width: 100px;"> {{order.number}} </td>
+                </ng-container>
+                <ng-container matColumnDef="requestedName" >
+                <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Nombre Solicitado </th>
+                <td mat-cell *matCellDef="let order" class="text-left" style="white-space: nowrap;width: 25%;"> {{order.requestedName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="country" >
+                  <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> País </th>
+                  <td mat-cell *matCellDef="let order" class="text-center" style="white-space: nowrap; width: 120px;"> <span class="fi fi-{{order.flagCountry}}" style="font-size: 24px;"></span>{{order.country}} </td>
+                </ng-container>
+                <ng-container matColumnDef="expireDate" >
+                  <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Fecha de Vencimiento </th>
+                  <td mat-cell *matCellDef="let order" class="text-center" >
+                    <div class="input-container">
+                      <div class="circle-0" *ngIf="order.flag === 0"></div>
+                      <div class="circle-1" *ngIf="order.flag === 1"></div>
+                      <div class="circle-2" *ngIf="order.flag === 2"></div>
+                      <div>{{order.expireDate}}</div>
+                    </div>
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="acciones" >
+                  <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Acciones </th>
+                  <td mat-cell *matCellDef="let order" class="text-center" style="white-space: nowrap;">
+                    <button *ngIf="order.id > 0" mat-icon-button class="tbl-action-btn " (click)="$event.stopPropagation();enviarAlerta(order.id)" matTooltip="Enviar Alerta">
+                      <app-feather-icons [icon]="'bell'" style="color: rgb(189, 189, 97);"></app-feather-icons>
+                    </button>
+                  </td>
+                </ng-container>
+                  <tr mat-header-row *matHeaderRowDef="columnsToDisplay1"></tr>
+                  <tr mat-row *matRowDef="let empresa; columns: columnsToDisplay1;"
+                    class=""></tr>
                 </table>
-              </div>
             </div>
-          </div>
-        </div>
-      </div-->
-      <!-- #END# Browser Usage >
-    </div>
-    <div class="row clearfix">
-      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-        <div class="box-part text-center">
-          <i class="fab fa-twitter fa-3x col-blue"></i>
-          <div class="title p-t-15">
-            <h3>Twitter</h3>
-          </div>
-          <div class="text p-b-10">
-            <span>Lorem ipsum dolor sit amet, id quo eruditi
-              eloquentiam. Assum decore te sed. Elitr scripta ocurreret qui
-              ad.</span>
-          </div>
-          <a href="#" onClick="return false;">Learn More</a>
-        </div>
+          </mat-sidenav>
+          <mat-sidenav-content>
+            <ng-scrollbar style="height: 400px" visibility="hover">
+              <div cdkDropList class="task-list" >
+                <div class="task-box" *ngFor="let task of pendingTaskAgent" (click)="task.details.length > 0 ? taskClick(task, sidenav2) : null" >
+                  <div  >
+                    <span class="fi fi-{{task.flagCountry}}" style="font-size: 24px;"></span>{{task.country}} ||<b style="font-size: 18px;">{{task.asignedTo}}</b> - {{task.name}} || <b style="color:green; font-size: 20px;">({{task.details.length}})</b>
+                  </div>
+                </div>
+              </div>
+            </ng-scrollbar>
+
+            <h5>Informes Pendientes Totales : {{sumPedidos(pendingTaskAgent)}}</h5>
+          </mat-sidenav-content>
+
+        </mat-sidenav-container>
+
       </div>
-      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-        <div class="box-part text-center">
-          <i class="fab fa-instagram fa-3x col-red"></i>
-          <div class="title p-t-15">
-            <h3>Instagram</h3>
-          </div>
-          <div class="text p-b-10">
-            <span>Lorem ipsum dolor sit amet, id quo eruditi
-              eloquentiam. Assum decore te sed. Elitr scripta ocurreret qui
-              ad.</span>
-          </div>
-          <a href="#" onClick="return false;">Learn More</a>
-        </div>
-      </div>
-      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-        <div class="box-part text-center">
-          <i class="fab fa-facebook-f fa-3x col-blue"></i>
-          <div class="title p-t-15">
-            <h3>Facebook</h3>
-          </div>
-          <div class="text p-b-10">
-            <span>Lorem ipsum dolor sit amet, id quo eruditi
-              eloquentiam. Assum decore te sed. Elitr scripta ocurreret qui
-              ad.</span>
-          </div>
-          <a href="#" onClick="return false;">Learn More</a>
-        </div>
-      </div>
-    </div>
-    <div class="row clearfix">
-      <div-- class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-        <div class="card">
-          <div class="header">
-            <h2>Earning Source</h2>
-            <button mat-icon-button [matMenuTriggerFor]="menu" class="header-dropdown">
-              <mat-icon>more_vert</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu">
-              <button mat-menu-item>
-                <mat-icon>add_circle_outline</mat-icon>
-                <span>Add</span>
-              </button>
-              <button mat-menu-item disabled>
-                <mat-icon>delete_outline</mat-icon>
-                <span>Delete</span>
-              </button>
-              <button mat-menu-item>
-                <mat-icon>refresh</mat-icon>
-                <span>Refresh</span>
-              </button>
-            </mat-menu>
-          </div>
-          <div class="body">
-            <div class="totalEarning">
-              <h2>$90,808</h2>
-            </div>
-            <div class="tab-pane body" id="skills">
-              <ul class="list-unstyled">
-                <li>
-                  <div class="mb-2">
-                    <span class="progress-label">envato.com</span>
-                    <span class="float-end progress-percent label label-info m-b-5">17%</span>
-                  </div>
-                  <div class="progress skill-progress m-b-20 w-100">
-                    <div class="progress-bar l-bg-green width-per-45" role="progressbar" aria-valuenow="45"
-                      aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                </li>
-                <li>
-                  <div class="mb-2">
-                    <span class="progress-label">google.com</span>
-                    <span class="float-end progress-percent label label-danger m-b-5">27%</span>
-                  </div>
-                  <div class="progress skill-progress m-b-20 w-100">
-                    <div class="progress-bar l-bg-purple width-per-27" role="progressbar" aria-valuenow="27"
-                      aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                </li>
-                <li>
-                  <div class="mb-2">
-                    <span class="progress-label">yahoo.com</span>
-                    <span class="float-end progress-percent label label-primary m-b-5">25%</span>
-                  </div>
-                  <div class="progress skill-progress m-b-20 w-100">
-                    <div class="progress-bar l-bg-orange width-per-25" role="progressbar" aria-valuenow="25"
-                      aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                </li>
-                <li>
-                  <div class="mb-2">
-                    <span class="progress-label">store</span>
-                    <span class="float-end progress-percent label label-success m-b-5">18%</span>
-                  </div>
-                  <div class="progress skill-progress m-b-20 w-100">
-                    <div class="progress-bar l-bg-cyan width-per-18" role="progressbar" aria-valuenow="18"
-                      aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                </li>
-                <li>
-                  <div class="mb-2">
-                    <span class="progress-label">Others</span>
-                    <span class="float-end progress-percent label label-warning m-b-5">13%</span>
-                  </div>
-                  <div class="progress skill-progress m-b-20 w-100">
-                    <div class="progress-bar l-bg-red width-per-13" role="progressbar" aria-valuenow="13"
-                      aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div-->
-      <!-- Customer Review >
-      <div-- class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
-        <div class="card">
-          <div class="header">
-            <h2>Customer Review</h2>
-            <button mat-icon-button [matMenuTriggerFor]="menu" class="header-dropdown">
-              <mat-icon>more_vert</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu">
-              <button mat-menu-item>
-                <mat-icon>add_circle_outline</mat-icon>
-                <span>Add</span>
-              </button>
-              <button mat-menu-item disabled>
-                <mat-icon>delete_outline</mat-icon>
-                <span>Delete</span>
-              </button>
-              <button mat-menu-item>
-                <mat-icon>refresh</mat-icon>
-                <span>Refresh</span>
-              </button>
-            </mat-menu>
-          </div>
-          <div class="body">
-            <div class="review-block">
-              <div class="row">
-                <div class="review-img">
-                  <img src="assets/images/user/user1.jpg" alt="">
-                </div>
-                <div class="col">
-                  <h6 class="m-b-5">Alis Smith
-                    <span class="float-end m-r-10 text-muted"> a week ago</span>
-                  </h6>
-                  <i class="material-icons col-green">star</i>
-                  <i class="material-icons col-green">star</i>
-                  <i class="material-icons col-green">star</i>
-                  <i class="material-icons col-green">star_half</i>
-                  <i class="material-icons col-green">star_border</i>
-                  <p class="m-t-15 m-b-15">Lorem ipsum dolor sit amet, consectetur
-                    adipiscing elit. Etiam vel rutrum ex, at
-                    ornare mi. In quis scelerisque dui, eget rhoncus orci. Fusce et sodales
-                    ipsum.
-                    Nam id nunc euismod, aliquet arcu quis, mattis nisi.
-                  </p>
-                  <a href="#!">
-                    <i class="material-icons m-r-10">thumb_up</i>
-                  </a>
-                  <a href="#!">
-                    <i class="material-icons m-r-10 col-red">thumb_down</i>
-                  </a>
-                </div>
-              </div>
-              <div class="row">
-                <div class="review-img">
-                  <img src="assets/images/user/user2.jpg" alt="">
-                </div>
-                <div class="col">
-                  <h6 class="m-b-5">John Dio
-                    <span class="float-end m-r-10 text-muted"> a week ago</span>
-                  </h6>
-                  <i class="material-icons col-red">star</i>
-                  <i class="material-icons col-red">star_half</i>
-                  <i class="material-icons col-red">star_border</i>
-                  <i class="material-icons col-red">star_border</i>
-                  <i class="material-icons col-red">star_border</i>
-                  <p class="m-t-15 m-b-15">Nam quis ligula est. Nunc sed risus non
-                    turpis tristique tempor. Ut sollicitudin
-                    faucibus magna nec gravida. Suspendisse ullamcorper justo vel porta
-                    imperdiet.
-                    Nunc nec ipsum vel augue placerat faucibus. </p>
-                  <a href="#!">
-                    <i class="material-icons m-r-10">thumb_up</i>
-                  </a>
-                  <a href="#!">
-                    <i class="material-icons m-r-10 col-red">thumb_down</i>
-                  </a>
-                </div>
-              </div>
-              <div class="text-center  m-b-5">
-                <button mat-stroked-button color="primary">View all Customer Reviews</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div-->
-      <!-- #END# Customer Review -->
+
     </div>
   </div>
 </section>

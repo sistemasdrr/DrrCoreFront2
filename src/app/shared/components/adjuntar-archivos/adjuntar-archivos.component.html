@@ -53,7 +53,7 @@
                   <h6 class="font-14">Planilla Negocios Personas </h6>
                 <div class="ms-auto">
                   <td>
-                    <button mat-icon-button #tooltip="matTooltip" class="btn bg-teal shadow" matTooltip="Descargar" (click)="descargarArchivo('../../../../assets/formatos/Planilla_Negocios_Personales.doc','Planilla_Negocios_Personales.doc')">
+                    <button mat-icon-button #tooltip="matTooltip" class="btn bg-teal shadow" matTooltip="Descargar" (click)="descargarArchivo('https://informesdrr.com/front/assets/formatos/Planilla_Negocios_Personales.doc','Planilla_Negocios_Personales.doc')">
                       <i class="fa-solid fa-download" style="font-size: 16px; color: white;"></i>
                     </button>
                   </td>
@@ -66,7 +66,7 @@
                   <h6 class="font-14">Planilla Reportero </h6>
                 <div class="ms-auto">
                   <td>
-                    <button mat-icon-button #tooltip="matTooltip" class="btn bg-teal shadow" matTooltip="Descargar" (click)="descargarArchivo('../../../../assets/formatos/Planilla_Reportero.doc','Planilla_Reportero.doc')">
+                    <button mat-icon-button #tooltip="matTooltip" class="btn bg-teal shadow" matTooltip="Descargar" (click)="descargarArchivo('https://informesdrr.com/front/assets/formatos/Planilla_Reportero.doc','Planilla_Reportero.doc')">
                       <i class="fa-solid fa-download" style="font-size: 16px; color: white;"></i>
                     </button>
                   </td>
@@ -96,10 +96,9 @@
                 </span>
                 <div class="set-flex">
                   <h5 class="font-14 mb-1">{{attachment.name}}</h5>
-                  <p style="margin: 0px;" style="white-space: normal; word-break: break-all;  overflow-wrap: break-word;">{{attachment.path}}</p>
                 </div>
                 <div class="ms-auto">
-                  <td>
+                  <td class="d-flex">
                     <button mat-icon-button #tooltip="matTooltip" class="btn bg-teal shadow" matTooltip="Descargar" (click)="downloadFile(attachment.id, attachment.name)">
                       <i class="fa-solid fa-download" style="font-size: 16px; color: white;"></i>
                     </button>

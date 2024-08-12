@@ -48,14 +48,14 @@
                         INGLÉS
                       </mat-option>
                       <mat-option [value]="'A'">
-                        <span class="fi fi-us" style="background-image: url(./../../../../../assets/images/us-es.png);"></span>
+                        <span class="fi fi-us" style="background-image: url('https://informesdrr.com/front/assets/images/us-es.png');"></span>
                         ESPAÑOL - INGLÉS
                       </mat-option>
                     </mat-select>
                     <button class="btn-traduccion" matSuffix mat-icon-button>
                       <span class="fi fi-es" *ngIf="language === 'E'"></span>
                       <span class="fi fi-us" *ngIf="language  === 'I'"></span>
-                      <span class="fi fi-us" style="background-image: url(./../../../../../assets/images/us-es.png);" *ngIf="language === 'A'"></span>
+                      <span class="fi fi-us" style="background-image: url('https://informesdrr.com/front/assets/images/us-es.png');" *ngIf="language === 'A'"></span>
                     </button>
                   </mat-form-field>
                 </div>

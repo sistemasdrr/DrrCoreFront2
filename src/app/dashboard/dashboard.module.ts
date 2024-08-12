@@ -14,6 +14,7 @@ import { ComponentsModule } from '../shared/components/components.module';
 import { SharedModule } from './../shared/shared.module';
 import { ProduccionDiariaComponent } from 'app/dashboard/produccion-diaria/produccion-diaria.component';
 import { ProduccionMensualComponent } from './produccion-mensual/produccion-mensual.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @NgModule({
   declarations: [MainComponent, Dashboard2Component, Dashboard3Component,
@@ -31,7 +32,7 @@ import { ProduccionMensualComponent } from './produccion-mensual/produccion-mens
     NgxGaugeModule,
     ComponentsModule,
     SharedModule,
-
+    MatSidenavModule
   ],
 })
 export class DashboardModule {}

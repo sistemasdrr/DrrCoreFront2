@@ -1,6 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { TicketService } from 'app/services/pedidos/ticket.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-comentario',
@@ -13,8 +15,10 @@ export class ComentarioComponent {
   id = 0
   cupon: string = "";
   comentario = ""
+  loading = false
 
   constructor(
+    public ticketService : TicketService,
     public dialogRef: MatDialogRef<ComentarioComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -29,10 +33,67 @@ export class ComentarioComponent {
     this.dialogRef.close()
   }
   guardar(){
-    this.dialogRef.close(
-      {
-      comentario : this.comentario
+    console.log(this.comentario)
+    Swal.fire({
+      title: '¿Está seguro de guardar el comentario del ticket?',
+      text: "",
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText : 'No',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí',
+      width: '20rem',
+      heightAuto : true
+    }).then((result) => {
+      if (result.value) {
+        this.loading = true
+        this.ticketService.SaveTicketCommentary(this.id,this.comentario).subscribe(
+          (response) => {
+            if(response.isSuccess === true && response.isWarning === false){
+              this.loading = false
+              Swal.fire({
+
+                title : 'Se guardo el comentario correctamente.',
+                icon : 'success',
+                width: '20rem',
+                heightAuto : true
+              }).then(
+                () => {
+                  this.dialogRef.close()
+                }
+              );
+            }else{
+              this.loading = false
+              Swal.fire({
+                title : 'Error al guardar el comentario.',
+                icon : 'success',
+                width: '20rem',
+                heightAuto : true
+              }).then(
+                () => {
+                  this.dialogRef.close()
+                }
+              );
+            }
+          },(error) => {
+            this.loading = false
+            Swal.fire({
+              text : error,
+              icon : 'success',
+              width: '20rem',
+              heightAuto : true
+            }).then(
+              () => {
+                this.dialogRef.close()
+              }
+            );
+          }
+        )
+
+
       }
-    )
+    });
+
   }
 }
