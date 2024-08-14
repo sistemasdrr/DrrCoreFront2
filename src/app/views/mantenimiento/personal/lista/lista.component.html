@@ -22,6 +22,8 @@
               </mat-form-field>
             </div>
             <div class="col-md-8 d-flex justify-content-end align-items-center">
+
+
               <button mat-mini-fab [class]="'bg-primary'" matTooltip="Aplicar Filtros" (click)="aplicarFiltro()" [disabled]="">
                 <i class="fa-solid fa-magnifying-glass col-white"></i>
               </button>
@@ -81,6 +83,9 @@
             <th mat-header-cell *matHeaderCellDef class="text-center">Acciones
             </th>
             <td mat-cell *matCellDef="let personal" class="text-center">
+              <a mat-icon-button  #tooltip="matTooltip" matTooltip="Precios del Personal" (click)="preciosPersonal(personal.id)">
+                <i class="fa-solid fa-dollar-sign" style="font-size: 24px; color: #01b061;"></i>
+              </a>
               <a mat-icon-button  #tooltip="matTooltip" matTooltip="Permisos" (click)="editarPermisos(personal.id)">
                 <i class="fa-solid fa-shield-halved" style="font-size: 24px; color: #67a0ef;"></i>
               </a>

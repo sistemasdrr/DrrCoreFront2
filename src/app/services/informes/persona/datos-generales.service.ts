@@ -37,4 +37,7 @@ export class DatosGeneralesService {
   desactivateWeb(id : number): Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url + this.controllerPersona + '/deletePerson?id='+id, '')
   }
+  downloadReportF8(idPerson : number, language : string, format : string){
+    return this.http.get(this.url + this.controllerPersona + '/getf8?idPerson='+idPerson+'&language='+language+'&format='+format,{observe:'response',responseType:'blob'});
+  }
 }

@@ -145,6 +145,7 @@ export class IPListaComponent implements OnInit{
       this.colorMsgPais = "red"
     }
   }
+
   agregarPersona(){
     this.router.navigate(['informes/persona/detalle/nuevo']);
   }
@@ -199,6 +200,22 @@ export class IPListaComponent implements OnInit{
         })
       }
     });
+  }
+  descargarDocumento(idPerson : number, oldCode : string, idioma : string, formato:string){
+    this.loading = true
+    this.personaService.downloadReportF8(idPerson,"E","pdf").subscribe(response=>{
+      let blob : Blob = response.body as Blob;
+      let a =document.createElement('a');
+      const language = idioma === "I" ? "ENG" : "SPA"
+      const extension = formato === "pdf" ? '.pdf' : formato === "word" ? '.docx' : '.xls'
+      a.download= oldCode+"_"+language+"_"+Date.now()+extension;
+      a.href=window.URL.createObjectURL(blob);
+      a.click();
+    }).add(
+      () => {
+       this.loading = false
+      }
+    );
   }
   activarWebPersona(id : number){
     Swal.fire({

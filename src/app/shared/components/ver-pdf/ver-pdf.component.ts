@@ -1,3 +1,4 @@
+import { DatosGeneralesService } from 'app/services/informes/persona/datos-generales.service';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DatosEmpresaService } from 'app/services/informes/empresa/datos-empresa.service';
@@ -13,41 +14,75 @@ export class VerPdfComponent implements OnInit {
   pdfBlob: Blob;
   loading = false
   idCompany = 0
+  idPerson = 0
+  type = ""
   name = ""
   section = ""
   language = ""
 
   constructor(public dialogRef: MatDialogRef<VerPdfComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
-    private datosEmpresaService : DatosEmpresaService){
+    private datosEmpresaService : DatosEmpresaService, private datosGeneralesService : DatosGeneralesService){
       this.pdfBlob = new Blob
       if(data){
-        this.idCompany = data.idCompany
-        this.section = data.section
-        this.language = data.language
+        this.type = data.type
+        if(this.type === "E"){
+          this.idCompany = data.idCompany
+          this.section = data.section
+          this.language = data.language
+        }else{
+          this.idPerson = data.idPerson
+          this.section = data.section
+          this.language = data.language
+        }
       }
     }
   ngOnInit(): void {
     this.loading = true
-    this.datosEmpresaService.getDatosEmpresaPorId(this.idCompany).subscribe(
-      (response) => {
-        if(response.isSuccess === true && response.isWarning === false){
-          this.name = response.data.name
+    if(this.type === "E"){
+      this.datosEmpresaService.getDatosEmpresaPorId(this.idCompany).subscribe(
+        (response) => {
+          if(response.isSuccess === true && response.isWarning === false){
+            this.name = response.data.name
+          }
         }
-      }
-    )
-    this.datosEmpresaService.downloadReportSection(this.idCompany, this.section, this.language).subscribe(response => {
-      this.pdfBlob = response.body as Blob;
-      let reader = new FileReader();
-      reader.onloadend = () => {
-        let dataUrl: string = reader.result as string;
-        this.pdfSrc = dataUrl;
-      };
-      reader.readAsDataURL(this.pdfBlob);
-    }).add(
-      () => {
-        this.loading = false
-      }
-    );
+      )
+      this.datosEmpresaService.downloadReportSection(this.idCompany, this.section, this.language).subscribe(response => {
+        this.pdfBlob = response.body as Blob;
+        let reader = new FileReader();
+        reader.onloadend = () => {
+          let dataUrl: string = reader.result as string;
+          this.pdfSrc = dataUrl;
+        };
+        reader.readAsDataURL(this.pdfBlob);
+      }).add(
+        () => {
+          this.loading = false
+        }
+      );
+    }else{
+      this.datosGeneralesService.getPersonaById(this.idPerson).subscribe(
+        (response) => {
+          if(response.isSuccess === true && response.isWarning === false){
+            this.name = response.data.fullname
+          }
+        }
+      )
+      this.datosGeneralesService.downloadReportF8(this.idPerson, this.language, "pdf").subscribe(response => {
+        this.pdfBlob = response.body as Blob;
+        let reader = new FileReader();
+        reader.onloadend = () => {
+          let dataUrl: string = reader.result as string;
+          this.pdfSrc = dataUrl;
+        };
+        reader.readAsDataURL(this.pdfBlob);
+      }).add(
+        () => {
+          this.loading = false
+        }
+      );
+    }
+
+
   }
 
   descargarPDF(){

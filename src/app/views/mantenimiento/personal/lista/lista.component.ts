@@ -10,6 +10,7 @@ import { ComboService } from 'app/services/combo.service';
 import { PersonalService } from 'app/services/mantenimiento/personal.service';
 import Swal from 'sweetalert2';
 import { PermisosComponent } from './permisos/permisos.component';
+import { PrecioPersonalComponent } from './precio-personal/precio-personal.component';
 
 @Component({
   selector: 'app-lista',
@@ -78,6 +79,13 @@ export class ListaPersonalComponent implements OnInit, AfterViewInit {
   applyFilterDepartamento(){
     console.log(this.filtroDepartamento)
     this.dataSource.data =  this.dataSource.data.filter(x => x.idJobDepartment === this.filtroDepartamento)
+  }
+  preciosPersonal(id : number){
+    const dialogRef = this.dialog.open(PrecioPersonalComponent, {
+      data : {
+        id : id
+      },
+    });
   }
   agregarPersonal(){
     this.router.navigate(['mantenimiento/personal/detalle/nuevo']);

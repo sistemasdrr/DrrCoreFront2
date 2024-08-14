@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DatosEmpresaService } from 'app/services/informes/empresa/datos-empresa.service';
 import { SociosEmpresaComponent } from 'app/views/informe/info-empresa/ie-lista/socios-empresa/socios-empresa.component';
 import { SociosPersonaComponent } from 'app/views/informe/info-persona/ip-lista/socios-persona/socios-persona.component';
+import { VerPdfComponent } from '../ver-pdf/ver-pdf.component';
 
 @Component({
   selector: 'app-breadcrumb',
@@ -66,41 +67,61 @@ export class BreadcrumbComponent implements OnInit{
 
   }
   oldCode = ""
-  verInforme(){
+  verInforme(language : string){
     if(this.idCompany > 0){
-      const paginaDetalleEmpresa = document.getElementById('pagina-detalle-empresa') as HTMLElement | null;
-      if(paginaDetalleEmpresa){
-        paginaDetalleEmpresa.classList.remove('hide-loader');
-      }
-      this.datosEmpresaService.getDatosEmpresaPorId(this.idCompany).subscribe(
-        (response) => {
-          if(response.isSuccess === true && response.isWarning === false){
-            this.oldCode = response.data.oldCode
-          }
-        }
-      ).add(
-        () => {
-          this.datosEmpresaService.downloadReportF8(this.idCompany,"E","pdf").subscribe(response=>{
-            let blob : Blob = response.body as Blob;
-            let a =document.createElement('a');
-            //const language = idioma === "I" ? "ENG" : "SPA"
-            const extension = "pdf"
-            a.download= this.oldCode+"_"+"SPA"+"_"+Date.now()+extension;
-            a.href=window.URL.createObjectURL(blob);
-            a.click();
-          }).add(
-            () => {
-              if(paginaDetalleEmpresa){
-                paginaDetalleEmpresa.classList.add('hide-loader');
-              }
-            }
-          )
-        }
-      )
-
+      const dialogRef = this.dialog.open(VerPdfComponent,{
+        data: {
+          type : "E",
+          idCompany : this.idCompany,
+          section : "ALL",
+          language : language
+        },
+      });
     }else{
-
+      const dialogRef = this.dialog.open(VerPdfComponent,{
+        data: {
+          type : "P",
+          idPerson : this.idPerson,
+          section : "ALL",
+          language : language
+        },
+      });
     }
+
+    // if(this.idCompany > 0){
+    //   const paginaDetalleEmpresa = document.getElementById('pagina-detalle-empresa') as HTMLElement | null;
+    //   if(paginaDetalleEmpresa){
+    //     paginaDetalleEmpresa.classList.remove('hide-loader');
+    //   }
+    //   this.datosEmpresaService.getDatosEmpresaPorId(this.idCompany).subscribe(
+    //     (response) => {
+    //       if(response.isSuccess === true && response.isWarning === false){
+    //         this.oldCode = response.data.oldCode
+    //       }
+    //     }
+    //   ).add(
+    //     () => {
+    //       this.datosEmpresaService.downloadReportF8(this.idCompany,"E","pdf").subscribe(response=>{
+    //         let blob : Blob = response.body as Blob;
+    //         let a =document.createElement('a');
+    //         //const language = idioma === "I" ? "ENG" : "SPA"
+    //         const extension = "pdf"
+    //         a.download= this.oldCode+"_"+"SPA"+"_"+Date.now()+extension;
+    //         a.href=window.URL.createObjectURL(blob);
+    //         a.click();
+    //       }).add(
+    //         () => {
+    //           if(paginaDetalleEmpresa){
+    //             paginaDetalleEmpresa.classList.add('hide-loader');
+    //           }
+    //         }
+    //       )
+    //     }
+    //   )
+
+    // }else{
+
+    // }
 
   }
 }

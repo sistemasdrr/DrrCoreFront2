@@ -41,6 +41,8 @@ import {
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
+import { PrecioPersonalComponent } from './personal/lista/precio-personal/precio-personal.component';
+import { AgregarPrecioPersonalComponent } from './personal/lista/precio-personal/agregar-precio-personal/agregar-precio-personal.component';
 
 registerLocaleData(localeEs);
 
@@ -67,6 +69,8 @@ registerLocaleData(localeEs);
     PermisosComponent,
     CalendarioComponent,
     DetalleCalendarioComponent,
+    PrecioPersonalComponent,
+    AgregarPrecioPersonalComponent,
   ],
   imports: [
     CommonModule,
