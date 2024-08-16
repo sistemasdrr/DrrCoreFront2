@@ -1,4 +1,4 @@
-import { GetReporters, Query1_6, Query1_7Tickets, Query2_1ByMonth, Query2_1ByYear, Query2_2ByYear, Query3_1ByMonth, Query3_1ByYear, Query4_1_1, Query4_1_2, Query4_1_3, Query4_1_4, Query4_2_1, Query4_2_2, Query5_1_1, Query5_1_1Tickets, Query5_1_2 } from './../../models/consulta';
+import { GetCycles, GetReporters, Query1_6, Query1_7Tickets, Query2_1ByMonth, Query2_1ByYear, Query2_2ByYear, Query3_1ByMonth, Query3_1ByYear, Query4_1_1, Query4_1_2, Query4_1_3, Query4_1_4, Query4_2_1, Query4_2_2, Query5_1_1, Query5_1_1Tickets, Query5_1_2, Query5_1_2ByCycle } from './../../models/consulta';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Query1_1, Query1_10, Query1_11BySubscriber, Query1_11Subscriber, Query1_1ByMonth, Query1_2ByYear, Query1_3BySubscriber, Query1_4, Query1_4Subscriber, Query1_5, Query1_6ByIdSubscriber, Query1_7, Query1_8, Query1_9 } from 'app/models/consulta';
@@ -139,5 +139,14 @@ export class ConsultaService {
   }
   GetQuery5_1_2Monthly(idUser : string, month : number) : Observable<Response<Query5_1_2[]>>{
     return this.http.get<Response<Query5_1_2[]>>(this.url + this.controller + '/GetQuery5_1_2Monthly?idUser='+idUser+'&month='+month);
+  }
+  GetQuery5_1_2MonthlyByCycle(idUser : string, cycle : string) : Observable<Response<Query5_1_2ByCycle[]>>{
+    return this.http.get<Response<Query5_1_2ByCycle[]>>(this.url + this.controller + '/GetQuery5_1_2MonthlyByCycle?idUser='+idUser+'&cycle='+cycle);
+  }
+  GetCycles() : Observable<Response<GetCycles[]>>{
+    return this.http.get<Response<GetCycles[]>>(this.url + this.controller + '/GetCycles');
+  }
+  GetUserCode(idUser : number) : Observable<Response<string[]>>{
+    return this.http.get<Response<string[]>>(this.url + this.controller + '/GetUserCode?idUser='+idUser);
   }
 }

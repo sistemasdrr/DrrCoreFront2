@@ -243,6 +243,7 @@ export class SbsRiesgoComponent implements OnInit, OnDestroy{
   verPdf(){
     const dialogRef = this.dialog.open(VerPdfComponent,{
       data: {
+        type : "E",
         idCompany : this.idCompany,
         section : "SBS",
         language : "E"
@@ -252,6 +253,7 @@ export class SbsRiesgoComponent implements OnInit, OnDestroy{
   verPdfIngles(){
     const dialogRef = this.dialog.open(VerPdfComponent,{
       data: {
+        type : "E",
         idCompany : this.idCompany,
         section : "SBS",
         language : "I"

@@ -344,6 +344,7 @@ constructor(
   verPdf(){
     const dialogRef = this.dialog.open(VerPdfComponent,{
       data: {
+        type : "E",
         idCompany : this.idCompany,
         section : "ANTECEDENTES",
         language : "E"
@@ -353,6 +354,7 @@ constructor(
   verPdfIngles(){
     const dialogRef = this.dialog.open(VerPdfComponent,{
       data: {
+        type : "E",
         idCompany : this.idCompany,
         section : "ANTECEDENTES",
         language : "I"

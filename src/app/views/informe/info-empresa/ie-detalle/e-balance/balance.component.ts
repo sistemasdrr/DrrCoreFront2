@@ -218,6 +218,7 @@ export class BalanceComponent implements OnInit {
   verPdf(){
     const dialogRef = this.dialog.open(VerPdfComponent,{
       data: {
+        type : "E",
         idCompany : this.idCompany,
         section : "BALANCES",
         language : "E"
@@ -227,6 +228,7 @@ export class BalanceComponent implements OnInit {
   verPdfIngles(){
     const dialogRef = this.dialog.open(VerPdfComponent,{
       data: {
+        type : "E",
         idCompany : this.idCompany,
         section : "BALANCES",
         language : "I"

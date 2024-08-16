@@ -77,6 +77,8 @@ export class MainComponent implements OnInit {
   pendingTaskPersonalSelected : PendingTaskByUser[] = []
   pendingTaskAgent : PendingTaskByUser[] = []
   pendingTaskReporter : PendingTaskByUser[] = []
+  pendingTaskTypist : PendingTaskByUser[] = []
+  pendingTaskTranslator : PendingTaskByUser[] = []
 
   public areaChartOptions!: Partial<ChartOptions>;
   public barChartOptions!: Partial<ChartOptions>;
@@ -154,17 +156,25 @@ export class MainComponent implements OnInit {
         if(this.pendingTaskSupervisor.length === 1){
           this.pendingTaskReporter = this.pendingTaskSupervisor[0].details.filter(x => x.type === "RP")
           this.pendingTaskAgent = this.pendingTaskSupervisor[0].details.filter(x => x.type === "AG")
+          this.pendingTaskTypist = this.pendingTaskSupervisor[0].details.filter(x => x.type === "DI")
+          this.pendingTaskTranslator = this.pendingTaskSupervisor[0].details.filter(x => x.type === "TR")
         }else if(this.pendingTaskSupervisor.length > 1){
           this.supervisorSeleccionado = this.pendingTaskSupervisor[0].code
           this.pendingTaskPersonalSelected = this.pendingTaskSupervisor[0].details
           this.pendingTaskReporter = this.pendingTaskPersonalSelected.filter(x => x.type === "RP")
           this.pendingTaskAgent = this.pendingTaskPersonalSelected.filter(x => x.type === "AG")
+          this.pendingTaskTypist = this.pendingTaskPersonalSelected.filter(x => x.type === "DI")
+          this.pendingTaskTranslator = this.pendingTaskPersonalSelected.filter(x => x.type === "TR")
         }
 
         if(this.pendingTaskReporter.length > 0){
           this.tipo = "RP"
-        }else{
+        }else if(this.pendingTaskAgent.length > 0){
           this.tipo = "AG"
+        }else if(this.pendingTaskTypist.length > 0){
+          this.tipo = "DI"
+        }else if(this.pendingTaskTranslator.length > 0){
+          this.tipo = "TR"
         }
       }
     )
@@ -201,11 +211,15 @@ export class MainComponent implements OnInit {
   selectSupervisor(code : string, type : string){
     this.dataSource1.data = []
     this.dataSource2.data = []
+    this.dataSource3.data = []
+    this.dataSource4.data = []
     const personal = this.pendingTaskSupervisor.filter(x => x.code === code)[0]
     console.log(personal)
       this.pendingTaskPersonalSelected = personal.details
       this.pendingTaskReporter = this.pendingTaskPersonalSelected.filter(x => x.type === "RP")
       this.pendingTaskAgent = this.pendingTaskPersonalSelected.filter(x => x.type === "AG")
+      this.pendingTaskTypist = this.pendingTaskPersonalSelected.filter(x => x.type === "DI")
+      this.pendingTaskTranslator = this.pendingTaskPersonalSelected.filter(x => x.type === "TR")
   }
   redirigir(){
     this.router.navigate(['/pedidos/asignacion-empleados']);
@@ -590,6 +604,8 @@ export class MainComponent implements OnInit {
   columnsToDisplay1 : string[] = ['number','requestedName','country','expireDate','acciones']
   dataSource1 = new MatTableDataSource<PendingTaskByUserDetails>;
   dataSource2 = new MatTableDataSource<PendingTaskByUserDetails>;
+  dataSource3 = new MatTableDataSource<PendingTaskByUserDetails>;
+  dataSource4 = new MatTableDataSource<PendingTaskByUserDetails>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -601,9 +617,15 @@ export class MainComponent implements OnInit {
     if(task.type == "RP"){
       this.dataSource1.data = task.details
       this.dataSource1.sort = this.sort
-    }else{
+    }else if(task.type == "AG"){
       this.dataSource2.data = task.details
       this.dataSource2.sort = this.sort
+    }else if(task.type == "DI"){
+      this.dataSource3.data = task.details
+      this.dataSource3.sort = this.sort
+    }else if(task.type == "TR"){
+      this.dataSource4.data = task.details
+      this.dataSource4.sort = this.sort
     }
     nav.open();
   }

@@ -419,6 +419,7 @@ export class RamoComponent implements OnInit, OnDestroy{
   verPdf(){
     const dialogRef = this.dialog.open(VerPdfComponent,{
       data: {
+        type : "E",
         idCompany : this.idCompany,
         section : "RAMO",
         language : "E"
@@ -428,6 +429,7 @@ export class RamoComponent implements OnInit, OnDestroy{
   verPdfIngles(){
     const dialogRef = this.dialog.open(VerPdfComponent,{
       data: {
+        type : "E",
         idCompany : this.idCompany,
         section : "RAMO",
         language : "I"

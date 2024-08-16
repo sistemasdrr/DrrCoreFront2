@@ -136,6 +136,7 @@ export class ImagenesComponent implements OnInit{
   verPdf(){
     const dialogRef = this.dialog.open(VerPdfComponent,{
       data: {
+        type : "E",
         idCompany : this.idCompany,
         section : "IMAGENES",
         language : "E"
@@ -145,6 +146,7 @@ export class ImagenesComponent implements OnInit{
   verPdfIngles(){
     const dialogRef = this.dialog.open(VerPdfComponent,{
       data: {
+        type : "E",
         idCompany : this.idCompany,
         section : "IMAGENES",
         language : "I"

@@ -26,7 +26,8 @@
                 </li>
                 <li class="tbl-header-btn">
                   <div class="m-l-10" >
-                    <button mat-icon-button  class="btn" [ngClass]="code !== '' && quality !== '' && reportType !== '' ? 'bg-cyan' : 'bg-grey'" [disabled]="code !== '' && quality !== '' && reportType !== '' ? false : true" (click)="guardar()" #tooltip="matTooltip" matTooltip="Guardar"  >
+                    <button mat-icon-button  class="btn bg-cyan"  (click)="guardar()" #tooltip="matTooltip" matTooltip="Guardar"  >
+                      <!--[ngClass]="code !== '' && quality !== '' && reportType !== '' ? 'bg-cyan' : 'bg-grey'" [disabled]="code !== '' && quality !== '' && reportType !== '' ? false : true"-->
                       <mat-icon>save</mat-icon>
                     </button>
                   </div>
@@ -48,10 +49,10 @@
               </div>
               <div class="col-md-8 m-0 pt-0 pb-0">
                 <div class="d-flex w-100 justify-content-between">
-                  <mat-slide-toggle style="margin-top: .6rem;" class="example-margin" [checked]="commission">
+                  <mat-slide-toggle style="margin-top: .6rem;" class="example-margin" [(ngModel)]="commission" >
                     Es Comisionista?
                   </mat-slide-toggle>
-                  <mat-slide-toggle style="margin-top: .6rem;" class="example-margin" [checked]="isComplement">
+                  <mat-slide-toggle style="margin-top: .6rem;" class="example-margin" [(ngModel)]="isComplement">
                     Es Complemento?
                   </mat-slide-toggle>
                 </div>
@@ -60,6 +61,7 @@
                 <mat-form-field class="w-100">
                   <mat-label>Tipo de Informe</mat-label>
                   <mat-select [(ngModel)]="reportType" >
+                    <mat-option [value]="''"></mat-option>
                     <mat-option [value]="'RV'">RV</mat-option>
                     <mat-option [value]="'OR'">OR</mat-option>
                     <mat-option [value]="'EF'">EF</mat-option>

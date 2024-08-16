@@ -233,6 +233,7 @@ export class FinanzasComponent implements OnInit, OnDestroy{
   verPdf(){
     const dialogRef = this.dialog.open(VerPdfComponent,{
       data: {
+        type : "E",
         idCompany : this.idCompany,
         section : "FINANZAS",
         language : "E"
@@ -242,6 +243,7 @@ export class FinanzasComponent implements OnInit, OnDestroy{
   verPdfIngles(){
     const dialogRef = this.dialog.open(VerPdfComponent,{
       data: {
+        type : "E",
         idCompany : this.idCompany,
         section : "FINANZAS",
         language : "I"

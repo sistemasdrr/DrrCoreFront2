@@ -118,6 +118,7 @@ export class OpinionCreditoComponent implements OnInit, OnDestroy {
   verPdf(){
     const dialogRef = this.dialog.open(VerPdfComponent,{
       data: {
+        type : "E",
         idCompany : this.idCompany,
         section : "OPINION-CREDITO",
         language : "E"
@@ -127,6 +128,7 @@ export class OpinionCreditoComponent implements OnInit, OnDestroy {
   verPdfIngles(){
     const dialogRef = this.dialog.open(VerPdfComponent,{
       data: {
+        type : "E",
         idCompany : this.idCompany,
         section : "OPINION-CREDITO",
         language : "I"

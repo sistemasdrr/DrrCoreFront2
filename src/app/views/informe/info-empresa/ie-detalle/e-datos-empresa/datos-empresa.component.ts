@@ -627,8 +627,10 @@ export class DatosEmpresaComponent implements OnInit, OnDestroy {
   }
 
   verPdf(){
+    console.log(this.id)
     const dialogRef = this.dialog.open(VerPdfComponent,{
       data: {
+        type : "E",
         idCompany : this.id,
         section : "IDENTIFICACION",
         language : "E"
@@ -638,6 +640,7 @@ export class DatosEmpresaComponent implements OnInit, OnDestroy {
   verPdfIngles(){
     const dialogRef = this.dialog.open(VerPdfComponent,{
       data: {
+        type : "E",
         idCompany : this.id,
         section : "IDENTIFICACION",
         language : "I"

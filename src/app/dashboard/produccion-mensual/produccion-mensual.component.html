@@ -12,30 +12,22 @@
   <div class="col-md-12  m-0 p-0">
     <div class="card card-body shadow " style="padding-bottom: 0px;">
       <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-4">
           <mat-form-field color="primary" style="width: 100%;">
-            <mat-label>Mes</mat-label>
-            <mat-select [(ngModel)]="month">
-              <mat-option [value]="1">Enero</mat-option>
-              <mat-option [value]="2">Febrero</mat-option>
-              <mat-option [value]="3">Marzo</mat-option>
-              <mat-option [value]="4">Abril</mat-option>
-              <mat-option [value]="5">Mayo</mat-option>
-              <mat-option [value]="6">Junio</mat-option>
-              <mat-option [value]="7">Julio</mat-option>
-              <mat-option [value]="8">Agosto</mat-option>
-              <mat-option [value]="9">Septiembre</mat-option>
-              <mat-option [value]="10">Octubre</mat-option>
-              <mat-option [value]="11">Noviembre</mat-option>
-              <mat-option [value]="12">Diciembre</mat-option>
+            <mat-label>Ciclo</mat-label>
+            <mat-select [(ngModel)]="codeCycle" (ngModelChange)="search(codeCycle)">
+              <mat-option *ngFor="let item of cycles" [value]="item.code">{{item.value}}</mat-option>
           </mat-select>
           </mat-form-field>
         </div>
-        <div class="col-md-1" >
-            <button mat-mini-fab style="margin-top: .4rem;" color="primary" (click)="search(month)">
-              <mat-icon class="col-white">search</mat-icon>
-            </button>
-          </div>
+        <div class="col-md-2">
+          <mat-form-field color="primary" style="width: 100%;">
+            <mat-label>Codigo</mat-label>
+            <mat-select [(ngModel)]="userCode" (ngModelChange)="updateTable(userCode)">
+              <mat-option *ngFor="let item of userCodes" [value]="item">{{item}}</mat-option>
+          </mat-select>
+          </mat-form-field>
+        </div>
       </div>
     </div>
     <div class="card card-body shadow " style="padding-bottom: 0px;">
@@ -48,6 +40,10 @@
           <ng-container matColumnDef="requestedName" >
           <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Nombre Solicitado </th>
           <td mat-cell *matCellDef="let order" class="text-left" style="white-space: nowrap;width: 25%;"> {{order.requestedName}} </td>
+          </ng-container>
+          <ng-container matColumnDef="asignedTo" >
+          <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Codigo </th>
+          <td mat-cell *matCellDef="let order" class="text-left" style="white-space: nowrap;"> {{order.asignedTo}} </td>
           </ng-container>
           <ng-container matColumnDef="country" >
             <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> País </th>
@@ -94,6 +90,10 @@
               </div>
             </td>
             </ng-container>
+          <ng-container matColumnDef="price" >
+          <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Precio </th>
+          <td mat-cell *matCellDef="let order" class="text-center" style="white-space: nowrap;"> {{order.price}} </td>
+          </ng-container>
           <ng-container matColumnDef="orderDate" >
           <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Fecha de Pedido </th>
           <td mat-cell *matCellDef="let order" class="text-center" style="white-space: nowrap;"> {{order.orderDate}} </td>
@@ -211,6 +211,32 @@
           <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
         </table>
         <mat-paginator [pageSizeOptions]="[ 10,25,50]" aria-label="Seleccionar página de Pedidos"></mat-paginator>
+
+
+        <div class="col-md-5 m-2" *ngIf="abonados2.length !== 0">
+          <mat-list role="list">
+            <div class="row">
+              <div class="col-md-4  p-0" >
+                <div mat-subheader>Codigo</div>
+                <mat-list-item role="listitem" class="" style="border-top :1px solid rgb(167, 167, 167)" *ngFor="let item of userCodes">{{item}}</mat-list-item>
+              </div>
+              <div class="col-md-4  p-0" >
+                <div mat-subheader>Núm. Informes</div>
+                <mat-list-item role="listitem" style="border-top :1px solid rgb(167, 167, 167)" *ngFor="let item1 of userCodes">
+                  {{getNumReports(item1)}}
+                </mat-list-item>
+              </div>
+              <div class="col-md-4  p-0" >
+                <div mat-subheader>Monto Total</div>
+                <mat-list-item role="listitem" style="border-top :1px solid rgb(167, 167, 167)" *ngFor="let item2 of userCodes">
+                  {{getPriceReports(item2)}}
+                </mat-list-item>
+              </div>
+            </div>
+
+
+          </mat-list>
+        </div>
       </div>
     </div>
   </div>

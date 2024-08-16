@@ -491,7 +491,30 @@ export interface Query5_1_2{
   quantity : number
   tickets : Query5_1_2Tickets[]
 }
+export interface GetCycles{
+  value : string
+  code : string
+}
+export interface Query5_1_2ByCycle{
+  id : number
+  name : string
+  code : string
+  country : string
+  flagCountry : string
+  asignedTo : string
+  asignationType : string
+  cycle : string
+  price : number
+  flag : boolean
+  quantity : number
+  tickets : Query5_1_2Tickets[]
+}
 export interface Query5_1_2Tickets{
+
+  asignedTo : string
+  asignationType : string
+  cycle : string
+  price : number
   id : number
   idTicket : number
   idCompany : number
