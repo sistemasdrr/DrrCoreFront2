@@ -91,7 +91,7 @@ export class SeleccionarAgenteComponent implements OnInit {
       this.qualityTranslator=data.qualityTranslator
       this.hasBalance=data.hasBalance
       this.assginFromCode=data.assginFromCode
-      this.referencias = false
+      this.referencias = this.reportType.trim() === "RV" ? true : false
       this.fechaAsignacionDate=new Date()
       this.fechaVencimientoDate=new Date()
       const auth = JSON.parse(localStorage.getItem('authCache')+'')

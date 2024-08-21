@@ -315,6 +315,7 @@ export interface TicketFile{
   name : string
   path : string
   extension : string
+  flag : boolean
 }
 export interface TicketHistorySubscriber{
   id : number

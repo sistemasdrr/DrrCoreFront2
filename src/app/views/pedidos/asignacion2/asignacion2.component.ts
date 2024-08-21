@@ -12,7 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AdjuntarArchivosComponent } from '@shared/components/adjuntar-archivos/adjuntar-archivos.component';
 import {  SeleccionarAgenteComponent } from './seleccionar-agente/seleccionar-agente.component';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { ListTicket, ListTicket2, OtherUserCode } from 'app/models/pedidos/ticket';
+import { Asignacion, ListTicket, ListTicket2, OtherUserCode } from 'app/models/pedidos/ticket';
 import { TicketService } from 'app/services/pedidos/ticket.service';
 import Swal from 'sweetalert2';
 import { ReferenciasComercialesComponent } from './referencias-comerciales/referencias-comerciales.component';
@@ -178,68 +178,6 @@ export class Asignacion2Component implements OnInit {
 
     }
   }
-  // entregarTrabajo(codigoCupon : string,tipo : string, numberAssign:number,assignedToCode:string, quality : string){
-  //   const today = new Date();
-  //   const dd = String(today.getDate()).padStart(2, '0');
-  //   const mm = String(today.getMonth() + 1).padStart(2, '0'); // Enero es 0!
-  //   const yyyy = today.getFullYear();
-
-  //   const startDateFormatted = dd + '/' + mm + '/' + yyyy;
-  //   const endDateFormatted = startDateFormatted;
-  //   const asign : Asignacion = {
-  //     userFrom: this.userTo,
-  //     userTo: "",
-  //     assignedToCode: assignedToCode,
-  //     assignedToName: '',
-  //     startDateD: new Date(),
-  //     endDateD: new Date(),
-  //     references: false,
-  //     observations: '',
-  //     type: '',
-  //     internal: false,
-  //     balance: false,
-  //     startDate: startDateFormatted,
-  //     endDate: endDateFormatted,
-  //     idTicket: parseInt(codigoCupon),
-  //     numberAssign: numberAssign,
-  //     assignedFromCode: assignedToCode,
-  //     quality : this.quality !== '' ? this.quality : null
-  //   }
-  //   console.log(asign)
-  //   Swal.fire({
-  //     title: '¿Está seguro de entregar su trabajo?',
-  //     text: "",
-  //     icon: 'warning',
-  //     showCancelButton: true,
-  //     cancelButtonText : 'No',
-  //     confirmButtonColor: '#3085d6',
-  //     cancelButtonColor: '#d33',
-  //     confirmButtonText: 'Sí',
-  //     width: '20rem',
-  //     heightAuto : true
-  //   }).then((result) => {
-  //     if(result.value){
-  //       this.ticketService.finishWord(asign).subscribe(
-  //         (response) => {
-  //           if(response.isSuccess === true && response.isWarning === false){
-  //             Swal.fire({
-  //               title: 'Se entrego el trabajo correctamente',
-  //               text: "",
-  //               icon: 'success',
-  //               width: '20rem',
-  //               heightAuto : true
-  //             })
-  //           }
-  //         }
-  //       ).add(
-  //         () => {
-  //           this.ngOnInit()
-  //         }
-  //       )
-
-  //     }
-  //   })
-  // }
   listarProveedores(idTicket : number){
     const dialogRef = this.dialog.open(ReferenciasComercialesComponent, {
       data: {
@@ -375,5 +313,42 @@ export class Asignacion2Component implements OnInit {
       }
     })
 
+  }
+
+  entregarTrabajo(id : number){
+    console.log(id)
+    Swal.fire({
+      title: '¿Está seguro de entregar su trabajo?',
+      text: "",
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText : 'No',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí',
+      width: '20rem',
+      heightAuto : true
+    }).then((result) => {
+      if(result.value){
+        this.ticketService.FinishWorkById(id).subscribe(
+          (response) => {
+            if(response.isSuccess === true && response.isWarning === false){
+              Swal.fire({
+                title: 'Se entrego el trabajo correctamente',
+                text: "",
+                icon: 'success',
+                width: '20rem',
+                heightAuto : true
+              })
+            }
+          }
+        ).add(
+          () => {
+            this.ngOnInit()
+          }
+        )
+
+      }
+    })
   }
 }

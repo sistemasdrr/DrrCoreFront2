@@ -42,6 +42,11 @@ const routes: Routes = [
     component: ReferencistaComponent,
     data: { title: 'Referencias del cupón - DRR Core V1' }
   },
+  {
+    path: 'referencias/:type/:idTicket/:id/:complement',
+    component: ReferencistaComponent,
+    data: { title: 'Referencias del cupón - DRR Core V1' }
+  },
 ];
 
 

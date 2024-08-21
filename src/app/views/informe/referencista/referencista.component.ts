@@ -24,6 +24,8 @@ export class ReferencistaComponent implements OnInit {
   numCupon = ""
   type = ""
   user=""
+  asignedTo = ""
+  isComplement = false
 
   dataSourceProveedor: MatTableDataSource<ProveedorT>
   dataSourceHistorico: MatTableDataSource<ProveedorHistory>
@@ -53,6 +55,11 @@ export class ReferencistaComponent implements OnInit {
       this.type = type + ""
       console.log(this.type)
     }
+    const complement = this.activatedRoute.snapshot.paramMap.get('complement');
+    if(complement === 'C'){
+      this.isComplement = true
+    }
+    console.log(this.isComplement)
   }
 
   ngOnInit(): void {
@@ -324,7 +331,7 @@ agregarProveedor() {
       heightAuto : true
     }).then((result) => {
       if (result.value) {
-        this.sbsService.addListProvider(this.dataSourceProveedor.data, this.id,this.user,this.idTicket).subscribe(
+        this.sbsService.addListProvider(this.dataSourceProveedor.data, this.id,this.user,this.asignedTo,this.idTicket,this.isComplement).subscribe(
           (response) => {
             if(response.isSuccess === true && response.isWarning === false){
               Swal.fire({

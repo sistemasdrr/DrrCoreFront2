@@ -12,6 +12,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import Swal from 'sweetalert2';
 import { DatosEmpresaService } from 'app/services/informes/empresa/datos-empresa.service';
 import { AdjuntarArchivosComponent } from '@shared/components/adjuntar-archivos/adjuntar-archivos.component';
+import { DetalleComponent } from './detalle/detalle.component';
 
 
 
@@ -99,6 +100,14 @@ export class ListaComponent implements OnInit {
     //     this.asignarDatosAbonado()
     //   }
     // });
+  }
+  detalleInforme(idTicket : number){
+    const dialogRef = this.dialog.open(DetalleComponent, {
+      data: {
+        idTicket: idTicket,
+        idUser: this.idUser,
+      },
+    });
   }
   enviarInforme(id : number){
     const loader = document.getElementById('loader-lista-despacho') as HTMLElement | null;

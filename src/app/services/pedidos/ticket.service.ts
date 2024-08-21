@@ -126,6 +126,9 @@ export class TicketService {
   finishWord(obj : Asignacion) : Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/finishWork',obj);
   }
+  FinishWorkById(idTicketHistory : number) : Observable<Response<boolean>>{
+    return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/FinishWorkById?idTicketHistory='+idTicketHistory,'');
+  }
   deleteTicketHistory(idTicket: number, assignedTo : string, numberAssign : number, returnMessage : string) : Observable<Response<boolean>>{
     return this.http.get<Response<boolean>>(this.url + this.controllerTicket + '/deleteTicketHistory?idTicket='+idTicket+'&assignedTo='+assignedTo+'&numberAssign='+numberAssign+'&returnMessage='+returnMessage);
   }

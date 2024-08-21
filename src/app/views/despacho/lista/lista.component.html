@@ -87,7 +87,7 @@
             <button mat-icon-button (click)="$event.stopPropagation();agregarAdjuntos(order.id,order.number)" #tooltip="matTooltip" matTooltip="Adjuntos">
               <mat-icon style="{{order.hasFiles === true ? 'color: red;' : 'color: gray;'}}">attach_file</mat-icon>
             </button>
-            <button mat-icon-button (click)="$event.stopPropagation(); enviarInforme(order.id)" class="tbl-action-btn " matTooltip="Enviar Informe">
+            <button mat-icon-button (click)="$event.stopPropagation(); detalleInforme(order.id)" class="tbl-action-btn " matTooltip="Enviar Informe">
               <app-feather-icons [icon]="'send'" [class]="'tbl-fav-edit'"></app-feather-icons>
             </button>
             <button  mat-icon-button  matTooltip="Generar Documento" (click)="$event.stopPropagation(); descargarDocumento(order.id,order.busineesName,'E','pdf')">
