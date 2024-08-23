@@ -55,6 +55,11 @@ export class ReferencistaComponent implements OnInit {
       this.type = type + ""
       console.log(this.type)
     }
+    const asignedTo = this.activatedRoute.snapshot.paramMap.get('asignedTo');
+    if(asignedTo !== null){
+      this.asignedTo = asignedTo.trim()
+      console.log(this.asignedTo)
+    }
     const complement = this.activatedRoute.snapshot.paramMap.get('complement');
     if(complement === 'C'){
       this.isComplement = true

@@ -39,7 +39,16 @@
           </ng-container>
           <ng-container matColumnDef="requestedName" >
           <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Nombre Solicitado </th>
-          <td mat-cell *matCellDef="let order" class="text-left" style="white-space: nowrap;width: 25%;"> {{order.requestedName}} </td>
+          <td mat-cell *matCellDef="let order" class="text-left" style="white-space: nowrap;width: 25%;">
+
+            <a *ngIf="order.asignedTo.includes('RC') && order.about === 'E'" [target]="'_blank'" [routerLink]="'../../../informes/referencias/E/'+order.idTicket+'/'+order.idCompany+'/'+order.asignedTo.trim()+'/C'">
+              {{order.requestedName}}
+            </a>
+            <a *ngIf="order.asignedTo.includes('RC') && order.about === 'P'" [target]="'_blank'" [routerLink]="'../../../informes/referencias/P/'+order.idTicket+'/'+order.idPerson+'/'+order.asignedTo.trim()+'/C'">
+              {{order.requestedName}}
+            </a>
+            <div *ngIf="!order.asignedTo.includes('RC')">{{order.requestedName}}</div>
+          </td>
           </ng-container>
           <ng-container matColumnDef="asignedTo" >
           <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Codigo </th>
@@ -108,8 +117,11 @@
           <ng-container matColumnDef="Acciones" >
           <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Acciones </th>
           <td mat-cell *matCellDef="let order" class="text-center" style="white-space: nowrap;">
-            <button *ngIf="order.id > 0" mat-icon-button class="tbl-action-btn " (click)="$event.stopPropagation();verHistorial(order.idTicket)" matTooltip="Ver Historial">
+            <button *ngIf="order.id > 0" mat-icon-button class="tbl-action-btn " (click)="$event.stopPropagation();verHistorial(order.idTicket)" matTooltip="Ver Historiallll">
               <app-feather-icons [icon]="'clock'" [class]="'tbl-fav-edit'"></app-feather-icons>
+            </button>
+            <button *ngIf="order.id > 0" mat-icon-button class="tbl-action-btn " (click)="$event.stopPropagation();enviarComplemento(order.idTicket,order.asignedTo)" matTooltip="Enviar Complemento">
+              C
             </button>
 
           </td>

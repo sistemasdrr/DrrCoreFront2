@@ -8,6 +8,7 @@ import { Query5_1_2, Query5_1_2Tickets } from 'app/models/consulta';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { HistorialPedidoComponent } from 'app/views/situacion/lista/historial-pedido/historial-pedido.component';
+import { EnviarComplementoComponent } from './enviar-complemento/enviar-complemento.component';
 
 @Component({
   selector: 'app-produccion-mensual',
@@ -189,6 +190,15 @@ export class ProduccionMensualComponent implements OnInit{
     const dialogRef = this.dialog.open(HistorialPedidoComponent, {
       data : {
           idTicket : idTicket
+      },
+    });
+  }
+  enviarComplemento(idTicket : number, asignedTo : string){
+    const dialogRef = this.dialog.open(EnviarComplementoComponent, {
+      data : {
+        idUser : this.idUser,
+        asignedTo : asignedTo,
+        idTicket : idTicket
       },
     });
   }

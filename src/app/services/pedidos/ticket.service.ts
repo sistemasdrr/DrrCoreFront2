@@ -83,9 +83,11 @@ export class TicketService {
   getListToDispatch() : Observable<Response<ListTicket[]>>{
     return this.http.get<Response<ListTicket[]>>(this.url + this.controllerTicket + '/getListToDispatch');
   }
-  dispatchTicket(idTicket : number, idUser : number) : Observable<Response<boolean>>{
-    return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/DispatchTicket?idTicket='+idTicket+'&idUser='+idUser,'');
+
+  dispatchTicket(idTicket : number, idUser : number, obj : number[]) : Observable<Response<boolean>>{
+    return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/DispatchTicket?idTicket='+idTicket+'&idUser='+idUser,obj);
   }
+  
   getListBy(ticket : string, name : string, subscriber : string, type : string, procedure : string) : Observable<Response<ListTicket[]>>{
     return this.http.get<Response<ListTicket[]>>(this.url + this.controllerTicket + '/getListby?ticket='+ticket+'&name='+name+'&subscriber='+subscriber+'&type='+type+'&procedure='+procedure);
   }
@@ -195,5 +197,12 @@ export class TicketService {
   }
   SaveTicketCommentary(idTicket : number, commentary : string) : Observable<Response<string>>{
     return this.http.post<Response<string>>(this.url + this.controllerTicket + '/SaveTicketCommentary?idTicket='+idTicket+'&commentary='+commentary,'');
+  }
+
+  GetNumerationRefCom() : Observable<Response<string>>{
+    return this.http.get<Response<string>>(this.url + this.controllerTicket + '/GetNumerationRefCom');
+  }
+  SendComplementRefCom(idUser : number, idTicket : number,asignedTo : string, numOrder : string, message : string) : Observable<Response<boolean>>{
+    return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/SendComplementRefCom?idUser='+idUser+'&idTicket='+idTicket+'&asignedTo='+asignedTo+'&numOrder='+numOrder+'&message='+message,'');
   }
 }

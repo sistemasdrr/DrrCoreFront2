@@ -15,11 +15,13 @@ import { SharedModule } from './../shared/shared.module';
 import { ProduccionDiariaComponent } from 'app/dashboard/produccion-diaria/produccion-diaria.component';
 import { ProduccionMensualComponent } from './produccion-mensual/produccion-mensual.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { EnviarComplementoComponent } from './produccion-mensual/enviar-complemento/enviar-complemento.component';
 
 @NgModule({
   declarations: [MainComponent, Dashboard2Component, Dashboard3Component,
     ProduccionDiariaComponent,
-    ProduccionMensualComponent],
+    ProduccionMensualComponent,
+    EnviarComplementoComponent],
   imports: [
     CommonModule,
     DashboardRoutingModule,

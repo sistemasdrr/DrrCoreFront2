@@ -38,12 +38,12 @@ const routes: Routes = [
     data: { title: 'Detalles de Persona - DRR Core V1' }
   },
   {
-    path: 'referencias/:type/:idTicket/:id',
+    path: 'referencias/:type/:idTicket/:id/:asignedTo',
     component: ReferencistaComponent,
     data: { title: 'Referencias del cupón - DRR Core V1' }
   },
   {
-    path: 'referencias/:type/:idTicket/:id/:complement',
+    path: 'referencias/:type/:idTicket/:id/:asignedTo/:complement',
     component: ReferencistaComponent,
     data: { title: 'Referencias del cupón - DRR Core V1' }
   },

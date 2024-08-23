@@ -109,77 +109,77 @@ export class ListaComponent implements OnInit {
       },
     });
   }
-  enviarInforme(id : number){
-    const loader = document.getElementById('loader-lista-despacho') as HTMLElement | null;
+  // enviarInforme(id : number){
+  //   const loader = document.getElementById('loader-lista-despacho') as HTMLElement | null;
 
-    console.log(this.idUser)
-    Swal.fire({
-      title: '¿Está seguro de despachar este pedido?',
-      text: "",
-      icon: 'warning',
-      showCancelButton: true,
-      cancelButtonText : 'No',
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí',
-      width: '20rem',
-      heightAuto : true
-    }).then((result) => {
-      if(result.value){
-        if(loader){
-          loader.classList.remove('hide-loader');
-        }
-        this.ticketService.dispatchTicket(id, this.idUser).subscribe(
-          (response) => {
-            if(response.isSuccess === true && response.isWarning === false){
-                Swal.fire({
-                  title : 'El Pedido se envio correctamente',
-                  icon : 'success',
-                  width: '20rem',
-                  heightAuto : true
-                });
-            }else{
-              Swal.fire({
-                title : 'Ocurrio un error al enviar el informe',
-                text: response.message,
-                icon : 'warning',
-                width: '20rem',
-                heightAuto : true
-              });
-            }
-          },(error) => {
-            Swal.fire({
-              title : 'Ocurrio un error al enviar el informe',
-              text: error,
-              icon : 'error',
-              width: '20rem',
-              heightAuto : true
-            });
-          }
-        ).add(
-          () => {
-            this.ticketService.getListToDispatch().subscribe(
-              (response) => {
-                if(response.isSuccess === true && response.isWarning === false){
-                  this.dataSource.data = response.data
-                  this.dataSource.paginator = this.paginator
-                  this.dataSource.sort = this.sort
-                }
-              }).add(
-                () => {
-                  if(loader){
-                    loader.classList.add('hide-loader');
-                  }
-                }
-              )
+  //   console.log(this.idUser)
+  //   Swal.fire({
+  //     title: '¿Está seguro de despachar este pedido?',
+  //     text: "",
+  //     icon: 'warning',
+  //     showCancelButton: true,
+  //     cancelButtonText : 'No',
+  //     confirmButtonColor: '#3085d6',
+  //     cancelButtonColor: '#d33',
+  //     confirmButtonText: 'Sí',
+  //     width: '20rem',
+  //     heightAuto : true
+  //   }).then((result) => {
+  //     if(result.value){
+  //       if(loader){
+  //         loader.classList.remove('hide-loader');
+  //       }
+  //       this.ticketService.dispatchTicket(id, this.idUser).subscribe(
+  //         (response) => {
+  //           if(response.isSuccess === true && response.isWarning === false){
+  //               Swal.fire({
+  //                 title : 'El Pedido se envio correctamente',
+  //                 icon : 'success',
+  //                 width: '20rem',
+  //                 heightAuto : true
+  //               });
+  //           }else{
+  //             Swal.fire({
+  //               title : 'Ocurrio un error al enviar el informe',
+  //               text: response.message,
+  //               icon : 'warning',
+  //               width: '20rem',
+  //               heightAuto : true
+  //             });
+  //           }
+  //         },(error) => {
+  //           Swal.fire({
+  //             title : 'Ocurrio un error al enviar el informe',
+  //             text: error,
+  //             icon : 'error',
+  //             width: '20rem',
+  //             heightAuto : true
+  //           });
+  //         }
+  //       ).add(
+  //         () => {
+  //           this.ticketService.getListToDispatch().subscribe(
+  //             (response) => {
+  //               if(response.isSuccess === true && response.isWarning === false){
+  //                 this.dataSource.data = response.data
+  //                 this.dataSource.paginator = this.paginator
+  //                 this.dataSource.sort = this.sort
+  //               }
+  //             }).add(
+  //               () => {
+  //                 if(loader){
+  //                   loader.classList.add('hide-loader');
+  //                 }
+  //               }
+  //             )
 
-          }
-        )
-      }
-      }
-    );
+  //         }
+  //       )
+  //     }
+  //     }
+  //   );
 
-  }
+  // }
   consultar(ticket : ListTicket){
 
   }

@@ -27,7 +27,7 @@ import Swal from 'sweetalert2';
   ]
 })
 export class DetalleComponent implements OnInit{
-  loader = false
+  loading = false
 
   idUser = 0
 
@@ -116,7 +116,8 @@ export class DetalleComponent implements OnInit{
       heightAuto : true
     }).then((result) => {
       if(result.value){
-        this.ticketService.dispatchTicket(this.idTicket, this.idUser).subscribe(
+        this.loading = true
+        this.ticketService.dispatchTicket(this.idTicket, this.idUser,this.adjuntosSeleccionados).subscribe(
           (response) => {
             if(response.isSuccess === true && response.isWarning === false){
                 Swal.fire({
@@ -124,7 +125,12 @@ export class DetalleComponent implements OnInit{
                   icon : 'success',
                   width: '20rem',
                   heightAuto : true
-                });
+                }).then(
+                  () => {
+                    this.loading = false
+                    this.dialogRef.close()
+                  }
+                );
             }else{
               Swal.fire({
                 title : 'Ocurrio un error al enviar el informe',
@@ -132,7 +138,12 @@ export class DetalleComponent implements OnInit{
                 icon : 'warning',
                 width: '20rem',
                 heightAuto : true
-              });
+              }).then(
+                () => {
+                  this.loading = false
+                  this.dialogRef.close()
+                }
+              );
             }
           },(error) => {
             Swal.fire({
@@ -141,7 +152,12 @@ export class DetalleComponent implements OnInit{
               icon : 'error',
               width: '20rem',
               heightAuto : true
-            });
+            }).then(
+              () => {
+                this.loading = false
+                this.dialogRef.close()
+              }
+            );
           }
         )
       }
