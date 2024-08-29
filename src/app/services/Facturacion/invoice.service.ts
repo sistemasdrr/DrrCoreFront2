@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AddInvoiceAgent, AddInvoiceSubscriber, GetAgentInvoice, InvoiceAgentList, InvoiceSubcriberListByBill, InvoiceSubcriberListPaids, InvoiceSubcriberListToCollect } from 'app/models/facturacion';
+import { Query5_1_2ByCycle, Query5_1_2Tickets } from 'app/models/consulta';
+import { AddInvoiceAgent, AddInvoiceSubscriber, GetAgentInvoice, GetPersonalToInvoice, InvoiceAgentList, InvoiceSubcriberListByBill, InvoiceSubcriberListPaids, InvoiceSubcriberListToCollect } from 'app/models/facturacion';
 import { Response } from 'app/models/response';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
@@ -59,5 +60,16 @@ export class InvoiceService {
   }
   AddInvoiceAgent(obj : AddInvoiceAgent) : Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url + this.controller + '/SaveAgentInvoice',obj);
+  }
+
+  GetPersonalToInvoice() : Observable<Response<GetPersonalToInvoice[]>>{
+    return this.http.get<Response<GetPersonalToInvoice[]>>(this.url + this.controller + '/GetPersonalToInvoice');
+  }
+
+  SaveInternalInvoice(type : string, code : string,currentCycle : string, totalPrice : number, tickets : Query5_1_2Tickets[]) : Observable<Response<boolean>>{
+    return this.http.post<Response<boolean>>(this.url + this.controller + '/SaveInternalInvoice?type='+type+'&code='+code+'&currentCycle='+currentCycle+'&totalPrice='+totalPrice,tickets);
+  }
+  ReportEmployee(idUser : number, code : string, type : string, cycle : string) : Observable<Response<boolean>>{
+    return this.http.get<Response<boolean>>(this.url + this.controller + '/ReportEmployee?idUser='+idUser+'&code='+code+'&type='+type+'&cycle='+cycle);
   }
 }

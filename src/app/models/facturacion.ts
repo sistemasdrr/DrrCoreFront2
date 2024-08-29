@@ -136,3 +136,14 @@ export interface AgentInvoiceDetails{
   quality : string
   price : number
 }
+export interface GetPersonalToInvoice{
+  idUser : number
+  idEmployee : number
+  type : string
+  code : string
+  firstName : string
+  lastName : string
+  idCountry : number
+  country : string
+  flagCountry : string
+}

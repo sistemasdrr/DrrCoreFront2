@@ -73,7 +73,7 @@ export class ProduccionMensualComponent implements OnInit{
               }
             })
 
-          this.consultaService.GetQuery5_1_2MonthlyByCycle(this.idUser+'',this.codeCycle).subscribe(
+          this.consultaService.GetQuery5_1_2MonthlyByCycle(this.idUser+'',this.codeCycle,'').subscribe(
             (response) => {
               if(response.isSuccess === true && response.isWarning === false){
                 this.abonados2 = response.data
@@ -107,7 +107,7 @@ export class ProduccionMensualComponent implements OnInit{
   search(cycle : string){
     this.userCode = ""
     this.loading = true
-    this.consultaService.GetQuery5_1_2MonthlyByCycle(this.idUser+'',cycle).subscribe(
+    this.consultaService.GetQuery5_1_2MonthlyByCycle(this.idUser+'',cycle,'').subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.abonados2 = response.data
@@ -130,7 +130,6 @@ export class ProduccionMensualComponent implements OnInit{
         });
         this.dataSource2.data = tickets
         this.contador = tickets
-        console.log(this.contador)
         this.dataSource2.paginator = this.paginator
         this.dataSource2.sort = this.sort
       }

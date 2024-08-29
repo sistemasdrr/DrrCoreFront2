@@ -521,6 +521,8 @@ export interface Query5_1_2Tickets{
   idPerson : number
   number : string
   quality : string
+  qualityTypist : string
+  qualityTraductor : string
   language : string
   about : string
   idStatusTicket : number
@@ -557,4 +559,5 @@ export interface Query5_1_2Tickets{
   realExpireDate : string
   flag : number
   hasFiles : boolean
+  isComplement : boolean
 }

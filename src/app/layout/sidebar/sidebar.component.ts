@@ -67,7 +67,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
           idProcess : 0,
           idUser : 0,
           name : "Pedidos Online (T5)",
-          path : "i/pedidos/online",
+          path : "intranet/online",
           icon : "fa-solid fa-globe",
           enable : true,
           subLevel : []
@@ -77,7 +77,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
           idProcess : 0,
           idUser : 0,
           name : "Pedidos Offline",
-          path : "i/pedidos/offline",
+          path : "intranet/offline",
           icon : "fa-solid fa-ticket",
           enable : true,
           subLevel : []
@@ -98,7 +98,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
           idProcess : 0,
           idUser : 0,
           name : "Historial de Pedidos",
-          path : "i/pedidos/historial",
+          path : "intranet/historial",
           icon : "fa-solid fa-clipboard-list",
           enable : true,
           subLevel : []
