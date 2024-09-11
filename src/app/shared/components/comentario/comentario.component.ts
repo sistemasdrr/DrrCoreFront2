@@ -67,7 +67,7 @@ export class ComentarioComponent {
               this.loading = false
               Swal.fire({
                 title : 'Error al guardar el comentario.',
-                icon : 'success',
+                icon : 'error',
                 width: '20rem',
                 heightAuto : true
               }).then(
@@ -80,7 +80,7 @@ export class ComentarioComponent {
             this.loading = false
             Swal.fire({
               text : error,
-              icon : 'success',
+              icon : 'error',
               width: '20rem',
               heightAuto : true
             }).then(

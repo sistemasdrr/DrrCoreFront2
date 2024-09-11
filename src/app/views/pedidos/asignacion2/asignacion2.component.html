@@ -195,11 +195,11 @@
 
         <ng-container matColumnDef="orderDate" >
           <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Fecha de Ingreso </th>
-          <td mat-cell *matCellDef="let order" class="text-center"> {{order.startDate}} </td>
+          <td mat-cell *matCellDef="let order" class="text-center"> {{order.orderDate}} </td>
         </ng-container>
         <ng-container matColumnDef="expireDate" >
           <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Fecha de Vencimiento </th>
-          <td mat-cell *matCellDef="let order" class="text-center"> {{order.endDate}} </td>
+          <td mat-cell *matCellDef="let order" class="text-center"> {{order.expireDate}} </td>
         </ng-container>
 
         <ng-container matColumnDef="Acciones" >
@@ -214,7 +214,7 @@
             <button mat-icon-button (click)="$event.stopPropagation();agregarAdjuntos(order.idTicket,order.number)" #tooltip="matTooltip" matTooltip="Adjuntos">
               <mat-icon style="{{order.hasFiles === true ? 'color: red;' : 'color: gray;'}}">attach_file</mat-icon>
             </button>
-            <button mat-icon-button *ngIf="order.comment !== ''" (click)="$event.stopPropagation();agregarComentario(order.id, order.number, order.commentary)" #tooltip="matTooltip" matTooltip="Comentario">
+            <button mat-icon-button *ngIf="order.comment !== ''" (click)="$event.stopPropagation();agregarComentario(order.idTicket, order.number, order.commentary)" #tooltip="matTooltip" matTooltip="Comentario">
               <mat-icon style="{{order.commentary !== null && order.commentary !== '' ? 'color: red;' : 'color: gray;'}}">chat</mat-icon>
             </button>
             <button mat-icon-button *ngIf="order.status === 'ASIG AGE ESPERA'" (click)="$event.stopPropagation();eliminarPorId(order.id)" class="tbl-action-btn"  matTooltip="Trabajo Entregado">

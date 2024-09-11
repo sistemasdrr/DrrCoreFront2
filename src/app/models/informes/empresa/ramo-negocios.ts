@@ -83,7 +83,7 @@ export interface ImportAndExport{
   idCompany : number
   type : string
   year : number
-  amount : string
+  amount : number
   observation : string
   observationEng : string
 }

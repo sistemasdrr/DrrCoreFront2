@@ -87,7 +87,7 @@ export class TicketService {
   dispatchTicket(idTicket : number, idUser : number, obj : number[]) : Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/DispatchTicket?idTicket='+idTicket+'&idUser='+idUser,obj);
   }
-  
+
   getListBy(ticket : string, name : string, subscriber : string, type : string, procedure : string) : Observable<Response<ListTicket[]>>{
     return this.http.get<Response<ListTicket[]>>(this.url + this.controllerTicket + '/getListby?ticket='+ticket+'&name='+name+'&subscriber='+subscriber+'&type='+type+'&procedure='+procedure);
   }
@@ -137,6 +137,7 @@ export class TicketService {
   DeleteTicketHistoryById(idTicketHistory: number) : Observable<Response<boolean>>{
     return this.http.get<Response<boolean>>(this.url + this.controllerTicket + '/DeleteTicketHistoryById?idTicketHistory='+idTicketHistory);
   }
+
   getPersonalAssignation() : Observable<Response<PersonalAssignation[]>>{
     return this.http.get<Response<PersonalAssignation[]>>(this.url + this.controllerTicket + '/getPersonalAssignation');
   }
@@ -170,8 +171,8 @@ export class TicketService {
     return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/FinishTicketObservation?idTicketObservation='+id+'&conclusion='+conclusion+'&dr='+dr+'&ag='+ag+'&cl='+cl,'');
   }
 
-  TicketToDispatch(idTicketHistory : number, idTicket : number) : Observable<Response<boolean>>{
-    return this.http.get<Response<boolean>>(this.url + this.controllerTicket + '/TicketToDispatch?idTicketHistory='+idTicketHistory+'&idTicket='+idTicket);
+  TicketToDispatch(idTicketHistory : number, idTicket : number,quality:string, qualityTranslator:string, qualityTypist:string) : Observable<Response<boolean>>{
+    return this.http.get<Response<boolean>>(this.url + this.controllerTicket + '/TicketToDispatch?idTicketHistory='+idTicketHistory+'&idTicket='+idTicket+'&quality='+quality+'&qualityTranslator='+qualityTranslator+'&qualityTypist='+qualityTypist);
   }
   PendingTask(userTo : string) : Observable<Response<PendingTask[]>>{
     return this.http.get<Response<PendingTask[]>>(this.url + this.controllerTicket + '/PendingTask?userTo='+userTo);
@@ -204,5 +205,8 @@ export class TicketService {
   }
   SendComplementRefCom(idUser : number, idTicket : number,asignedTo : string, numOrder : string, message : string) : Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/SendComplementRefCom?idUser='+idUser+'&idTicket='+idTicket+'&asignedTo='+asignedTo+'&numOrder='+numOrder+'&message='+message,'');
+  }
+  ConfirmAgentHistory(idTicketHistory: number) : Observable<Response<boolean>>{
+    return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/ConfirmAgentHistory?idTicketHistory='+idTicketHistory,'');
   }
 }

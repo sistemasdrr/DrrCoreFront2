@@ -610,6 +610,72 @@ constructor(
       ]
     }
   }
+  eliminarEmpresaRelacionada(id:number){
+    Swal.fire({
+      title: '¿Está seguro de eliminar la relación?',
+      text: "",
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí',
+      width: '30rem',
+      heightAuto: true
+    }).then((result) => {
+      if (result.value) {
+        const paginaDetalleEmpresa = document.getElementById('pagina-detalle-empresa') as HTMLElement | null;
+        if(paginaDetalleEmpresa){
+          paginaDetalleEmpresa.classList.remove('hide-loader');
+        }
+        this.antecedentesLegalesService.deleteCompanyRelation(id).subscribe((response) => {
+        if(response.isSuccess === true && response.isWarning === false){
+          if(paginaDetalleEmpresa){
+            paginaDetalleEmpresa.classList.add('hide-loader');
+          }
+          Swal.fire({
+            title: 'Se guardaron los cambios correctamente',
+            text: "",
+            icon: 'success',
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ok',
+            width: '30rem',
+            heightAuto: true
+          })
+          this.antecedentesLegalesService.getListCompanyRelation(this.idCompany).subscribe(
+            (response) => {
+              if(response.isSuccess === true && response.isWarning === false){
+                this.dataSource.data = response.data
+              }
+            }
+          )
+
+        }else{
+          if(paginaDetalleEmpresa){
+            paginaDetalleEmpresa.classList.add('hide-loader');
+          }
+          Swal.fire({
+            title: 'Ocurrió un problema.',
+            text: 'Comunicarse con Sistemas',
+            icon: 'warning',
+            confirmButtonColor: 'blue',
+            confirmButtonText: 'Ok',
+            width: '30rem',
+            heightAuto : true
+          }).then(() => {
+          })
+        }
+        if(paginaDetalleEmpresa){
+          paginaDetalleEmpresa.classList.add('hide-loader');
+        }
+      })
+  }
+});
+
+}
+
+
   guardar() {
     this.armarModeloModificado()
     console.log(this.modeloModificado)

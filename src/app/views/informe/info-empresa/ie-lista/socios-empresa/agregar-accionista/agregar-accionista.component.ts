@@ -492,6 +492,6 @@ export class AgregarAccionistaComponent implements OnInit{
   }
 
   salir(){
-
+   this.dialogRef.close();
   }
 }

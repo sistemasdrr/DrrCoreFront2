@@ -156,7 +156,7 @@ export class SeleccionarAgenteComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.loading=true;
-        this.ticketService.TicketToDispatch(this.idTicketHistory, this.idTicket).subscribe(
+        this.ticketService.TicketToDispatch(this.idTicketHistory, this.idTicket,this.quality,this.qualityTranslator,this.qualityTypist).subscribe(
           (response) => {
             if(response.isSuccess === true && response.isWarning === false){
               Swal.fire({

@@ -114,6 +114,7 @@ export class CuadroImpoExpoComponent implements OnInit{
                   width: '30rem',
                   heightAuto : true
                 });
+                this.ngOnInit();
               }
             }
           )

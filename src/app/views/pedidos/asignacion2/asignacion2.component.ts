@@ -73,6 +73,7 @@ export class Asignacion2Component implements OnInit {
     this.ticketService.getTicketPreassigned(this.userTo).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
+          console.log(response.data)
           this.dataSource.data = response.data
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
@@ -113,7 +114,7 @@ export class Asignacion2Component implements OnInit {
     });
   }
   asignarTrabajador(order : ListTicket2){
-    console.log(order)
+
     let quality : boolean = false
     order.otherUserCode.forEach(element => {
 
@@ -121,13 +122,60 @@ export class Asignacion2Component implements OnInit {
         quality = true
       }
     });
-    console.log(quality)
-    console.log(order.quality)
 
     if(quality){
-      if((order.quality !== null && order.quality.trim() !== '') && (order.qualityReport !== null && order.qualityReport.trim() !== '')){
-        console.log(order.quality)
-        console.log(order.qualityReport)
+      if(order.quality === null || order.quality.trim() === ''){
+        Swal.fire({
+          title :'¡Calidad no seleccionada!',
+          icon : 'error',
+          width: '20rem',
+          heightAuto : true
+        });
+      }else{
+      if((order.qualityReport === null || order.qualityReport.trim() === '')){
+      Swal.fire({
+        title: 'El informe no tiene CALIDAD FINAL!! ¿Desea continuar?',
+        showDenyButton: true,
+        confirmButtonText: 'Si',
+        denyButtonText: 'No',
+        customClass: {
+          actions: 'my-actions',
+          cancelButton: 'order-1 right-gap',
+          confirmButton: 'order-2',
+          denyButton: 'order-3',
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          if(order.quality !== null && order.quality.trim() !== ''){
+
+            const dialogRef = this.dialog.open(SeleccionarAgenteComponent, {
+              data: {
+                id : order.id,
+                idTicket: order.idTicket,
+                reportType: order.reportType,
+                numberAssign : order.numberAssign,
+                assginFromCode : order.asignedTo,
+                quality : quality === true ? order.quality : '',
+                qualityTypist : quality === true ? order.qualityTypist : '',
+                qualityTranslator : quality === true ? order.qualityTranslator : '',
+                hasBalance : quality === true ? order.hasBalance : false,
+                otherUserCode : order.otherUserCode,
+                order : order
+              },
+            }).afterClosed().subscribe(() => {
+                 this.ngOnInit();
+               });
+              }
+            }else if (result.isDenied) {
+
+          }
+          });
+
+
+      }
+
+      }}
+      else{
         const dialogRef = this.dialog.open(SeleccionarAgenteComponent, {
           data: {
             id : order.id,
@@ -135,48 +183,18 @@ export class Asignacion2Component implements OnInit {
             reportType: order.reportType,
             numberAssign : order.numberAssign,
             assginFromCode : order.asignedTo,
-            quality : quality === true ? order.quality : '',
-            qualityTypist : quality === true ? order.qualityTypist : '',
-            qualityTranslator : quality === true ? order.qualityTranslator : '',
-            hasBalance : quality === true ? order.hasBalance : false,
+            quality : quality ? order.quality : '',
+            qualityTypist : quality ? order.qualityTypist : '',
+            qualityTranslator : quality ? order.qualityTranslator : '',
+            hasBalance : quality  ? order.hasBalance : false,
             otherUserCode : order.otherUserCode,
             order : order
           },
         }).afterClosed().subscribe(() => {
              this.ngOnInit();
            });
-      }else if(order.quality === null || order.quality.trim() === ''){
-        Swal.fire({
-          title :'¡Calidad no seleccionada!',
-          icon : 'error',
-          width: '20rem',
-          heightAuto : true
-        });
-      }else if(order.qualityReport === null || order.qualityReport.trim() === ''){
-        Swal.fire({
-          title : order.about === 'E' ? '¡Calidad de la Empresa no seleccionada!' : '¡Calidad de la Persona no seleccionada!',
-          icon : 'error',
-          width: '20rem',
-          heightAuto : true
-        });
-      }
-    }else{
-      const dialogRef = this.dialog.open(SeleccionarAgenteComponent, {
-        data: {
-          id : order.id,
-          idTicket: order.idTicket,
-          reportType: order.reportType,
-          numberAssign : order.numberAssign,
-          assginFromCode : order.asignedTo,
-          quality : '',
-          otherUserCode : order.otherUserCode,
-          order : order
-        },
-      }).afterClosed().subscribe(() => {
-           this.ngOnInit();
-         });
+          }
 
-    }
   }
   listarProveedores(idTicket : number){
     const dialogRef = this.dialog.open(ReferenciasComercialesComponent, {
@@ -240,7 +258,7 @@ export class Asignacion2Component implements OnInit {
       heightAuto : true,
     }).then((result) => {
       if(result.value){
-        this.ticketService.DeleteTicketHistoryById(id).subscribe(
+        this.ticketService.ConfirmAgentHistory(id).subscribe(
           (response) => {
             if(response.isSuccess === true && response.isWarning === false){
               Swal.fire({

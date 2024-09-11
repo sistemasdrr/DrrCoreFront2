@@ -39,6 +39,7 @@ export class AntecedentesLegalesService {
   deleteCompanyRelation(id : number): Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url + this.controllerCompany + '/deleteCompanyRelation?id='+id,'')
   }
+
   private handleErrorGet(error: any) {
     return throwError('Ocurrió un error al obtener los datos: ' + error);
   }

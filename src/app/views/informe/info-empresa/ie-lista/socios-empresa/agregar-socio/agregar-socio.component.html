@@ -86,8 +86,8 @@
           <input matInput placeholder="" [(ngModel)]="nationality">
         </mat-form-field>
       </div>
-      <div class="col-md-4 d-flex">
-        <mat-form-field class="">
+      <div class="col-md-3 d-flex">
+        <mat-form-field class="w-100">
           <mat-label>Tipo de Doc.</mat-label>
           <mat-select [(ngModel)]="idDocumentType" >
               <mat-option [value]="item.id" *ngFor="let item of tipoDocumento">
@@ -95,22 +95,26 @@
               </mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field class="w-100">
+      </div>
+      <div class="col-md-3 d-flex">
+        <mat-form-field class="w-100" >
           <mat-label>Código de Documento</mat-label>
           <input matInput placeholder="" [(ngModel)]="codeDocumentType">
         </mat-form-field>
       </div>
-      <div class="col-md-5">
-        <mat-form-field class="" style="width: 40%;">
+      <div class="col-md-3">
+        <mat-form-field class="w-100">
           <mat-label>Registro Tributario (Tipo)</mat-label>
           <input matInput placeholder="" [(ngModel)]="taxTypeName">
         </mat-form-field>
-        <mat-form-field class="" style="width: 60%;">
+      </div>
+      <div class="col-md-3">
+        <mat-form-field class="w-100">
           <mat-label>Registro Tributario (Código)</mat-label>
           <input matInput placeholder="" [(ngModel)]="taxTypeCode">
         </mat-form-field>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-4">
         <mat-form-field class="w-100">
           <mat-label>Situación RUC</mat-label>
           <input type="text" matInput [formControl]="controlSituacionRUC"  [matAutocomplete]="auto2" [(ngModel)]="situacionRucInforme" (ngModelChange)="cambioSituacionRuc(situacionRucInforme)">

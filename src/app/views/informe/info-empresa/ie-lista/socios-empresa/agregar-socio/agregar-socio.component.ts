@@ -110,7 +110,8 @@ export class AgregarSocioComponent implements OnInit {
         }
       }
     )
-    this.comboService.getTipoDocumento().subscribe(
+    this.comboService.getDocumentType().subscribe(
+
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.tipoDocumento = response.data
