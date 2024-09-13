@@ -48,7 +48,6 @@ export class AntecedentesComponent implements OnInit, OnDestroy{
   id = 0
   idCompany = 0
   constitutionDate = ""
-  constitutionDateD : Date | null = null
   startFunctionYear = ""
   operationDuration = ""
   operationDurationEng = ""
@@ -153,14 +152,8 @@ constructor(
           if(response.isSuccess === true && response.isWarning === false){
             const antecedentesLegales = response.data
             this.id = antecedentesLegales.id
+            this.constitutionDate = antecedentesLegales.constitutionDate
 
-            if(antecedentesLegales.constitutionDate !== '' && antecedentesLegales.constitutionDate !== null){
-              this.constitutionDate = antecedentesLegales.constitutionDate
-              const fecha1 = this.constitutionDate.split("/")
-              this.constitutionDateD = fecha1.length > 0 ? new Date(parseInt(fecha1[2]), parseInt(fecha1[1]) - 1, parseInt(fecha1[0])) : null;
-            }else{
-              this.constitutionDateD = null
-            }
             console.log(antecedentesLegales)
             this.startFunctionYear = antecedentesLegales.startFunctionYear
             this.operationDuration = antecedentesLegales.operationDuration
@@ -452,12 +445,7 @@ constructor(
     );
   }
 
-  selectFechaConstitucion(event: MatDatepickerInputEvent<Date>) {
-    const selectedDate = event.value;
-    if (moment.isMoment(selectedDate)) {
-      this.constitutionDate = this.formatDate(selectedDate);
-    }
-  }
+
   selectFechaUltimaConsulta(event: MatDatepickerInputEvent<Date>) {
     const selectedDate = event.value;
     if (moment.isMoment(selectedDate)) {
@@ -552,6 +540,7 @@ constructor(
     }
   }
   armarModeloModificado(){
+
     this.modeloModificado[0] = {
       id : this.id,
       idCompany : this.idCompany,
@@ -678,7 +667,7 @@ constructor(
 
   guardar() {
     this.armarModeloModificado()
-    console.log(this.modeloModificado)
+    console.log(this.constitutionDate+'cxc')
     if(this.id > 0){
       Swal.fire({
         title: '¿Está seguro de guardar los cambios?',
@@ -697,6 +686,7 @@ constructor(
           if(paginaDetalleEmpresa){
             paginaDetalleEmpresa.classList.remove('hide-loader');
           }
+          console.log(this.modeloModificado[0])
           this.antecedentesLegalesService.updateAntecedentesLegales(this.modeloModificado[0]).subscribe((response) => {
           if(response.isSuccess === true && response.isWarning === false){
             if(paginaDetalleEmpresa){
