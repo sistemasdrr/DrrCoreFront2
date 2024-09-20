@@ -107,7 +107,11 @@ export class ListaComponent implements OnInit {
         idTicket: idTicket,
         idUser: this.idUser,
       },
-    });
+    }).afterClosed().subscribe(result=>{
+      this.ngOnInit();
+    })
+
+  
   }
   // enviarInforme(id : number){
   //   const loader = document.getElementById('loader-lista-despacho') as HTMLElement | null;

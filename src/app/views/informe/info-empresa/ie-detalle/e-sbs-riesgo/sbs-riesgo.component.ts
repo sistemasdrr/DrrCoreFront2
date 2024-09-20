@@ -430,6 +430,7 @@ export class SbsRiesgoComponent implements OnInit, OnDestroy{
                 heightAuto : true
               })
             }
+            this.ngOnInit();
           }
         )
       }

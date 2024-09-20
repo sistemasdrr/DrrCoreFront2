@@ -703,6 +703,7 @@ export class RamoComponent implements OnInit, OnDestroy{
     })
   }
   armarModeloActual(){
+
     this.modeloActual[0] = {
       id : this.id,
       idCompany : this.idCompany,
@@ -710,7 +711,7 @@ export class RamoComponent implements OnInit, OnDestroy{
       idBusinessBranch : this.idBusinessBranch,
       import : this.import,
       export : this.export,
-      cashSalePercentage : this.cashSalePercentage,
+      cashSalePercentage : this.cashSalePercentage === null ? 0 : this.cashSalePercentage,
       cashSaleComentary : this.cashSaleComentary,
       creditSalePercentage : this.creditSalePercentage === null ? 0 : this.creditSalePercentage,
       creditSaleComentary : this.creditSaleComentary,
@@ -786,6 +787,7 @@ export class RamoComponent implements OnInit, OnDestroy{
     }
   }
   armarModeloModificado(){
+    console.log(Number(this.cashSalePercentage))
     this.modeloModificado[0] = {
       id : this.id,
       idCompany : this.idCompany,
@@ -793,17 +795,17 @@ export class RamoComponent implements OnInit, OnDestroy{
       idBusinessBranch : this.idBusinessBranch,
       import : this.import,
       export : this.export,
-      cashSalePercentage : this.cashSalePercentage,
+      cashSalePercentage : this.cashSalePercentage === null ? 0 : Number(this.cashSalePercentage),
       cashSaleComentary : this.cashSaleComentary,
-      creditSalePercentage : this.creditSalePercentage === null ? 0 : this.creditSalePercentage,
+      creditSalePercentage : this.creditSalePercentage === null ? 0 : Number(this.creditSalePercentage),
       creditSaleComentary : this.creditSaleComentary,
-      territorySalePercentage : this.territorySalePercentage === null ? 0 : this.territorySalePercentage,
+      territorySalePercentage : this.territorySalePercentage === null ? 0 : Number(this.territorySalePercentage),
       territorySaleComentary : this.territorySaleComentary,
-      abroadSalePercentage : this.abroadSalePercentage === null ? 0 : this.abroadSalePercentage,
+      abroadSalePercentage : this.abroadSalePercentage === null ? 0 :Number(this.abroadSalePercentage) ,
       abroadSaleComentary : this.abroadSaleComentary,
-      nationalPurchasesPercentage : this.nationalPurchasesPercentage === null ? 0 : this.nationalPurchasesPercentage,
+      nationalPurchasesPercentage : this.nationalPurchasesPercentage === null ? 0 : Number( this.nationalPurchasesPercentage),
       nationalPurchasesComentary : this.nationalPurchasesComentary,
-      internationalPurchasesPercentage : this.internationalPurchasesPercentage === null ? 0 : this.internationalPurchasesPercentage,
+      internationalPurchasesPercentage : this.internationalPurchasesPercentage === null ? 0 : Number(this.internationalPurchasesPercentage),
       internationalPurchasesComentary : this.internationalPurchasesComentary,
       workerNumber : this.workerNumber === null ? 0 : this.workerNumber,
       idLandOwnership : this.idLandOwnership,
@@ -1149,6 +1151,7 @@ export class RamoComponent implements OnInit, OnDestroy{
       //   }
       // });
       this.armarModeloModificado()
+
       console.log(this.modeloModificado[0])
       Swal.fire({
         title: '¿Está seguro de guardar este registro?',

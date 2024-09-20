@@ -130,6 +130,7 @@ export class AgregarAccionistaComponent implements OnInit{
       this.sociosEmpresaService.getCompanyPartnerShareHolder(this.id).subscribe(
         (response) => {
           if(response.isSuccess === true && response.isWarning === false){
+            console.log(response.data)
             const accionista = response.data
             if(accionista){
               this.idCompanyShareHolder = accionista.idCompanyShareHolder

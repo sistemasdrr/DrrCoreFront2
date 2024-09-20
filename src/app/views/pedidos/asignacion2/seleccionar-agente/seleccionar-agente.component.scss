@@ -35,7 +35,7 @@
     border-color: #FFF #FFF transparent transparent;
     animation: rotation 1.5s linear infinite;
   }
-  
+
   @keyframes rotation {
     0% {
       transform: rotate(0deg);
@@ -52,7 +52,7 @@
       transform: rotate(-360deg);
     }
   }
-  
+
   .loader-container {
     position: fixed;
     top: 0;
@@ -64,16 +64,16 @@
     transition: .3s ease all;
     background-color: rgba(0,0,0,0.7);
   }
-  
+
   .loader-container.hidden {
     opacity: 0;
     pointer-events: none;
   }
-  
+
   .content {
     position: relative;
   }
-  
+
   .show-form {
     opacity: 0;
     animation: fadeIn 1.5s forwards;
@@ -85,6 +85,10 @@
     to {
       opacity: 1;
     }
+  }
+  .step{
+    border: solid;
+    border-color: red;
   }
   .hide-loader {
     opacity: 1;
@@ -100,4 +104,3 @@
       display: none;
     }
   }
-  

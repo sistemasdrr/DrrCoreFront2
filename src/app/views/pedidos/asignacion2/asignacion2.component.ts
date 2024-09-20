@@ -61,7 +61,7 @@ export class Asignacion2Component implements OnInit {
   constructor(private  ticketService : TicketService, private router : Router,
     private usuarioService : UsuarioService, public dialog: MatDialog) {
     this.dataSource = new MatTableDataSource();
-    console.log(this.dataSource)
+
     const auth = JSON.parse(localStorage.getItem('authCache')+'')
     this.userTo = auth.idUser
   }
@@ -85,6 +85,7 @@ export class Asignacion2Component implements OnInit {
         this.loading=false;
       }
     )
+
     this.usuarioService.getOtherUserCode(parseInt(this.userTo)).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
@@ -155,10 +156,10 @@ export class Asignacion2Component implements OnInit {
                 reportType: order.reportType,
                 numberAssign : order.numberAssign,
                 assginFromCode : order.asignedTo,
-                quality : quality === true ? order.quality : '',
-                qualityTypist : quality === true ? order.qualityTypist : '',
-                qualityTranslator : quality === true ? order.qualityTranslator : '',
-                hasBalance : quality === true ? order.hasBalance : false,
+                quality : order.quality,
+                qualityTypist : order.qualityTypist,
+                qualityTranslator :  order.qualityTranslator,
+                hasBalance :  order.hasBalance,
                 otherUserCode : order.otherUserCode,
                 order : order
               },
@@ -172,6 +173,24 @@ export class Asignacion2Component implements OnInit {
           });
 
 
+      }else{
+        const dialogRef = this.dialog.open(SeleccionarAgenteComponent, {
+          data: {
+            id : order.id,
+            idTicket: order.idTicket,
+            reportType: order.reportType,
+            numberAssign : order.numberAssign,
+            assginFromCode : order.asignedTo,
+            quality : order.quality,
+                qualityTypist : order.qualityTypist,
+                qualityTranslator :  order.qualityTranslator,
+            hasBalance : quality  ? order.hasBalance : false,
+            otherUserCode : order.otherUserCode,
+            order : order
+          },
+        }).afterClosed().subscribe(() => {
+             this.ngOnInit();
+           });
       }
 
       }}
@@ -183,9 +202,9 @@ export class Asignacion2Component implements OnInit {
             reportType: order.reportType,
             numberAssign : order.numberAssign,
             assginFromCode : order.asignedTo,
-            quality : quality ? order.quality : '',
-            qualityTypist : quality ? order.qualityTypist : '',
-            qualityTranslator : quality ? order.qualityTranslator : '',
+            quality : order.quality,
+                qualityTypist : order.qualityTypist,
+                qualityTranslator :  order.qualityTranslator,
             hasBalance : quality  ? order.hasBalance : false,
             otherUserCode : order.otherUserCode,
             order : order

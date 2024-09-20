@@ -55,7 +55,7 @@
           </mat-form-field>
         </div>
         <div class="col-md-12">
-          <mat-slide-toggle [(ngModel)]="print" color="primary" [disabled]="id === -1">
+          <mat-slide-toggle [(ngModel)]="print" color="primary">
              Imprimir?
           </mat-slide-toggle>
 
@@ -82,7 +82,7 @@
             <button mat-mini-fab color="primary" style="margin: 0 .5rem 0 .5rem;" (click)="seleccionarCard(1)" #tooltip="matTooltip" matTooltip="Seleccionar">
               <mat-icon class="col-white">task_alt</mat-icon>
             </button>
-            <button mat-mini-fab color="warn" style="margin: 0 .5rem 0 .5rem;" (click)="borrarImagen(1)" [disabled]="!(imgDesc1 !== '')">
+            <button mat-mini-fab color="warn" style="margin: 0 .5rem 0 .5rem;" (click)="borrarImagen(1)" >
               <mat-icon class="col-white">delete</mat-icon>
             </button>
           </div>
@@ -104,7 +104,7 @@
             <button mat-mini-fab color="primary" style="margin: 0 .5rem 0 .5rem;" (click)="seleccionarCard(2)" #tooltip="matTooltip" matTooltip="Seleccionar">
               <mat-icon class="col-white">task_alt</mat-icon>
             </button>
-            <button mat-mini-fab color="warn" style="margin: 0 .5rem 0 .5rem;" (click)="borrarImagen(2)" [disabled]="!(imgDesc2 !== '')">
+            <button mat-mini-fab color="warn" style="margin: 0 .5rem 0 .5rem;" (click)="borrarImagen(2)">
               <mat-icon class="col-white">delete</mat-icon>
             </button>
           </div>
@@ -126,7 +126,7 @@
             <button mat-mini-fab color="primary" style="margin: 0 .5rem 0 .5rem;" (click)="seleccionarCard(3)" #tooltip="matTooltip" matTooltip="Seleccionar">
               <mat-icon class="col-white">task_alt</mat-icon>
             </button>
-            <button mat-mini-fab color="warn" style="margin: 0 .5rem 0 .5rem;" (click)="borrarImagen(3)" [disabled]="!(imgDesc3 !== '')">
+            <button mat-mini-fab color="warn" style="margin: 0 .5rem 0 .5rem;" (click)="borrarImagen(3)" >
               <mat-icon class="col-white">delete</mat-icon>
             </button>
           </div>
@@ -148,7 +148,7 @@
             <button mat-mini-fab color="primary" style="margin: 0 .5rem 0 .5rem;" (click)="seleccionarCard(4)" #tooltip="matTooltip" matTooltip="Seleccionar">
               <mat-icon class="col-white">task_alt</mat-icon>
             </button>
-            <button mat-mini-fab color="warn" style="margin: 0 .5rem 0 .5rem;" (click)="borrarImagen(4)" [disabled]="!(imgDesc4 !== '')">
+            <button mat-mini-fab color="warn" style="margin: 0 .5rem 0 .5rem;" (click)="borrarImagen(4)" >
               <mat-icon class="col-white">delete</mat-icon>
             </button>
           </div>

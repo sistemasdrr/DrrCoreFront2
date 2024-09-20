@@ -54,7 +54,7 @@ export class ListaEmpresas1Component implements OnInit {
   razonSocial = ""
   filtroRB = "C"
   idPais = 0
-  chkConInforme = true
+  chkConInforme = false
 
   isAllSelected1() {
     const numSelected = this.selection1.selected.length;

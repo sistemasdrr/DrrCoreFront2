@@ -96,7 +96,7 @@ export class BalanceComponent implements OnInit {
   pStockPile = 0
   pUtilities = 0
   pOther = 0
-
+  actualCurrency=0;
   totalLiabilitiesPatrimony = 0
   //RATIOS
   liquidityRatio = 0
@@ -236,6 +236,8 @@ export class BalanceComponent implements OnInit {
     });
   }
   armarModelo(){
+    this.seleccionarTipoMoneda(this.currencyInforme);
+    console.log(this.idCurrency)
     this.modeloModificado[0] = {
       id : this.id,
       idCompany : this.idCompany,
@@ -244,7 +246,7 @@ export class BalanceComponent implements OnInit {
       duration : this.duration,
       durationEng : this.durationEng,
       idCurrency : this.idCurrency,
-      exchangeRate : this.exchangeRate,
+      exchangeRate :this.exchangeRate,
       sales : this.sales,
       utilities : this.utilities,
       totalAssets : this.totalAssets,

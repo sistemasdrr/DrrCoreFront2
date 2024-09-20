@@ -66,8 +66,10 @@ export class SeleccionarAgenteComponent implements OnInit {
   qualityTranslator = ""
   hasBalance = false
   sendZip = false
+  step=1
 
   seleccionarTrabajador(codigo : string, nombre : string, idUserLogin : number, internal : boolean){
+    this.step=2
     this.asignadoCodigo = codigo
     this.asignadoNombre =  nombre
     this.idUserLogin = idUserLogin
@@ -105,6 +107,7 @@ export class SeleccionarAgenteComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.step=1;
     this.ticketService.getPersonalAssignation().subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
@@ -170,8 +173,21 @@ export class SeleccionarAgenteComponent implements OnInit {
                 this.loading=false;
               })
 
+            }else{
+              Swal.fire({
+                title: 'Ocurrio un error, comunicarse con Sistemas',
+                text: "",
+                icon: 'error',
+                width: '20rem',
+                heightAuto : true
+              }).then(() => {
+                this.dialogRef.close()
+                this.loading=false;
+              })
+
             }
           }
+
         )
       }
     })
@@ -254,6 +270,7 @@ export class SeleccionarAgenteComponent implements OnInit {
     this.asignado = ""
   }
   addAsignacion(){
+
     console.log(this.fechaVencimientoString);
     const asign : Asignacion = {
       userFrom: this.userFrom,
@@ -291,7 +308,7 @@ export class SeleccionarAgenteComponent implements OnInit {
     this.observaciones = ""
     this.activeList = 0
     this.interno = false
-
+    this.step=3;
     this.estado = 'agregar'
   }
 
@@ -305,6 +322,7 @@ export class SeleccionarAgenteComponent implements OnInit {
       this.dataSource.data.splice(index, 1);
       this.dataSource.data = [...this.dataSource.data];
     }
+    this.step=1
     console.log(this.dataSource.data)
   }
 
