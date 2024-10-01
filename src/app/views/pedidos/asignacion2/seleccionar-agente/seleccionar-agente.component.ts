@@ -60,6 +60,7 @@ export class SeleccionarAgenteComponent implements OnInit {
   userFrom = ''
   numberAssign:number = 0
   loading=false;
+  forceSupervisor=false;
   assginFromCode: any;
   quality = ""
   qualityTypist = ""
@@ -288,12 +289,13 @@ export class SeleccionarAgenteComponent implements OnInit {
       endDate: this.fechaVencimientoString,
       idTicket: this.idTicket,
       numberAssign: this.numberAssign,
-      assignedFromCode:this.assginFromCode,
-      quality:this.quality !== '' ? this.quality : null,
-      qualityTypist : this.qualityTypist !== '' ? this.qualityTypist : null,
-      qualityTranslator : this.qualityTranslator !== '' ? this.qualityTranslator : null,
-      hasBalance : this.hasBalance,
-      sendZip : this.sendZip,
+      assignedFromCode: this.assginFromCode,
+      quality: this.quality !== '' ? this.quality : null,
+      qualityTypist: this.qualityTypist !== '' ? this.qualityTypist : null,
+      qualityTranslator: this.qualityTranslator !== '' ? this.qualityTranslator : null,
+      hasBalance: this.hasBalance,
+      sendZip: this.sendZip,
+      forceSupervisor: this.forceSupervisor
     }
     this.asignacion.push(asign)
     this.dataSource.data = this.asignacion

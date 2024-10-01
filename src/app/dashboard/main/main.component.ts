@@ -26,6 +26,9 @@ import Swal from 'sweetalert2';
 import { ConsultaService } from 'app/services/Consultas/consulta.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { Pais } from 'app/models/combo';
+import { Observable } from 'rxjs';
+import { FormControl } from '@angular/forms';
 
 
 export interface DistinctSupervisor{
@@ -67,7 +70,7 @@ export class MainComponent implements OnInit {
   monthlyProduction = 0
   observedTickets : ObservedTickets[] = []
   observedTicketsStr = ""
-
+  iconoSeleccionado: string = ""
   idUser = ''
   idEmployee = 0
 
@@ -99,8 +102,11 @@ export class MainComponent implements OnInit {
       active: 'Dashboard',
     },
   ];
+  controlPaises = new FormControl<string | Pais>('')
+  idCountry: number=0;
   constructor(private consultaService : ConsultaService, private router: Router, private dashboardService : DashboardService) {
     const auth = JSON.parse(localStorage.getItem('authCache')+'')
+    this.filterPais = new Observable<Pais[]>()
     if(auth){
       this.idUser = auth.idUser
       this.idEmployee = parseInt(auth.idEmployee)
@@ -208,7 +214,8 @@ export class MainComponent implements OnInit {
     });
     return value
   }
-  selectSupervisor(code : string, type : string){
+  selectSupervisor(code : string,type:string){
+
     this.dataSource1.data = []
     this.dataSource2.data = []
     this.dataSource3.data = []
@@ -528,6 +535,34 @@ export class MainComponent implements OnInit {
       },
     };
   }
+  async cambioPais(pais: Pais) {
+    if (pais !== null) {
+      if (typeof pais === 'string' || pais === null || this.paisSeleccionado.id === 0) {
+        this.msgPais = "Seleccione una opción."
+        this.colorMsgPais = "red"
+        this.iconoSeleccionado = ""
+        this.idCountry = 0
+
+      } else {
+        this.msgPais = "Opción Seleccionada"
+        this.colorMsgPais = "green"
+        this.iconoSeleccionado = pais.bandera
+        this.idCountry = pais.id
+
+      }
+    } else {
+      this.idCountry = 0
+
+      this.msgPais = "Seleccione una opción."
+      this.colorMsgPais = "red"
+    }
+  }
+  limpiarSeleccionPais() {
+    this.controlPaises.reset();
+    this.idCountry = 0
+    this.iconoSeleccionado = ""
+
+  }
   seriesDashboard : SeriesDashboard[] = []
   private chart2Rel() {
     this.dashboardService.SeriesDashboard().subscribe(
@@ -600,7 +635,17 @@ export class MainComponent implements OnInit {
     )
 
   }
-
+  filterPais: Observable<Pais[]>
+  paisSeleccionado: Pais = {
+    id: 0,
+    valor: '',
+    abreviation: '',
+    bandera: '',
+    regtrib: '',
+    codCel: '',
+  }
+  msgPais = ""
+  colorMsgPais = ""
   columnsToDisplay1 : string[] = ['number','requestedName','country','expireDate','acciones']
   dataSource1 = new MatTableDataSource<PendingTaskByUserDetails>;
   dataSource2 = new MatTableDataSource<PendingTaskByUserDetails>;
@@ -629,6 +674,10 @@ export class MainComponent implements OnInit {
     }
     nav.open();
   }
+    displayPais(pais: Pais): string {
+    return pais && pais.valor ? pais.valor : '';
+  }
+
   enviarAlerta(idTicket : number){
     Swal.fire({
       title: '¿Está seguro de enviar una alerta?',

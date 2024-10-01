@@ -167,6 +167,7 @@ export interface Asignacion{
   endDate : string
   balance : boolean
   references : boolean
+  forceSupervisor:boolean
   observations : string
   idTicket:number,
   type : string
