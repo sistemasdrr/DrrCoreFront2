@@ -49,6 +49,9 @@ export class TicketService {
   getSearchSituation(about : string, typeSearch : string, search : string, idCountry : number) : Observable<Response<SearchSituation[]>>{
     return this.http.get<Response<SearchSituation[]>>(this.url + this.controllerTicket + '/getSearchSituation?about='+about+'&typeSearch='+typeSearch+'&search='+search+'&idCountry='+idCountry);
   }
+  GetNewSearchSituation(about : string, name : string, form : string, idCountry : number, haveReport : boolean, filterBy : string) : Observable<Response<SearchSituation[]>>{
+    return this.http.get<Response<SearchSituation[]>>(this.url + this.controllerTicket + '/GetNewSearchSituation?about='+about+'&name='+name+'&form='+form+'&idCountry='+idCountry+'&haveReport='+haveReport+'&filterBy='+filterBy);
+  }
   getTicketByCompanyOrPerson(about : string, id : number, oldCode : string) : Observable<Response<TicketsByCompanyOrPerson[]>>{
     return this.http.get<Response<TicketsByCompanyOrPerson[]>>(this.url + this.controllerTicket + '/getListTicketSituation?about='+about+'&id='+id+'&oldCode='+oldCode);
   }

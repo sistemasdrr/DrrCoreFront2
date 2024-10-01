@@ -39,7 +39,9 @@ export class AgregarSocioPersonaComponent implements OnInit {
   professionEng = ""
   participation = 0
   startDate = ""
-  startDateD : Date | null = null
+  startDateD : Date | null = null;
+  numeration = 0;
+  print = true
 
   name = ""
   socialName = ""
@@ -397,7 +399,9 @@ export class AgregarSocioPersonaComponent implements OnInit {
       profession : this.profession,
       professionEng : this.professionEng,
       participation : this.participation,
-      startDate : this.startDate
+      startDate : this.startDate,
+      numeration : this.numeration,
+      print : this.print
     }
   }
   guardar(){

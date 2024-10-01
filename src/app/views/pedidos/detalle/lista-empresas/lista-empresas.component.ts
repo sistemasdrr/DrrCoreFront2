@@ -154,16 +154,7 @@ export class ListaEmpresasComponent implements OnInit {
     if(listaEmpresas){
       listaEmpresas.classList.remove('hide-loader');
     }
-    const busqueda = {
-      razonSocial : this.razonSocial,
-      filtro : this.filtroRB,
-      idPais : this.idPais,
-      conInforme : this.chkConInforme,
-      filterBy: this.filterBy
-    }
     this.loading=true;
-    localStorage.setItem('busquedaEmpresas', JSON.stringify(busqueda))
-    console.log(busqueda)
     this.datosEmpresaService.getDatosEmpresas(this.razonSocial.trim(), this.filtroRB, this.idPais, this.chkConInforme,this.filterBy).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){

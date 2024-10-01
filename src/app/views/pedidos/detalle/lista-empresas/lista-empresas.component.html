@@ -15,6 +15,7 @@
               <mat-label>Buscar por</mat-label>
               <mat-select [(ngModel)]="filterBy" >
                 <mat-option [value]="'N'">Por Razón Social</mat-option>
+                <mat-option [value]="'C'">Por Nombre Comercial</mat-option>
                 <mat-option [value]="'D'">Por Dirección</mat-option>
                 <mat-option [value]="'R'">Por Registro Tributario</mat-option>
                 <mat-option [value]="'T'">Por Telefono</mat-option>
@@ -37,6 +38,7 @@
           <div *ngIf="filterBy!=='S'" class="col-md-3 p-0">
             <mat-form-field class="w-100" style="padding-top: 1rem; padding-left: 1rem;" >
               <mat-label *ngIf="filterBy==='N'">Razón Social</mat-label>
+              <mat-label *ngIf="filterBy==='C'">Nombre Comercial</mat-label>
               <mat-label *ngIf="filterBy==='D'">Dirección</mat-label>
               <mat-label *ngIf="filterBy==='R'">Registro Tributario</mat-label>
               <input matInput  [(ngModel)]="razonSocial" (keypress)="filtrar($event);">

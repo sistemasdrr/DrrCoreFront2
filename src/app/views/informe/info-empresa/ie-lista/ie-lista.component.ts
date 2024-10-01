@@ -62,8 +62,9 @@ export class IEListaComponent implements OnInit{
   //FILTROS
   razonSocial = ""
   filtroRB = "C"
+  filterBy = "N"
   idPais = 0
-  chkConInforme = true
+  chkConInforme = false
 
   dataSource: MatTableDataSource<TCompany>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -83,26 +84,26 @@ export class IEListaComponent implements OnInit{
       if (response.isSuccess == true) {
         this.paises = response.data;
       }
-    }).add(() => {
-      if(localStorage.getItem('busquedaEmpresas')){
-        const busqueda = JSON.parse(localStorage.getItem('busquedaEmpresas')+'')
-        this.razonSocial = busqueda.razonSocial
-        this.filtroRB = busqueda.filtro
-        if(busqueda.idCountry > 0){
-          this.idPais = busqueda.idCountry
-          this.paisSeleccionado = this.paises.filter(x => x.id === busqueda.idCountry)[0]
-          this.iconoSeleccionado = this.paisSeleccionado.bandera
-        }else{
-          this.limpiarSeleccionPais()
-        }
-        this.paisSeleccionado = this.paises.filter(x => x.id === busqueda.idPais)[0]
-        this.chkConInforme = busqueda.conInforme
-        this.loading = false
-        if(this.razonSocial!= null && this.razonSocial !== ''){
-          this.filtrarEmpresas()
-        }
-      }
-    })
+    })//.add(() => {
+    //   if(localStorage.getItem('busquedaEmpresas')){
+    //     const busqueda = JSON.parse(localStorage.getItem('busquedaEmpresas')+'')
+    //     this.razonSocial = busqueda.razonSocial
+    //     this.filtroRB = busqueda.filtro
+    //     if(busqueda.idCountry > 0){
+    //       this.idPais = busqueda.idCountry
+    //       this.paisSeleccionado = this.paises.filter(x => x.id === busqueda.idCountry)[0]
+    //       this.iconoSeleccionado = this.paisSeleccionado.bandera
+    //     }else{
+    //       this.limpiarSeleccionPais()
+    //     }
+    //     this.paisSeleccionado = this.paises.filter(x => x.id === busqueda.idPais)[0]
+    //     this.chkConInforme = busqueda.conInforme
+    //     this.loading = false
+    //     if(this.razonSocial!= null && this.razonSocial !== ''){
+    //       this.filtrarEmpresas()
+    //     }
+    //   }
+    // })
 
     this.filterPais = this.controlPaises.valueChanges.pipe(
       startWith(''),
@@ -170,14 +171,14 @@ export class IEListaComponent implements OnInit{
     if(listaEmpresas){
       listaEmpresas.classList.remove('hide-loader');
     }
-    const busqueda = {
-      razonSocial : this.razonSocial,
-      filtro : this.filtroRB,
-      idPais : this.idPais,
-      conInforme : this.chkConInforme
-    }
-    localStorage.setItem('busquedaEmpresas', JSON.stringify(busqueda))
-    this.datosEmpresaService.getDatosEmpresas(this.razonSocial.trim(), this.filtroRB, this.idPais, this.chkConInforme,"N").subscribe(
+    // const busqueda = {
+    //   razonSocial : this.razonSocial,
+    //   filtro : this.filtroRB,
+    //   idPais : this.idPais,
+    //   conInforme : this.chkConInforme
+    // }
+    // localStorage.setItem('busquedaEmpresas', JSON.stringify(busqueda))
+    this.datosEmpresaService.getDatosEmpresas(this.razonSocial.trim(), this.filtroRB, this.idPais, this.chkConInforme,this.filterBy).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.dataSource = new MatTableDataSource<TCompany>(response.data);

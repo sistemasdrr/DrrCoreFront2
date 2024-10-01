@@ -45,7 +45,6 @@ export class AgregarSocioComponent implements OnInit {
   taxTypeCode = ""
   idLegalRegisterSituation = 0
 
-
   id = 0
   idCompany = 0
   idPerson = 0
@@ -54,7 +53,10 @@ export class AgregarSocioComponent implements OnInit {
   professionEng = ""
   participation = 0
   startDate = ""
-  startDateD : Date | null = null
+  startDateD : Date | null = null;
+
+  numeration = 0;
+  print = true;
 
   situacionPersona : ComboData[] = []
   tipoDocumento : ComboData[] = []
@@ -136,8 +138,18 @@ export class AgregarSocioComponent implements OnInit {
               this.idPerson = socio.idPerson
               this.mainExecutive = socio.mainExecutive
               this.profession = socio.profession
+              if(socio.profession !== null && socio.profession !== ''){
+                this.profesion = {
+                  id : 0,
+                  valor : socio.profession,
+                  valorEng : socio.professionEng,
+                  code : ''
+                }
+              }
               this.professionEng = socio.professionEng
               this.participation = socio.participation
+              this.numeration = socio.numeration
+              this.print = socio.print
               if(socio.startDate !== null && socio.startDate !== ""){
                 const fecha = socio.startDate.split("/")
                 if(fecha.length > 0){
@@ -220,6 +232,8 @@ export class AgregarSocioComponent implements OnInit {
       professionEng : this.professionEng,
       participation : this.participation,
       startDate : this.startDate,
+      numeration : this.numeration,
+      print : this.print
     }
   }
   selectIdioma(idioma: string) {
@@ -260,6 +274,7 @@ export class AgregarSocioComponent implements OnInit {
     this.idLegalRegisterSituation = 0
   }
   cambioSituacionRuc(situacionRuc: ComboData) {
+    console.log(situacionRuc)
     if (typeof situacionRuc === 'string' || situacionRuc === null) {
       this.msgSituacionRuc = "Seleccione una opción."
       this.idLegalRegisterSituation = 0
