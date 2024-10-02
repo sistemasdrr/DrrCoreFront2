@@ -98,10 +98,13 @@
               </div>
             </td>
             </ng-container>
-          <ng-container matColumnDef="price" >
-          <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Precio </th>
-          <td mat-cell *matCellDef="let order" class="text-center" style="white-space: nowrap;"> {{order.price}} </td>
+            <ng-container matColumnDef="price">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center"> Precio </th>
+              <td mat-cell *matCellDef="let order" class="text-center" style="white-space: nowrap;">
+                  {{ order.price | number: '1.2-2' }}
+              </td>
           </ng-container>
+
           <ng-container matColumnDef="orderDate" >
           <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Fecha de Ingreso </th>
           <td mat-cell *matCellDef="let order" class="text-center" style="white-space: nowrap;"> {{order.orderDate}} </td>
@@ -240,7 +243,7 @@
               <div class="col-md-4  p-0" >
                 <div mat-subheader>Monto Total</div>
                 <mat-list-item role="listitem" style="border-top :1px solid rgb(167, 167, 167)" *ngFor="let item2 of userCodes">
-                  {{getPriceReports(item2)}}
+                  {{getPriceReports(item2)  | number: '1.2-2'}}
                 </mat-list-item>
               </div>
             </div>

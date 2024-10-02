@@ -114,12 +114,16 @@
               {{profesion.valor}}
             </mat-option>
           </mat-autocomplete>
+          <button class="btn-traduccion" [class]="professionEng === '' ? 'sin-traduccion' : ''" matSuffix mat-icon-button (click)=" $event.stopPropagation(); agregarTraduccion('Traducción de Cargo','', profession, professionEng,'profesion')">
+            <span class="fi fi-us" style="font-size: 24px;"></span>
+          </button>
         </mat-form-field>
       </div>
       <div class="col-md-2">
         <mat-form-field class="w-100">
           <mat-label>Participación (%)</mat-label>
           <input matInput placeholder="" [(ngModel)]="participation" type="number">
+
         </mat-form-field>
       </div>
       <div class="col-md-2">
