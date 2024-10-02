@@ -4,7 +4,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { Asignacion, ListTicket2, NewAsignacion, PersonalAssignation, TicketHistoryCount } from 'app/models/pedidos/ticket';
+import { Asignacion, GetTicketUserResponseDto, ListTicket2, NewAsignacion, PersonalAssignation, TicketHistoryCount } from 'app/models/pedidos/ticket';
 import { TicketService } from 'app/services/pedidos/ticket.service';
 import * as moment from 'moment';
 import Swal from 'sweetalert2';
@@ -80,6 +80,7 @@ export class SeleccionarAgenteComponent implements OnInit {
   datos : PersonalAssignation[] = []
   datos2 : PersonalAssignation[] = []
   ticketHistory : TicketHistoryCount[] = []
+  ticketValidation : GetTicketUserResponseDto[] = []
 
   constructor(public dialogRef: MatDialogRef<SeleccionarAgenteComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, private ticketService : TicketService){
@@ -108,6 +109,14 @@ export class SeleccionarAgenteComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.ticketService.GetTicketAssignedValidation(this.idTicket).subscribe(
+      (response) => {
+        if(response.isSuccess === true){
+          this.ticketValidation = response.data
+          console.log(this.ticketValidation)
+        }
+      }
+    )
     this.step=1;
     this.ticketService.getPersonalAssignation().subscribe(
       (response) => {
@@ -143,6 +152,7 @@ export class SeleccionarAgenteComponent implements OnInit {
           )
       }
     )
+    console.log(this.idTicket)
   }
   numAsig = 0
   enviarDespachar(){
@@ -270,49 +280,105 @@ export class SeleccionarAgenteComponent implements OnInit {
     }
     this.asignado = ""
   }
-  addAsignacion(){
 
-    console.log(this.fechaVencimientoString);
-    const asign : Asignacion = {
-      userFrom: this.userFrom,
-      userTo: this.idUserLogin + "",
-      assignedToCode: this.asignadoCodigo,
-      assignedToName: this.asignadoNombre,
-      startDateD: this.fechaAsignacionDate,
-      endDateD: this.fechaVencimientoDate,
-      references: this.referencias,
-      observations: this.observaciones,
-      type: this.type,
-      internal: this.interno,
-      balance: this.balance,
-      startDate: this.fechaAsignacionString,
-      endDate: this.fechaVencimientoString,
-      idTicket: this.idTicket,
-      numberAssign: this.numberAssign,
-      assignedFromCode: this.assginFromCode,
-      quality: this.quality !== '' ? this.quality : null,
-      qualityTypist: this.qualityTypist !== '' ? this.qualityTypist : null,
-      qualityTranslator: this.qualityTranslator !== '' ? this.qualityTranslator : null,
-      hasBalance: this.hasBalance,
-      sendZip: this.sendZip,
-      forceSupervisor: this.forceSupervisor
+  addAsignacion() {
+    let code = '';
+    let tipo = '';
+
+    if (!this.ticketValidation || !Array.isArray(this.ticketValidation)) {
+        console.error('ticketValidation no está definido o no es un array.');
+        return;
     }
-    this.asignacion.push(asign)
-    this.dataSource.data = this.asignacion
-    this.idUserLogin = 0
-    this.asignado = ""
-    this.fechaAsignacion = ""
-    this.fechaVencimiento = ""
-    this.fechaAsignacionDate=new Date()
-    this.fechaVencimientoDate=new Date()
-    this.balance = false
-    this.referencias = false
-    this.observaciones = ""
-    this.activeList = 0
-    this.interno = false
-    this.step=3;
-    this.estado = 'agregar'
-  }
+
+    let filtered = this.ticketValidation.filter(x => x.type.includes(this.type));
+    if (filtered.length > 0) {
+        code = filtered[0].code;
+
+        switch (this.type) {
+            case "RP": tipo = 'Reportero'; break;
+            case "RF": tipo = 'Referencista'; break;
+            case "DI": tipo = 'Digitador'; break;
+            case "TR": tipo = 'Traductor'; break;
+            case "AG": tipo = 'Agente'; break;
+        }
+
+        Swal.fire({
+            text: "El Cupón ya se asignó al " + tipo + ' ' + code + ' anteriormente, ¿Desea derivarlo a un nuevo ' + tipo + '?',
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'No',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí',
+            width: '20rem',
+            heightAuto: true
+        }).then((result) => {
+            if (result.value) {
+                this.agregarAsignacion(code, tipo);
+            }
+        });
+    } else {
+        tipo = this.asignarTipoPorCodigo(this.type);
+        this.agregarAsignacion(code, tipo);
+    }
+}
+
+private asignarTipoPorCodigo(type: string): string {
+    switch (type) {
+        case "RP": return 'Reportero';
+        case "RF": return 'Referencista';
+        case "DI": return 'Digitador';
+        case "TR": return 'Traductor';
+        case "AG": return 'Agente';
+        default: return 'Desconocido';
+    }
+}
+
+private agregarAsignacion(code: string, tipo: string) {
+    const asign: Asignacion = {
+        userFrom: this.userFrom,
+        userTo: this.idUserLogin + "",
+        assignedToCode: this.asignadoCodigo,
+        assignedToName: this.asignadoNombre,
+        startDateD: this.fechaAsignacionDate,
+        endDateD: this.fechaVencimientoDate,
+        references: this.referencias,
+        observations: this.observaciones,
+        type: this.type,
+        internal: this.interno,
+        balance: this.balance,
+        startDate: this.fechaAsignacionString,
+        endDate: this.fechaVencimientoString,
+        idTicket: this.idTicket,
+        numberAssign: this.numberAssign,
+        assignedFromCode: this.assginFromCode,
+        quality: this.quality !== '' ? this.quality : null,
+        qualityTypist: this.qualityTypist !== '' ? this.qualityTypist : null,
+        qualityTranslator: this.qualityTranslator !== '' ? this.qualityTranslator : null,
+        hasBalance: this.hasBalance,
+        sendZip: this.sendZip,
+        forceSupervisor: this.forceSupervisor
+    };
+
+    this.asignacion.push(asign);
+    this.dataSource.data = this.asignacion;
+
+    this.idUserLogin = 0;
+    this.asignado = "";
+    this.fechaAsignacion = "";
+    this.fechaVencimiento = "";
+    this.fechaAsignacionDate = new Date();
+    this.fechaVencimientoDate = new Date();
+    this.balance = false;
+    this.referencias = false;
+    this.observaciones = "";
+    this.activeList = 0;
+    this.interno = false;
+    this.step = 3;
+    this.estado = 'agregar';
+}
+
+
 
   editarAsignacion(){
 

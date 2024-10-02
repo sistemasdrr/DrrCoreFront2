@@ -539,6 +539,7 @@ formatDate(date: moment.Moment): string {
             }
             this.balanceType = balance.balanceType
             this.duration = balance.duration
+            this.durationEng = balance.durationEng
             this.idCurrency = balance.idCurrency
             this.exchangeRate = balance.exchangeRate
             this.sales = balance.sales

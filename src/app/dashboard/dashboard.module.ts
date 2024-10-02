@@ -16,6 +16,7 @@ import { ProduccionDiariaComponent } from 'app/dashboard/produccion-diaria/produ
 import { ProduccionMensualComponent } from './produccion-mensual/produccion-mensual.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { EnviarComplementoComponent } from './produccion-mensual/enviar-complemento/enviar-complemento.component';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [MainComponent, Dashboard2Component, Dashboard3Component,
@@ -34,7 +35,8 @@ import { EnviarComplementoComponent } from './produccion-mensual/enviar-compleme
     NgxGaugeModule,
     ComponentsModule,
     SharedModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatMenuModule
   ],
 })
 export class DashboardModule {}

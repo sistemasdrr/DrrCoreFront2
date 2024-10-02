@@ -139,7 +139,7 @@
         <ng-container matColumnDef="quality" >
           <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Calidad--<b style="font-size: 20px;">  R</b>(D/T)</th>
           <td mat-cell *matCellDef="let order" class="text-center">
-          <div *ngIf="!activeQuality(order.otherUserCode) && order.quality!=''" class="badge badge-solid-purple"><b style="font-size: 20px;">{{order.quality}}</b>({{order.qualityTypist}}/{{order.qualityTranslator}})</div>
+          <div *ngIf="!activeQuality(order.otherUserCode) && order.quality!==''" class="badge badge-solid-purple"><b style="font-size: 20px;">{{order.quality}}</b>({{order.qualityTypist}}/{{order.qualityTranslator}})</div>
 
             <button  class="float-end progress-percent label shadow"
             style="border: 2px solid black; color: black; border-radius: 10px; width: 50px; height: 30px; background-color: rgb(128, 248, 128);"

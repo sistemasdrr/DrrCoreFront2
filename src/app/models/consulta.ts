@@ -507,6 +507,10 @@ export interface Query5_1_2ByCycle{
   price : number
   flag : boolean
   quantity : number
+  quality : string
+  qualityTypist : string
+  qualityTranslator : string
+  qualityReport : string
   tickets : Query5_1_2Tickets[]
 }
 export interface Query5_1_2Tickets{

@@ -9,6 +9,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { HistorialPedidoComponent } from 'app/views/situacion/lista/historial-pedido/historial-pedido.component';
 import { EnviarComplementoComponent } from './enviar-complemento/enviar-complemento.component';
+import { OtherUserCode } from 'app/models/pedidos/ticket';
 
 @Component({
   selector: 'app-produccion-mensual',
@@ -103,6 +104,15 @@ export class ProduccionMensualComponent implements OnInit{
         }
       )
 
+  }
+  activeQuality(obj : OtherUserCode[]){
+    let active = false;
+    obj.forEach(element => {
+      if(element.code.includes('S') && element.active === true){
+        active = true
+      }
+    });
+    return active
   }
   search(cycle : string){
     this.userCode = ""
