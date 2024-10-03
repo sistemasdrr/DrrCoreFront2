@@ -154,15 +154,16 @@ export class ListaPersonasComponent implements OnInit {
     if(listaPersonas){
       listaPersonas.classList.remove('hide-loader');
     }
-    const busqueda = {
-      razonSocial : this.razonSocial,
-      filtro : this.filtroRB,
-      idPais : this.idPais,
-      conInforme : this.chkConInforme,
-      similar:this.filterBy==='S'
-    }
+    // const busqueda = {
+    //   razonSocial : this.razonSocial,
+    //   filtro : this.filtroRB,
+    //   idPais : this.idPais,
+    //   conInforme : this.chkConInforme,
+    //   similar:this.filterBy==='S'
+    // }
+    // localStorage.setItem('busquedaPersonas', JSON.stringify(busqueda))
+
     this.loading=true;
-    localStorage.setItem('busquedaPersonas', JSON.stringify(busqueda))
     this.datosPersonaService.getDatosPersonas(this.razonSocial.trim(), this.filtroRB, this.idPais, this.chkConInforme,this.filterBy).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){

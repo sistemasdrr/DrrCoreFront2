@@ -2,7 +2,7 @@ import { Component, Inject, OnInit   } from '@angular/core';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ComboData } from 'app/models/combo';
 import { Balance } from 'app/models/informes/empresa/balance';
 import { ComboService } from 'app/services/combo.service';
@@ -12,6 +12,7 @@ import * as moment from 'moment';
 import { state, trigger, style, transition, animate } from '@angular/animations';
 import { FormControl } from '@angular/forms';
 import { Observable, map, startWith } from 'rxjs';
+import { TraduccionDialogComponent } from '@shared/components/traduccion-dialog/traduccion-dialog.component';
 
 @Component({
   selector: 'app-balance-situacional',
@@ -104,7 +105,7 @@ export class BalanceSituacionalComponent implements OnInit {
   workingCapital = 0
 
 
-  constructor(private balanceService : BalanceFinancieroService, private comboService : ComboService,
+  constructor(public dialog: MatDialog,private balanceService : BalanceFinancieroService, private comboService : ComboService,
     public dialogRef: MatDialogRef<BalanceSituacionalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: number
    ){
@@ -265,7 +266,28 @@ export class BalanceSituacionalComponent implements OnInit {
     const formattedDate = date.format('DD/MM/YYYY');
     return formattedDate;
   }
-
+  agregarTraduccion(titulo : string, subtitulo : string, comentario_es : string, comentario_en : string, input : string) {
+    const dialogRef = this.dialog.open(TraduccionDialogComponent, {
+      data: {
+        titulo : titulo,
+        subtitulo : subtitulo,
+        tipo : 'input',
+        comentario_es : comentario_es,
+        comentario_en : comentario_en
+      },
+    });
+    dialogRef.afterClosed().subscribe((data) => {
+      if (data) {
+        console.log(data)
+        switch(input){
+          case 'duracion':
+            this.duration = data.comentario_es
+            this.durationEng = data.comentario_en
+          break
+        }
+      }
+    })
+  }
   agregarBalance(){
     this.agregar = true
     this.id = 0

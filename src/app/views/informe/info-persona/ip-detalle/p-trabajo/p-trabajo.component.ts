@@ -13,6 +13,8 @@ import { TrabajoPService } from 'app/services/informes/persona/trabajo-p.service
 import { ListaEmpresasComponent } from 'app/views/pedidos/detalle/lista-empresas/lista-empresas.component';
 import Swal from 'sweetalert2';
 import * as moment from 'moment';
+import { FormControl } from '@angular/forms';
+import { map, Observable, startWith } from 'rxjs';
 
 @Component({
   selector: 'app-p-trabajo',
@@ -59,6 +61,16 @@ export class PTrabajoComponent implements OnInit, OnDestroy{
 
   listaCargo : ComboData[] = []
 
+  controlProfesion = new FormControl<string | ComboData>('');
+  filterProfesion: Observable<ComboData[]>
+  listaProfesion: ComboData[] = []
+  profesion: ComboData = {
+    id: 0,
+    valor: '',
+  }
+  msgProfesion = ""
+  colorMsgProfesion = ""
+
   constructor(private router: Router,private comboService : ComboService, private dialog : MatDialog, private empresaService : DatosEmpresaService, private activatedRoute: ActivatedRoute, private trabajoService : TrabajoPService){
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (id?.includes('nuevo')) {
@@ -66,6 +78,7 @@ export class PTrabajoComponent implements OnInit, OnDestroy{
     } else {
       this.idPerson = parseInt(id + '')
     }
+    this.filterProfesion = new Observable<ComboData[]>()
     console.log(this.idPerson)
   }
   compararModelosF : any
@@ -77,7 +90,7 @@ export class PTrabajoComponent implements OnInit, OnDestroy{
     this.comboService.getProfesion().subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
-          this.listaCargo = response.data
+          this.listaProfesion = response.data
         }
       }
     )
@@ -147,13 +160,47 @@ export class PTrabajoComponent implements OnInit, OnDestroy{
     this.compararModelosF = setInterval(() => {
       this.compararModelos();
     }, 2000);
+
+    this.filterProfesion = this.controlProfesion.valueChanges.pipe(
+      startWith(''),
+      map(value => {
+        const name = typeof value === 'string' ? value : value?.valor
+        return name ? this._filterProfesion(name as string) : this.listaProfesion.slice()
+      }),
+    )
   }
+
   ngOnDestroy(): void {
     if (this.compararModelosF) {
       clearInterval(this.compararModelosF);
     }
   }
+  private _filterProfesion(description: string): ComboData[] {
+    const filterValue = description.toLowerCase();
+    return this.listaProfesion.filter(profesion => profesion.valor.toLowerCase().includes(filterValue));
+  }
 
+  displayProfesion(profesion : ComboData): string {
+    return profesion && profesion.valor ? profesion.valor : '';
+  }
+  limpiarSeleccionProfesion() {
+    this.controlProfesion.reset();
+    this.currentJob = ""
+    this.currentJobEng = ""
+  }
+  cambioProfesion(profesion: ComboData) {
+    console.log(profesion)
+    if (typeof profesion === 'string' || profesion === null) {
+      this.msgProfesion = "Seleccione una opción."
+      this.currentJob = profesion
+      this.colorMsgProfesion = "red"
+    } else {
+      this.msgProfesion = "Opción Seleccionada."
+      this.currentJob = profesion.valor
+      this.colorMsgProfesion = "green"
+    }
+    console.log(this.currentJob)
+  }
   compararModelos(){
     this.armarModeloModificado()
     if(JSON.stringify(this.modeloModificado) !== JSON.stringify(this.modeloModificado)){

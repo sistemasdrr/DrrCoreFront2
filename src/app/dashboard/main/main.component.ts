@@ -26,6 +26,10 @@ import Swal from 'sweetalert2';
 import { ConsultaService } from 'app/services/Consultas/consulta.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { Pais } from 'app/models/combo';
+import { map, Observable, startWith } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { ComboService } from 'app/services/combo.service';
 
 
 export interface DistinctSupervisor{
@@ -67,7 +71,7 @@ export class MainComponent implements OnInit {
   monthlyProduction = 0
   observedTickets : ObservedTickets[] = []
   observedTicketsStr = ""
-
+  iconoSeleccionado: string = ""
   idUser = ''
   idEmployee = 0
 
@@ -77,6 +81,7 @@ export class MainComponent implements OnInit {
   pendingTaskPersonalSelected : PendingTaskByUser[] = []
   pendingTaskAgent : PendingTaskByUser[] = []
   pendingTaskReporter : PendingTaskByUser[] = []
+  pendingTaskReferences : PendingTaskByUser[] = []
   pendingTaskTypist : PendingTaskByUser[] = []
   pendingTaskTranslator : PendingTaskByUser[] = []
 
@@ -99,8 +104,24 @@ export class MainComponent implements OnInit {
       active: 'Dashboard',
     },
   ];
-  constructor(private consultaService : ConsultaService, private router: Router, private dashboardService : DashboardService) {
+  paises: Pais[] = []
+  controlPaises = new FormControl<string | Pais>('')
+  idCountry: number=0;
+  filterPais: Observable<Pais[]>
+  paisSeleccionado: Pais = {
+    id: 0,
+    valor: '',
+    abreviation: '',
+    bandera: '',
+    regtrib: '',
+    codCel: '',
+  }
+  msgPais = ""
+  colorMsgPais = ""
+
+  constructor(private comboService : ComboService,private consultaService : ConsultaService, private router: Router, private dashboardService : DashboardService) {
     const auth = JSON.parse(localStorage.getItem('authCache')+'')
+    this.filterPais = new Observable<Pais[]>()
     if(auth){
       this.idUser = auth.idUser
       this.idEmployee = parseInt(auth.idEmployee)
@@ -112,6 +133,13 @@ export class MainComponent implements OnInit {
   ngOnInit() {
     this.chart1();
     this.chart2();
+    this.comboService.getPaises().subscribe(
+      (response) => {
+        if(response.isSuccess === true){
+          this.paises = response.data
+        }
+      }
+    )
     this.dashboardService.PendingTask(this.idUser).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
@@ -155,6 +183,7 @@ export class MainComponent implements OnInit {
 
         if(this.pendingTaskSupervisor.length === 1){
           this.pendingTaskReporter = this.pendingTaskSupervisor[0].details.filter(x => x.type === "RP")
+          this.pendingTaskReferences = this.pendingTaskSupervisor[0].details.filter(x => x.type === "RF")
           this.pendingTaskAgent = this.pendingTaskSupervisor[0].details.filter(x => x.type === "AG")
           this.pendingTaskTypist = this.pendingTaskSupervisor[0].details.filter(x => x.type === "DI")
           this.pendingTaskTranslator = this.pendingTaskSupervisor[0].details.filter(x => x.type === "TR")
@@ -162,6 +191,7 @@ export class MainComponent implements OnInit {
           this.supervisorSeleccionado = this.pendingTaskSupervisor[0].code
           this.pendingTaskPersonalSelected = this.pendingTaskSupervisor[0].details
           this.pendingTaskReporter = this.pendingTaskPersonalSelected.filter(x => x.type === "RP")
+          this.pendingTaskReferences = this.pendingTaskPersonalSelected.filter(x => x.type === "RF")
           this.pendingTaskAgent = this.pendingTaskPersonalSelected.filter(x => x.type === "AG")
           this.pendingTaskTypist = this.pendingTaskPersonalSelected.filter(x => x.type === "DI")
           this.pendingTaskTranslator = this.pendingTaskPersonalSelected.filter(x => x.type === "TR")
@@ -169,6 +199,8 @@ export class MainComponent implements OnInit {
 
         if(this.pendingTaskReporter.length > 0){
           this.tipo = "RP"
+        }else if(this.pendingTaskReferences.length > 0){
+          this.tipo = "RF"
         }else if(this.pendingTaskAgent.length > 0){
           this.tipo = "AG"
         }else if(this.pendingTaskTypist.length > 0){
@@ -199,7 +231,18 @@ export class MainComponent implements OnInit {
       }
     )
 
+    this.filterPais = this.controlPaises.valueChanges.pipe(
+      startWith(''),
+      map(value => {
+        const name = typeof value === 'string' ? value : value?.valor
+        return name ? this._filterPais(name as string) : this.paises.slice()
+      }),
+    )
 
+  }
+  private _filterPais(description: string): Pais[] {
+    const filterValue = description.toLowerCase();
+    return this.paises.filter(pais => pais.valor.toLowerCase().includes(filterValue));
   }
   sumPedidos(pendingTask : PendingTaskByUser[]) : number {
     let value = 0
@@ -208,15 +251,18 @@ export class MainComponent implements OnInit {
     });
     return value
   }
-  selectSupervisor(code : string, type : string){
+  selectSupervisor(code : string,type:string){
+
     this.dataSource1.data = []
     this.dataSource2.data = []
     this.dataSource3.data = []
     this.dataSource4.data = []
+    this.dataSource5.data = []
     const personal = this.pendingTaskSupervisor.filter(x => x.code === code)[0]
     console.log(personal)
       this.pendingTaskPersonalSelected = personal.details
       this.pendingTaskReporter = this.pendingTaskPersonalSelected.filter(x => x.type === "RP")
+      this.pendingTaskReferences = this.pendingTaskPersonalSelected.filter(x => x.type === "RF")
       this.pendingTaskAgent = this.pendingTaskPersonalSelected.filter(x => x.type === "AG")
       this.pendingTaskTypist = this.pendingTaskPersonalSelected.filter(x => x.type === "DI")
       this.pendingTaskTranslator = this.pendingTaskPersonalSelected.filter(x => x.type === "TR")
@@ -528,6 +574,35 @@ export class MainComponent implements OnInit {
       },
     };
   }
+  async cambioPais(pais: Pais) {
+    if (pais !== null) {
+      if (typeof pais === 'string' || pais === null || this.paisSeleccionado.id === 0) {
+        this.msgPais = "Seleccione una opción."
+        this.colorMsgPais = "red"
+        this.iconoSeleccionado = ""
+        this.idCountry = 0
+
+      } else {
+        this.msgPais = "Opción Seleccionada"
+        this.colorMsgPais = "green"
+        this.iconoSeleccionado = pais.bandera
+        this.idCountry = pais.id
+        console.log("Se selecciono el idCountry: "+pais.id)
+        //implementar la logica
+      }
+    } else {
+      this.idCountry = 0
+
+      this.msgPais = "Seleccione una opción."
+      this.colorMsgPais = "red"
+    }
+  }
+  limpiarSeleccionPais() {
+    this.controlPaises.reset();
+    this.idCountry = 0
+    this.iconoSeleccionado = ""
+
+  }
   seriesDashboard : SeriesDashboard[] = []
   private chart2Rel() {
     this.dashboardService.SeriesDashboard().subscribe(
@@ -606,6 +681,7 @@ export class MainComponent implements OnInit {
   dataSource2 = new MatTableDataSource<PendingTaskByUserDetails>;
   dataSource3 = new MatTableDataSource<PendingTaskByUserDetails>;
   dataSource4 = new MatTableDataSource<PendingTaskByUserDetails>;
+  dataSource5 = new MatTableDataSource<PendingTaskByUserDetails>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -620,6 +696,9 @@ export class MainComponent implements OnInit {
     }else if(task.type == "AG"){
       this.dataSource2.data = task.details
       this.dataSource2.sort = this.sort
+    }else if(task.type == "RF"){
+      this.dataSource5.data = task.details
+      this.dataSource5.sort = this.sort
     }else if(task.type == "DI"){
       this.dataSource3.data = task.details
       this.dataSource3.sort = this.sort
@@ -629,6 +708,10 @@ export class MainComponent implements OnInit {
     }
     nav.open();
   }
+    displayPais(pais: Pais): string {
+    return pais && pais.valor ? pais.valor : '';
+  }
+
   enviarAlerta(idTicket : number){
     Swal.fire({
       title: '¿Está seguro de enviar una alerta?',

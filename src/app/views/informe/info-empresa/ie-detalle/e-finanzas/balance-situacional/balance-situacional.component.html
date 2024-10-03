@@ -52,6 +52,9 @@
           <mat-form-field color="primary" style="width: 100%;">
             <mat-label>Duración de Balance</mat-label>
             <input matInput [(ngModel)]="duration" [readonly]="!agregar">
+            <button class="btn-traduccion" matSuffix mat-icon-button [class]="durationEng === '' || durationEng !== null ? 'sin-traduccion' : ''" (click)="agregarTraduccion('Traducción de Duración del Balance','',duration,durationEng,'duracion')">
+              <span class="fi fi-us" style="font-size: 24px;"></span>
+            </button>
           </mat-form-field>
         </div>
         <h5>Cabecera de Balance</h5>

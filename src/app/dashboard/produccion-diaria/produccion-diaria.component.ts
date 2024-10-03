@@ -25,7 +25,7 @@ export class ProduccionDiariaComponent implements OnInit{
 
   breadscrums = [
     {
-      title: 'Dashboard',
+      title: 'Producción Diaria',
       items: ['Producción'],
       active: 'Diaria',
     },

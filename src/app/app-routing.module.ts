@@ -111,13 +111,13 @@ const routes: Routes = [
     ],
   },
   {
-    path: 'abonado',
+    path: '',
     component: MainLayoutComponent,
     canActivate: [AuthSubscriberGuard],
     children: [
       { path: '', redirectTo: '/authentication/login', pathMatch: 'full' },
       {
-        path: 'i',
+        path: 'intranet',
         loadChildren: () =>
           import('./views/subscriber/subscriber.module')
           .then((m) => m.SubscriberModule)

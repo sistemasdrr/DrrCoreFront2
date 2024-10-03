@@ -37,6 +37,7 @@ export class IPListaComponent implements OnInit{
   nombreCompleto = ''
   idPais = 0
   filtroRB = 'C'
+  filterBy='N'
   chkConInforme = true
 
   breadscrums = [
@@ -284,14 +285,14 @@ export class IPListaComponent implements OnInit{
     if(listaPersonas){
       listaPersonas.classList.remove('hide-loader');
     }
-    const busqueda = {
-      nombreCompleto : this.nombreCompleto,
-      filtro : this.filtroRB,
-      idPais : this.idPais,
-      conInforme : this.chkConInforme
-    }
-    localStorage.setItem('busquedaPersonas', JSON.stringify(busqueda))
-    this.personaService.getList(this.nombreCompleto.trim(), this.filtroRB, this.idPais, this.chkConInforme).subscribe(
+    // const busqueda = {
+    //   nombreCompleto : this.nombreCompleto,
+    //   filtro : this.filtroRB,
+    //   idPais : this.idPais,
+    //   conInforme : this.chkConInforme
+    // }
+    // localStorage.setItem('busquedaPersonas', JSON.stringify(busqueda))
+    this.personaService.getDatosPersonas(this.nombreCompleto.trim(), this.filtroRB, this.idPais, this.chkConInforme, this.filterBy).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.dataSource = new MatTableDataSource<TPersona>(response.data);

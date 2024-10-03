@@ -48,7 +48,6 @@ export class AntecedentesComponent implements OnInit, OnDestroy{
   id = 0
   idCompany = 0
   constitutionDate = ""
-  constitutionDateD : Date | null = null
   startFunctionYear = ""
   operationDuration = ""
   operationDurationEng = ""
@@ -153,14 +152,8 @@ constructor(
           if(response.isSuccess === true && response.isWarning === false){
             const antecedentesLegales = response.data
             this.id = antecedentesLegales.id
+            this.constitutionDate = antecedentesLegales.constitutionDate
 
-            if(antecedentesLegales.constitutionDate !== '' && antecedentesLegales.constitutionDate !== null){
-              this.constitutionDate = antecedentesLegales.constitutionDate
-              const fecha1 = this.constitutionDate.split("/")
-              this.constitutionDateD = fecha1.length > 0 ? new Date(parseInt(fecha1[2]), parseInt(fecha1[1]) - 1, parseInt(fecha1[0])) : null;
-            }else{
-              this.constitutionDateD = null
-            }
             console.log(antecedentesLegales)
             this.startFunctionYear = antecedentesLegales.startFunctionYear
             this.operationDuration = antecedentesLegales.operationDuration
@@ -452,12 +445,7 @@ constructor(
     );
   }
 
-  selectFechaConstitucion(event: MatDatepickerInputEvent<Date>) {
-    const selectedDate = event.value;
-    if (moment.isMoment(selectedDate)) {
-      this.constitutionDate = this.formatDate(selectedDate);
-    }
-  }
+
   selectFechaUltimaConsulta(event: MatDatepickerInputEvent<Date>) {
     const selectedDate = event.value;
     if (moment.isMoment(selectedDate)) {
@@ -552,6 +540,7 @@ constructor(
     }
   }
   armarModeloModificado(){
+
     this.modeloModificado[0] = {
       id : this.id,
       idCompany : this.idCompany,
@@ -610,9 +599,75 @@ constructor(
       ]
     }
   }
+  eliminarEmpresaRelacionada(id:number){
+    Swal.fire({
+      title: '¿Está seguro de eliminar la relación?',
+      text: "",
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí',
+      width: '30rem',
+      heightAuto: true
+    }).then((result) => {
+      if (result.value) {
+        const paginaDetalleEmpresa = document.getElementById('pagina-detalle-empresa') as HTMLElement | null;
+        if(paginaDetalleEmpresa){
+          paginaDetalleEmpresa.classList.remove('hide-loader');
+        }
+        this.antecedentesLegalesService.deleteCompanyRelation(id).subscribe((response) => {
+        if(response.isSuccess === true && response.isWarning === false){
+          if(paginaDetalleEmpresa){
+            paginaDetalleEmpresa.classList.add('hide-loader');
+          }
+          Swal.fire({
+            title: 'Se guardaron los cambios correctamente',
+            text: "",
+            icon: 'success',
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ok',
+            width: '30rem',
+            heightAuto: true
+          })
+          this.antecedentesLegalesService.getListCompanyRelation(this.idCompany).subscribe(
+            (response) => {
+              if(response.isSuccess === true && response.isWarning === false){
+                this.dataSource.data = response.data
+              }
+            }
+          )
+
+        }else{
+          if(paginaDetalleEmpresa){
+            paginaDetalleEmpresa.classList.add('hide-loader');
+          }
+          Swal.fire({
+            title: 'Ocurrió un problema.',
+            text: 'Comunicarse con Sistemas',
+            icon: 'warning',
+            confirmButtonColor: 'blue',
+            confirmButtonText: 'Ok',
+            width: '30rem',
+            heightAuto : true
+          }).then(() => {
+          })
+        }
+        if(paginaDetalleEmpresa){
+          paginaDetalleEmpresa.classList.add('hide-loader');
+        }
+      })
+  }
+});
+
+}
+
+
   guardar() {
     this.armarModeloModificado()
-    console.log(this.modeloModificado)
+    console.log(this.constitutionDate+'cxc')
     if(this.id > 0){
       Swal.fire({
         title: '¿Está seguro de guardar los cambios?',
@@ -631,6 +686,7 @@ constructor(
           if(paginaDetalleEmpresa){
             paginaDetalleEmpresa.classList.remove('hide-loader');
           }
+          console.log(this.modeloModificado[0])
           this.antecedentesLegalesService.updateAntecedentesLegales(this.modeloModificado[0]).subscribe((response) => {
           if(response.isSuccess === true && response.isWarning === false){
             if(paginaDetalleEmpresa){

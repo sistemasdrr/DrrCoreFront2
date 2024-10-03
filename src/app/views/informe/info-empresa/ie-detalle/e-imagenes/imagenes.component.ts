@@ -39,13 +39,13 @@ export class ImagenesComponent implements OnInit{
   imgDescEng3 = ""
   imgDescEng4 = ""
   img1 = ""
-  imgPrint1 = false
+  imgPrint1 = true
   img2 = ""
-  imgPrint2 = false
+  imgPrint2 = true
   img3 = ""
-  imgPrint3 = false
+  imgPrint3 = true
   img4 = ""
-  imgPrint4 = false
+  imgPrint4 = true
 
 
 

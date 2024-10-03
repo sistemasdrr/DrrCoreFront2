@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { FacturacionAgenteComponent } from './facturacion-agente/facturacion-agente.component';
 import { FacturacionMensualComponent } from './facturacion-abonado/facturacion-mensual/facturacion-mensual.component';
 import { FacturacionConCuponesComponent } from './facturacion-abonado/facturacion-con-cupones/facturacion-con-cupones.component';
+import { FacturacionInternaComponent } from './facturacion-interna/facturacion-interna.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,11 @@ const routes: Routes = [
     path: 'agente',
     component: FacturacionAgenteComponent,
     data: { title: 'Facturación de Agente - DRR Core V1' }
+  },
+  {
+    path: 'interna',
+    component: FacturacionInternaComponent,
+    data: { title: 'Facturación Interna - DRR Core V1' }
   },
 ]
 

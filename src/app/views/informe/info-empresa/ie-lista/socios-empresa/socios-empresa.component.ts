@@ -35,7 +35,7 @@ export class SociosEmpresaComponent implements OnInit{
   dataSourceShareHolder : MatTableDataSource<AccionistasEmpresaT>
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  columnasPartners : string[] = ['name','nationality','birthDate','identificationDocument','mainExecutive','profession','participation','startDate','acciones']
+  columnasPartners : string[] = ['numeration','name','nationality','birthDate','identificationDocument','mainExecutive','print','profession','participation','startDate','acciones']
   columnasShareHolder : string[] = ['name','country','taxTypeCode','relation','participation','startDate','acciones']
 
   constructor(private dialog : MatDialog,private sociosEmpresaService : SociosEmpresaService,@Inject(MAT_DIALOG_DATA) public data: any){

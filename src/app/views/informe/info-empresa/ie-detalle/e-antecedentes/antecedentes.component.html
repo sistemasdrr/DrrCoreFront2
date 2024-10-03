@@ -22,11 +22,11 @@
       </div>
       <hr>
       <div class="col-md-4">
-        <mat-form-field color="primary" style="width: 100%;">
+        <mat-form-field class="w-100">
           <mat-label>Fecha de Constitución</mat-label>
-          <input id="input_fecha_constitucion" [readonly]="true" matInput [matDatepicker]="fecha_contitucion_informe" [(ngModel)]="constitutionDateD" (dateChange)="selectFechaConstitucion($event)">
-          <mat-datepicker-toggle matIconSuffix [for]="fecha_contitucion_informe"></mat-datepicker-toggle>
-          <mat-datepicker #fecha_contitucion_informe color="primary"></mat-datepicker>
+          <span matSuffix style="margin-right: .5rem; color:gray;">
+          </span>
+          <input matInput placeholder="DD/MM/YYYY" [(ngModel)]="constitutionDate">
         </mat-form-field>
       </div>
       <div class="col-md-4">
@@ -188,7 +188,10 @@
           <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100" >
             <ng-container matColumnDef="name">
               <th mat-header-cell *matHeaderCellDef class="text-center" style="font-size: 18px;"> Razón Social </th>
-              <td mat-cell *matCellDef="let report" class="text-center" >{{report.name}}</td>
+              <td mat-cell *matCellDef="let report" class="text-center" >
+                <a [target]="'_blank'" [routerLink]="'../../'+report.idCompanyRelation"> {{report.name}}
+                </a>
+               </td>
             </ng-container>
             <ng-container matColumnDef="taxTypeName">
               <th mat-header-cell *matHeaderCellDef class="text-center" style="font-size: 18px;"> Registro Tributario </th>
@@ -215,10 +218,8 @@
                   </button>
                 </th>
               <td mat-cell *matCellDef="let report" class="text-center d-flex" >
-                <button mat-icon-button  class="tbl-action-btn " #tooltip="matTooltip" matTooltip="Editar" style="margin-top: 1rem;">
-                  <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                </button>
-                <button mat-icon-button class="tbl-action-btn"  #tooltip="matTooltip" matTooltip="Quitar" style="margin-top: 1rem;">
+
+                <button mat-icon-button class="tbl-action-btn"  #tooltip="matTooltip" matTooltip="Quitar" (click)="eliminarEmpresaRelacionada(report.id)" style="margin-top: 1rem;">
                   <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
                 </button>
               </td>

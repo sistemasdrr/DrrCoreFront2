@@ -146,6 +146,9 @@ export interface ListTicket{
   realExpireDate : string
   dispatchDate : string
   quality : string
+  qualityTypist : string
+  qualityTranslator : string
+  qualityReport : string
   status : string
   statusColor : string
   statusFinalOwner : string
@@ -167,6 +170,7 @@ export interface Asignacion{
   endDate : string
   balance : boolean
   references : boolean
+  forceSupervisor:boolean
   observations : string
   idTicket:number,
   type : string
@@ -427,4 +431,11 @@ export interface PendingTaskByUserDetails{
   flagCountry: string;
   expireDate: string;
   flag: number;
+}
+
+
+export interface GetTicketUserResponseDto{
+  code : string
+  type : string
+  flag : boolean
 }

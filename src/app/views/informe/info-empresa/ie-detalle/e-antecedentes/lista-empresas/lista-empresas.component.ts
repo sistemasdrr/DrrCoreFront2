@@ -54,7 +54,7 @@ export class ListaEmpresas1Component implements OnInit {
   razonSocial = ""
   filtroRB = "C"
   idPais = 0
-  chkConInforme = true
+  chkConInforme = false
 
   isAllSelected1() {
     const numSelected = this.selection1.selected.length;
@@ -114,18 +114,18 @@ export class ListaEmpresas1Component implements OnInit {
       this.loading = false
     }).add(() => {
       if(localStorage.getItem('busquedaEmpresas')){
-        const busqueda = JSON.parse(localStorage.getItem('busquedaEmpresas')+'')
-        this.razonSocial = busqueda.razonSocial
-        this.filtroRB = busqueda.filtro
-        if(busqueda.idCountry > 0){
-          this.idPais = busqueda.idCountry
-          this.paisSeleccionado = this.paises.filter(x => x.id === busqueda.idCountry)[0]
-          this.iconoSeleccionado = this.paisSeleccionado.bandera
-        }else{
-          this.limpiarSeleccionPais()
-        }
-        this.paisSeleccionado = this.paises.filter(x => x.id === busqueda.idPais)[0]
-        this.chkConInforme = busqueda.conInforme
+        // const busqueda = JSON.parse(localStorage.getItem('busquedaEmpresas')+'')
+        // this.razonSocial = busqueda.razonSocial
+        // this.filtroRB = busqueda.filtro
+        // if(busqueda.idCountry > 0){
+        //   this.idPais = busqueda.idCountry
+        //   this.paisSeleccionado = this.paises.filter(x => x.id === busqueda.idCountry)[0]
+        //   this.iconoSeleccionado = this.paisSeleccionado.bandera
+        // }else{
+        //   this.limpiarSeleccionPais()
+        // }
+        // this.paisSeleccionado = this.paises.filter(x => x.id === busqueda.idPais)[0]
+        // this.chkConInforme = busqueda.conInforme
         this.filtrarEmpresas()
         this.loading = false
       }
@@ -200,13 +200,13 @@ export class ListaEmpresas1Component implements OnInit {
   filtrarEmpresas(){
     this.loading = true
 
-    const busqueda = {
-      razonSocial : this.razonSocial,
-      filtro : this.filtroRB,
-      idPais : this.idPais,
-      conInforme : this.chkConInforme
-    }
-    localStorage.setItem('busquedaEmpresas', JSON.stringify(busqueda))
+    // const busqueda = {
+    //   razonSocial : this.razonSocial,
+    //   filtro : this.filtroRB,
+    //   idPais : this.idPais,
+    //   conInforme : this.chkConInforme
+    // }
+    // localStorage.setItem('busquedaEmpresas', JSON.stringify(busqueda))
     this.datosEmpresaService.getDatosEmpresas(this.razonSocial.trim(), this.filtroRB, this.idPais, this.chkConInforme,"N").subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){

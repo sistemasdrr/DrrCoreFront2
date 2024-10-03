@@ -15,6 +15,9 @@ import { ObservacionPedidoComponent } from './observacion-pedido/observacion-ped
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { ComplementoComponent } from 'app/views/consultas/informes/complemento/complemento.component';
+import { Pais } from 'app/models/combo';
+import { map, Observable, startWith } from 'rxjs';
+import { PaisService } from 'app/services/pais.service';
 
 
 const today = new Date();
@@ -68,17 +71,87 @@ export class ListaSituacionComponent implements  OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private router : Router, private fb: FormBuilder, private ticketService : TicketService,public dialog : MatDialog) {
+  //FILTROS
+  about = "E"
+  typeSearch = "N";
+  name = ""
+  fechaInicio : Date = new Date(2023, 0, 1)
+  fechaFin : Date = new Date(year, month, day)
+  tipoInforme = ""
+  tipoTramite = ""
+  filtroRB = "C"
+  haveReport = false;
+  maxDate: Date = new Date();
+  idPais = 0
+
+  controlPaises = new FormControl<string | Pais>('')
+  paises: Pais[] = []
+  filterPais: Observable<Pais[]>
+  iconoSeleccionado = ""
+  paisSeleccionado: Pais = {
+    id: 0,
+    valor: '',
+    abreviation: '',
+    bandera: '',
+    regtrib: '',
+    codCel: '',
+  }
+  msgPais = ""
+  colorMsgPais = ""
+
+  constructor(private paisService : PaisService,private router : Router, private fb: FormBuilder, private ticketService : TicketService,public dialog : MatDialog) {
     this.dataSource = new MatTableDataSource();
     this.dataSourceSelect = new MatTableDataSource();
-    this.range = this.fb.group({
-      start: new FormControl(new Date(new Date().getFullYear(), 0, 1)),
-      end: new FormControl(new Date(year, month, day)),
-    });
+    this.filterPais = new Observable<Pais[]>()
+
   }
 
   ngOnInit(): void {
+    this.paisService.getPaises().subscribe((response) => {
+      if (response.isSuccess == true) {
+        this.paises = response.data;
+      }
+    })
+    this.filterPais = this.controlPaises.valueChanges.pipe(
+      startWith(''),
+      map(value => {
+        const name = typeof value === 'string' ? value : value?.valor
+        return name ? this._filterPais(name as string) : this.paises.slice()
+      }),
+    )
+  }
 
+  private _filterPais(description: string): Pais[] {
+    const filterValue = description.toLowerCase();
+    return this.paises.filter(pais => pais.valor.toLowerCase().includes(filterValue));
+  }
+  displayPais(pais: Pais): string {
+    return pais && pais.valor ? pais.valor : '';
+  }
+  limpiarSeleccionPais() {
+    this.controlPaises.reset();
+    this.idPais = 0
+    this.iconoSeleccionado = ""
+  }
+  cambioPais(pais: Pais) {
+    if (pais !== null && pais !== undefined) {
+      this.iconoSeleccionado = pais.bandera
+      this.idPais = pais.id
+      console.log(this.idPais)
+      if (typeof pais === 'string' || pais === null) {
+        this.msgPais = "Seleccione una opción."
+        this.idPais = 0
+        this.colorMsgPais = "red"
+      } else {
+        this.msgPais = "Opción Seleccionada"
+        this.colorMsgPais = "green"
+      }
+    } else {
+      this.idPais = 0
+      console.log(this.idPais)
+      this.msgPais = "Seleccione una opción."
+      this.colorMsgPais = "red"
+    }
   }
   enviarComplemento(idTicket : number) {
     const dialogRef = this.dialog.open(ComplementoComponent, {
@@ -89,9 +162,9 @@ export class ListaSituacionComponent implements  OnInit {
   }
   applyFilter() {
     this.loading = true
-    this.ticketService.getSearchSituation(this.about,this.typeSearch,this.name,0).subscribe(
-      (response) =>{
-        if(response.isSuccess === true && response.isWarning === false){
+    this.ticketService.GetNewSearchSituation(this.about, this.name, this.filtroRB, this.idPais, this.haveReport, this.typeSearch).subscribe(
+      (response) => {
+        if(response.isSuccess === true){
           this.dataSource.data = response.data
           this.dataSource.paginator = this.paginator
           this.dataSource.sort = this.sort
@@ -103,27 +176,23 @@ export class ListaSituacionComponent implements  OnInit {
 
       }
     )
+    // this.ticketService.getSearchSituation(this.about,this.typeSearch,this.name,0).subscribe(
+    //   (response) =>{
+    //     if(response.isSuccess === true && response.isWarning === false){
+    //       this.dataSource.data = response.data
+    //       this.dataSource.paginator = this.paginator
+    //       this.dataSource.sort = this.sort
+    //     }
+    //   }
+    // ).add(
+    //   () => {
+    //     this.loading = false
+
+    //   }
+    // )
   }
 
-  //FILTROS
-  about = "E"
-  typeSearch = "N";
-  name = ""
-  fechaInicio : Date = new Date(2023, 0, 1)
-  fechaFin : Date = new Date(year, month, day)
-  tipoInforme = ""
-  tipoTramite = ""
-  maxDate: Date = new Date();
 
-  range : FormGroup
-
-  mostrarFechas(){
-    const startDate = this.range.controls['start'].value;
-    const endDate = this.range.controls['end'].value;
-
-    this.fechaInicio = new Date(startDate);
-    this.fechaFin = new Date(endDate);
-  }
   seleccionar(id : number, oldCode : string){
     const loader = document.getElementById('loader-lista-situacion') as HTMLElement | null;
     this.loading = true

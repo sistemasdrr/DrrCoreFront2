@@ -35,9 +35,10 @@ export class OpinionCreditoComponent implements OnInit, OnDestroy {
   currentCommentary = ""
   currentCommentaryEng = ""
   previousCommentary = ""
-
+  arrayOpinion: any[]
   modeloActual : OpinionCredito[] = []
   modeloModificado : OpinionCredito[] = []
+opinion=''
 
   constructor(private opinionCreditoService : OpinionCreditoService ,private dialog : MatDialog, private activatedRoute : ActivatedRoute){
       const id = this.activatedRoute.snapshot.paramMap.get('id');
@@ -46,6 +47,19 @@ export class OpinionCreditoComponent implements OnInit, OnDestroy {
       } else {
         this.idCompany = parseInt(id + '')
       }
+      this.arrayOpinion=[
+        '',
+        'Es Apto para el crédito solicitado, por su condición financiera y forma de pagos.',
+        'Es Apto para el crédito solicitado, pero se sugiere alguna garantía colateral.',
+        'Es Apto para el crédito indicado en razón de la condición Financiera y Politica de Pago referida.',
+        'No es Apto para el monto solicitado, pero si es apto para un crédito menor.',
+        'No es Apto para créditos al momento, Situación financiera precaria y/o pagos morosos.',
+        'Ante la declinación de entregarnos Balances, no conocer sus referencias de pago y otras informaciones, lamentamos no poder dar una opinión de crédito.',
+        'Organismo Estatal que carece de cifras y referencias comerciales como para dar una opinión de crédito.',
+        'Son aptos para el crédito sugerido, en razón a aspectos de orden externo, ya que al carecer de estados financieros, sustentan nuestra opinión en base a la antiguedad de la empresa, al respaldo de sus accionistas, etc. pero para una mayor seguridad se podría solicitar alguna garantía colateral.',
+        'Información comercial y financiera insuficiente. Empresa poco transparente. Se sugiere venderle al contadoadelantado.',
+        'Es APTA para el crédito máximo indicado y en un solo pago.',
+      ]
   }
 
   compararModelosF : any
@@ -185,7 +199,10 @@ export class OpinionCreditoComponent implements OnInit, OnDestroy {
       ]
     }
   }
+  changeOpinion(){
+    this.currentCommentary= this.opinion
 
+  }
   agregarTraduccion(titulo : string, subtitulo : string, comentario_es : string, comentario_en : string, input : string) {
     const dialogRef = this.dialog.open(TraduccionDialogComponent, {
       data: {

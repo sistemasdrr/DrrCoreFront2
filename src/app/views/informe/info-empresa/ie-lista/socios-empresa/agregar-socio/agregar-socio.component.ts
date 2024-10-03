@@ -13,6 +13,8 @@ import Swal from 'sweetalert2';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import * as moment from 'moment';
+import { TraduccionDialogComponent } from '@shared/components/traduccion-dialog/traduccion-dialog.component';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-agregar-socio',
@@ -26,7 +28,14 @@ import * as moment from 'moment';
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
     },
     {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS}
-  ]
+  ],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class AgregarSocioComponent implements OnInit {
   titulo = ""
@@ -45,7 +54,6 @@ export class AgregarSocioComponent implements OnInit {
   taxTypeCode = ""
   idLegalRegisterSituation = 0
 
-
   id = 0
   idCompany = 0
   idPerson = 0
@@ -54,7 +62,10 @@ export class AgregarSocioComponent implements OnInit {
   professionEng = ""
   participation = 0
   startDate = ""
-  startDateD : Date | null = null
+  startDateD : Date | null = null;
+
+  numeration = 0;
+  print = true;
 
   situacionPersona : ComboData[] = []
   tipoDocumento : ComboData[] = []
@@ -110,7 +121,8 @@ export class AgregarSocioComponent implements OnInit {
         }
       }
     )
-    this.comboService.getTipoDocumento().subscribe(
+    this.comboService.getDocumentType().subscribe(
+
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.tipoDocumento = response.data
@@ -135,8 +147,18 @@ export class AgregarSocioComponent implements OnInit {
               this.idPerson = socio.idPerson
               this.mainExecutive = socio.mainExecutive
               this.profession = socio.profession
+              if(socio.profession !== null && socio.profession !== ''){
+                this.profesion = {
+                  id : 0,
+                  valor : socio.profession,
+                  valorEng : socio.professionEng,
+                  code : ''
+                }
+              }
               this.professionEng = socio.professionEng
               this.participation = socio.participation
+              this.numeration = socio.numeration
+              this.print = socio.print
               if(socio.startDate !== null && socio.startDate !== ""){
                 const fecha = socio.startDate.split("/")
                 if(fecha.length > 0){
@@ -209,6 +231,28 @@ export class AgregarSocioComponent implements OnInit {
       }),
     )
   }
+  agregarTraduccion(titulo : string, subtitulo : string, comentario_es : string, comentario_en : string, input : string) {
+    const dialogRef = this.dialog.open(TraduccionDialogComponent, {
+      data: {
+        titulo : titulo,
+        subtitulo : subtitulo,
+        tipo : 'input',
+        comentario_es : comentario_es,
+        comentario_en : comentario_en
+      },
+    });
+    dialogRef.afterClosed().subscribe((data) => {
+      if (data) {
+        console.log(data)
+        switch(input){
+          case 'profesion':
+            this.profession = data.comentario_es
+            this.professionEng = data.comentario_en
+          break
+        }
+      }
+    });
+  }
   armarModelo(){
     this.modeloNuevo[0] = {
       id : this.id,
@@ -219,7 +263,23 @@ export class AgregarSocioComponent implements OnInit {
       professionEng : this.professionEng,
       participation : this.participation,
       startDate : this.startDate,
+      numeration : this.numeration,
+      print : this.print
     }
+  }
+  newFormatDate() {
+    // Eliminar caracteres no numéricos
+    let value = this.startDate.replace(/[^0-9]/g, '');
+
+    // Formatear la fecha
+    if (value.length >= 2) {
+      value = value.substring(0, 2) + '/' + value.substring(2);
+    }
+    if (value.length >= 5) {
+      value = value.substring(0, 5) + '/' + value.substring(5);
+    }
+
+    this.startDate = value; // Actualiza el modelo
   }
   selectIdioma(idioma: string) {
     this.language = idioma;
@@ -259,6 +319,7 @@ export class AgregarSocioComponent implements OnInit {
     this.idLegalRegisterSituation = 0
   }
   cambioSituacionRuc(situacionRuc: ComboData) {
+    console.log(situacionRuc)
     if (typeof situacionRuc === 'string' || situacionRuc === null) {
       this.msgSituacionRuc = "Seleccione una opción."
       this.idLegalRegisterSituation = 0

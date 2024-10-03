@@ -66,6 +66,22 @@
               </div>
               <div class="col-md-4">
                 <mat-form-field class="w-100">
+                  <mat-label>País</mat-label>
+                  <input type="text" matInput [formControl]="controlPaises"  [matAutocomplete]="auto6" [(ngModel)]="paisSeleccionado" (ngModelChange)="cambioPais(paisSeleccionado)">
+                  <mat-hint [ngClass]="colorMsgPais === 'red' ? 'col-red': 'col-green'" ><i class="fa-solid fa-circle-exclamation" *ngIf="colorMsgPais === 'red'"></i><i class="fa-solid fa-circle-check" *ngIf="colorMsgPais === 'green'"></i>&nbsp;{{msgPais}}</mat-hint>
+                  <button class="btn-traduccion" matSuffix mat-icon-button (click)="limpiarSeleccionPais()">
+                    <span class="fi fi-{{iconoSeleccionado}}" style="font-size: 20px;"></span>
+                  </button>
+                  <mat-autocomplete #auto6="matAutocomplete" [displayWith]="displayPais" >
+                    <mat-option *ngFor="let pais of filterPais | async" [value]="pais">
+                      <span class="fi fi-{{pais.bandera}}"></span>
+                      {{pais.valor}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field class="w-100">
                   <mat-label>Nacionalidad</mat-label>
                   <input matInput placeholder="" [(ngModel)]="nationality">
                   <button class="btn-traduccion" [class]="nationalityEng === '' || nationalityEng === null ? 'sin-traduccion' : ''" matSuffix mat-icon-button (click)="agregarTraduccion('Traducción de Nacionalidad','', nationality, nationalityEng, 'nacionalidad')">
@@ -73,7 +89,7 @@
                   </button>
                 </mat-form-field>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <mat-form-field color="primary" style="width: 100%;" >
                   <mat-label >Nacido el</mat-label>
                   <input matInput [matDatepicker]="fecha_nacimiento" #fechaInput [(ngModel)]="birthDateD" [readonly]="true" (dateChange)="selectFechaNacimiento($event)">
@@ -81,7 +97,7 @@
                   <mat-datepicker #fecha_nacimiento color="primary"></mat-datepicker>
                 </mat-form-field>
               </div>
-              <div class="col-md-8">
+              <div class="col-md-5">
                 <mat-form-field class="w-100">
                   <mat-label>En</mat-label>
                   <input matInput placeholder="" [(ngModel)]="birthPlace">
@@ -211,22 +227,7 @@
             <textarea matInput placeholder="" style="min-height: 8rem;" [(ngModel)]="tradeName"></textarea>
           </mat-form-field>
         </div>
-        <div class="col-md-4">
-          <mat-form-field class="w-100">
-            <mat-label>País</mat-label>
-            <input type="text" matInput [formControl]="controlPaises"  [matAutocomplete]="auto6" [(ngModel)]="paisSeleccionado" (ngModelChange)="cambioPais(paisSeleccionado)">
-            <mat-hint [ngClass]="colorMsgPais === 'red' ? 'col-red': 'col-green'" ><i class="fa-solid fa-circle-exclamation" *ngIf="colorMsgPais === 'red'"></i><i class="fa-solid fa-circle-check" *ngIf="colorMsgPais === 'green'"></i>&nbsp;{{msgPais}}</mat-hint>
-            <button class="btn-traduccion" matSuffix mat-icon-button (click)="limpiarSeleccionPais()">
-              <span class="fi fi-{{iconoSeleccionado}}" style="font-size: 20px;"></span>
-            </button>
-            <mat-autocomplete #auto6="matAutocomplete" [displayWith]="displayPais" >
-              <mat-option *ngFor="let pais of filterPais | async" [value]="pais">
-                <span class="fi fi-{{pais.bandera}}"></span>
-                {{pais.valor}}
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
-        </div>
+
         <div class="col-md-7 d-flex">
           <mat-form-field class="">
             <mat-label>Código</mat-label>

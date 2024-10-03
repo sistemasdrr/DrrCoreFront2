@@ -3,29 +3,34 @@
   <h2 style="color: white;">&nbsp;Cargando...</h2>
 </div>
 <div class="container" >
-  <mat-dialog-content class="mat-typography" style="min-width: 60rem; min-height: 45rem;">
+  <mat-dialog-content class="mat-typography" style="min-width: 60rem; min-height: 52rem;">
 
   <div class="row">
     <div class="col-md-12">
       <div class="card" style="overflow-y: visible;">
         <div class="w-100 d-flex justify-content-between align-items-center">
           <div style="font-size: 24px;">Asignación del Cupón  </div>
-            <div>
+            <div [ngClass]="{'step': this.step===3}">
               <button  mat-flat-button class="bg-cyan" style="margin: 0 .5rem .5rem .5rem; font-size: 16px;" (click)="enviarDespachar()"  >
-                Despachar
+                Enviar a Despacho (SÓLO PARA INFORMES CULMINADOS)
               </button><!--*ngIf="assginFromCode.includes('S')"-->
               <button mat-mini-fab class="bg-red" style="margin: 0 .5rem .5rem .5rem;" #tooltip="matTooltip" matTooltip="Salir" (click)="cerrarDialog()">
                 <mat-icon class="material-icons-outlined col-white" matSuffix>logout</mat-icon>
               </button>
               <button mat-mini-fab class="" style="margin: 0 .5rem .5rem .5rem;" #tooltip="matTooltip" matTooltip="Guardar" (click)="guardarCambios()" [ngClass]="dataSource.data.length === 0 ? 'bg-gray' : 'bg-blue' " [disabled]="dataSource.data.length === 0">
-                <mat-icon class="material-icons-outlined col-white" matSuffix>save</mat-icon>
+                    <mat-icon class="material-icons-outlined col-white" matSuffix>save</mat-icon>
               </button>
 
             </div>
           </div>
           <hr>
-          <div class="row">
-            <div class="col-md-6 d-flex mt-2">
+           <div class="row">
+             <p *ngIf="this.step===1" style="color: red; font-size: 18px;"><b>SELECCIONA AL PERSONAL AL QUE DESEA DERIVAR EL INFORME!!!</b></p>
+             <p *ngIf="this.step===2" style="color: red; font-size: 18px;"><b>MODIFICAR LAS FECHAS, INDICAR SI SE NECESITA REFERENCIAS COMERCIALES, BALANCE, ENVIAR CARPETAS COMPLETAS, ETC Y DARLE CLICK AL BOTÓN AÑADIR (+)</b></p>
+             <p  *ngIf="this.step===3" style="color: red; font-size: 18px;"><b>VALIDAR QUE TU SELECCIÓN SE ENCUENTRE EN LA TABLA DE ASIGNACIONES Y LUEGO GUARDAR (SÓLO USAR EL BOTÓN DESPACHAR CUANDO SEA NECESARIO)</b></p>
+           </div>
+          <div class="row" >
+            <div class="col-md-6 d-flex mt-2" [ngClass]="{'step': this.step===1}">
 
                 <div class="col-md-3">
 
@@ -52,7 +57,7 @@
                   </mat-selection-list>
                 </div>
             </div>
-            <div class="col-md-6 ">
+            <div class="col-md-6 " [ngClass]="{'step': this.step===2}">
               <div class="d-flex justify-content-between">
                 <div style="font-size: 20px;" *ngIf="estado === 'agregar'" >
                   Agregar Asignación
@@ -100,6 +105,11 @@
                 </div>
                 <div class="row">
                   <div class="col-md-6">
+                    <mat-slide-toggle *ngIf="type === 'SU'" class="example-margin" [(ngModel)]="forceSupervisor" style="white-space: nowrap;" >
+                      Asignar a supervisor SIN Ref. Comerciales 
+                      </mat-slide-toggle>
+                  </div>
+                  <div class="col-md-6">
                     <mat-slide-toggle *ngIf="activeList === 2 || activeList === 7" class="example-margin" [(ngModel)]="referencias" style="white-space: nowrap;" >
                       Referencias Comerciales?
                       </mat-slide-toggle>
@@ -125,7 +135,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-12 mt-3">
+            <div class="col-md-12 mt-3" [ngClass]="{'step': this.step===3}">
               <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8">
                 <ng-container matColumnDef="assignedTo" >
                   <th mat-header-cell *matHeaderCellDef  class="text-center"> Asignado A </th>

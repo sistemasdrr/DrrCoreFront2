@@ -40,6 +40,7 @@ export interface Company{
 export interface TCompany{
   id : number
   name : string
+  socialName : string
   code : string
   creditRisk : string
   telephone : string

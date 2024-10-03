@@ -53,7 +53,7 @@ export class ListaEmpresas2Component implements OnInit {
   razonSocial = ""
   filtroRB = "C"
   idPais = 0
-  chkConInforme = true
+  chkConInforme = false
 
 
 

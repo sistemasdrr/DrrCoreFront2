@@ -7,6 +7,8 @@ export interface SociosEmpresa{
   professionEng : string
   participation : number
   startDate : string
+  numeration : number
+  print : boolean
 }
 export interface SociosEmpresaT{
   id : number
@@ -20,6 +22,8 @@ export interface SociosEmpresaT{
   profession : string
   participation : number
   startDate : string
+  numeration : number
+  print : boolean
 }
 export interface SociosPersonaT{
   id : number

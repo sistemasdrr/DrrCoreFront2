@@ -26,6 +26,8 @@ import { CancelarFacturaComponent } from './facturacion-agente/cancelar-factura/
 import { CancelarFacturaAbonadoComponent } from './facturacion-abonado/facturacion-mensual/cancelar-factura-abonado/cancelar-factura-abonado.component';
 import { EditarPorFacturarComponent } from './facturacion-abonado/facturacion-mensual/editar-por-facturar/editar-por-facturar.component';
 import { EditarPorCobrarAbonadoComponent } from './facturacion-abonado/facturacion-mensual/editar-por-cobrar/editar-por-cobrar.component';
+import { FacturacionInternaComponent } from './facturacion-interna/facturacion-interna.component';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 
 @NgModule({
@@ -37,7 +39,8 @@ import { EditarPorCobrarAbonadoComponent } from './facturacion-abonado/facturaci
     EditarPorCobrarAbonadoComponent,
     CancelarFacturaComponent,
     CancelarFacturaAbonadoComponent,
-    EditarPorFacturarComponent
+    EditarPorFacturarComponent,
+    FacturacionInternaComponent
   ],
   imports: [
     CommonModule,
@@ -61,7 +64,7 @@ import { EditarPorCobrarAbonadoComponent } from './facturacion-abonado/facturaci
     MatSortModule,
     FeatherIconsModule,
     MatPaginatorModule,
-
+    MatButtonToggleModule
   ]
 })
 export class FacturacionModule { }

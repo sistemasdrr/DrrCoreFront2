@@ -21,25 +21,25 @@ const routes: Routes = [
     ,canActivate: [AuthSubscriberGuard]
   },
   {
-    path: 'pedidos/online',
+    path: 'online',
     component: PedidosOnlineComponent,
     data: { title: 'Solicitud de Informe - Online' }
     ,canActivate: [AuthSubscriberGuard]
   },
   {
-    path: 'pedidos/offline',
+    path: 'offline',
     component: PedidosOfflineComponent,
     data: { title: 'Solicitud de Informe - Offline' }
     ,canActivate: [AuthSubscriberGuard]
   },
   {
-    path: 'pedidos/offline/:idCompany',
+    path: 'offline/:idCompany',
     component: PedidosOfflineComponent,
     data: { title: 'Solicitud de Informe - Offline' }
     ,canActivate: [AuthSubscriberGuard]
   },
   {
-    path: 'pedidos/historial',
+    path: 'historial',
     component: HistorialPedidosComponent,
     data: { title: 'Historial de Pedidos' }
     ,canActivate: [AuthSubscriberGuard]

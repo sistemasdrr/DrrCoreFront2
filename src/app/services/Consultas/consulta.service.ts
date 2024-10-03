@@ -140,8 +140,8 @@ export class ConsultaService {
   GetQuery5_1_2Monthly(idUser : string, month : number) : Observable<Response<Query5_1_2[]>>{
     return this.http.get<Response<Query5_1_2[]>>(this.url + this.controller + '/GetQuery5_1_2Monthly?idUser='+idUser+'&month='+month);
   }
-  GetQuery5_1_2MonthlyByCycle(idUser : string, cycle : string) : Observable<Response<Query5_1_2ByCycle[]>>{
-    return this.http.get<Response<Query5_1_2ByCycle[]>>(this.url + this.controller + '/GetQuery5_1_2MonthlyByCycle?idUser='+idUser+'&cycle='+cycle);
+  GetQuery5_1_2MonthlyByCycle(idUser : string, cycle : string, code : string) : Observable<Response<Query5_1_2ByCycle[]>>{
+    return this.http.get<Response<Query5_1_2ByCycle[]>>(this.url + this.controller + '/GetQuery5_1_2MonthlyByCycle?idUser='+idUser+'&cycle='+cycle+'&code='+code);
   }
   GetCycles() : Observable<Response<GetCycles[]>>{
     return this.http.get<Response<GetCycles[]>>(this.url + this.controller + '/GetCycles');

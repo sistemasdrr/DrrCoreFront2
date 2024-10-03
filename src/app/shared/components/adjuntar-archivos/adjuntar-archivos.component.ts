@@ -81,38 +81,49 @@ export class AdjuntarArchivosComponent implements OnInit {
       Swal.fire({
         title: 'Subir Archivo',
         html:
-          '<input type="file" id="file" class="swal2-file">',
+          '<input type="file" id="file" multiple class="swal2-file">',
         confirmButtonText: 'Confirmar',
         focusConfirm: false,
         preConfirm: () => {
+
           const fileInput = document.getElementById('file') as HTMLInputElement;
-          const file = fileInput.files ? fileInput.files[0] : null;
-          if(file){
-           this.loading=true;
-            this.ticketService.uploadFile(this.idTicket, this.cupon, file).subscribe(
-              (response) => {
+          console.log(fileInput.files);
 
-                if(response.isSuccess === true && response.isWarning === false){
-                  Swal.fire({
-                    title: 'Archivo subido correctamente',
-                    text: '',
-                    icon : 'success',
-                    width: '25rem'
-                  })
-                  this.loading=false;
-                  this.ngOnInit();
-                }
+if(fileInput.files){
+  for (let index = 0; index < fileInput.files.length; index++) {
+    const file =  fileInput.files[index] ;
+    if(file){
+      this.loading=true;
+       this.ticketService.uploadFile(this.idTicket, this.cupon, file).subscribe(
+         (response) => {
 
-              }
-            );
-          }else{
-            Swal.fire({
-              title: 'Error al subir el archivo',
-              text: 'Comunicarse con sistemas.',
-              icon : 'error',
-              width: '25rem'
-            })
-          }
+           if(response.isSuccess === true && response.isWarning === false){
+             this.loading=false;
+             this.ngOnInit();
+           }
+
+         }
+       );
+     }else{
+       Swal.fire({
+         title: 'Error al subir el archivo',
+         text: 'Comunicarse con sistemas.',
+         icon : 'error',
+         width: '25rem'
+       })
+       break;
+     }
+  }
+  Swal.fire({
+    title: 'Archivo(s) subido(s) correctamente',
+    text: '',
+    icon : 'success',
+    width: '25rem'
+  })
+}
+
+
+
         }
       });
     }

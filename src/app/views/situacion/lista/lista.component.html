@@ -27,16 +27,20 @@
                   <mat-form-field class="w-100" style="padding-top: 1rem; padding-left: 1rem;" >
                     <mat-label>Buscar Por</mat-label>
                     <mat-select [(ngModel)]="typeSearch" placeholder="">
-                        <mat-option [value]="'N'">Nombre</mat-option>
+                        <mat-option [value]="'N'">{{about === 'E' ? 'Razón Social': 'Nombre'}}</mat-option>
+                        <mat-option [value]="'C'">{{about === 'E' ? 'Nombre Comercial': 'Nombre Social'}}</mat-option>
                         <mat-option [value]="'R'">Reg. Tributario</mat-option>
                         <mat-option [value]="'T'">{{about === 'E' ? 'Telefono': 'Celular'}}</mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-3">
                   <mat-form-field class="w-100" style="padding-top: 1rem; padding-left: 1rem;" >
                     <mat-label *ngIf="typeSearch === 'N'">
                       {{about === 'E' ? 'Nombre de la Empresa': 'Nombre de la Persona'}}
+                    </mat-label>
+                    <mat-label *ngIf="typeSearch === 'C'">
+                      {{about === 'E' ? 'Nombre Comercial': 'Nombre Social'}}
                     </mat-label>
                     <mat-label *ngIf="typeSearch === 'R'">
                       Registro Tributario
@@ -47,7 +51,27 @@
                     <input matInput  [(ngModel)]="name" (keypress)="enter($event)">
                   </mat-form-field>
                 </div>
-
+                <div class="col-md-2 p-0 d-flex align-items-center">
+                  <mat-radio-group class="d-flex" [(ngModel)]="filtroRB" aria-label="Seleccionar">
+                    <mat-radio-button value="C">Que Contenga</mat-radio-button>
+                    <mat-radio-button value="I">Que Inicie</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <div  class="col-md-2 p-0">
+                  <mat-form-field class="w-100" style="padding-top: 1rem; padding-left: 1rem;">
+                    <mat-label>País</mat-label>
+                    <input type="text" matInput [formControl]="controlPaises" [matAutocomplete]="auto6" [(ngModel)]="paisSeleccionado" (ngModelChange)="cambioPais(paisSeleccionado)">
+                    <button class="btn-traduccion" matSuffix mat-icon-button (click)="limpiarSeleccionPais()">
+                      <span class="fi fi-{{iconoSeleccionado}}" style="font-size: 20px;"></span>
+                    </button>
+                    <mat-autocomplete #auto6="matAutocomplete" [displayWith]="displayPais" >
+                      <mat-option *ngFor="let pais of filterPais | async" [value]="pais">
+                        <span class="fi fi-{{pais.bandera}}"></span>
+                        {{pais.valor}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                </div>
                 <div class="col-md-1 d-flex justify-content-center align-items-center">
                   <button mat-mini-fab [class]="'bg-primary'" matTooltip="Aplicar Filtros" (click)="applyFilter()" [disabled]="">
                     <i class="fa-solid fa-magnifying-glass col-white"></i>
@@ -79,7 +103,9 @@
           </ng-container>
           <ng-container matColumnDef="country" >
             <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Pais </th>
-            <td mat-cell *matCellDef="let search" class="text-center"> </td>
+            <td mat-cell *matCellDef="let search" class="text-center">
+              {{search.country}} <span class="fi fi-{{search.flagCountry}}" style="font-size: 20px;"></span>
+            </td>
           </ng-container>
           <ng-container matColumnDef="Acciones" >
             <th mat-header-cell *matHeaderCellDef  class="text-center" style="width: 10rem;"> Acciones </th>

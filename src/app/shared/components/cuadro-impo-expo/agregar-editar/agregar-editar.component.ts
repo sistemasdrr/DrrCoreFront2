@@ -16,7 +16,7 @@ export class AgregarEditarComponent implements OnInit {
   idCompany = 0
   type = ""
   year = 0
-  amount = ""
+  amount = 0
   observation = ""
   observationEng = ""
 

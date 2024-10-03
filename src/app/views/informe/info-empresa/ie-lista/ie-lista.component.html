@@ -9,7 +9,93 @@
       </app-breadcrumb>
     </div>
     <div class="row">
-      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="col-md-12 p-0">
+        <div class="card shadow " style="border-radius: 0; background-color: #dae1f3; width: 100%;" >
+          <div class="row" >
+            <div class="col-md-2  p-0">
+              <mat-form-field class="w-100" style="padding-top: 1rem; padding-left: 1rem;">
+                <mat-label>Buscar por</mat-label>
+                <mat-select [(ngModel)]="filterBy" >
+                  <mat-option [value]="'N'">Por Razón Social</mat-option>
+                  <mat-option [value]="'C'">Por Nombre Comercial</mat-option>
+                  <mat-option [value]="'D'">Por Dirección</mat-option>
+                  <mat-option [value]="'R'">Por Registro Tributario</mat-option>
+                  <mat-option [value]="'T'">Por Telefono</mat-option>
+                  <mat-option [value]="'S'">Por Nombre Solicitado</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div *ngIf="filterBy!=='S'" class="col-md-1 p-0 d-flex align-items-center">
+              <mat-checkbox class="example-margin" [(ngModel)]="chkConInforme">Con Informe</mat-checkbox>
+            </div>
+            <div *ngIf="filterBy==='S'" class="col-md-4 p-0">
+              <mat-form-field class="w-100" style="padding-top: 1rem; padding-left: 1rem;" >
+                <mat-label>Nombre Solicitado</mat-label>
+                <input matInput placeholder="Ej. ALICORP SA" [(ngModel)]="razonSocial" (keypress)="filtrar($event);">
+                <button matSuffix mat-icon-button color="primary" style="background-color: rgba(0,0,0,0);" *ngIf="razonSocial !== ''" (click)="razonSocial = ''" #tooltip="matTooltip" matTooltip="Limpiar">
+                  <i class="fa-solid fa-xmark" style="color: black; font-size: 20px;"></i>
+                </button>
+              </mat-form-field>
+            </div>
+            <div *ngIf="filterBy!=='S'" class="col-md-3 p-0">
+              <mat-form-field class="w-100" style="padding-top: 1rem; padding-left: 1rem;" >
+                <mat-label *ngIf="filterBy==='N'">Razón Social</mat-label>
+                <mat-label *ngIf="filterBy==='C'">Nombre Comercial</mat-label>
+                <mat-label *ngIf="filterBy==='D'">Dirección</mat-label>
+                <mat-label *ngIf="filterBy==='R'">Registro Tributario</mat-label>
+                <input matInput  [(ngModel)]="razonSocial" (keypress)="filtrar($event);">
+                <button matSuffix mat-icon-button color="primary" style="background-color: rgba(0,0,0,0);" *ngIf="razonSocial !== ''" (click)="razonSocial = ''" #tooltip="matTooltip" matTooltip="Limpiar">
+                  <i class="fa-solid fa-xmark" style="color: black; font-size: 20px;"></i>
+                </button>
+              </mat-form-field>
+            </div>
+            <div *ngIf="filterBy!=='S'" class="col-md-2 p-0 d-flex align-items-center">
+              <mat-radio-group class="d-flex" [(ngModel)]="filtroRB" aria-label="Seleccionar">
+                <mat-radio-button value="C">Que Contenga</mat-radio-button>
+                <mat-radio-button value="I">Que Inicie</mat-radio-button>
+              </mat-radio-group>
+            </div>
+            <div *ngIf="filterBy!=='S'" class="col-md-2 p-0">
+              <mat-form-field class="w-100" style="padding-top: 1rem; padding-left: 1rem;">
+                <mat-label>País</mat-label>
+                <input type="text" matInput [formControl]="controlPaises" [matAutocomplete]="auto6" [(ngModel)]="paisSeleccionado" (ngModelChange)="cambioPais(paisSeleccionado)">
+                <button class="btn-traduccion" matSuffix mat-icon-button (click)="limpiarSeleccionPais()">
+                  <span class="fi fi-{{iconoSeleccionado}}" style="font-size: 20px;"></span>
+                </button>
+                <mat-autocomplete #auto6="matAutocomplete" [displayWith]="displayPais" >
+                  <mat-option *ngFor="let pais of filterPais | async" [value]="pais">
+                    <span class="fi fi-{{pais.bandera}}"></span>
+                    {{pais.valor}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+            <div class="col-md-2 p-0 d-flex align-items-center justify-content-center">
+              <div class="" matTooltip="BUSCAR" style="margin: 0 .5rem 0 .5rem">
+                <button mat-mini-fab class="bg-blue" (click)="filtrarEmpresas()">
+                  <mat-icon class="col-white">search</mat-icon>
+                </button>
+              </div>
+              <div class="" matTooltip="LIMPIAR" style="margin: 0 .5rem 0 .5rem">
+                <button mat-mini-fab class="bg-red" (click)="limpiar()">
+                  <mat-icon class="col-white">cleaning_services</mat-icon>
+                </button>
+              </div>
+
+              <div class="" matTooltip="NUEVO INFORME (OR) - F2" style="margin: 0 .5rem 0 .5rem">
+                <button mat-mini-fab color="primary" (click)="agregarEmpresa()">
+                  <mat-icon class="col-white">add</mat-icon>
+                </button>
+
+              </div>
+            </div>
+          </div>
+            <div class="row">
+
+          </div>
+        </div>
+      </div>
+      <!--div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card shadow " style="border-radius: 0; background-color: #dae1f3;">
           <div class="row">
             <div class="col-md-4">
@@ -61,18 +147,11 @@
                   <mat-icon class="col-white">add</mat-icon>
                 </button>
 
-              <!--li>
-                <div class="m-l-10" matTooltip="ENVIAR INFORME FINAL">
-                  <button mat-mini-fab class="bg-cyan" >
-                    <mat-icon class="col-white">send</mat-icon>
-                  </button>
-                </div>
-              </!--li-->
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </div-->
       <div class="col-md-12" style="overflow-x: auto;">
         <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8" matSort>
           <ng-container matColumnDef="creditRisk" >
