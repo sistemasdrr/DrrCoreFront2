@@ -134,6 +134,9 @@ export class TicketService {
   FinishWorkById(idTicketHistory : number) : Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/FinishWorkById?idTicketHistory='+idTicketHistory,'');
   }
+  deleteTicketComplement(idTicket: number) : Observable<Response<boolean>>{
+    return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/deleteTicketComplement?idTicket='+idTicket,'');
+  }
   deleteTicketHistory(idTicket: number, assignedTo : string, numberAssign : number, returnMessage : string) : Observable<Response<boolean>>{
     return this.http.get<Response<boolean>>(this.url + this.controllerTicket + '/deleteTicketHistory?idTicket='+idTicket+'&assignedTo='+assignedTo+'&numberAssign='+numberAssign+'&returnMessage='+returnMessage);
   }
@@ -215,5 +218,8 @@ export class TicketService {
 
   GetTicketAssignedValidation(idTicket : number) : Observable<Response<GetTicketUserResponseDto[]>>{
     return this.http.get<Response<GetTicketUserResponseDto[]>>(this.url + this.controllerTicket + '/GetTicketAssignedValidation?idTicket='+idTicket);
+  }
+  ValidateQuality(idTicket : number) : Observable<Response<number>>{
+    return this.http.post<Response<number>>(this.url + this.controllerTicket + '/ValidateQuality?idTicket='+idTicket,'');
   }
 }

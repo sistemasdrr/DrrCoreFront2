@@ -73,7 +73,7 @@
     "ngx-gauge": "^8.0.0",
     "ngx-image-cropper": "^7.2.1",
     "ngx-image-editor": "^1.4.1",
-    "ngx-mask": "^16.3.9",
+    "ngx-mask": "^16.4.2",
     "ngx-scrollbar": "^13.0.3",
     "npm": "^10.8.0",
     "pako": "^2.1.0",

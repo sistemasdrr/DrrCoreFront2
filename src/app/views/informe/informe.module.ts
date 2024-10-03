@@ -169,8 +169,8 @@ import { ReferenciasComercialesRefComponent } from './referencista/referencias-c
     MatSortModule,
     NgApexchartsModule,
     AngularCropperjsModule,
-    ImageCropperModule
-
+    ImageCropperModule,
+    
   ],
   exports: [
     ListaEmpresas1Component,

@@ -267,6 +267,20 @@ export class AgregarSocioComponent implements OnInit {
       print : this.print
     }
   }
+  newFormatDate() {
+    // Eliminar caracteres no numéricos
+    let value = this.startDate.replace(/[^0-9]/g, '');
+
+    // Formatear la fecha
+    if (value.length >= 2) {
+      value = value.substring(0, 2) + '/' + value.substring(2);
+    }
+    if (value.length >= 5) {
+      value = value.substring(0, 5) + '/' + value.substring(5);
+    }
+
+    this.startDate = value; // Actualiza el modelo
+  }
   selectIdioma(idioma: string) {
     this.language = idioma;
   }
