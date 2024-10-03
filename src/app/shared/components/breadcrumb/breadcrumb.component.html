@@ -1,11 +1,12 @@
 <div class="breadcrumb-main">
+  
     <div class="row">
-        <div class=" d-flex align-items-center" [ngClass]="codigoInforme === '' ? 'col-6' : 'col-3'">
+        <div class=" d-flex align-items-center" [ngClass]="codigoInforme === '' ? 'col-12' : 'col-12'">
             <div class="breadcrumb-title ">
                 <h3 class="page-title">{{title}} {{subtitle}}</h3>
             </div>
         </div>
-        <div class="col-6 d-flex align-items-center justify-content-center" *ngIf="codigoInforme !== ''">
+        <div class="d-flex align-items-center justify-content-center" *ngIf="codigoInforme !== ''">
           <div class="info-box7 bg-c-blue m-0 d-md-block d-none shadow" style="padding: 0;">
             <div class="info-box7-block d-flex justify-content-center align-items-center">
               <div>
@@ -31,16 +32,6 @@
             </!button-->
           </div>
         </div>
-        <div class="d-flex align-items-center justify-content-end" [ngClass]="codigoInforme === '' ? 'col-6' : 'col-3'">
-            <ul class="breadcrumb-list">
-                <li class="breadcrumb-item bcrumb-1">
-                    <a [routerLink]="idEmployee !== 0 ? '/dashboard/main' : '/abonado/i/main'">
-                        <app-feather-icons [icon]="'home'" [class]="'breadcrumb-icon'"></app-feather-icons>
-                    </a>
-                </li>
-                <li class="breadcrumb-item" *ngFor="let item of items">{{item}}</li>
-                <li class="breadcrumb-item active">{{active_item}}</li>
-            </ul>
-        </div>
+      
     </div>
 </div>

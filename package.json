@@ -75,7 +75,7 @@
     "ngx-image-editor": "^1.4.1",
     "ngx-mask": "^16.3.9",
     "ngx-scrollbar": "^13.0.3",
-    "npm": "^10.8.0",
+    "npm": "^10.8.1",
     "pako": "^2.1.0",
     "rxjs": "~7.8.1",
     "subsink": "^1.0.2",

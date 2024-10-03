@@ -144,7 +144,7 @@
               <h5>Registro Tributario</h5>
             </div>
           </div>
-          <div class="col-md-3 mb-0">
+          <div class="col-md-6 mb-0">
             <mat-form-field class="" style="width: 30%;">
               <mat-label>Tipo</mat-label>
               <input matInput placeholder="" [(ngModel)]="taxTypeName" maxlength="10">
@@ -176,7 +176,16 @@
               <input matInput placeholder=""  [(ngModel)]="since">
             </mat-form-field>
           </div>
-          <div class="col-md-4 mb-0">
+          <div class="col-md-12 mb-0" *ngIf="legalRegisterSituationFlag === false">
+            <mat-form-field class="w-100" >
+              <mat-label>Comentario de Identificación</mat-label>
+              <textarea matInput type="text" [(ngModel)]="identificacionCommentary" style="min-height: 7rem;"></textarea>
+              <button class="btn-traduccion" matSuffix mat-icon-button [class]="identificacionCommentaryEng === '' ? 'sin-traduccion' : ''" (click)="agregarComentario(tituloComentarioIdentificacion,'', identificacionCommentary, identificacionCommentaryEng,'comentarioIdentificacion')">
+                <span class="fi fi-us" style="font-size: 24px;"></span>
+              </button>
+            </mat-form-field>
+          </div>
+          <div class="col-md-12 mb-0" *ngIf="legalRegisterSituationFlag === true">
             <mat-form-field class="w-100" >
               <mat-label>Comentario de Identificación</mat-label>
               <textarea matInput type="text" [(ngModel)]="identificacionCommentary" style="min-height: 7rem;"></textarea>
