@@ -30,6 +30,7 @@ import { Pais } from 'app/models/combo';
 import { map, Observable, startWith } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { ComboService } from 'app/services/combo.service';
+import { EChartsOption } from 'echarts';
 
 
 export interface DistinctSupervisor{
@@ -762,4 +763,51 @@ export class MainComponent implements OnInit {
       }
     });
   }
+  /* Pie Chart */
+  pie_chart: EChartsOption = {
+    tooltip: {
+      trigger: 'item',
+      formatter: '{a} <br/>{b} : {c} ({d}%)',
+    },
+    legend: {
+      data: ['Data 1', 'Data 2', 'Data 3', 'Data 4', 'Data 5'],
+      textStyle: {
+        color: '#9aa0ac',
+        padding: [0, 5, 0, 5],
+      },
+    },
+
+    series: [
+      {
+        name: 'Chart Data',
+        type: 'pie',
+        radius: '55%',
+        center: ['50%', '48%'],
+        data: [
+          {
+            value: 335,
+            name: 'Data 1',
+          },
+          {
+            value: 310,
+            name: 'Data 2',
+          },
+          {
+            value: 234,
+            name: 'Data 3',
+          },
+          {
+            value: 135,
+            name: 'Data 4',
+          },
+          {
+            value: 548,
+            name: 'Data 5',
+          },
+        ],
+      },
+    ],
+    color: ['#575B7A', '#DE725C', '#DFC126', '#72BE81', '#50A5D8'],
+  };
+
 }
