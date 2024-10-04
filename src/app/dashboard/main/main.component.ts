@@ -77,7 +77,16 @@ export class MainComponent implements OnInit {
   idEmployee = 0
 
   supervisorSeleccionado = ""
+  empresasConInformes=0
+  empresasSinInformes=0
+  empresasEliminadas=0
+  empresasCalidadA=0
+  empresasCalidadB=0
+  empresasCalidadC=0
+  empresasCalidadD=0
+  empresasSinCalidad=0
 
+  pie_chart: EChartsOption={}
   pendingTaskSupervisor : PendingTaskSupervisor[] = []
   pendingTaskPersonalSelected : PendingTaskByUser[] = []
   pendingTaskAgent : PendingTaskByUser[] = []
@@ -588,8 +597,27 @@ export class MainComponent implements OnInit {
         this.colorMsgPais = "green"
         this.iconoSeleccionado = pais.bandera
         this.idCountry = pais.id
-        console.log("Se selecciono el idCountry: "+pais.id)
-        //implementar la logica
+        this.dashboardService.GetStaticsByCountryDto(this.idCountry).subscribe(
+          (response) => {
+            if(response.isSuccess === true && response.isWarning === false){
+              this.empresasConInformes=response.data.conInforme
+              this.empresasCalidadA=response.data.a
+              this.empresasCalidadB=response.data.b
+              this.empresasCalidadC=response.data.c
+              this.empresasCalidadD=response.data.d
+              this.empresasSinCalidad=response.data.sinQ
+              this.empresasSinInformes=response.data.sinInforme
+              this.empresasEliminadas=response.data.eliminado
+              this.armarPie();
+
+            }
+          }
+        ).add(
+          () => {
+          }
+        )
+
+
       }
     } else {
       this.idCountry = 0
@@ -763,14 +791,14 @@ export class MainComponent implements OnInit {
       }
     });
   }
-  /* Pie Chart */
-  pie_chart: EChartsOption = {
+  armarPie(){
+  this.pie_chart = {
     tooltip: {
       trigger: 'item',
       formatter: '{a} <br/>{b} : {c} ({d}%)',
     },
     legend: {
-      data: ['Data 1', 'Data 2', 'Data 3', 'Data 4', 'Data 5'],
+      data: ['A', 'B', 'C', 'D', 'Sin Calidad'],
       textStyle: {
         color: '#9aa0ac',
         padding: [0, 5, 0, 5],
@@ -785,24 +813,24 @@ export class MainComponent implements OnInit {
         center: ['50%', '48%'],
         data: [
           {
-            value: 335,
-            name: 'Data 1',
+            value: this.empresasCalidadA,
+            name: 'A',
           },
           {
-            value: 310,
-            name: 'Data 2',
+            value: this.empresasCalidadB,
+            name: 'B',
           },
           {
-            value: 234,
-            name: 'Data 3',
+            value: this.empresasCalidadC,
+            name: 'C',
           },
           {
-            value: 135,
-            name: 'Data 4',
+            value: this.empresasCalidadD,
+            name: 'D',
           },
           {
-            value: 548,
-            name: 'Data 5',
+            value: this.empresasSinCalidad,
+            name: 'Sin Calidad',
           },
         ],
       },
@@ -810,4 +838,5 @@ export class MainComponent implements OnInit {
     color: ['#575B7A', '#DE725C', '#DFC126', '#72BE81', '#50A5D8'],
   };
 
+}
 }

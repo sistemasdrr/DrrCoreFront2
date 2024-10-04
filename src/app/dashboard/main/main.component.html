@@ -78,12 +78,48 @@
               </div>
 
            </div>
-           <div class="row">
+           <div class="row" style="padding-top: 3px;">
+
             <div class="col-md-6">
-                <p>N° de Empresas Con Informes : </p>
-                <p>N° de Empresas Sin Informes : </p>
-                <p>N° de Empresas Inhabilitado/Eliminado : </p>
-            </div>
+              <div class="card">
+                <div class="body">
+                  <div class="list-group">
+                    <a href="#" onClick="return false;" class="list-group-item">
+                      <span class="badge bg-pink">{{this.empresasConInformes}}</span> Empresas Con Informes
+                      <div class="card">
+                        <div class="body">
+                          <div class="list-group">
+                            <a href="#" onClick="return false;" class="list-group-item">
+                              <span class="badge bg-teal">{{this.empresasCalidadA}}</span> Calidad A
+                            </a>
+                            <a href="#" onClick="return false;" class="list-group-item">
+                              <span class="badge bg-teal">{{this.empresasCalidadB}}</span>Calidad B
+                            </a>
+                            <a href="#" onClick="return false;" class="list-group-item">
+                              <span class="badge bg-teal">{{this.empresasCalidadC}}</span>Calidad C
+                            </a>
+                            <a href="#" onClick="return false;" class="list-group-item">
+                              <span class="badge bg-teal">{{this.empresasCalidadD}}</span>Calidad D
+                            </a>
+                            <a href="#" onClick="return false;" class="list-group-item">
+                              <span class="badge bg-teal">{{this.empresasSinCalidad}}</span>Sin Calidad
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </a>
+                    <a href="#" onClick="return false;" class="list-group-item">
+                      <span class="badge bg-orange">{{this.empresasSinInformes}}</span> Empresas Sin Informes
+                    </a>
+                    <a href="#" onClick="return false;" class="list-group-item">
+                      <span class="badge bg-purple">{{this.empresasEliminadas}}</span> Empresas Inhabilitadas/Eliminadas
+                    </a>
+
+                  </div>
+                </div>
+              </div>
+
+          </div>
             <div class="col-md-6">
               <div class="body">
                 <div echarts [options]="pie_chart" class="echart-height"></div>

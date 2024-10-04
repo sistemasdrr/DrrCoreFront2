@@ -34,4 +34,7 @@ export class DashboardService {
   GetPendingTaskByUser(userTo : string) : Observable<Response<PendingTaskSupervisor[]>>{
     return this.http.get<Response<PendingTaskSupervisor[]>>(this.url + this.controllerDashboard + '/GetPendingTaskByUser?userTo='+userTo);
   }
+  GetStaticsByCountryDto(idCountry : number) : Observable<Response<any>>{
+    return this.http.get<Response<any>>(this.url + this.controllerDashboard + '/GetStaticsByCountryDto?idCountry='+idCountry);
+  }
 }
