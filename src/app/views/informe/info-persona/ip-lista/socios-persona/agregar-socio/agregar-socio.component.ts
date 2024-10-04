@@ -161,6 +161,8 @@ export class AgregarSocioPersonaComponent implements OnInit {
               this.profession = socio.profession
               this.professionEng = socio.professionEng
               this.mainExecutive = socio.mainExecutive
+              this.print = socio.print
+              this.numeration = socio.numeration
               this.participation = socio.participation
               if(socio.startDate !== null && socio.startDate !== null){
                 const fecha = socio.startDate.split("/")
@@ -227,6 +229,18 @@ export class AgregarSocioPersonaComponent implements OnInit {
         return name ? this._filterProfesion(name as string) : this.listaProfesion.slice()
       }),
     )
+  }
+  newFormatDate() {
+    let value = this.startDate.replace(/[^0-9]/g, '');
+
+    if (value.length >= 2) {
+      value = value.substring(0, 2) + '/' + value.substring(2);
+    }
+    if (value.length >= 5) {
+      value = value.substring(0, 5) + '/' + value.substring(5);
+    }
+
+    this.startDate = value;
   }
   private _filterProfesion(description: string): ComboDataCode[] {
     const filterValue = description.toLowerCase();

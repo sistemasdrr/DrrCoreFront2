@@ -45,12 +45,15 @@ export class ComplementoComponent implements OnInit {
     this.dialogRef.close()
   }
   enviar(){
+    let newObservations = ""
+    if(this.archivo || this.digitado){
+      newObservations = this.observations + '\n\nSe realizaron las siguientes modificaciones: \n'+this.textComplement
+    }
     console.log(this.idTicket)
     console.log(this.idUser)
     console.log(this.digitado)
     console.log(this.archivo)
-    console.log(this.observations)
-    this.loading = true
+    console.log(newObservations)
     Swal.fire({
       title: '¿Está seguro de enviar el complemento al supervisor?',
       text: "",
@@ -64,6 +67,8 @@ export class ComplementoComponent implements OnInit {
       heightAuto : true
     }).then((result) => {
       if (result.value) {
+
+    this.loading = true
         this.ticketService.SendComplement(this.idTicket,this.idUser,this.digitado,this.archivo,this.observations).subscribe(
           (response) => {
             if(response.isSuccess === true && response.isWarning === false){
@@ -87,5 +92,29 @@ export class ComplementoComponent implements OnInit {
         )
       }
     })
+  }
+  textComplement = ""
+  verificarDigitado() {
+    this.textComplement = ""; // Reiniciar el texto complementario
+    if (this.digitado) {
+      if(this.archivo){
+        this.textComplement = "-Digitado y Archivo";
+      }else{
+        this.textComplement = "-Digitado";
+      }
+       // Agregar texto si digitado es true
+    }
+    if (this.archivo) {
+      if(this.digitado){
+        this.textComplement = "-Digitado y Archivo";
+      }else{
+        this.textComplement = "-Archivo";
+      }
+       // Agregar texto si archivo es true
+    }
+  }
+
+  verificarArchivo() {
+    this.verificarDigitado(); // Llamar a verificarDigitado para mantener la lógica
   }
 }

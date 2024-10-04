@@ -144,7 +144,7 @@
       </div>
       <h5 class="mt-2">Datos de la Participación</h5>
       <hr>
-      <div class="col-md-4">
+      <div class="col-md-3">
         <mat-form-field class="w-100">
           <mat-label>Cargo</mat-label>
           <input type="text" matInput [formControl]="controlProfesion"  [matAutocomplete]="auto3" [(ngModel)]="profesion" (ngModelChange)="cambioProfesion(profesion)">
@@ -159,22 +159,35 @@
           </mat-autocomplete>
         </mat-form-field>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-2">
         <mat-form-field class="w-100">
           <mat-label>Participación (%)</mat-label>
           <input matInput placeholder="" [(ngModel)]="participation" type="number">
-        </mat-form-field>
-      </div>
-      <div class="col-md-3">
-        <mat-form-field color="primary" style="width: 100%;" >
-          <mat-label >Desde</mat-label>
-          <input matInput [matDatepicker]="fecha_desde" #fechaInput [(ngModel)]="startDateD" [readonly]="true" (dateChange)="selectFechaInicio($event)">
-          <mat-datepicker-toggle matIconSuffix [for]="fecha_desde"></mat-datepicker-toggle>
-          <mat-datepicker #fecha_desde color="primary"></mat-datepicker>
+
         </mat-form-field>
       </div>
       <div class="col-md-2">
-        <mat-slide-toggle [(ngModel)]="mainExecutive" style="margin: 1rem 0 0 0;" (click)="!mainExecutive" style="margin-left: 1rem;">Principal Ejecutivo: <div *ngIf="mainExecutive === true">SÍ</div><div *ngIf="mainExecutive === false">NO</div></mat-slide-toggle>
+        <mat-form-field color="primary" style="width: 100%;" >
+          <mat-label >Desde</mat-label>
+          <input matInput [(ngModel)]="startDate" (keyup)="newFormatDate()" maxlength="10" >
+          <!--input matInput [matDatepicker]="fecha_desde" #fechaInput [(ngModel)]="startDateD" [readonly]="true" (dateChange)="selectFechaInicio($event)">
+          <mat-datepicker-toggle matIconSuffix [for]="fecha_desde"></mat-datepicker-toggle>
+          <mat-datepicker #fecha_desde color="primary"></mat-datepicker-->
+        </mat-form-field>
+      </div>
+      <div class="col-md-2">
+        <mat-form-field class="w-100">
+          <mat-label>N° de Orden</mat-label>
+          <input matInput placeholder="" [(ngModel)]="numeration" type="number">
+        </mat-form-field>
+      </div>
+      <div class="col-md-3 d-flex ">
+        <div>
+          <mat-slide-toggle [(ngModel)]="mainExecutive" style="margin: 1rem 0 0 0;" (click)="!mainExecutive" style="margin-left: 1rem;">Principal Ejecutivo: <div *ngIf="mainExecutive === true">SÍ</div><div *ngIf="mainExecutive === false">NO</div></mat-slide-toggle>
+        </div>
+        <div>
+          <mat-slide-toggle [(ngModel)]="print" style="margin: 1rem 0 0 0;" (click)="!print" style="margin-left: 1rem;">Imprimir: <div *ngIf="print === true">SÍ</div><div *ngIf="print === false">NO</div></mat-slide-toggle>
+        </div>
       </div>
     </div>
   </div>

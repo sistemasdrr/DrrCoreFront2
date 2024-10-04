@@ -35,9 +35,9 @@
                 <div class="col-md-3">
 
                   <mat-button-toggle-group  #group="matButtonToggleGroup" class="w-100 shadow" [vertical]="true" [disabled]="estado === 'editar'">
-                    <mat-button-toggle [ngClass]="{'bg-blue': activeList === 6}" value="PreAsignación" (click)="filtrarDatos('PA'); activeList = 6; type ='PA'; referencias = false;  ">PreAsignación</mat-button-toggle>
-                    <mat-button-toggle [ngClass]="{'bg-blue': activeList === 2}" value="Reportero" (click)="filtrarDatos('RP'); activeList = 2; type ='RP';" >Reportero</mat-button-toggle>
-                    <mat-button-toggle [ngClass]="{'bg-blue': activeList === 7}" value="Agente" (click)="filtrarDatos('AG'); activeList = 7; type ='AG';balance=false;observaciones = ''" >Agente</mat-button-toggle>
+                    <mat-button-toggle [ngClass]="{'bg-blue': activeList === 6}" value="PreAsignación" (click)="filtrarDatos('PA'); activeList = 6; type ='PA'; referencias = false;  attachmentRefCom = false; ">PreAsignación</mat-button-toggle>
+                    <mat-button-toggle [ngClass]="{'bg-blue': activeList === 2}" value="Reportero" (click)="filtrarDatos('RP'); activeList = 2; type ='RP'; attachmentRefCom = false;" >Reportero</mat-button-toggle>
+                    <mat-button-toggle [ngClass]="{'bg-blue': activeList === 7}" value="Agente" (click)="filtrarDatos('AG'); activeList = 7; type ='AG';balance=false; attachmentRefCom = false; observaciones = ''" >Agente</mat-button-toggle>
                     <mat-button-toggle [ngClass]="{'bg-blue': activeList === 3}" value="Referencista" (click)="filtrarDatos('RF'); activeList = 3; type ='RF'; referencias = false;">Referencista</mat-button-toggle>
                     <mat-button-toggle [ngClass]="{'bg-blue': activeList === 4}" value="Digitadora" (click)="filtrarDatos('DI'); activeList = 4; type ='DI'; referencias = false;">Digitadora</mat-button-toggle>
                     <mat-button-toggle  [ngClass]="{'bg-blue': activeList === 5}" value="Traductora" (click)="filtrarDatos('TR'); activeList = 5; type ='TR'; referencias = false;">Traductora</mat-button-toggle>
@@ -106,7 +106,7 @@
                 <div class="row">
                   <div class="col-md-6">
                     <mat-slide-toggle *ngIf="type === 'SU'" class="example-margin" [(ngModel)]="forceSupervisor" style="white-space: nowrap;" >
-                      Asignar a supervisor SIN Ref. Comerciales 
+                      Asignar a supervisor SIN Ref. Comerciales
                       </mat-slide-toggle>
                   </div>
                   <div class="col-md-6">
@@ -117,6 +117,11 @@
                   <div class="col-md-6">
                     <mat-slide-toggle *ngIf="activeList === 5" class="example-margin" [(ngModel)]="traduccion" (ngModelChange)="traduccion === true ? observaciones = 'REALIZAR TRADUCCION DIRECTA\n============================\n' + observaciones : observaciones = ''" >
                       Traducción Directa
+                      </mat-slide-toggle>
+                  </div>
+                  <div class="col-md-6">
+                    <mat-slide-toggle *ngIf="activeList === 2 || activeList === 7" class="example-margin" [(ngModel)]="attachmentRefCom">
+                      Adjuntar referencias comerciales
                       </mat-slide-toggle>
                   </div>
                 </div>

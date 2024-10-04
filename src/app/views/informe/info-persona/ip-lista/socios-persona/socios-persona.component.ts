@@ -32,7 +32,7 @@ export class SociosPersonaComponent implements OnInit{
   dataSourcePartners : MatTableDataSource<SociosPersonaT>
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  columnasPartners : string[] = ['name','country','taxTypeName','situation','mainExecutive','profession','constitutionDate','acciones']
+  columnasPartners : string[] = ['numeration','name','country','taxTypeName','situation','mainExecutive','print','profession','constitutionDate','acciones']
   constructor(private dialog : MatDialog,private sociosPersonaService : SocioPersonaService,@Inject(MAT_DIALOG_DATA) public data: any){
     this.dataSourcePartners = new MatTableDataSource()
     if(data){

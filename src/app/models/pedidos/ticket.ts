@@ -182,6 +182,7 @@ export interface Asignacion{
   qualityTranslator : string | null
   hasBalance : boolean
   sendZip : boolean
+  attachmentRefCom : boolean
 }
 
 export interface ListTicket2{

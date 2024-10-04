@@ -52,6 +52,8 @@ export class SeleccionarAgenteComponent implements OnInit {
   balance = false
   referencias = false
   traduccion = false
+  attachmentRefCom = false
+
   reportType = ''
   calidad = ""
   fechaAsignacion = ""
@@ -357,7 +359,8 @@ private agregarAsignacion(code: string, tipo: string) {
         qualityTranslator: this.qualityTranslator !== '' ? this.qualityTranslator : null,
         hasBalance: this.hasBalance,
         sendZip: this.sendZip,
-        forceSupervisor: this.forceSupervisor
+        forceSupervisor: this.forceSupervisor,
+        attachmentRefCom : this.attachmentRefCom
     };
 
     this.asignacion.push(asign);
