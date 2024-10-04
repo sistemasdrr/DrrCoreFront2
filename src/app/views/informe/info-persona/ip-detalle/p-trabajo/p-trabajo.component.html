@@ -10,7 +10,7 @@
         </div>
       </div>
       <hr>
-      <h5>Datos de Empresa</h5>
+      <h5>Datos de Empresa <b style="color: red;">(Seleccionar una empresa en el botón de buscar)</b></h5>
       <div class="col-md-4">
         <mat-form-field class="w-100">
           <mat-label>Razón Social</mat-label>
@@ -35,7 +35,7 @@
       <div class="col-md-4">
         <mat-form-field class="" style="width: 30%;">
           <mat-label>Tipo RT</mat-label>
-          <input matInput placeholder="" [(ngModel)]="taxTypeName" maxlength="10" [readonly]="true">
+          <input matInput placeholder="" [(ngModel)]="taxTypeName" maxlength="10" >
         </mat-form-field>
         <mat-form-field class="" style="width: 70%;">
           <mat-label>Código Registro Trib.</mat-label>

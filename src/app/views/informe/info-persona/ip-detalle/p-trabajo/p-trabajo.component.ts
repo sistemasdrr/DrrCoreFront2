@@ -5,7 +5,7 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TraduccionDialogComponent } from '@shared/components/traduccion-dialog/traduccion-dialog.component';
-import { ComboData } from 'app/models/combo';
+import { ComboData, ComboDataCode } from 'app/models/combo';
 import { TrabajoA } from 'app/models/informes/persona/trabajo';
 import { ComboService } from 'app/services/combo.service';
 import { DatosEmpresaService } from 'app/services/informes/empresa/datos-empresa.service';
@@ -59,14 +59,15 @@ export class PTrabajoComponent implements OnInit, OnDestroy{
   modeloActual : TrabajoA[] = []
   modeloModificado : TrabajoA[] = []
 
-  listaCargo : ComboData[] = []
 
-  controlProfesion = new FormControl<string | ComboData>('');
-  filterProfesion: Observable<ComboData[]>
-  listaProfesion: ComboData[] = []
-  profesion: ComboData = {
+  controlProfesion = new FormControl<string | ComboDataCode>('');
+  filterProfesion: Observable<ComboDataCode[]>
+  listaProfesion: ComboDataCode[] = []
+  profesion: ComboDataCode = {
     id: 0,
     valor: '',
+    valorEng : '',
+    code : ''
   }
   msgProfesion = ""
   colorMsgProfesion = ""
@@ -78,7 +79,7 @@ export class PTrabajoComponent implements OnInit, OnDestroy{
     } else {
       this.idPerson = parseInt(id + '')
     }
-    this.filterProfesion = new Observable<ComboData[]>()
+    this.filterProfesion = new Observable<ComboDataCode[]>()
     console.log(this.idPerson)
   }
   compararModelosF : any
@@ -87,7 +88,7 @@ export class PTrabajoComponent implements OnInit, OnDestroy{
     if(loader){
       loader.classList.remove('hide-loader');
     }
-    this.comboService.getProfesion().subscribe(
+    this.comboService.getOccupations().subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.listaProfesion = response.data
@@ -175,12 +176,12 @@ export class PTrabajoComponent implements OnInit, OnDestroy{
       clearInterval(this.compararModelosF);
     }
   }
-  private _filterProfesion(description: string): ComboData[] {
+  private _filterProfesion(description: string): ComboDataCode[] {
     const filterValue = description.toLowerCase();
     return this.listaProfesion.filter(profesion => profesion.valor.toLowerCase().includes(filterValue));
   }
 
-  displayProfesion(profesion : ComboData): string {
+  displayProfesion(profesion : ComboDataCode): string {
     return profesion && profesion.valor ? profesion.valor : '';
   }
   limpiarSeleccionProfesion() {
@@ -188,7 +189,7 @@ export class PTrabajoComponent implements OnInit, OnDestroy{
     this.currentJob = ""
     this.currentJobEng = ""
   }
-  cambioProfesion(profesion: ComboData) {
+  cambioProfesion(profesion: ComboDataCode) {
     console.log(profesion)
     if (typeof profesion === 'string' || profesion === null) {
       this.msgProfesion = "Seleccione una opción."
@@ -197,6 +198,7 @@ export class PTrabajoComponent implements OnInit, OnDestroy{
     } else {
       this.msgProfesion = "Opción Seleccionada."
       this.currentJob = profesion.valor
+      this.currentJobEng = profesion.valorEng
       this.colorMsgProfesion = "green"
     }
     console.log(this.currentJob)
