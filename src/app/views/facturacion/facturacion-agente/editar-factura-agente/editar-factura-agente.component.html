@@ -57,6 +57,17 @@
         </mat-select>
       </mat-form-field>
     </div>
+    <div class="col-md-4 mb-3" *ngIf="codeAgent === 'A17' || codeAgent === 'A30' || codeAgent === 'A32'">
+      <mat-form-field class="w-100">
+        <mat-label>Calidad</mat-label>
+        <mat-select [(ngModel)]="quality" (ngModelChange)="calcularPrecio(quality)" placeholder="">
+            <mat-option [value]="'A'">A</mat-option>
+            <mat-option [value]="'B'">B</mat-option>
+            <mat-option [value]="'C'">C</mat-option>
+            <mat-option [value]="'D'">D</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
     <div class="col-md-4 mb-3">
       <mat-form-field class="w-100">
         <mat-label>Precio</mat-label>

@@ -157,22 +157,23 @@ export class FacturacionAgenteComponent implements OnInit {
   //1
 isAllSelected1() {
   const numSelected = this.selection1.selected.length;
-  const numRows = this.dataSourcePorFacturar.data.length;
+  const numRows = this.dataSourcePedido1.data.length;
   return numSelected === numRows;
 }
 toggleAllRows1() {
   if (this.isAllSelected1()) {
     this.selection1.clear();
+    this.updateTotalPrice1();
     return;
   }
-  this.selection1.select(...this.dataSourcePorFacturar.data);
+  this.selection1.select(...this.dataSourcePedido1.data.filter(x => x.idAgent === this.idAgent));
   this.updateTotalPrice1();
 }
 checkboxLabel1(row?: InvoiceAgentList): string {
   if (!row) {
     return `${this.isAllSelected1() ? 'deselect' : 'select'} all`;
   }
-  return `${this.selection1.isSelected(row) ? 'deselect' : 'select'} row ${row.idTicketHistory + 1}`;
+  return `${this.selection1.isSelected(row) ? 'deselect' : 'select'} row ${row.idTicket + 1}`;
 }
 onCheckboxChange1(row: InvoiceAgentList) {
   this.selection1.toggle(row);
@@ -277,7 +278,6 @@ armarModelo(){
     this.dataSourcePedido1.data = []
     this.dataSourcePedido1.data = this.datosPorFacturar.filter(x => x.idAgent === idAgent)
     this.dataSourcePedido1.sort = this.sort
-    this.dataSourcePedido1.paginator = this.paginator
     this.idAgent = idAgent
     this.loading = true
     this.agenteService.getAgentePorId(idAgent).subscribe(
@@ -303,7 +303,6 @@ armarModelo(){
   selectInvoice(obj : GetAgentInvoice){
     this.dataSourcePedido2.data = obj.details
     this.dataSourcePedido2.sort = this.sort
-    this.dataSourcePedido2.paginator = this.paginator
     this.totalSelectedPrice2 = 0
     this.dataSourcePedido2.data.forEach(element => {
       this.totalSelectedPrice2 += element.price
@@ -334,7 +333,6 @@ armarModelo(){
   selectInvoicePaids(obj : GetAgentInvoice){
     this.dataSourcePedido3.data = obj.details
     this.dataSourcePedido3.sort = this.sort
-    this.dataSourcePedido3.paginator = this.paginator
     this.totalSelectedPrice3 = 0
     this.dataSourcePedido3.data.forEach(element => {
       this.totalSelectedPrice3 += element.price
@@ -370,6 +368,8 @@ armarModelo(){
         idTicketHistory : obj.idTicketHistory,
         requestedName : obj.requestedName,
         procedureType : obj.procedureType,
+        codeAgent : obj.agentCode,
+        quality : obj.quality,
         shippingDate : obj.shippingDate,
         price : obj.price
       }
@@ -421,7 +421,6 @@ armarModelo(){
             () => {
               this.dataSourcePedido2.data = this.dataSourcePorCobrar.data.filter(x => x.idAgent === this.idAgent)[0].details
               this.dataSourcePedido2.sort = this.sort
-              this.dataSourcePedido2.paginator = this.paginator
 
               this.agenteService.getAgentePorId(this.idAgent).subscribe(
                 (response) => {

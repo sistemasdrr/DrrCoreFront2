@@ -325,7 +325,8 @@ export class DatosEmpresaComponent implements OnInit, OnDestroy {
               this.idCountry = DatosEmpresa.idCountry
               this.paisSeleccionado = this.paises.filter(x => x.id === this.idCountry)[0]
               this.taxTypeName = this.paisSeleccionado.regtrib
-              this.subTelephone = this.paisSeleccionado.codCel
+              this.subTelephone = DatosEmpresa.subTelephone
+              console.log(this.subTelephone)
             }else{
               this.limpiarSeleccionPais()
               this.subTelephone = DatosEmpresa.subTelephone == null ? "" : DatosEmpresa.subTelephone

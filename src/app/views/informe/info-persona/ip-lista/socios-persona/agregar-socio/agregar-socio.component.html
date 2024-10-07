@@ -1,3 +1,7 @@
+<div class="d-flex justify-content-center align-items-center loader-container" [ngClass]="{'hide-loader': !loading}">
+  <span class="loader"></span><br>
+  <h2 style="color: white;">&nbsp;Cargando...</h2>
+</div>
 <div mat-dialog-content class="row" style="min-width: 50rem; min-height: 40rem; overflow-y: auto; overflow-x: none;">
   <div class="col-md-12" style="background-color: #dae1f3;">
     <div class="d-flex justify-content-between">
@@ -157,6 +161,9 @@
               {{profesion.valor}}
             </mat-option>
           </mat-autocomplete>
+          <button class="btn-traduccion" [class]="professionEng === '' ? 'sin-traduccion' : ''" matSuffix mat-icon-button (click)=" $event.stopPropagation(); agregarTraduccion('Traducción de Cargo','', profession, professionEng,'profesion')">
+            <span class="fi fi-us" style="font-size: 24px;"></span>
+          </button>
         </mat-form-field>
       </div>
       <div class="col-md-2">

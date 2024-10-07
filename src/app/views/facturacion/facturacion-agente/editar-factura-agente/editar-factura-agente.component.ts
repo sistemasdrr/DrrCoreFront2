@@ -10,6 +10,20 @@ import { TicketService } from 'app/services/pedidos/ticket.service';
 import * as moment from 'moment';
 import Swal from 'sweetalert2';
 
+export interface SpecialPriceAgent{
+  codeAgent: string
+  qualityAgent : QualityAgent[]
+}
+export interface QualityAgent{
+  quality: string
+  price : PriceAgent
+}
+export interface PriceAgent{
+  t1 : number
+  t2 : number
+  t3 : number
+}
+
 @Component({
   selector: 'app-editar-factura-agente',
   templateUrl: './editar-factura-agente.component.html',
@@ -27,14 +41,129 @@ import Swal from 'sweetalert2';
 
 export class EditarFacturaAgenteComponent implements OnInit{
 
+  pricesAgent : SpecialPriceAgent[] = [
+    {
+      codeAgent : "A17",
+      qualityAgent : [
+        {
+          quality : "A",
+          price : {
+            t1 : 30,
+            t2 : 40,
+            t3 : 50
+          }
+        },
+        {
+          quality : "B",
+          price : {
+            t1 : 28,
+            t2 : 33,
+            t3 : 44
+          }
+        },
+        {
+          quality : "C",
+          price : {
+            t1 : 22,
+            t2 : 28,
+            t3 : 33
+          }
+        },
+        {
+          quality : "D",
+          price : {
+            t1 : 15,
+            t2 : 15,
+            t3 : 15
+          }
+        },
+      ]
+    },
+    {
+      codeAgent : "A30",
+      qualityAgent : [
+        {
+          quality : "A",
+          price : {
+            t1 : 35,
+            t2 : 35,
+            t3 : 35
+          }
+        },
+        {
+          quality : "B",
+          price : {
+            t1 : 25,
+            t2 : 25,
+            t3 : 25
+          }
+        },
+        {
+          quality : "C",
+          price : {
+            t1 : 20,
+            t2 : 20,
+            t3 : 20
+          }
+        },
+        {
+          quality : "D",
+          price : {
+            t1 : 0,
+            t2 : 0,
+            t3 : 0
+          }
+        },
+      ]
+    },
+    {
+      codeAgent : "A32",
+      qualityAgent : [
+        {
+          quality : "A",
+          price : {
+            t1 : 17,
+            t2 : 17,
+            t3 : 17
+          }
+        },
+        {
+          quality : "B",
+          price : {
+            t1 : 11,
+            t2 : 11,
+            t3 : 11
+          }
+        },
+        {
+          quality : "C",
+          price : {
+            t1 : 7,
+            t2 : 7,
+            t3 : 7
+          }
+        },
+        {
+          quality : "D",
+          price : {
+            t1 : 0,
+            t2 : 0,
+            t3 : 0
+          }
+        },
+      ]
+    },
+  ]
+
   idTicket = 0
+  codeAgent = ""
   idTicketHistory = 0
   requestedName = ""
   procedureType = ""
   shippingDate = ""
   shippingDateD : Date | null = null
   price = 0
-
+  quality = ""
   loading = false
   invoiceAgent : InvoiceAgentList[] = []
 
@@ -47,6 +176,8 @@ export class EditarFacturaAgenteComponent implements OnInit{
       this.requestedName = data.requestedName
       this.procedureType = data.procedureType
       this.shippingDate = data.shippingDate
+      this.codeAgent = data.codeAgent
+      this.quality = data.quality
       this.price = data.price
     }
   }
@@ -56,6 +187,17 @@ export class EditarFacturaAgenteComponent implements OnInit{
     if(date){
       this.shippingDateD = new Date(parseInt(date[2]),parseInt(date[1])-1, parseInt(date[0]))
     }
+  }
+  calcularPrecio(quality : string){
+    const specialPriceAgent = this.pricesAgent.filter(x => x.codeAgent === this.codeAgent)[0].qualityAgent.filter(x => x.quality === quality)[0]
+    if(this.procedureType === 'T1'){
+      this.price = specialPriceAgent.price.t1
+    }else if(this.procedureType === 'T2'){
+      this.price = specialPriceAgent.price.t2
+    }else if(this.procedureType === 'T3'){
+      this.price = specialPriceAgent.price.t3
+    }
+
   }
   setDate(event: MatDatepickerInputEvent<Date>) {
     const selectedDate = event.value;

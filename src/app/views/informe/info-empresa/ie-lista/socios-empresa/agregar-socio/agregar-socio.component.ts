@@ -67,6 +67,8 @@ export class AgregarSocioComponent implements OnInit {
   numeration = 0;
   print = true;
 
+  loading = false;
+
   situacionPersona : ComboData[] = []
   tipoDocumento : ComboData[] = []
 
@@ -107,6 +109,7 @@ export class AgregarSocioComponent implements OnInit {
     this.filterProfesion = new Observable<ComboDataCode[]>()
   }
   ngOnInit(): void {
+    this.loading = true;
     this.comboService.getOccupations().subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
@@ -216,6 +219,8 @@ export class AgregarSocioComponent implements OnInit {
     }else{
       this.titulo = "Agregar Socio"
     }
+
+    this.loading = false;
     this.filterSituacionRuc = this.controlSituacionRUC.valueChanges.pipe(
       startWith(''),
       map(value => {
@@ -444,43 +449,40 @@ export class AgregarSocioComponent implements OnInit {
         heightAuto: true
       }).then((result) => {
         if (result.value) {
-          const loader = document.getElementById('pagina-detalle-persona') as HTMLElement | null;
-          if(loader){
-            loader.classList.remove('hide-loader');
-          }
+
+          this.loading = true
           this.sociosEmpresaService.addCompanyPartner(this.modeloNuevo[0]).subscribe((response) => {
-          if(response.isSuccess === true && response.isWarning === false){
-            if(loader){
-              loader.classList.add('hide-loader');
-            }
-            Swal.fire({
-              title: 'Se guardaron los cambios correctamente',
-              text: "",
-              icon: 'success',
-              confirmButtonColor: '#d33',
-              cancelButtonColor: '#3085d6',
-              confirmButtonText: 'Ok',
-              width: '30rem',
-              heightAuto: true
-            })
-          }else{
-            if(loader){
-              loader.classList.add('hide-loader');
-            }
-            Swal.fire({
-              title: 'Ocurrió un problema.',
-              text: 'Comunicarse con Sistemas',
-              icon: 'warning',
-              confirmButtonColor: 'blue',
-              confirmButtonText: 'Ok',
-              width: '30rem',
-              heightAuto : true
-            }).then(() => {
-            })
+            this.loading = false
+            if(response.isSuccess === true && response.isWarning === false){
+
+              Swal.fire({
+                title: 'Se guardaron los cambios correctamente',
+                text: "",
+                icon: 'success',
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ok',
+                width: '30rem',
+                heightAuto: true
+              }).then(
+                () => {
+                  this.dialogRef.close({
+                    success : true
+                  })
+                }
+              )
+            }else{
+              Swal.fire({
+                title: 'Ocurrió un problema.',
+                text: 'Comunicarse con Sistemas',
+                icon: 'warning',
+                confirmButtonColor: 'blue',
+                confirmButtonText: 'Ok',
+                width: '30rem',
+                heightAuto : true
+              })
           }
-          if(loader){
-            loader.classList.add('hide-loader');
-          }
+         this.loading = false
         })
         }
       });
@@ -499,15 +501,10 @@ export class AgregarSocioComponent implements OnInit {
         heightAuto: true
       }).then((result) => {
         if (result.value) {
-          const loader = document.getElementById('loader-lista-empresas') as HTMLElement | null;
+          this.loading = true
           this.sociosEmpresaService.addCompanyPartner(this.modeloNuevo[0]).subscribe((response) => {
-            if(loader){
-              loader.classList.remove('hide-loader');
-            }
             if(response.isSuccess === true && response.isWarning === false){
-              if(loader){
-                loader.classList.add('hide-loader');
-              }
+              this.loading = false
               Swal.fire({
                 title: 'Se agregó el registro correctamente',
                 text: "",
@@ -523,9 +520,7 @@ export class AgregarSocioComponent implements OnInit {
                 })
               })
             }else{
-              if(loader){
-                loader.classList.add('hide-loader');
-              }
+              this.loading = false
               Swal.fire({
                 title: 'Ocurrió un problema.',
                 text: 'Comunicarse con Sistemas',
@@ -537,14 +532,10 @@ export class AgregarSocioComponent implements OnInit {
               }).then(() => {
               })
             }
-            if(loader){
-              loader.classList.add('hide-loader');
-            }
+
             console.log(response)
           }, (error) => {
-            if(loader){
-              loader.classList.add('hide-loader');
-            }
+            this.loading = false
             Swal.fire({
               title: 'Ocurrió un problema. Comunicarse con Sistemas',
               text: error,

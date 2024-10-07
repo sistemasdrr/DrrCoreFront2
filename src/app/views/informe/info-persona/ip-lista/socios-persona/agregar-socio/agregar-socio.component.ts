@@ -13,6 +13,7 @@ import { Observable, map, startWith } from 'rxjs';
 import Swal from 'sweetalert2';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import { MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter } from '@angular/material/core';
+import { TraduccionDialogComponent } from '@shared/components/traduccion-dialog/traduccion-dialog.component';
 
 @Component({
   selector: 'app-agregar-socio',
@@ -56,6 +57,8 @@ export class AgregarSocioPersonaComponent implements OnInit {
   idCountry = 0
   address = ""
   postalCode = ""
+
+  loading = false;
 
   controlSituacionRUC = new FormControl<string | ComboData>('');
   filterSituacionRuc: Observable<ComboData[]>
@@ -117,6 +120,7 @@ export class AgregarSocioPersonaComponent implements OnInit {
     }
   }
   ngOnInit(): void {
+    this.loading = true
     this.comboService.getOccupations().subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
@@ -151,23 +155,32 @@ export class AgregarSocioPersonaComponent implements OnInit {
       }),
     )
     if(this.id != 0){
+      this.titulo = "Editar Socio"
       this.sociosPersonaService.getPersonPartner(this.id).subscribe(
         (response) => {
           if(response.isSuccess === true && response.isWarning === false){
             const socio = response.data
             if(socio){
-              this.idCompany = socio.idCompany
               this.idPerson = socio.idPerson
-              this.profession = socio.profession
-              this.professionEng = socio.professionEng
+              this.idCompany = socio.idCompany
               this.mainExecutive = socio.mainExecutive
-              this.print = socio.print
-              this.numeration = socio.numeration
+              this.profession = socio.profession
+              if(socio.profession !== null && socio.profession !== ''){
+                this.profesion = {
+                  id : 0,
+                  valor : socio.profession,
+                  valorEng : socio.professionEng,
+                  code : ''
+                }
+              }
+              this.professionEng = socio.professionEng
               this.participation = socio.participation
-              if(socio.startDate !== null && socio.startDate !== null){
+              this.numeration = socio.numeration
+              this.print = socio.print
+              if(socio.startDate !== null && socio.startDate !== ""){
                 const fecha = socio.startDate.split("/")
                 if(fecha.length > 0){
-                  this.startDateD = new Date(parseInt(fecha[2]), parseInt(fecha[1])-1,parseInt(fecha[0]))
+                  this.startDateD = new Date(parseInt(fecha[2]),parseInt(fecha[1])-1,parseInt(fecha[0]))
                   this.startDate = socio.startDate
                 }
               }
@@ -176,7 +189,8 @@ export class AgregarSocioPersonaComponent implements OnInit {
         }
       ).add(
         () => {
-
+          this.armarModelo()
+          console.log(this.modeloNuevo)
           if(this.idCompany !== null && this.idCompany !== 0){
             this.datosEmpresaService.getDatosEmpresaPorId(this.idCompany).subscribe(
               (response) => {
@@ -222,6 +236,8 @@ export class AgregarSocioPersonaComponent implements OnInit {
     }else{
 
     }
+
+    this.loading = false;
     this.filterProfesion = this.controlProfesion.valueChanges.pipe(
       startWith(''),
       map(value => {
@@ -404,6 +420,28 @@ export class AgregarSocioPersonaComponent implements OnInit {
       this.startDate = this.formatDate(selectedDate);
     }
   }
+  agregarTraduccion(titulo : string, subtitulo : string, comentario_es : string, comentario_en : string, input : string) {
+    const dialogRef = this.dialog.open(TraduccionDialogComponent, {
+      data: {
+        titulo : titulo,
+        subtitulo : subtitulo,
+        tipo : 'input',
+        comentario_es : comentario_es,
+        comentario_en : comentario_en
+      },
+    });
+    dialogRef.afterClosed().subscribe((data) => {
+      if (data) {
+        console.log(data)
+        switch(input){
+          case 'profesion':
+            this.profession = data.comentario_es
+            this.professionEng = data.comentario_en
+          break
+        }
+      }
+    });
+  }
   armarModelo(){
     this.modeloNuevo[0] = {
       id : this.id,
@@ -435,15 +473,11 @@ export class AgregarSocioPersonaComponent implements OnInit {
         heightAuto: true
       }).then((result) => {
         if (result.value) {
-          const loader = document.getElementById('pagina-detalle-persona') as HTMLElement | null;
-          if(loader){
-            loader.classList.remove('hide-loader');
-          }
+          this.loading = true
           this.sociosPersonaService.addPersonPartner(this.modeloNuevo[0]).subscribe((response) => {
           if(response.isSuccess === true && response.isWarning === false){
-            if(loader){
-              loader.classList.add('hide-loader');
-            }
+
+            this.loading = false
             Swal.fire({
               title: 'Se guardaron los cambios correctamente',
               text: "",
@@ -461,9 +495,8 @@ export class AgregarSocioPersonaComponent implements OnInit {
               }
             )
           }else{
-            if(loader){
-              loader.classList.add('hide-loader');
-            }
+
+            this.loading = false
             Swal.fire({
               title: 'Ocurrió un problema.',
               text: 'Comunicarse con Sistemas',
@@ -475,9 +508,8 @@ export class AgregarSocioPersonaComponent implements OnInit {
             }).then(() => {
             })
           }
-          if(loader){
-            loader.classList.add('hide-loader');
-          }
+
+          this.loading = false
         })
         }
       });
@@ -496,15 +528,11 @@ export class AgregarSocioPersonaComponent implements OnInit {
         heightAuto: true
       }).then((result) => {
         if (result.value) {
-          const loader = document.getElementById('loader-lista-empresas') as HTMLElement | null;
+          this.loading = true
           this.sociosPersonaService.addPersonPartner(this.modeloNuevo[0]).subscribe((response) => {
-            if(loader){
-              loader.classList.remove('hide-loader');
-            }
+            this.loading = false
             if(response.isSuccess === true && response.isWarning === false){
-              if(loader){
-                loader.classList.add('hide-loader');
-              }
+
               Swal.fire({
                 title: 'Se agregó el registro correctamente',
                 text: "",
@@ -520,9 +548,7 @@ export class AgregarSocioPersonaComponent implements OnInit {
                 })
               })
             }else{
-              if(loader){
-                loader.classList.add('hide-loader');
-              }
+
               Swal.fire({
                 title: 'Ocurrió un problema.',
                 text: 'Comunicarse con Sistemas',
@@ -534,14 +560,11 @@ export class AgregarSocioPersonaComponent implements OnInit {
               }).then(() => {
               })
             }
-            if(loader){
-              loader.classList.add('hide-loader');
-            }
+
             console.log(response)
           }, (error) => {
-            if(loader){
-              loader.classList.add('hide-loader');
-            }
+
+            this.loading = false
             Swal.fire({
               title: 'Ocurrió un problema. Comunicarse con Sistemas',
               text: error,
@@ -559,6 +582,6 @@ export class AgregarSocioPersonaComponent implements OnInit {
   }
 
   salir(){
-
+    this.dialogRef.close();
   }
 }

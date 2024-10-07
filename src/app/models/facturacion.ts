@@ -96,6 +96,7 @@ export interface InvoiceAgentList{
   idAgent : number
   agentName : string
   agentCode : string
+  quality : string
 }
 export interface AddInvoiceAgent{
   invoiceCode : string
