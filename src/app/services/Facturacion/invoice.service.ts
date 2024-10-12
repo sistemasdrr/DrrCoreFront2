@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Query5_1_2ByCycle, Query5_1_2Tickets } from 'app/models/consulta';
-import { AddInvoiceAgent, AddInvoiceSubscriber, GetAgentInvoice, GetPersonalToInvoice, InvoiceAgentList, InvoiceSubcriberListByBill, InvoiceSubcriberListPaids, InvoiceSubcriberListToCollect } from 'app/models/facturacion';
+import { AddInvoiceAgent, AddInvoiceSubscriber, GetAgentInvoice, GetPersonalToInvoice, InvoiceAgentList, InvoiceSubcriberListByBill, InvoiceSubcriberListPaids, InvoiceSubcriberListToCollect, NewAgentInvoice } from 'app/models/facturacion';
 import { Response } from 'app/models/response';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
@@ -37,9 +37,16 @@ export class InvoiceService {
   AddSubscriberInvoice(obj : AddInvoiceSubscriber) : Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url + this.controller + '/SaveSubscriberInvoice',obj);
   }
+  GetExcelAgentInvoice(code : string, startDate : string, endDate : string){
+    return this.http.get(this.url + this.controller + '/GetExcelAgentInvoice?code='+code+'&startDate='+startDate+'&endDate='+endDate,{observe:'response',responseType:'blob'});
+  }
 
-
-
+  GetAgentPrice(idCountry : number,asignedTo: string,quality : string,procedureType : string,hasBalance : boolean, idSpecialPrice : number) : Observable<Response<number>>{
+    return this.http.get<Response<number>>(this.url + this.controller + '/GetAgentPrice?idCountry='+idCountry+'&asignedTo='+asignedTo+'&quality='+quality+'&procedureType='+procedureType+'&hasBalance='+hasBalance+'&idSpecialPrice='+idSpecialPrice);
+  }
+  GetAgentInvoice(code : string,startDate : string, endDate : string) : Observable<Response<NewAgentInvoice[]>>{
+    return this.http.get<Response<NewAgentInvoice[]>>(this.url + this.controller + '/GetAgentInvoice?code='+code+'&startDate='+startDate+'&endDate='+endDate);
+  }
   GetByBillInvoiceAgentList(startDate : string, endDate : string) : Observable<Response<InvoiceAgentList[]>>{
     return this.http.get<Response<InvoiceAgentList[]>>(this.url + this.controller + '/GetByBillInvoiceAgentList?startDate='+startDate+'&endDate='+endDate);
   }
@@ -49,8 +56,8 @@ export class InvoiceService {
   GetPaidsInvoiceAgentList(startDate : string, endDate : string) : Observable<Response<GetAgentInvoice[]>>{
     return this.http.get<Response<GetAgentInvoice[]>>(this.url + this.controller + '/GetPaidsInvoiceAgentList?startDate='+startDate+'&endDate='+endDate);
   }
-  UpdateAgentTicket(idTicketHistory : number, requestedName : string, procedureType : string, shippingDate : string) : Observable<Response<boolean>>{
-    return this.http.post<Response<boolean>>(this.url + this.controller + '/UpdateAgentTicket?idTicketHistory='+idTicketHistory+'&requestedName='+requestedName+'&procedureType='+procedureType+'&shippingDate='+shippingDate,'');
+  UpdateAgentTicket(idTicketHistory : number, requestedName : string, procedureType : string, shippingDate : string, quality : string, hasBalance : boolean, idSpecialPrice : number) : Observable<Response<boolean>>{
+    return this.http.post<Response<boolean>>(this.url + this.controller + '/UpdateAgentTicket?idTicketHistory='+idTicketHistory+'&requestedName='+requestedName+'&procedureType='+procedureType+'&shippingDate='+shippingDate+'&quality='+quality+'&hasBalance='+hasBalance+'&idSpecialPrice='+idSpecialPrice,'');
   }
   UpdateAgentInvoiceToCollect(idAgentInvoice : number, idAgentInvoiceDetails : number, requestedName : string, procedureType : string, shippingDate : string, price : number) : Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url + this.controller + '/UpdateInvoiceToCollect?idAgentInvoice='+idAgentInvoice+'&idAgentInvoiceDetails='+idAgentInvoiceDetails+'&requestedName='+requestedName+'&procedureType='+procedureType+'&shippingDate='+shippingDate+'&price='+price,'');

@@ -3,6 +3,7 @@ import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAda
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ComboData } from 'app/models/combo';
 import { InvoiceAgentList } from 'app/models/facturacion';
 import { InvoiceService } from 'app/services/Facturacion/invoice.service';
 import { ComboService } from 'app/services/combo.service';
@@ -156,7 +157,9 @@ export class EditarFacturaAgenteComponent implements OnInit{
   ]
 
   idTicket = 0
-  codeAgent = ""
+  idAgent = 0
+  idCountry = 0
+  asignedTo = ""
   idTicketHistory = 0
   requestedName = ""
   procedureType = ""
@@ -164,6 +167,10 @@ export class EditarFacturaAgenteComponent implements OnInit{
   shippingDateD : Date | null = null
   price = 0
   quality = ""
+  idSpecialPrice = 0
+  hasBalance = false;
+  specialPrice : ComboData[] =[]
+
   loading = false
   invoiceAgent : InvoiceAgentList[] = []
 
@@ -173,12 +180,19 @@ export class EditarFacturaAgenteComponent implements OnInit{
     if(data){
       console.log(data)
       this.idTicketHistory = data.idTicketHistory
+      this.idAgent = data.idAgent
+      this.idCountry = data.idCountry
       this.requestedName = data.requestedName
       this.procedureType = data.procedureType
       this.shippingDate = data.shippingDate
-      this.codeAgent = data.codeAgent
+      this.asignedTo = data.asignedTo
       this.quality = data.quality
       this.price = data.price
+      this.hasBalance = data.hasBalance
+      this.idSpecialPrice = data.idSpecialPrice
+      if(data.idSpecialPrice === null){
+        this.idSpecialPrice = 0
+      }
     }
   }
 
@@ -187,17 +201,33 @@ export class EditarFacturaAgenteComponent implements OnInit{
     if(date){
       this.shippingDateD = new Date(parseInt(date[2]),parseInt(date[1])-1, parseInt(date[0]))
     }
-  }
-  calcularPrecio(quality : string){
-    const specialPriceAgent = this.pricesAgent.filter(x => x.codeAgent === this.codeAgent)[0].qualityAgent.filter(x => x.quality === quality)[0]
-    if(this.procedureType === 'T1'){
-      this.price = specialPriceAgent.price.t1
-    }else if(this.procedureType === 'T2'){
-      this.price = specialPriceAgent.price.t2
-    }else if(this.procedureType === 'T3'){
-      this.price = specialPriceAgent.price.t3
+    if(this.hasBalance){
+      this.comboService.GetSpecialPrice(this.idAgent).subscribe(
+        (response) => {
+          if(response.isSuccess){
+            this.specialPrice = response.data
+          }
+        }
+      )
     }
+  }
 
+  calcularPrecio(quality : string){
+    // const specialPriceAgent = this.pricesAgent.filter(x => x.codeAgent === this.asignedTo)[0].qualityAgent.filter(x => x.quality === quality)[0]
+    // if(this.procedureType === 'T1'){
+    //   this.price = specialPriceAgent.price.t1
+    // }else if(this.procedureType === 'T2'){
+    //   this.price = specialPriceAgent.price.t2
+    // }else if(this.procedureType === 'T3'){
+    //   this.price = specialPriceAgent.price.t3
+    // }
+    this.invoiceService.GetAgentPrice(this.idCountry,this.asignedTo,this.quality,this.procedureType, this.hasBalance, this.idSpecialPrice).subscribe(
+      (response) => {
+        if(response.isSuccess){
+          this.price = response.data
+        }
+      }
+    )
   }
   setDate(event: MatDatepickerInputEvent<Date>) {
     const selectedDate = event.value;
@@ -218,9 +248,14 @@ export class EditarFacturaAgenteComponent implements OnInit{
   }
   guardar(){
     console.log(this.idTicketHistory)
+    console.log(this.idAgent)
+    console.log(this.idCountry)
     console.log(this.requestedName)
     console.log(this.procedureType)
     console.log(this.shippingDate)
+    console.log(this.hasBalance)
+    console.log(this.idSpecialPrice)
+    console.log(this.quality)
     Swal.fire({
       title: '¿Está seguro de actualizar este registro?',
       text: "",
@@ -235,7 +270,7 @@ export class EditarFacturaAgenteComponent implements OnInit{
     }).then((result) => {
       if (result.value) {
         this.loading = true
-        this.invoiceService.UpdateAgentTicket(this.idTicketHistory, this.requestedName, this.procedureType, this.shippingDate).subscribe(
+        this.invoiceService.UpdateAgentTicket(this.idTicketHistory, this.requestedName, this.procedureType, this.shippingDate, this.quality,this.hasBalance,this.idSpecialPrice).subscribe(
           (response) => {
             if(response.isSuccess === true && response.isWarning === false){
               Swal.fire({

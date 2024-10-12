@@ -16,6 +16,9 @@ export class ComboService {
 
   constructor(private http : HttpClient) { }
 
+  GetSpecialPrice(idAgent : number) : Observable<Response<ComboDataCode[]>>{
+    return this.http.get<Response<ComboDataCode[]>>(this.url + this.controllerCombo + '/GetSpecialPrice?idAgent='+idAgent);
+  }
   getOccupations() : Observable<Response<ComboDataCode[]>>{
     return this.http.get<Response<ComboDataCode[]>>(this.url + this.controllerCombo + '/occupations');
   }

@@ -67,7 +67,7 @@ export class SeleccionarAgenteComponent implements OnInit {
   quality = ""
   qualityTypist = ""
   qualityTranslator = ""
-  hasBalance = false
+  hasBalance : boolean | null = null
   sendZip = false
   step=1
 

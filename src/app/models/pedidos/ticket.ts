@@ -148,6 +148,10 @@ export interface ListTicket{
   quality : string
   qualityTypist : string
   qualityTranslator : string
+  isComplement : boolean
+  complementQuality : string
+  complementQualityTypist : string
+  complementQualityTranslator : string
   qualityReport : string
   status : string
   statusColor : string
@@ -180,7 +184,7 @@ export interface Asignacion{
   quality:string | null
   qualityTypist : string | null
   qualityTranslator : string | null
-  hasBalance : boolean
+  hasBalance : boolean | null
   sendZip : boolean
   attachmentRefCom : boolean
 }
@@ -247,6 +251,10 @@ export interface ListTicket2{
   references : number
   webPage : string
   hasBalance : boolean
+  isComplement : boolean
+  complementQuality : string
+  complementQualityTranslator : string
+  complementQualityTypist : string
 }
 export interface OtherUserCode{
   code : string
@@ -430,6 +438,7 @@ export interface PendingTaskByUserDetails{
   requestedName: string;
   country: string;
   flagCountry: string;
+  orderDate: string;
   expireDate: string;
   flag: number;
 }

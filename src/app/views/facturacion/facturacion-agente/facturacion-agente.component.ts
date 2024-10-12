@@ -1,3 +1,4 @@
+import { TicketService } from './../../../services/pedidos/ticket.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -6,7 +7,7 @@ import { ComboService } from 'app/services/combo.service';
 import { AgenteService } from 'app/services/mantenimiento/agente.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { AddInvoiceAgent, AgentInvoiceDetails, GetAgentInvoice, InvoiceAgentList } from 'app/models/facturacion';
+import { AddInvoiceAgent, AgentInvoiceDetails, GetAgentInvoice, InvoiceAgentList, NewAgentInvoice } from 'app/models/facturacion';
 import { Pais } from 'app/models/combo';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import * as moment from 'moment';
@@ -58,14 +59,14 @@ export class FacturacionAgenteComponent implements OnInit {
   dataSourcePorCobrar = new MatTableDataSource<GetAgentInvoice>()
   dataSourceCobradas = new MatTableDataSource<GetAgentInvoice>()
 
-  dataSourcePedido1 = new MatTableDataSource<InvoiceAgentList>()
+  dataSourcePedido1 = new MatTableDataSource<NewAgentInvoice>()
   dataSourcePedido2 = new MatTableDataSource<AgentInvoiceDetails>()
   dataSourcePedido3 = new MatTableDataSource<AgentInvoiceDetails>()
 
   columnsDS : string[] = ['agentCode','agentName','options']
   columnsPorCobrar : string[] = ['invoiceCode','options']
   columnsCobradas : string[] = ['invoiceCode','options']
-  columnsDSP : string[] = ['select','number','requestedName','orderDate','shippingDate','expireDate','procedureType', 'country','price','options']
+  columnsDSP : string[] = ['select','number','requestedName','orderDate','shippingDate','expireDate','procedureType','quality', 'country','price','options']
   columnsDSPPorCobrar : string[] = ['id','requestedName','businessName','orderDate','shippingDate','expireDate', 'country','procedureType','price','options']
   columnsDSPCobradas : string[] = ['id','requestedName','businessName','orderDate','shippingDate','expireDate', 'country','procedureType','price','options']
 
@@ -127,7 +128,7 @@ export class FacturacionAgenteComponent implements OnInit {
   });
 
   model : AddInvoiceAgent[] = []
-  selection1 = new SelectionModel<InvoiceAgentList>(true, []);
+  selection1 = new SelectionModel<NewAgentInvoice>(true, []);
   selection2 = new SelectionModel<AgentInvoiceDetails>(true, []);
 
   totalSelectedPrice1: number = 0;
@@ -166,16 +167,16 @@ toggleAllRows1() {
     this.updateTotalPrice1();
     return;
   }
-  this.selection1.select(...this.dataSourcePedido1.data.filter(x => x.idAgent === this.idAgent));
+  this.selection1.select(...this.dataSourcePedido1.data);
   this.updateTotalPrice1();
 }
-checkboxLabel1(row?: InvoiceAgentList): string {
+checkboxLabel1(row?: NewAgentInvoice): string {
   if (!row) {
     return `${this.isAllSelected1() ? 'deselect' : 'select'} all`;
   }
-  return `${this.selection1.isSelected(row) ? 'deselect' : 'select'} row ${row.idTicket + 1}`;
+  return `${this.selection1.isSelected(row) ? 'deselect' : 'select'} row ${row.idTicketHistory + 1}`;
 }
-onCheckboxChange1(row: InvoiceAgentList) {
+onCheckboxChange1(row: NewAgentInvoice) {
   this.selection1.toggle(row);
   this.updateTotalPrice1();
 }
@@ -221,8 +222,8 @@ armarModelo(){
   }
 }
 
-  constructor(public dialog: MatDialog,private invoiceService : InvoiceService, private agenteService : AgenteService,
-    private comboService : ComboService){
+  constructor(public dialog: MatDialog,private invoiceService : InvoiceService, private agenteService : AgenteService, private ticketService: TicketService
+    ,private comboService : ComboService){
       this.dataSourcePorFacturar = new MatTableDataSource()
       this.dataSourcePorFacturar.sort = this.sort
   }
@@ -272,14 +273,21 @@ armarModelo(){
       this.endDate = this.formatDate(selectedDate);
     }
   }
-  selectAgent(idAgent : number){
+  selectAgent(idAgent : number, code : string){
 
     this.selection1.clear();
     this.dataSourcePedido1.data = []
-    this.dataSourcePedido1.data = this.datosPorFacturar.filter(x => x.idAgent === idAgent)
-    this.dataSourcePedido1.sort = this.sort
     this.idAgent = idAgent
+    this.code = ""
     this.loading = true
+    this.invoiceService.GetAgentInvoice(code, this.startDate, this.endDate).subscribe(
+      (response) => {
+        if(response.isSuccess){
+          this.dataSourcePedido1.data = response.data
+          this.dataSourcePedido1.sort = this.sort
+        }
+      }
+    )
     this.agenteService.getAgentePorId(idAgent).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
@@ -360,15 +368,19 @@ armarModelo(){
       }
     )
   }
-  editarPorFacturar(obj : InvoiceAgentList){
+  editarPorFacturar(obj : NewAgentInvoice){
     const idTicketHistory = obj.idTicketHistory
     let price = 0
     const dialogRef = this.dialog.open(EditarFacturaAgenteComponent, {
       data : {
         idTicketHistory : obj.idTicketHistory,
+        idAgent : obj.idAgent,
+        idCountry : obj.idCountry,
+        hasBalance : obj.hasBalance,
+        idSpecialPrice : obj.idSpecialAgentBalancePrice,
         requestedName : obj.requestedName,
         procedureType : obj.procedureType,
-        codeAgent : obj.agentCode,
+        asignedTo : obj.asignedTo,
         quality : obj.quality,
         shippingDate : obj.shippingDate,
         price : obj.price
@@ -377,11 +389,7 @@ armarModelo(){
     dialogRef.afterClosed().subscribe(
       (data) => {
         if(data.success){
-          this.dataSourcePedido1.data.filter(x => x.idTicketHistory === idTicketHistory)[0].requestedName = data.requestedName
-          this.dataSourcePedido1.data.filter(x => x.idTicketHistory === idTicketHistory)[0].procedureType = data.procedureType
-          this.dataSourcePedido1.data.filter(x => x.idTicketHistory === idTicketHistory)[0].shippingDate = data.shippingDate
-          this.dataSourcePedido1.data.filter(x => x.idTicketHistory === idTicketHistory)[0].price = data.price
-
+          this.selectAgent(this.idAgent, this.code)
         }
       }
     )
@@ -448,6 +456,22 @@ armarModelo(){
       }
     )
   }
+
+  descargarDocumento(code : string, startDate : string, endDate : string){
+    this.loading = true
+    this.invoiceService.GetExcelAgentInvoice(code,startDate,endDate).subscribe(response=>{
+      let blob : Blob = response.body as Blob;
+      let a =document.createElement('a');
+      a.download= "Lista Por Facturar - " + code + ".xlsx";
+      a.href=window.URL.createObjectURL(blob);
+      a.click();
+    }).add(
+      () => {
+        this.loading = false
+      }
+    );
+  }
+
   cancelarFactura(){
     const dialogRef = this.dialog.open(CancelarFacturaComponent, {
       data : {
@@ -502,7 +526,7 @@ armarModelo(){
       () => {
         this.loading = false
         if(this.idAgent !== 0){
-          this.selectAgent(this.idAgent)
+          this.selectAgent(this.idAgent, this.code)
         }
       }
     )

@@ -61,6 +61,8 @@
           <ng-container matColumnDef="status" >
           <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center">  Calidad--<b style="font-size: 20px;">  R</b>(D/T) </th>
           <td mat-cell *matCellDef="let order" class="text-center" style="white-space: nowrap; width: 100px;">
+            <div *ngIf="order.isComplement === true" class="badge badge-solid-orange"><b style="font-size: 20px;">{{order.complementQuality}}</b>({{order.complementQualityTypist}}/{{order.complementQualityTranslator}})</div>
+
             <div  class="badge badge-solid-purple"><b style="font-size: 20px;">{{order.quality}}</b>({{order.qualityTypist}}/{{order.qualityTranslator}})</div>
           </td>
           </ng-container>

@@ -1,11 +1,12 @@
-<section class="content" >
+<section class="content">
   <div class="d-flex justify-content-center align-items-center loader-container" [ngClass]="{'hide-loader': !loading}">
     <span class="loader"></span><br>
     <h2 style="color: white;">&nbsp;Cargando...</h2>
   </div>
   <div class="container-fluid" [ngClass]="{'show-form': loading}" style="overflow: auto; width: 100%;">
     <div class="block-header" *ngFor="let breadscrum of breadscrums">
-      <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [codigoInforme]="''" [active_item]="breadscrum.active">
+      <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [codigoInforme]="''"
+        [active_item]="breadscrum.active">
       </app-breadcrumb>
     </div>
   </div>
@@ -18,22 +19,98 @@
             <mat-form-field class="w-100">
               <mat-label>Consulta de </mat-label>
               <mat-select [(ngModel)]="idQuery" placeholder="">
-                  <mat-option [value]="1">1.- Informes Facturados de Abonados de Mayor a Menor</mat-option>
-                  <mat-option [value]="2">2.- Informes Atentidos por Paises de Mayor a Menor</mat-option>
-                  <mat-option [value]="3">3.- Informes Solicitados por Abonado, País y Año</mat-option>
-                  <mat-option [value]="4">4.- Informes Facturados por Abonado, País y Año</mat-option>
-                  <mat-option [value]="5">5.- Informes Pendientes en General</mat-option>
-                  <mat-option [value]="6">6.- Informes Pendientes por Abonado</mat-option>
-                  <mat-option [value]="7">7.- Informes Solicitados por Abonado con Cupones</mat-option>
-                  <mat-option [value]="8">8.- Informes Facturados Mensualmente por Paises</mat-option>
-                  <mat-option [value]="9">9.- Informes Atendidos Mensualmente por Abonado</mat-option>
-                  <mat-option [value]="10">10.- Informes Solicitados por Abonado</mat-option>
-                  <mat-option [value]="11">11.- Informes Atendidos a Abonados de Mayor a Menor</mat-option>
+                <mat-option [value]="1">6.1.5 IMPRIMIR FICHA DE ABONADOS</mat-option>
+                <mat-option [value]="2">6.1.7 LISTADO DE ABONADOS</mat-option>
+                <mat-option [value]="3">6.1.14 INFORMES PENDIENTES VENCIDOS Y POR VENCER</mat-option>
+                <mat-option [value]="4">6.1.15 LISTADO DE ABONADOS POR PAIS</mat-option>
               </mat-select>
             </mat-form-field>
           </div>
           <div class="col-md-1"></div>
+          <div class="col-md-4" *ngIf="idQuery === 2">
+            <mat-form-field class="w-100">
+              <mat-label>Ordenar Por </mat-label>
+              <mat-select [(ngModel)]="query1_2_orderBy" placeholder=""
+                (ngModelChange)="seleccionarOrden(query1_2_orderBy)">
+                <mat-option [value]="'C'">Código</mat-option>
+                <mat-option [value]="'N'">Nombre</mat-option>
+                <mat-option [value]="'P'">País</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4" *ngIf="idQuery === 3">
+            <mat-form-field class="w-100">
+              <mat-label>Mostrar</mat-label>
+              <mat-select [(ngModel)]="query1_3_show" placeholder=""
+                (ngModelChange)="selectQuary1_3(query1_3_show)">
+                <mat-option [value]="'T'">Por Vencer y Vencidos</mat-option>
+                <mat-option [value]="'P'">Sólo Por Vencer</mat-option>
+                <mat-option [value]="'V'">Sólo Vencidos</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4" *ngIf="idQuery === 4">
+           
+          </div>
 
+        </div>
+        <div class="row">
+          <div class="col-md-12" *ngIf="idQuery === 1">
+            <div class="row" style="max-height: 60rem;">
+              <div class="col-md-4" style="max-height: 48rem; overflow-y: auto;">
+                <table mat-table [dataSource]="DTQuery1_1" class="mat-elevation-z8 w-100" matSort>
+
+                  <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;">
+                      Abonado </th>
+                    <td mat-cell *matCellDef="let query" class="text-left"><b>{{query.code}}</b> ||
+                      {{query.country}}<span class="fi fi-{{query.flagCountry}}" style="font-size: 20px;"></span> -
+                      {{query.name}}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="options">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;">
+                    </th>
+                    <td mat-cell *matCellDef="let query" class="text-center">
+                      <button mat-mini-fab class="bg-white" matTooltip="Seleccionar"
+                        (click)="quary1_1selectSubscriber(query.id);">
+                        <app-feather-icons [icon]="'check-circle'" style="color: rgb(30, 203, 203)"></app-feather-icons>
+                      </button>
+                    </td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="columnsQuery1_1"></tr>
+                  <tr mat-row style="{{query1_1_idSubscriber === row.id ? 'background-color : rgba(1,1,1,0.2);' : '' }}"
+                    *matRowDef="let row; columns: columnsQuery1_1;"></tr>
+                </table>
+              </div>
+              <div class="col-md-8">
+                <pdf-viewer [src]="query1_1_pdfSrc" [show-borders]="true" [render-text]="true" [original-size]="false"
+                  style="width: 100%; height: {{loading === true ? '5rem' : '45rem'}}"></pdf-viewer>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12" *ngIf="idQuery === 2">
+            <div class="row">
+              <div class="col-md-2"></div>
+              <div class="col-md-8">
+                <pdf-viewer [src]="query1_2_pdfSrc" [show-borders]="true" [render-text]="true" [original-size]="false"
+                  style="width: 100%; height: {{loading === true ? '5rem' : '45rem'}}"></pdf-viewer>
+              </div>
+              <div class="col-md-2"></div>
+            </div>
+          </div>
+          <div class="col-md-12" *ngIf="idQuery === 3">
+            <div class="row">
+              <div class="col-md-2"></div>
+              <div class="col-md-8">
+                <pdf-viewer [src]="query1_3_pdfSrc" [show-borders]="true" [render-text]="true" [original-size]="false"
+                  style="width: 100%; height: {{loading === true ? '5rem' : '45rem'}}"></pdf-viewer>
+
+              </div>
+              <div class="col-md-2"></div>
+
+            </div>
+          </div>
         </div>
       </div>
     </div>

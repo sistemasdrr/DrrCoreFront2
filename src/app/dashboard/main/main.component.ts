@@ -705,7 +705,7 @@ export class MainComponent implements OnInit {
 
   }
 
-  columnsToDisplay1 : string[] = ['number','requestedName','country','expireDate','acciones']
+  columnsToDisplay1 : string[] = ['number','requestedName','country','orderDate','expireDate','acciones']
   dataSource1 = new MatTableDataSource<PendingTaskByUserDetails>;
   dataSource2 = new MatTableDataSource<PendingTaskByUserDetails>;
   dataSource3 = new MatTableDataSource<PendingTaskByUserDetails>;

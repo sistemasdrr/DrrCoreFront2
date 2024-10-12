@@ -16,6 +16,7 @@ import { ComponentsModule } from '@shared/components/components.module';
 import { SharedModule } from '@shared';
 
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer'
+import { FeatherModule } from 'angular-feather';
 @NgModule({
   declarations: [
     AbonadosComponent,
@@ -34,7 +35,8 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer'
     MatTableModule,
     MatSortModule,
     PdfViewerModule,
-    NgxExtendedPdfViewerModule
+    NgxExtendedPdfViewerModule,
+    FeatherModule
   ]
 })
 export class CuadrosModule { }

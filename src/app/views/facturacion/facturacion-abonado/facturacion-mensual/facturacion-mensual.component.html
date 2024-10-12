@@ -54,7 +54,7 @@
               <tr mat-header-row *matHeaderRowDef="columnsByBill"></tr>
               <tr mat-row style="{{row.idSubscriber === idSubscriber ? 'background-color: rgba(0, 0, 0, 0.2);' : ''}}" *matRowDef="let row; columns: columnsByBill;"></tr>
             </table>
-            <mat-paginator [pageSizeOptions]="[5, 10]" aria-label="" class="w-100"></mat-paginator>
+            <mat-paginator [pageSizeOptions]="[10]" [length]="dataSource1.data.length" aria-label="" class="w-100"></mat-paginator>
 
           </div>
         </mat-tab>
@@ -109,7 +109,7 @@
               <tr mat-header-row *matHeaderRowDef="columnsToCollect"></tr>
               <tr mat-row *matRowDef="let row; columns: columnsToCollect;"></tr>
             </table>
-            <mat-paginator [pageSizeOptions]="[5, 10]" aria-label="" class="w-100"></mat-paginator>
+            <mat-paginator [pageSizeOptions]="[10]" [length]="dataSource2.data.length" aria-label="" class="w-100"></mat-paginator>
 
           </div>
         </mat-tab>
@@ -170,7 +170,7 @@
               <tr mat-header-row *matHeaderRowDef="columnsPaids"></tr>
               <tr mat-row *matRowDef="let row; columns: columnsPaids;"></tr>
             </table>
-            <mat-paginator [pageSizeOptions]="[5, 10]" aria-label="" class="w-100"></mat-paginator>
+            <mat-paginator [pageSizeOptions]="[10]" [length]="dataSource3.data.length" aria-label="" class="w-100"></mat-paginator>
 
           </div>
         </mat-tab>

@@ -564,4 +564,8 @@ export interface Query5_1_2Tickets{
   flag : number
   hasFiles : boolean
   isComplement : boolean
+
+  complementQuality : string
+  complementQualityTypist : string
+  complementQualityTraductor : string
 }

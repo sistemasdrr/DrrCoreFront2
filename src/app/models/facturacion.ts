@@ -98,6 +98,24 @@ export interface InvoiceAgentList{
   agentCode : string
   quality : string
 }
+export interface NewAgentInvoice{
+  idTicketHistory : number
+  idAgent : number
+  number : string
+  asignedTo : string
+  requestedName : string
+  orderDate : string
+  shippingDate : string
+  realExpireDate : string
+  idCountry : number
+  iso : string
+  flag : string
+  quality : string
+  procedureType : string
+  price : number
+  hasBalance : boolean
+  idSpecialAgentBalancePrice : number
+}
 export interface AddInvoiceAgent{
   invoiceCode : string
   invoiceDate : Date | null
@@ -108,7 +126,7 @@ export interface AddInvoiceAgent{
   idCountry : number
   attendedByName : string
   attendedByEmail : string
-  invoiceAgentList : InvoiceAgentList[]
+  invoiceAgentList : NewAgentInvoice[]
 }
 
 

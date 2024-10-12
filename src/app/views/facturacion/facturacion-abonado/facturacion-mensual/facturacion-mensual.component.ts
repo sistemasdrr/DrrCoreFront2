@@ -233,7 +233,6 @@ export class FacturacionMensualComponent implements OnInit {
   selectInvoiceToCollect(obj : InvoiceSubcriberListToCollect){
     this.dataSourcePedido2.data = obj.details
     this.dataSourcePedido2.sort = this.sort
-    this.dataSourcePedido2.paginator = this.paginator
     this.totalSelectedPrice2 = 0
     this.dataSourcePedido2.data.forEach(element => {
       this.totalSelectedPrice2 += element.price
@@ -266,7 +265,6 @@ export class FacturacionMensualComponent implements OnInit {
   selectInvoicePaids(obj : InvoiceSubcriberListToCollect){
     this.dataSourcePedido3.data = obj.details
     this.dataSourcePedido3.sort = this.sort
-    this.dataSourcePedido3.paginator = this.paginator
     this.totalSelectedPrice3 = 0
     this.dataSourcePedido3.data.forEach(element => {
       this.totalSelectedPrice3 += element.price
@@ -311,7 +309,6 @@ export class FacturacionMensualComponent implements OnInit {
           }else{
             this.dataSource1.data = []
           }
-          this.dataSource1.paginator = this.paginator
           this.dataSource1.sort = this.sort
         }
       },(error) => {
@@ -330,7 +327,6 @@ export class FacturacionMensualComponent implements OnInit {
         if(response.isSuccess === true && response.isWarning === false){
           this.dataSource2 = new MatTableDataSource<InvoiceSubcriberListToCollect>(response.data)
           this.dataSource2.sort = this.sort
-          this.dataSource2.paginator = this.paginator
         }
       },
       (error) => {
@@ -348,7 +344,6 @@ export class FacturacionMensualComponent implements OnInit {
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.dataSource3.data = response.data
-          this.dataSource3.paginator = this.paginator
           this.dataSource3.sort = this.sort
         }
       },
@@ -481,7 +476,6 @@ export class FacturacionMensualComponent implements OnInit {
             (response) => {
               if(response.isSuccess === true && response.isWarning === false){
                 this.dataSource2.data = response.data
-                this.dataSource2.paginator = this.paginator
                 this.dataSource2.sort = this.sort
               }
             },(error) => {
