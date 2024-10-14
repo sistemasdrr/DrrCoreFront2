@@ -299,7 +299,7 @@
     <div class="col-md-12 card card-body">
       <div class="d-flex justify-content-between">
         <h5>Detalle de Pedidos Atendidos por el Agente {{code !== null && code !== '' ? ' - '+code : ''}} </h5>
-        <button *ngIf="code !== ''" mat-mini-fab class="bg-white" matTooltip="Generar Excel" (click)="descargarDocumento(code, startDate, endDate)">
+        <button *ngIf="code !== '' && dataSourcePedido1.data.length > 0" mat-mini-fab class="bg-white" matTooltip="Generar Excel" (click)="descargarDocumento(code, startDate, endDate)">
           <i style="color: rgb(3, 161, 90); font-size: 24px;" class="fa-regular fa-file-excel"></i>
         </button>
       </div>
@@ -354,8 +354,8 @@
             <td mat-cell *matCellDef="let order" class="text-center" >{{order.idTicketHistory}}</td>
           </ng-container>
           <ng-container matColumnDef="number">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> Cupón </th>
-            <td mat-cell *matCellDef="let order" class="text-center" >{{order.number}}</td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;" > Cupón </th>
+            <td mat-cell *matCellDef="let order" class="text-center" [style]="order.isComplement === true ? 'color: red;' : ''">{{order.number + (order.isComplement === true ? ' (C)' : '')}}</td>
           </ng-container>
           <ng-container matColumnDef="requestedName">
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="font-size: 18px;"> Nombre Solicitado</th>

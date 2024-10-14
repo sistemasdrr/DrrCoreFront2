@@ -38,6 +38,14 @@
               </mat-select>
             </mat-form-field>
           </div>
+          <div class="col-md-2" *ngIf="idQuery === 2">
+            <button *ngIf="query1_2_orderBy !== ''" mat-mini-fab color="warn" style="margin: 0 .5rem .5rem .5rem;" (click)="descargarDocumento(idQuery, 'pdf')" #tooltip="matTooltip" matTooltip="Descargar PDF">
+              <mat-icon class="col-white">picture_as_pdf</mat-icon>
+            </button>
+            <button *ngIf="query1_2_orderBy !== ''" mat-mini-fab class="bg-green" style="margin: 0 .5rem .5rem .5rem;" (click)="descargarDocumento(idQuery, 'excel')" #tooltip="matTooltip" matTooltip="Descargar Excel">
+              <mat-icon class="col-white">grid_on</mat-icon>
+            </button>
+          </div>
           <div class="col-md-4" *ngIf="idQuery === 3">
             <mat-form-field class="w-100">
               <mat-label>Mostrar</mat-label>
@@ -49,8 +57,37 @@
               </mat-select>
             </mat-form-field>
           </div>
+          <div class="col-md-2" *ngIf="idQuery === 3">
+            <button *ngIf="query1_3_show !== ''" mat-mini-fab color="warn" style="margin: 0 .5rem .5rem .5rem;" (click)="descargarDocumento(idQuery, 'pdf')" #tooltip="matTooltip" matTooltip="Descargar PDF">
+              <mat-icon class="col-white">picture_as_pdf</mat-icon>
+            </button>
+            <button *ngIf="query1_3_show !== ''" mat-mini-fab class="bg-green" style="margin: 0 .5rem .5rem .5rem;" (click)="descargarDocumento(idQuery, 'excel')" #tooltip="matTooltip" matTooltip="Descargar Excel">
+              <mat-icon class="col-white">grid_on</mat-icon>
+            </button>
+          </div>
           <div class="col-md-4" *ngIf="idQuery === 4">
-           
+            <mat-form-field class="w-100">
+              <mat-label>País</mat-label>
+              <input type="text" matInput [formControl]="controlPaises"  [matAutocomplete]="auto6" [(ngModel)]="paisSeleccionado" (ngModelChange)="cambioPais(paisSeleccionado)">
+              <mat-hint [ngClass]="colorMsgPais === 'red' ? 'col-red': 'col-green'" ><i class="fa-solid fa-circle-exclamation" *ngIf="colorMsgPais === 'red'"></i><i class="fa-solid fa-circle-check" *ngIf="colorMsgPais === 'green'"></i>&nbsp;{{msgPais}}</mat-hint>
+              <button class="btn-traduccion" matSuffix mat-icon-button (click)="limpiarSeleccionPais()">
+                <span class="fi fi-{{iconoSeleccionado}}" style="font-size: 20px;"></span>
+              </button>
+              <mat-autocomplete #auto6="matAutocomplete" [displayWith]="displayPais" >
+                <mat-option *ngFor="let pais of filterPais | async" [value]="pais">
+                  <span class="fi fi-{{pais.bandera}}"></span>
+                  {{pais.valor}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+          <div class="col-md-2" *ngIf="idQuery === 4">
+            <button *ngIf="idCountry!== 0" mat-mini-fab color="warn" style="margin: 0 .5rem .5rem .5rem;" (click)="descargarDocumento(idQuery, 'pdf')" #tooltip="matTooltip" matTooltip="Descargar PDF">
+              <mat-icon class="col-white">picture_as_pdf</mat-icon>
+            </button>
+            <button *ngIf="idCountry !== 0" mat-mini-fab class="bg-green" style="margin: 0 .5rem .5rem .5rem;" (click)="descargarDocumento(idQuery, 'excel')" #tooltip="matTooltip" matTooltip="Descargar Excel">
+              <mat-icon class="col-white">grid_on</mat-icon>
+            </button>
           </div>
 
         </div>
@@ -72,7 +109,7 @@
                     </th>
                     <td mat-cell *matCellDef="let query" class="text-center">
                       <button mat-mini-fab class="bg-white" matTooltip="Seleccionar"
-                        (click)="quary1_1selectSubscriber(query.id);">
+                        (click)="quary1_1selectSubscriber(query.id, query.code);">
                         <app-feather-icons [icon]="'check-circle'" style="color: rgb(30, 203, 203)"></app-feather-icons>
                       </button>
                     </td>
@@ -109,6 +146,17 @@
               </div>
               <div class="col-md-2"></div>
 
+            </div>
+          </div>
+          <div class="col-md-12" *ngIf="idQuery === 4">
+            <div class="row">
+              <div class="col-md-2"></div>
+              <div class="col-md-8">
+                <pdf-viewer [src]="query1_4_pdfSrc" [show-borders]="true" [render-text]="true" [original-size]="false"
+                  style="width: 100%; height: {{loading === true ? '5rem' : '45rem'}}"></pdf-viewer>
+
+              </div>
+              <div class="col-md-2"></div>
             </div>
           </div>
         </div>

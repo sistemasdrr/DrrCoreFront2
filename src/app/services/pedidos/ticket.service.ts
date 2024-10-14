@@ -199,8 +199,8 @@ export class TicketService {
     return this.http.get<Response<boolean>>(this.url + this.controllerTicket + '/DeleteFile?id='+id);
   }
 
-  SendComplement(idTicket : number, idUser : number, digited : boolean, file : boolean, observations : string) : Observable<Response<string>>{
-    return this.http.get<Response<string>>(this.url + this.controllerTicket + '/SendComplement?idTicket='+idTicket+'&idUser='+idUser+'&digited='+digited+'&file='+file+'&observations='+observations);
+  SendComplement(idTicket : number, idUser : number, digited : boolean, file : boolean, observations : string, asignedTo : string) : Observable<Response<string>>{
+    return this.http.get<Response<string>>(this.url + this.controllerTicket + '/SendComplement?idTicket='+idTicket+'&idUser='+idUser+'&digited='+digited+'&file='+file+'&observations='+observations+'&asignedTo='+asignedTo);
   }
   SaveTicketCommentary(idTicket : number, commentary : string) : Observable<Response<string>>{
     return this.http.post<Response<string>>(this.url + this.controllerTicket + '/SaveTicketCommentary?idTicket='+idTicket+'&commentary='+commentary,'');
@@ -221,5 +221,9 @@ export class TicketService {
   }
   ValidateQuality(idTicket : number) : Observable<Response<number>>{
     return this.http.post<Response<number>>(this.url + this.controllerTicket + '/ValidateQuality?idTicket='+idTicket,'');
+  }
+
+  GetUsersInTicket(idTicket : number) : Observable<Response<string[]>>{
+    return this.http.get<Response<string[]>>(this.url + this.controllerTicket + '/GetUsersInTicket?idTicket='+idTicket);
   }
 }

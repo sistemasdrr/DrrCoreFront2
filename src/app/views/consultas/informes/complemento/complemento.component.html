@@ -30,6 +30,19 @@
         <div class="body">
           <div class="container">
             <div class="row">
+              <div class="col-md-8">
+                Seleccione el usuario que enviara el complemento
+              </div>
+              <div class="col-md-4">
+                <mat-form-field class="w-100">
+                  <mat-label>Código</mat-label>
+                  <mat-select [(ngModel)]="asignedTo">
+                    <mat-option [value]="item" *ngFor="let item of listaUsuarios">
+                      {{item}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
               <div class="col-md-12 d-flex justify-content-center">
                 <div class="">
                   <h5>Se enviara el informe como complemento a :</h5>

@@ -81,7 +81,7 @@ export class FacturacionAgenteComponent implements OnInit {
   address = ""
   attendedBy = ""
   idCountry = 0
-  idCurrency = 0
+  idCurrency =1
   bandera = ""
   language = ""
   exchangeRateSD = 0
@@ -672,46 +672,58 @@ armarModelo(){
   }
   grabarFactura(){
     this.armarModelo()
-    console.log(this.model)
-    console.log(this.selection1.selected)
-    Swal.fire({
-      title: '¿Está seguro de grabar esta factura?',
-      text: "",
-      icon: 'warning',
-      showCancelButton: true,
-      cancelButtonText : 'No',
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí',
-      width: '20rem',
-      heightAuto : true
-    }).then((result) => {
-      if (result.value) {
-        this.loading = true
-        this.invoiceService.AddInvoiceAgent(this.model[0]).subscribe(
-          (response) => {
-            if(response.isSuccess === true && response.isWarning === false){
-              Swal.fire({
-                title :'Se grabó correctamente la factura del Agente',
-                text : '',
-                icon : 'success',
-                width: '25rem',
-                heightAuto : true
-              }).then(
-                () => {
-                  this.loading = false
-                  this.buscarPorFacturar()
-                  this.clear(0)
-                }
-              )
+    if(this.invoiceNumber.trim() === ''){
+      Swal.fire({
+        title: 'Campo Factura N° Obligatorio.',
+        text: "",
+        icon: 'error',
+        width: '20rem',
+        heightAuto : true
+      })
+    }else{
+      console.log(this.model)
+      console.log(this.selection1.selected)
+      Swal.fire({
+        title: '¿Está seguro de grabar esta factura?',
+        text: "",
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText : 'No',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí',
+        width: '20rem',
+        heightAuto : true
+      }).then((result) => {
+        if (result.value) {
+          this.loading = true
+          this.invoiceService.AddInvoiceAgent(this.model[0]).subscribe(
+            (response) => {
+              if(response.isSuccess === true && response.isWarning === false){
+                Swal.fire({
+                  title :'Se grabó correctamente la factura del Agente',
+                  text : '',
+                  icon : 'success',
+                  width: '25rem',
+                  heightAuto : true
+                }).then(
+                  () => {
+                    this.loading = false
+                    this.buscarPorFacturar()
+                    this.clear(0)
+                  }
+                )
+              }
+            },
+            (error) => {
+              console.log(error)
+              this.loading = false
             }
-          },
-          (error) => {
-            console.log(error)
-            this.loading = false
-          }
-        )
-      }
-    });
+          )
+        }
+      });
+
+    }
+
   }
 }

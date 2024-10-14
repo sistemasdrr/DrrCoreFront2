@@ -115,6 +115,8 @@ export interface NewAgentInvoice{
   price : number
   hasBalance : boolean
   idSpecialAgentBalancePrice : number
+  isComplement : boolean
+  idTicketComplement : number
 }
 export interface AddInvoiceAgent{
   invoiceCode : string

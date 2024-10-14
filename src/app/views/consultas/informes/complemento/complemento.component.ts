@@ -21,6 +21,10 @@ export class ComplementoComponent implements OnInit {
   userFrom = ""
   observations = ""
 
+  asignedTo = ""
+
+  listaUsuarios : string[] = []
+
   constructor(public dialogRef: MatDialogRef<ComplementoComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,private ticketService : TicketService){
       if(data){
@@ -39,59 +43,77 @@ export class ComplementoComponent implements OnInit {
         }
       }
     )
-
+    this.ticketService.GetUsersInTicket(this.idTicket).subscribe(
+      (response) => {
+        if(response.isSuccess === true){
+          this.listaUsuarios = response.data
+        }
+      }
+    )
   }
   salir(){
     this.dialogRef.close()
   }
   enviar(){
-    let newObservations = ""
-    if(this.archivo || this.digitado){
-      newObservations = this.observations + '\n\nSe realizaron las siguientes modificaciones: \n'+this.textComplement
-    }
-    console.log(this.idTicket)
-    console.log(this.idUser)
-    console.log(this.digitado)
-    console.log(this.archivo)
-    console.log(newObservations)
-    Swal.fire({
-      title: '¿Está seguro de enviar el complemento al supervisor?',
-      text: "",
-      icon: 'warning',
-      showCancelButton: true,
-      cancelButtonText : 'No',
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí',
-      width: '20rem',
-      heightAuto : true
-    }).then((result) => {
-      if (result.value) {
-
-    this.loading = true
-        this.ticketService.SendComplement(this.idTicket,this.idUser,this.digitado,this.archivo,this.observations).subscribe(
-          (response) => {
-            if(response.isSuccess === true && response.isWarning === false){
-              Swal.fire({
-                title: 'Se envio el complemento al supervisor correctamente.',
-                text: "",
-                icon: 'success',
-                width: '20rem',
-                heightAuto : true
-              }).then(
-                () => {
-                  this.loading = false
-                  this.dialogRef.close()
-                }
-              )
-            }
-          },(error) => {
-            this.loading = false
-            this.dialogRef.close()
-          }
-        )
+    if(this.asignedTo === ""){
+      Swal.fire({
+        title: 'Seleccione el código de usuario que enviara el complemento.',
+        text: "",
+        icon: 'error',
+        width: '20rem',
+        heightAuto : true
+      })
+    }else{
+      let newObservations = ""
+      if(this.archivo || this.digitado){
+        newObservations = this.observations + '  \n\nSe realizaron las siguientes modificaciones: \n'+this.textComplement
       }
-    })
+      console.log(this.idTicket)
+      console.log(this.idUser)
+      console.log(this.digitado)
+      console.log(this.archivo)
+      console.log(this.asignedTo)
+      console.log(newObservations)
+      Swal.fire({
+        title: '¿Está seguro de enviar el complemento al supervisor?',
+        text: "",
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText : 'No',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí',
+        width: '20rem',
+        heightAuto : true
+      }).then((result) => {
+        if (result.value) {
+
+      this.loading = true
+          this.ticketService.SendComplement(this.idTicket,this.idUser,this.digitado,this.archivo,newObservations,this.asignedTo).subscribe(
+            (response) => {
+              if(response.isSuccess === true && response.isWarning === false){
+                Swal.fire({
+                  title: 'Se envio el complemento al supervisor correctamente.',
+                  text: "",
+                  icon: 'success',
+                  width: '20rem',
+                  heightAuto : true
+                }).then(
+                  () => {
+                    this.loading = false
+                    this.dialogRef.close()
+                  }
+                )
+              }
+            },(error) => {
+              this.loading = false
+              this.dialogRef.close()
+            }
+          )
+        }
+      })
+    }
+
   }
   textComplement = ""
   verificarDigitado() {
