@@ -154,6 +154,7 @@ export class ListaSituacionComponent implements  OnInit {
     }
   }
   enviarComplemento(idTicket : number) {
+    console.log(idTicket)
     const dialogRef = this.dialog.open(ComplementoComponent, {
       data : {
           idTicket : idTicket

@@ -291,6 +291,7 @@ export class SeleccionarAgenteComponent implements OnInit {
         console.error('ticketValidation no está definido o no es un array.');
         return;
     }
+    console.log(this.type)
 
     let filtered = this.ticketValidation.filter(x => x.type.includes(this.type));
     if (filtered.length > 0) {
