@@ -28,6 +28,9 @@ export class ComboService {
   getUserEmail() : Observable<Response<ComboDataName[]>>{
     return this.http.get<Response<ComboDataName[]>>(this.url + this.controllerCombo + '/userEmails');
   }
+  getReporter() : Observable<Response<ComboDataName[]>>{
+    return this.http.get<Response<ComboDataName[]>>(this.url + this.controllerCombo + '/reporter');
+  }
   getDocumentType() : Observable<Response<ComboData[]>>{
     return this.http.get<Response<ComboData[]>>(this.url + this.controllerCombo + '/documentType');
   }
