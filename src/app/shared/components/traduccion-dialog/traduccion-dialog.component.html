@@ -1,6 +1,6 @@
 
 <div class="container" >
-  <mat-dialog-content class="mat-typography container-scrollable" style="min-width: 70rem;">
+  <mat-dialog-content class="mat-typography container-scrollable" style="min-width: 67rem; min-height: 40rem;">
     <div class="row">
       <div class="col-md-12">
         <div class="card">
@@ -55,15 +55,15 @@
             </div>
             <div class="row" *ngIf="tipo === 'textarea'">
               <div class="col-md-6">
-                <mat-form-field class="w-100">
+                <mat-form-field class="w-100" >
                   <mat-label>Español</mat-label>
-                  <textarea matInput placeholder="" style="min-height: 16rem;" [(ngModel)]="comentario_es"></textarea>
+                  <textarea matInput placeholder="" style="min-height: 25rem; font-size: 18px !important; color: black !important;" [(ngModel)]="comentario_es"></textarea>
                 </mat-form-field>
               </div>
               <div class="col-md-6">
                 <mat-form-field class="w-100">
                   <mat-label>Inglés</mat-label>
-                  <textarea matInput placeholder="" style="min-height: 16rem;" [(ngModel)]="comentario_en"></textarea>
+                  <textarea matInput placeholder="" style="min-height: 25rem; font-size: 18px !important; color: black !important;" [(ngModel)]="comentario_en"></textarea>
                 </mat-form-field>
               </div>
             </div>
