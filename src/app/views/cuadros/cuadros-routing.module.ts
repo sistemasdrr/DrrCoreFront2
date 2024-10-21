@@ -28,7 +28,7 @@ const routes: Routes = [
     data: { title: 'Cuadro de Digitadores - DRR Core V1' }
   },
   {
-    path: 'traductoras',
+    path: 'traductores',
     component: TraductorasComponent,
     data: { title: 'Cuadro de Traductoras - DRR Core V1' }
   },

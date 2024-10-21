@@ -112,4 +112,13 @@ export class ComboService {
   getProfesion() : Observable<Response<ComboData[]>>{
     return this.http.get<Response<ComboData[]>>(this.url + this.controllerCombo + '/profession');
   }
+  getAgents() : Observable<Response<ComboDataName[]>>{
+    return this.http.get<Response<ComboDataName[]>>(this.url + this.controllerCombo + '/agents');
+  }
+  getDigitadores() : Observable<Response<ComboDataName[]>>{
+    return this.http.get<Response<ComboDataName[]>>(this.url + this.controllerCombo + '/digitadores');
+  }
+  getTraductores() : Observable<Response<ComboDataName[]>>{
+    return this.http.get<Response<ComboDataName[]>>(this.url + this.controllerCombo + '/traductores');
+  }
 }

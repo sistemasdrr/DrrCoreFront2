@@ -57,4 +57,58 @@ export class ReportService {
   DownloadReport6_2_4(month : number, year : number ,orderBy : string, format : string){
     return this.http.get(this.url + this.controller + '/DownloadReport6_2_4?month='+month+'&year='+year+'&orderBy='+orderBy+'&format='+format,{observe:'response',responseType:'blob'});
   }
+  DownloadReport6_3_0(format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport6_3_0?format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport6_3_1(startDate : string, endDate : string ,code : string, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport6_3_1?startDate='+startDate+'&endDate='+endDate+'&code='+code+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport6_3_2(code : string, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport6_3_2?code='+code+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport6_3_3(startDate : string, endDate : string ,code : string, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport6_3_3?startDate='+startDate+'&endDate='+endDate+'&code='+code+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport6_3_4(month : number, year : number ,orderBy : string, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport6_3_4?month='+month+'&year='+year+'&orderBy='+orderBy+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport6_3_5(format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport6_3_5?format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport6_3_6(code : string, year : number, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport6_3_6?code='+code+'&year='+year+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport6_3_7(code : string, month : number ,year :number, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport6_3_7?code='+code+'&month='+month+'&year='+year+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport6_3_8(type : string ,year :number, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport6_3_8?type='+type+'&year='+year+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport6_3_11(code : string ,year :number, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport6_3_11?code='+code+'&year='+year+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport6_4_1(startDate : string, endDate : string ,code : string, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport6_4_1?startDate='+startDate+'&endDate='+endDate+'&code='+code+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport6_4_2(code : string, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport6_4_2?code='+code+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport6_4_3(startDate : string, endDate : string ,code : string, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport6_4_3?startDate='+startDate+'&endDate='+endDate+'&code='+code+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport6_4_4(month : number, year : number ,orderBy : string, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport6_4_4?month='+month+'&year='+year+'&orderBy='+orderBy+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport6_5_1(startDate : string, endDate : string ,code : string, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport6_5_1?startDate='+startDate+'&endDate='+endDate+'&code='+code+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport6_5_2(code : string, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport6_5_2?code='+code+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport6_5_3(startDate : string, endDate : string ,code : string, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport6_5_3?startDate='+startDate+'&endDate='+endDate+'&code='+code+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport6_5_4(month : number, year : number ,orderBy : string, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport6_5_4?month='+month+'&year='+year+'&orderBy='+orderBy+'&format='+format,{observe:'response',responseType:'blob'});
+  }
 }
