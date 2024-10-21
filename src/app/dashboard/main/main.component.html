@@ -12,7 +12,7 @@
     <!-- Widgets -->
     <div class="row">
       <div class="col-md-3 col-sm-6">
-        <button (click)="redirigir()" class="w-100 border-0 info-box7 bg-c-green order-info-box7">
+        <button (click)="redirigir()" class="w-100 border-0 info-box7 order-info-box7" style="background-color: #3A9413;">
           <div class="info-box7-block">
             <h4 class="m-b-20 text-start">Tareas Pendientes</h4>
             <h2 class="text-end"><i class="fa-solid fa-list-check float-start"></i><span>{{numPendingTask}}</span></h2>
@@ -21,7 +21,7 @@
         </button>
       </div>
       <div class="col-md-3 col-sm-6">
-        <button  (click)="produccionDiaria()" class="w-100 border-0 info-box7 bg-c-blue order-info-box7">
+        <button  (click)="produccionDiaria()" class="w-100 border-0 info-box7 order-info-box7" style="background-color: #229cf7;">
           <div class="info-box7-block">
             <h4 class="m-b-20">Producción Diaria</h4>
             <h2 class="text-end"><i class="fas fa-clipboard-check float-start"></i><span>{{dailyProduction}}</span></h2>
@@ -90,19 +90,19 @@
                         <div class="body">
                           <div class="list-group">
                             <a href="#" onClick="return false;" class="list-group-item">
-                              <span class="badge bg-teal">{{this.empresasCalidadA}}</span> Calidad A
+                              <span style="background-color: #3A9413;" class="badge">{{this.empresasCalidadA}}</span> Calidad A
                             </a>
                             <a href="#" onClick="return false;" class="list-group-item">
-                              <span class="badge bg-teal">{{this.empresasCalidadB}}</span>Calidad B
+                              <span style="background-color: #3A9413;" class="badge">{{this.empresasCalidadB}}</span>Calidad B
                             </a>
                             <a href="#" onClick="return false;" class="list-group-item">
-                              <span class="badge bg-teal">{{this.empresasCalidadC}}</span>Calidad C
+                              <span style="background-color: #3A9413;" class="badge">{{this.empresasCalidadC}}</span>Calidad C
                             </a>
                             <a href="#" onClick="return false;" class="list-group-item">
-                              <span class="badge bg-teal">{{this.empresasCalidadD}}</span>Calidad D
+                              <span style="background-color: #3A9413;" class="badge">{{this.empresasCalidadD}}</span>Calidad D
                             </a>
                             <a href="#" onClick="return false;" class="list-group-item">
-                              <span class="badge bg-teal">{{this.empresasSinCalidad}}</span>Sin Calidad
+                              <span style="background-color: #3A9413;" class="badge">{{this.empresasSinCalidad}}</span>Sin Calidad
                             </a>
                           </div>
                         </div>
@@ -112,7 +112,7 @@
                       <span class="badge bg-orange">{{this.empresasSinInformes}}</span> Empresas Sin Informes
                     </a>
                     <a href="#" onClick="return false;" class="list-group-item">
-                      <span class="badge bg-purple">{{this.empresasEliminadas}}</span> Empresas Inhabilitadas/Eliminadas
+                      <span style="background-color: #229cf7;" class="badge ">{{this.empresasEliminadas}}</span> Empresas Inhabilitadas/Eliminadas
                     </a>
 
                   </div>

@@ -648,11 +648,11 @@ export class MainComponent implements OnInit {
           series: this.seriesDashboard[0].series,
           chart: {
             type: 'bar',
-            height: 350,
+            height: 500,
             stacked: true,
             foreColor: '#9aa0ac',
           },
-          colors: ['#5048e5', '#f43f5e', '#3c6494', '#a5a5a5'],
+          colors: ['#3A9413','#229cf7', '#f43f5e','#F5C42B'],
           plotOptions: {
             bar: {
               horizontal: true,
@@ -660,10 +660,12 @@ export class MainComponent implements OnInit {
           },
           stroke: {
             width: 1,
+
             colors: ['#fff'],
           },
           xaxis: {
-            categories: this.seriesDashboard[0].categories,//OR RV EF DF
+            categories: this.seriesDashboard[0].categories,
+
             labels: {
               /*formatter: function (val: string) {
                 return val + 'K';
