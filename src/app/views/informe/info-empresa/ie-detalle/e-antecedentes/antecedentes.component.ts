@@ -227,6 +227,7 @@ constructor(
           }).then(() => {
           })
         }).add(() => {
+          console.log("prueba")
           this.currentPaidCapitalCurrencyInforme = this.listaMonedas.filter(x => x.id === this.currentPaidCapitalCurrency)[0]
           this.currencyInforme = this.listaMonedas.filter(x => x.id === this.currency)[0]
           const input = document.getElementById('input_fecha_constitucion') as HTMLElement | null;
