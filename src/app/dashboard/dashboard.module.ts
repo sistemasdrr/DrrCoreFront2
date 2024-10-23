@@ -17,12 +17,18 @@ import { ProduccionMensualComponent } from './produccion-mensual/produccion-mens
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { EnviarComplementoComponent } from './produccion-mensual/enviar-complemento/enviar-complemento.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+import { FeatherModule } from 'angular-feather';
+import { ReportesComponent } from './reportes/reportes.component';
 
 @NgModule({
   declarations: [MainComponent, Dashboard2Component, Dashboard3Component,
     ProduccionDiariaComponent,
     ProduccionMensualComponent,
-    EnviarComplementoComponent],
+    EnviarComplementoComponent,ReportesComponent],
   imports: [
     CommonModule,
     DashboardRoutingModule,
@@ -36,7 +42,13 @@ import { MatMenuModule } from '@angular/material/menu';
     ComponentsModule,
     SharedModule,
     MatSidenavModule,
-    MatMenuModule
+    MatMenuModule,
+    SharedModule,
+    MatTableModule,
+    MatSortModule,
+    PdfViewerModule,
+    NgxExtendedPdfViewerModule,
+    FeatherModule
   ],
 })
 export class DashboardModule {}

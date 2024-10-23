@@ -5,6 +5,7 @@ import { Dashboard2Component } from './dashboard2/dashboard2.component';
 import { Dashboard3Component } from './dashboard3/dashboard3.component';
 import { ProduccionDiariaComponent } from 'app/dashboard/produccion-diaria/produccion-diaria.component';
 import { ProduccionMensualComponent } from './produccion-mensual/produccion-mensual.component';
+import { ReportesComponent } from './reportes/reportes.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,10 @@ const routes: Routes = [
   {
     path: 'dashboard3',
     component: Dashboard3Component,
+  },
+  {
+    path: 'reports',
+    component: ReportesComponent,
   },
   {
     path: 'produccion/diaria', component: ProduccionDiariaComponent,

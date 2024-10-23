@@ -5,6 +5,7 @@ import { ReporterosComponent } from './reporteros/reporteros.component';
 import { AgentesComponent } from './agentes/agentes.component';
 import { DigitadoresComponent } from './digitadores/digitadores.component';
 import { TraductorasComponent } from './traductoras/traductoras.component';
+import { SupervisoresComponent } from './supervisores/supervisores.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,11 @@ const routes: Routes = [
     path: 'traductores',
     component: TraductorasComponent,
     data: { title: 'Cuadro de Traductoras - DRR Core V1' }
+  },
+  {
+    path: 'supervisores',
+    component: SupervisoresComponent,
+    data: { title: 'Cuadro de Supervisores - DRR Core V1' }
   },
 ];
 

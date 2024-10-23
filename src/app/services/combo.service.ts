@@ -40,6 +40,9 @@ export class ComboService {
   getTraductores() : Observable<Response<ComboDataName[]>>{
     return this.http.get<Response<ComboDataName[]>>(this.url + this.controllerCombo + '/traductores');
   }
+  getSupervisores() : Observable<Response<ComboDataName[]>>{
+    return this.http.get<Response<ComboDataName[]>>(this.url + this.controllerCombo + '/supervisores');
+  }
   getDocumentType() : Observable<Response<ComboData[]>>{
     return this.http.get<Response<ComboData[]>>(this.url + this.controllerCombo + '/documentType');
   }

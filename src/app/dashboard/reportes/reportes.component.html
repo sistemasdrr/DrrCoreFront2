@@ -1,0 +1,143 @@
+<section class="content">
+  <div class="d-flex justify-content-center align-items-center loader-container" [ngClass]="{'hide-loader': !loading}">
+    <span class="loader"></span><br>
+    <h2 style="color: white;">&nbsp;Cargando...</h2>
+  </div>
+  <div class="container-fluid" [ngClass]="{'show-form': loading}" style="overflow: auto; width: 100%;">
+    <div class="block-header" *ngFor="let breadscrum of breadscrums">
+      <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [codigoInforme]="''"
+        [active_item]="breadscrum.active">
+      </app-breadcrumb>
+    </div>
+  </div>
+
+  <div class="row m-0 p-0" min>
+    <div class="col-md-12  m-0 p-0">
+      <div class="card card-body shadow " style="padding-bottom: 0px;">
+        <div class="row">
+          <div class="col-md-5">
+            <mat-form-field class="w-100">
+              <mat-label>Consulta de </mat-label>
+              <mat-select [(ngModel)]="idQuery" placeholder="" (ngModelChange)="selectQuery()">
+                <mat-option [value]="1">5.1.2 INFORMES ATENDIDOS POR PAISES DE MAYOR A MENOR</mat-option>
+                <mat-option [value]="2">6.1.7 LISTADO DE ABONADOS</mat-option>
+                <mat-option [value]="3">6.1.7.1 LISTADO DE ABONADOS NACIONALES</mat-option>
+                <mat-option [value]="4">6.1.7.2 LISTADO DE ABONADOS DE AMERICA Y EL CARIBE</mat-option>
+                <mat-option [value]="5">6.1.7.3 LISTADO DE ABONADOS DE EUROPA</mat-option>
+                <mat-option [value]="6">6.1.7.4 LISTADO DE ABONADOS DE ASIA</mat-option>
+                <mat-option [value]="7">6.1.7.5 LISTADO DE ABONADOS DE AFRICA</mat-option>
+                <mat-option [value]="8">6.1.7.6 LISTADO DE ABONADOS DE OCEANIA</mat-option>
+                <mat-option [value]="10">6.1.22 CUADRO ESTADISTICO DE INFORMES ATENDIDOS POR AÑO</mat-option>
+                <mat-option [value]="11">6.3.10 CUADRO DE INFORMES ATENDIDOS POR AGENTE</mat-option>
+                <mat-option [value]="12">7.1 GRAFICA DE INFORMES ATENDIDOS</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="col-md-2" *ngIf="idQuery === 1">
+            <mat-form-field class="w-100" >
+              <mat-label>Año </mat-label>
+              <mat-select [(ngModel)]="query5_1_2_year" (ngModelChange)="selectQuery5_1_2()">
+                <mat-option [value]="item" *ngFor="let item of years">{{item}}</mat-option>
+            </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-2" *ngIf="idQuery === 2 || idQuery === 3|| idQuery === 4|| idQuery === 5|| idQuery === 6|| idQuery === 8|| idQuery === 7">
+            <mat-form-field class="w-100">
+              <mat-label>Ordenar Por </mat-label>
+              <mat-select [(ngModel)]="query6_1_7_orderBy" placeholder=""
+                (ngModelChange)="selectQuery6_1_7()">
+                <mat-option [value]="'C'">Código</mat-option>
+                <mat-option [value]="'N'">Nombre</mat-option>
+                <mat-option [value]="'P'">País</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-2" *ngIf="idQuery === 2 || idQuery === 3|| idQuery === 4|| idQuery === 5|| idQuery === 6|| idQuery === 8|| idQuery === 7">
+            <button *ngIf="query6_1_7_orderBy !== ''" mat-mini-fab color="warn" style="margin: 0 .5rem .5rem .5rem;" (click)="descargarDocumento(idQuery, 'pdf')" #tooltip="matTooltip" matTooltip="Descargar PDF">
+              <mat-icon class="col-white">picture_as_pdf</mat-icon>
+            </button>
+            <button *ngIf="query6_1_7_orderBy !== ''" mat-mini-fab class="bg-green" style="margin: 0 .5rem .5rem .5rem;" (click)="descargarDocumento(idQuery, 'excel')" #tooltip="matTooltip" matTooltip="Descargar Excel">
+              <mat-icon class="col-white">grid_on</mat-icon>
+            </button>
+          </div>
+          <div class="col-md-2" *ngIf="idQuery === 10">
+            <mat-form-field class="w-100" >
+              <mat-label>Año </mat-label>
+              <mat-select [(ngModel)]="query1_10_year" (ngModelChange)="query1_10Cambio()">
+                <mat-option [value]="item" *ngFor="let item of years">{{item}}</mat-option>
+            </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-2" *ngIf="idQuery === 10">
+            <mat-form-field class="w-100" >
+              <mat-label>Ordenar Por </mat-label>
+              <mat-select [(ngModel)]="query1_10_orderBy" (ngModelChange)="query1_10Cambio()">
+                <mat-option [value]="'C'" >Código</mat-option>
+                <mat-option [value]="'N'" >Nombre</mat-option>
+            </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-2" *ngIf="idQuery === 10">
+            <button mat-mini-fab color="warn" style="margin: 0 .5rem .5rem .5rem;" (click)="descargarDocumento(idQuery, 'pdf')" #tooltip="matTooltip" matTooltip="Descargar PDF">
+              <mat-icon class="col-white">picture_as_pdf</mat-icon>
+            </button>
+            <button  mat-mini-fab class="bg-green" style="margin: 0 .5rem .5rem .5rem;" (click)="descargarDocumento(idQuery, 'excel')" #tooltip="matTooltip" matTooltip="Descargar Excel">
+              <mat-icon class="col-white">grid_on</mat-icon>
+            </button>
+          </div>
+
+          <div class="col-md-2" *ngIf="idQuery === 11">
+            <mat-form-field class="w-100" >
+              <mat-label>Año </mat-label>
+              <mat-select [(ngModel)]="query6_3_10_year" (ngModelChange)="query6_3_10()">
+                <mat-option [value]="item" *ngFor="let item of years">{{item}}</mat-option>
+            </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-2" *ngIf="idQuery === 11">
+            <mat-form-field class="w-100" >
+              <mat-label>Agente </mat-label>
+              <mat-select [(ngModel)]="query6_3_10_code" placeholder=""
+              (ngModelChange)="query6_3_10()">
+              <mat-option [value]="item.valor" *ngFor="let item of listaAgentes ">{{item.valor + " - " + item.name}}</mat-option>
+            </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-2" *ngIf="idQuery === 11">
+            <button mat-mini-fab color="warn" style="margin: 0 .5rem .5rem .5rem;" (click)="descargarDocumento(idQuery, 'pdf')" #tooltip="matTooltip" matTooltip="Descargar PDF">
+              <mat-icon class="col-white">picture_as_pdf</mat-icon>
+            </button>
+            <button  mat-mini-fab class="bg-green" style="margin: 0 .5rem .5rem .5rem;" (click)="descargarDocumento(idQuery, 'excel')" #tooltip="matTooltip" matTooltip="Descargar Excel">
+              <mat-icon class="col-white">grid_on</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12" >
+            <div class="row">
+              <div class="col-md-12" *ngIf="idQuery === 1">
+                <pdf-viewer [src]="query5_1_2_pdfSrc" [show-borders]="true" [render-text]="true" [original-size]="false"
+                style="width: 100%; height: {{loading === true ? '5rem' : '45rem'}}"></pdf-viewer>
+            </div>
+              <div class="col-md-12" *ngIf="idQuery === 2 || idQuery === 3 || idQuery === 4 || idQuery === 5 || idQuery === 6 || idQuery === 7 || idQuery === 8">
+                <pdf-viewer [src]="query6_1_7_pdfSrc" [show-borders]="true" [render-text]="true" [original-size]="false"
+                  style="width: 100%; height: {{loading === true ? '5rem' : '45rem'}}"></pdf-viewer>
+              </div>
+              <div class="col-md-12" *ngIf="idQuery === 10">
+                <pdf-viewer [src]="query1_10_pdfSrc" [show-borders]="true" [render-text]="true" [original-size]="false"
+                  style="width: 100%; height: {{loading === true ? '5rem' : '45rem'}}"></pdf-viewer>
+              </div>
+              <div class="col-md-12" *ngIf="idQuery === 11">
+                <pdf-viewer [src]="query6_3_10_pdfSrc" [show-borders]="true" [render-text]="true" [original-size]="false"
+                  style="width: 100%; height: {{loading === true ? '5rem' : '45rem'}}"></pdf-viewer>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

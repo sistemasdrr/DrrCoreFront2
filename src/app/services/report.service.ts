@@ -111,4 +111,16 @@ export class ReportService {
   DownloadReport6_5_4(month : number, year : number ,orderBy : string, format : string){
     return this.http.get(this.url + this.controller + '/DownloadReport6_5_4?month='+month+'&year='+year+'&orderBy='+orderBy+'&format='+format,{observe:'response',responseType:'blob'});
   }
+  DownloadReport6_6_1(code : string, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport6_6_1?code='+code+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport5_1_2(year : number, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport5_1_2?year='+year+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport6_1_7Ger(orderBy : string, type : string, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport6_1_7Ger?orderBy='+orderBy+'&type='+type+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport6_3_10(code : string, year : number, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport6_3_10?code='+code+'&year='+year+'&format='+format,{observe:'response',responseType:'blob'});
+  }
 }
