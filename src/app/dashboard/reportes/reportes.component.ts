@@ -7,32 +7,53 @@ import { ReportService } from 'app/services/report.service';
 @Component({
   selector: 'app-reportes',
   templateUrl: './reportes.component.html',
-  styleUrls: ['./reportes.component.scss']
+  styleUrls: ['./reportes.component.scss'],
 })
 export class ReportesComponent implements OnInit {
-
   loading = false;
-  constructor(private abonadoService: AbonadoService,
+  constructor(
+    private abonadoService: AbonadoService,
     private reportService: ReportService,
-    private comboService: ComboService) { }
+    private comboService: ComboService
+  ) {}
 
   ngOnInit() {
     const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth();
     const startYear = currentYear - 5;
-    this.query5_1_2_year = currentYear
-    this.query6_3_10_year = currentYear
+    this.query5_1_2_year = currentYear;
+    this.query6_3_10_year = currentYear;
+    this.query7_1_start = currentYear - 1;
+    this.query7_1_end = currentYear;
+    this.query7_3_year = currentYear;
+    this.query7_4_year = currentYear;
+    this.query7_11_year = currentYear;
+    this.query7_12_1_year = currentYear;
+    this.query7_12_2_year = currentYear;
+    this.query7_12_1_month = currentMonth + 1;
+    this.query7_13_1_year = currentYear;
+    this.query7_13_2_year = currentYear;
+    this.query7_13_1_month = currentMonth + 1;
     for (let year = currentYear; year >= startYear; year--) {
       this.years.push(year);
     }
 
-    this.selectQuery5_1_2()
-    this.comboService.getAgents().subscribe(
-      (response) => {
-        if(response.isSuccess === true){
-          this.listaAgentes = response.data
-        }
+    this.selectQuery5_1_2();
+    this.comboService.getAgents().subscribe((response) => {
+      if (response.isSuccess === true) {
+        this.listaAgentes = response.data;
       }
-    )
+    });
+    this.comboService.getReporter().subscribe((response) => {
+      if (response.isSuccess === true) {
+        this.listaReporteros = response.data;
+      }
+    });
+    this.comboService.getAbonados().subscribe((response) => {
+      if (response.isSuccess === true) {
+        this.listaAbonados = response.data;
+      }
+    });
   }
 
   years: number[] = [];
@@ -47,6 +68,162 @@ export class ReportesComponent implements OnInit {
 
   descargarDocumento(idQuery: number, format: string) {
     switch (idQuery) {
+      case 1:
+        this.loading = true;
+        this.reportService
+          .DownloadReport5_1_2(this.query5_1_2_year, format)
+          .subscribe((response) => {
+            const blob: Blob = response.body as Blob;
+            const a = document.createElement('a');
+            a.download =
+              'REPORTE 5.1.2' + (format === 'pdf' ? '.pdf' : '.xlsx');
+            a.href = window.URL.createObjectURL(blob);
+            a.click();
+          })
+          .add(() => {
+            this.loading = false;
+          });
+        break;
+      case 2:
+        this.loading = true;
+        this.reportService
+          .DownloadReport6_1_7Ger(
+            this.query6_1_7_orderBy,
+            this.query6_1_7_type,
+            format
+          )
+          .subscribe((response) => {
+            const blob: Blob = response.body as Blob;
+            const a = document.createElement('a');
+            a.download =
+              'REPORTE 6.1.7.1' + (format === 'pdf' ? '.pdf' : '.xlsx');
+            a.href = window.URL.createObjectURL(blob);
+            a.click();
+          })
+          .add(() => {
+            this.loading = false;
+          });
+        break;
+      case 3:
+        this.loading = true;
+        this.reportService
+          .DownloadReport6_1_7Ger(
+            this.query6_1_7_orderBy,
+            this.query6_1_7_type,
+            format
+          )
+          .subscribe((response) => {
+            const blob: Blob = response.body as Blob;
+            const a = document.createElement('a');
+            a.download =
+              'REPORTE 6.1.7.2' + (format === 'pdf' ? '.pdf' : '.xlsx');
+            a.href = window.URL.createObjectURL(blob);
+            a.click();
+          })
+          .add(() => {
+            this.loading = false;
+          });
+        break;
+      case 4:
+        this.loading = true;
+        this.reportService
+          .DownloadReport6_1_7Ger(
+            this.query6_1_7_orderBy,
+            this.query6_1_7_type,
+            format
+          )
+          .subscribe((response) => {
+            const blob: Blob = response.body as Blob;
+            const a = document.createElement('a');
+            a.download =
+              'REPORTE 6.1.7.4' + (format === 'pdf' ? '.pdf' : '.xlsx');
+            a.href = window.URL.createObjectURL(blob);
+            a.click();
+          })
+          .add(() => {
+            this.loading = false;
+          });
+        break;
+      case 5:
+        this.loading = true;
+        this.reportService
+          .DownloadReport6_1_7Ger(
+            this.query6_1_7_orderBy,
+            this.query6_1_7_type,
+            format
+          )
+          .subscribe((response) => {
+            const blob: Blob = response.body as Blob;
+            const a = document.createElement('a');
+            a.download =
+              'REPORTE 6.1.7.5' + (format === 'pdf' ? '.pdf' : '.xlsx');
+            a.href = window.URL.createObjectURL(blob);
+            a.click();
+          })
+          .add(() => {
+            this.loading = false;
+          });
+        break;
+      case 6:
+        this.loading = true;
+        this.reportService
+          .DownloadReport6_1_7Ger(
+            this.query6_1_7_orderBy,
+            this.query6_1_7_type,
+            format
+          )
+          .subscribe((response) => {
+            const blob: Blob = response.body as Blob;
+            const a = document.createElement('a');
+            a.download =
+              'REPORTE 6.1.7.6' + (format === 'pdf' ? '.pdf' : '.xlsx');
+            a.href = window.URL.createObjectURL(blob);
+            a.click();
+          })
+          .add(() => {
+            this.loading = false;
+          });
+        break;
+      case 7:
+        this.loading = true;
+        this.reportService
+          .DownloadReport6_1_7Ger(
+            this.query6_1_7_orderBy,
+            this.query6_1_7_type,
+            format
+          )
+          .subscribe((response) => {
+            const blob: Blob = response.body as Blob;
+            const a = document.createElement('a');
+            a.download =
+              'REPORTE 6.1.7.7' + (format === 'pdf' ? '.pdf' : '.xlsx');
+            a.href = window.URL.createObjectURL(blob);
+            a.click();
+          })
+          .add(() => {
+            this.loading = false;
+          });
+        break;
+      case 8:
+        this.loading = true;
+        this.reportService
+          .DownloadReport6_1_7Ger(
+            this.query6_1_7_orderBy,
+            this.query6_1_7_type,
+            format
+          )
+          .subscribe((response) => {
+            const blob: Blob = response.body as Blob;
+            const a = document.createElement('a');
+            a.download =
+              'REPORTE 6.1.7.8' + (format === 'pdf' ? '.pdf' : '.xlsx');
+            a.href = window.URL.createObjectURL(blob);
+            a.click();
+          })
+          .add(() => {
+            this.loading = false;
+          });
+        break;
       case 10:
         this.loading = true;
         this.reportService
@@ -68,49 +245,235 @@ export class ReportesComponent implements OnInit {
             this.loading = false;
           });
         break;
+      case 11:
+        this.loading = true;
+        this.reportService
+          .DownloadReport6_3_10(
+            this.query6_3_10_code,
+            this.query6_3_10_year,
+            format
+          )
+          .subscribe((response) => {
+            const blob: Blob = response.body as Blob;
+            const a = document.createElement('a');
+            a.download =
+              'REPORTE 6.3.10' + (format === 'pdf' ? '.pdf' : '.xlsx');
+            a.href = window.URL.createObjectURL(blob);
+            a.click();
+          })
+          .add(() => {
+            this.loading = false;
+          });
+        break;
+      case 12:
+        this.loading = true;
+        this.reportService
+          .DownloadReport7_1(this.query7_1_start, this.query7_1_end, format)
+          .subscribe((response) => {
+            const blob: Blob = response.body as Blob;
+            const a = document.createElement('a');
+            a.download = 'REPORTE 7.1' + (format === 'pdf' ? '.pdf' : '.xlsx');
+            a.href = window.URL.createObjectURL(blob);
+            a.click();
+          })
+          .add(() => {
+            this.loading = false;
+          });
+        break;
+      case 13:
+        this.loading = true;
+        this.reportService
+          .DownloadReport7_3(this.query7_3_code, this.query7_3_year, format)
+          .subscribe((response) => {
+            const blob: Blob = response.body as Blob;
+            const a = document.createElement('a');
+            a.download = 'REPORTE 7.3' + (format === 'pdf' ? '.pdf' : '.xlsx');
+            a.href = window.URL.createObjectURL(blob);
+            a.click();
+          })
+          .add(() => {
+            this.loading = false;
+          });
+        break;
+      case 14:
+        this.loading = true;
+        this.reportService
+          .DownloadReport7_4(this.query7_4_year, format)
+          .subscribe((response) => {
+            const blob: Blob = response.body as Blob;
+            const a = document.createElement('a');
+            a.download = 'REPORTE 7.4' + (format === 'pdf' ? '.pdf' : '.xlsx');
+            a.href = window.URL.createObjectURL(blob);
+            a.click();
+          })
+          .add(() => {
+            this.loading = false;
+          });
+        break;
+      case 18:
+        this.loading = true;
+        this.reportService
+          .DownloadReport7_11(this.query7_11_code, this.query7_11_year, format)
+          .subscribe((response) => {
+            const blob: Blob = response.body as Blob;
+            const a = document.createElement('a');
+            a.download = 'REPORTE 7.11' + (format === 'pdf' ? '.pdf' : '.xlsx');
+            a.href = window.URL.createObjectURL(blob);
+            a.click();
+          })
+          .add(() => {
+            this.loading = false;
+          });
+        break;
+      case 19:
+        this.loading = true;
+        this.reportService
+          .DownloadReport7_12_1(
+            this.query7_12_1_month,
+            this.query7_12_1_year,
+            this.query7_12_1_code,
+            format
+          )
+          .subscribe((response) => {
+            const blob: Blob = response.body as Blob;
+            const a = document.createElement('a');
+            a.download =
+              'REPORTE 7.12.1' + (format === 'pdf' ? '.pdf' : '.xlsx');
+            a.href = window.URL.createObjectURL(blob);
+            a.click();
+          })
+          .add(() => {
+            this.loading = false;
+          });
+        break;
+      case 20:
+        this.loading = true;
+        this.reportService
+          .DownloadReport7_12_2(
+            this.query7_12_2_year,
+            this.query7_12_2_code,
+            format
+          )
+          .subscribe((response) => {
+            const blob: Blob = response.body as Blob;
+            const a = document.createElement('a');
+            a.download =
+              'REPORTE 7.12.2' + (format === 'pdf' ? '.pdf' : '.xlsx');
+            a.href = window.URL.createObjectURL(blob);
+            a.click();
+          })
+          .add(() => {
+            this.loading = false;
+          });
+        break;
+      case 21:
+        this.loading = true;
+        this.reportService
+          .DownloadReport7_13_1(
+            this.query7_13_1_month,
+            this.query7_13_1_year,
+            this.query7_13_1_code,
+            format
+          )
+          .subscribe((response) => {
+            const blob: Blob = response.body as Blob;
+            const a = document.createElement('a');
+            a.download =
+              'REPORTE 7.13.1' + (format === 'pdf' ? '.pdf' : '.xlsx');
+            a.href = window.URL.createObjectURL(blob);
+            a.click();
+          })
+          .add(() => {
+            this.loading = false;
+          });
+        break;
+      case 22:
+        this.loading = true;
+        this.reportService
+          .DownloadReport7_13_2(
+            this.query7_13_2_year,
+            this.query7_13_2_code,
+            format
+          )
+          .subscribe((response) => {
+            const blob: Blob = response.body as Blob;
+            const a = document.createElement('a');
+            a.download =
+              'REPORTE 7.13.2' + (format === 'pdf' ? '.pdf' : '.xlsx');
+            a.href = window.URL.createObjectURL(blob);
+            a.click();
+          })
+          .add(() => {
+            this.loading = false;
+          });
+        break;
+      case 23:
+        this.loading = true;
+        this.reportService
+          .DownloadReport7_15(format)
+          .subscribe((response) => {
+            const blob: Blob = response.body as Blob;
+            const a = document.createElement('a');
+            a.download = 'REPORTE 7.15' + (format === 'pdf' ? '.pdf' : '.xlsx');
+            a.href = window.URL.createObjectURL(blob);
+            a.click();
+          })
+          .add(() => {
+            this.loading = false;
+          });
+        break;
     }
   }
-  idQuery = 1
-  selectQuery(){
-    switch(this.idQuery){
+  idQuery = 1;
+  selectQuery() {
+    switch (this.idQuery) {
       case 1:
-        this.selectQuery5_1_2()
+        this.selectQuery5_1_2();
         break;
       case 2:
-        this.query6_1_7_type = 'To'
-        this.selectQuery6_1_7()
+        this.query6_1_7_type = 'To';
+        this.selectQuery6_1_7();
         break;
-      case 3 :
-        this.query6_1_7_type = 'Na'
-        this.selectQuery6_1_7()
+      case 3:
+        this.query6_1_7_type = 'Na';
+        this.selectQuery6_1_7();
         break;
-      case 4 :
-        this.query6_1_7_type = 'Am'
-        this.selectQuery6_1_7()
+      case 4:
+        this.query6_1_7_type = 'Am';
+        this.selectQuery6_1_7();
         break;
-      case 5 :
-        this.query6_1_7_type = 'Eu'
-        this.selectQuery6_1_7()
+      case 5:
+        this.query6_1_7_type = 'Eu';
+        this.selectQuery6_1_7();
         break;
-      case 6 :
-        this.query6_1_7_type = 'As'
-        this.selectQuery6_1_7()
+      case 6:
+        this.query6_1_7_type = 'As';
+        this.selectQuery6_1_7();
         break;
-      case 7 :
-        this.query6_1_7_type = 'Af'
-        this.selectQuery6_1_7()
+      case 7:
+        this.query6_1_7_type = 'Af';
+        this.selectQuery6_1_7();
         break;
-      case 8 :
-        this.query6_1_7_type = 'Oc'
-        this.selectQuery6_1_7()
+      case 8:
+        this.query6_1_7_type = 'Oc';
+        this.selectQuery6_1_7();
+        break;
+      case 12:
+        this.selectQuery7_1();
+        break;
+      case 14:
+        this.selectQuery7_4();
+        break;
+      case 23:
+        this.selectQuery7_15();
         break;
     }
   }
 
-  query5_1_2_year = 0
+  query5_1_2_year = 0;
   query5_1_2_pdfSrc: any;
   query5_1_2_pdfBlob: Blob = new Blob();
-  selectQuery5_1_2(){
+  selectQuery5_1_2() {
     this.loading = true;
 
     this.reportService
@@ -129,16 +492,19 @@ export class ReportesComponent implements OnInit {
       });
   }
 
-
   query6_1_7_orderBy = 'C';
   query6_1_7_type = 'To';
   query6_1_7_pdfSrc: any;
   query6_1_7_pdfBlob: Blob = new Blob();
-  selectQuery6_1_7(){
+  selectQuery6_1_7() {
     this.loading = true;
 
     this.reportService
-      .DownloadReport6_1_7Ger(this.query6_1_7_orderBy, this.query6_1_7_type, 'pdf')
+      .DownloadReport6_1_7Ger(
+        this.query6_1_7_orderBy,
+        this.query6_1_7_type,
+        'pdf'
+      )
       .subscribe((response) => {
         this.query6_1_7_pdfBlob = response.body as Blob;
         const reader = new FileReader();
@@ -176,11 +542,11 @@ export class ReportesComponent implements OnInit {
       });
   }
 
+  listaAgentes: ComboDataName[] = [];
+  listaReporteros: ComboDataName[] = [];
+  listaAbonados: ComboDataName[] = [];
 
-  listaAgentes : ComboDataName[] = []
-
-
-  query6_3_10_code = "";
+  query6_3_10_code = '';
   query6_3_10_year = 0;
   query6_3_10_pdfSrc: any;
   query6_3_10_pdfBlob: Blob = new Blob();
@@ -188,7 +554,7 @@ export class ReportesComponent implements OnInit {
     this.loading = true;
 
     this.reportService
-      .DownloadReport6_3_10(this.query6_3_10_code, this.query6_3_10_year,'pdf')
+      .DownloadReport6_3_10(this.query6_3_10_code, this.query6_3_10_year, 'pdf')
       .subscribe((response) => {
         this.query6_3_10_pdfBlob = response.body as Blob;
         const reader = new FileReader();
@@ -203,4 +569,209 @@ export class ReportesComponent implements OnInit {
       });
   }
 
+  query7_1_start = 0;
+  query7_1_end = 0;
+  query7_1_pdfSrc: any;
+  query7_1_pdfBlob: Blob = new Blob();
+  selectQuery7_1() {
+    this.loading = true;
+    this.reportService
+      .DownloadReport7_1(this.query7_1_start, this.query7_1_end, 'pdf')
+      .subscribe((response) => {
+        this.query7_1_pdfBlob = response.body as Blob;
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const dataUrl: string = reader.result as string;
+          this.query7_1_pdfSrc = dataUrl;
+        };
+        reader.readAsDataURL(this.query7_1_pdfBlob);
+      })
+      .add(() => {
+        this.loading = false;
+      });
+  }
+
+  query7_3_code = '';
+  query7_3_year = 0;
+  query7_3_pdfSrc: any;
+  query7_3_pdfBlob: Blob = new Blob();
+  selectQuery7_3() {
+    this.loading = true;
+    this.reportService
+      .DownloadReport7_3(this.query7_3_code, this.query7_3_year, 'pdf')
+      .subscribe((response) => {
+        this.query7_3_pdfBlob = response.body as Blob;
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const dataUrl: string = reader.result as string;
+          this.query7_3_pdfSrc = dataUrl;
+        };
+        reader.readAsDataURL(this.query7_3_pdfBlob);
+      })
+      .add(() => {
+        this.loading = false;
+      });
+  }
+
+  query7_4_year = 0;
+  query7_4_pdfSrc: any;
+  query7_4_pdfBlob: Blob = new Blob();
+  selectQuery7_4() {
+    this.loading = true;
+    this.reportService
+      .DownloadReport7_4(this.query7_4_year, 'pdf')
+      .subscribe((response) => {
+        this.query7_4_pdfBlob = response.body as Blob;
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const dataUrl: string = reader.result as string;
+          this.query7_4_pdfSrc = dataUrl;
+        };
+        reader.readAsDataURL(this.query7_4_pdfBlob);
+      })
+      .add(() => {
+        this.loading = false;
+      });
+  }
+
+  query7_11_code = '';
+  query7_11_year = 0;
+  query7_11_pdfSrc: any;
+  query7_11_pdfBlob: Blob = new Blob();
+  selectQuery7_11() {
+    this.loading = true;
+    this.reportService
+      .DownloadReport7_11(this.query7_11_code, this.query7_11_year, 'pdf')
+      .subscribe((response) => {
+        this.query7_11_pdfBlob = response.body as Blob;
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const dataUrl: string = reader.result as string;
+          this.query7_11_pdfSrc = dataUrl;
+        };
+        reader.readAsDataURL(this.query7_11_pdfBlob);
+      })
+      .add(() => {
+        this.loading = false;
+      });
+  }
+
+  query7_12_1_code = '';
+  query7_12_1_month = 0;
+  query7_12_1_year = 0;
+  query7_12_1_pdfSrc: any;
+  query7_12_1_pdfBlob: Blob = new Blob();
+  selectQuery7_12_1() {
+    this.loading = true;
+    this.reportService
+      .DownloadReport7_12_1(
+        this.query7_12_1_month,
+        this.query7_12_1_year,
+        this.query7_12_1_code,
+        'pdf'
+      )
+      .subscribe((response) => {
+        this.query7_12_1_pdfBlob = response.body as Blob;
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const dataUrl: string = reader.result as string;
+          this.query7_12_1_pdfSrc = dataUrl;
+        };
+        reader.readAsDataURL(this.query7_12_1_pdfBlob);
+      })
+      .add(() => {
+        this.loading = false;
+      });
+  }
+
+  query7_12_2_code = '';
+  query7_12_2_year = 0;
+  query7_12_2_pdfSrc: any;
+  query7_12_2_pdfBlob: Blob = new Blob();
+  selectQuery7_12_2() {
+    this.loading = true;
+    this.reportService
+      .DownloadReport7_12_2(this.query7_12_2_year, this.query7_12_2_code, 'pdf')
+      .subscribe((response) => {
+        this.query7_12_2_pdfBlob = response.body as Blob;
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const dataUrl: string = reader.result as string;
+          this.query7_12_2_pdfSrc = dataUrl;
+        };
+        reader.readAsDataURL(this.query7_12_2_pdfBlob);
+      })
+      .add(() => {
+        this.loading = false;
+      });
+  }
+
+  query7_13_1_code = '';
+  query7_13_1_month = 0;
+  query7_13_1_year = 0;
+  query7_13_1_pdfSrc: any;
+  query7_13_1_pdfBlob: Blob = new Blob();
+  selectQuery7_13_1() {
+    this.loading = true;
+    this.reportService
+      .DownloadReport7_13_1(
+        this.query7_13_1_month,
+        this.query7_13_1_year,
+        this.query7_13_1_code,
+        'pdf'
+      )
+      .subscribe((response) => {
+        this.query7_13_1_pdfBlob = response.body as Blob;
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const dataUrl: string = reader.result as string;
+          this.query7_13_1_pdfSrc = dataUrl;
+        };
+        reader.readAsDataURL(this.query7_13_1_pdfBlob);
+      })
+      .add(() => {
+        this.loading = false;
+      });
+  }
+
+  query7_13_2_code = '';
+  query7_13_2_year = 0;
+  query7_13_2_pdfSrc: any;
+  query7_13_2_pdfBlob: Blob = new Blob();
+  selectQuery7_13_2() {
+    this.loading = true;
+    this.reportService
+      .DownloadReport7_13_2(this.query7_13_2_year, this.query7_13_2_code, 'pdf')
+      .subscribe((response) => {
+        this.query7_13_2_pdfBlob = response.body as Blob;
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const dataUrl: string = reader.result as string;
+          this.query7_13_2_pdfSrc = dataUrl;
+        };
+        reader.readAsDataURL(this.query7_13_2_pdfBlob);
+      })
+      .add(() => {
+        this.loading = false;
+      });
+  }
+  query7_15_pdfSrc: any;
+  query7_15_pdfBlob: Blob = new Blob();
+  selectQuery7_15() {
+    this.loading = true;
+    this.reportService
+      .DownloadReport7_15('pdf')
+      .subscribe((response) => {
+        this.query7_15_pdfBlob = response.body as Blob;
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const dataUrl: string = reader.result as string;
+          this.query7_15_pdfSrc = dataUrl;
+        };
+        reader.readAsDataURL(this.query7_15_pdfBlob);
+      })
+      .add(() => {
+        this.loading = false;
+      });
+  }
 }

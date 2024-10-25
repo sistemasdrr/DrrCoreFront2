@@ -123,4 +123,31 @@ export class ReportService {
   DownloadReport6_3_10(code : string, year : number, format : string){
     return this.http.get(this.url + this.controller + '/DownloadReport6_3_10?code='+code+'&year='+year+'&format='+format,{observe:'response',responseType:'blob'});
   }
+  DownloadReport7_1(start : number, end : number, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport7_1?start='+start+'&end='+end+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport7_3(code : string, year : number, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport7_3?code='+code+'&year='+year+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport7_4(year : number, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport7_4?year='+year+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport7_11(code : string,year : number, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport7_11?year='+year+'&code='+code+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport7_12_1(month : number, year : number ,code : string, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport7_12_1?month='+month+'&year='+year+'&code='+code+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport7_12_2(year : number ,code : string, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport7_12_2?year='+year+'&code='+code+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport7_13_1(month : number, year : number ,code : string, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport7_13_1?month='+month+'&year='+year+'&code='+code+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport7_13_2(year : number ,code : string, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport7_13_2?year='+year+'&code='+code+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport7_15( format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport7_15?format='+format,{observe:'response',responseType:'blob'});
+  }
 }

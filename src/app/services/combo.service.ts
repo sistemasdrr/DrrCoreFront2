@@ -34,6 +34,9 @@ export class ComboService {
   getAgents() : Observable<Response<ComboDataName[]>>{
     return this.http.get<Response<ComboDataName[]>>(this.url + this.controllerCombo + '/agents');
   }
+  getAbonados() : Observable<Response<ComboDataName[]>>{
+    return this.http.get<Response<ComboDataName[]>>(this.url + this.controllerCombo + '/abonados');
+  }
   getDigitadores() : Observable<Response<ComboDataName[]>>{
     return this.http.get<Response<ComboDataName[]>>(this.url + this.controllerCombo + '/digitadores');
   }
