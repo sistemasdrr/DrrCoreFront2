@@ -221,7 +221,8 @@ export class BalanceComponent implements OnInit {
         type : "E",
         idCompany : this.idCompany,
         section : "BALANCES",
-        language : "E"
+        language : "E",
+        idTicket : 0
       },
     });
   }
@@ -231,7 +232,8 @@ export class BalanceComponent implements OnInit {
         type : "E",
         idCompany : this.idCompany,
         section : "BALANCES",
-        language : "I"
+        language : "I",
+        idTicket : 0
       },
     });
   }

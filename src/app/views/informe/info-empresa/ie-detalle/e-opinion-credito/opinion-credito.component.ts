@@ -135,7 +135,8 @@ opinion=''
         type : "E",
         idCompany : this.idCompany,
         section : "OPINION-CREDITO",
-        language : "E"
+        language : "E",
+        idTicket : 0
       },
     });
   }
@@ -145,7 +146,8 @@ opinion=''
         type : "E",
         idCompany : this.idCompany,
         section : "OPINION-CREDITO",
-        language : "I"
+        language : "I",
+        idTicket : 0
       },
     });
   }

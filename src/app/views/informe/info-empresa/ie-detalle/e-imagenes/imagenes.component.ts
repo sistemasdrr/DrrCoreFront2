@@ -139,7 +139,8 @@ export class ImagenesComponent implements OnInit{
         type : "E",
         idCompany : this.idCompany,
         section : "IMAGENES",
-        language : "E"
+        language : "E",
+        idTicket : 0
       },
     });
   }
@@ -149,7 +150,8 @@ export class ImagenesComponent implements OnInit{
         type : "E",
         idCompany : this.idCompany,
         section : "IMAGENES",
-        language : "I"
+        language : "I",
+        idTicket : 0
       },
     });
   }

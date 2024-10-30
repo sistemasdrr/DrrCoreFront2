@@ -1,6 +1,32 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Response } from 'app/models/response';
 import { environment } from 'environments/environment';
+import { Observable } from 'rxjs';
+
+export interface GetReport7_10_1{
+  id : number
+  name : string
+  country : string
+  flagCountry : string
+  counting : number
+  about : string
+  lastSearched : string
+}
+export interface GetReport7_10_2{
+  main : Report7_10_2_Main[]
+  details : Report7_10_2_Details[]
+}
+export interface Report7_10_2_Main{
+  orderDate : string
+  dispatchtDate : string
+  name : string
+  procedureType : string
+}
+export interface Report7_10_2_Details{
+  name : string
+  counting : number
+}
 
 @Injectable({
   providedIn: 'root'
@@ -131,6 +157,30 @@ export class ReportService {
   }
   DownloadReport7_4(year : number, format : string){
     return this.http.get(this.url + this.controller + '/DownloadReport7_4?year='+year+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport7_5_1(month : number, year : number, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport7_5_1?year='+year+'&month='+month+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport7_5_2(month : number, year : number, code : string, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport7_5_2?year='+year+'&month='+month+'&code='+code+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport7_5_3(year : number, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport7_5_3?year='+year+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport7_5_4(year : number, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport7_5_4?year='+year+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  DownloadReport7_10_1(number : number, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport7_10_1?number='+number+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  GetReport7_10_1(number : number) : Observable<Response<GetReport7_10_1[]>>{
+    return this.http.get<Response<GetReport7_10_1[]>>(this.url + this.controller + '/GetReport7_10_1?number='+number);
+  }
+  DownloadReport7_10_2(id : number, about : string, format : string){
+    return this.http.get(this.url + this.controller + '/DownloadReport7_10_2?id='+id+'&about='+about+'&format='+format,{observe:'response',responseType:'blob'});
+  }
+  GetReport7_10_2(id : number, about : string) : Observable<Response<GetReport7_10_2>>{
+    return this.http.get<Response<GetReport7_10_2>>(this.url + this.controller + '/GetReport7_10_2?id='+id+'&about='+about);
   }
   DownloadReport7_11(code : string,year : number, format : string){
     return this.http.get(this.url + this.controller + '/DownloadReport7_11?year='+year+'&code='+code+'&format='+format,{observe:'response',responseType:'blob'});

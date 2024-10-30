@@ -236,7 +236,8 @@ export class FinanzasComponent implements OnInit, OnDestroy{
         type : "E",
         idCompany : this.idCompany,
         section : "FINANZAS",
-        language : "E"
+        language : "E",
+        idTicket : 0
       },
     });
   }
@@ -246,7 +247,8 @@ export class FinanzasComponent implements OnInit, OnDestroy{
         type : "E",
         idCompany : this.idCompany,
         section : "FINANZAS",
-        language : "I"
+        language : "I",
+        idTicket : 0
       },
     });
   }

@@ -15,6 +15,7 @@ export class VerPdfComponent implements OnInit {
   loading = false
   idCompany = 0
   idPerson = 0
+  idTicket = 0
   type = ""
   name = ""
   section = ""
@@ -27,14 +28,14 @@ export class VerPdfComponent implements OnInit {
         this.type = data.type
         if(this.type === "E"){
           this.idCompany = data.idCompany
-          this.section = data.section
-          this.language = data.language
         }else{
           this.idPerson = data.idPerson
-          this.section = data.section
-          this.language = data.language
         }
+        this.section = data.section
+        this.idTicket = data.idTicket
+        this.language = data.language
       }
+      console.log(this.idTicket)
     }
   ngOnInit(): void {
     this.loading = true
@@ -46,7 +47,7 @@ export class VerPdfComponent implements OnInit {
           }
         }
       )
-      this.datosEmpresaService.downloadReportSection(this.idCompany, this.section, this.language).subscribe(response => {
+      this.datosEmpresaService.downloadReportSection(this.idCompany, this.section, this.language, this.idTicket).subscribe(response => {
         this.pdfBlob = response.body as Blob;
         let reader = new FileReader();
         reader.onloadend = () => {

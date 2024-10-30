@@ -246,7 +246,8 @@ export class SbsRiesgoComponent implements OnInit, OnDestroy{
         type : "E",
         idCompany : this.idCompany,
         section : "SBS",
-        language : "E"
+        language : "E",
+        idTicket : 0
       },
     });
   }
@@ -256,7 +257,8 @@ export class SbsRiesgoComponent implements OnInit, OnDestroy{
         type : "E",
         idCompany : this.idCompany,
         section : "SBS",
-        language : "I"
+        language : "I",
+        idTicket : 0
       },
     });
   }

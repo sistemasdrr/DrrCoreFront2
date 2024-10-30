@@ -54,7 +54,7 @@ export class BreadcrumbComponent implements OnInit{
 
       const dialogRef = this.dialog.open(SociosEmpresaComponent, {
         data: {
-          idCompany : this.idCompany
+          idCompany : this.idCompany,
         },
       });
     }else{
@@ -73,6 +73,7 @@ export class BreadcrumbComponent implements OnInit{
         data: {
           type : "E",
           idCompany : this.idCompany,
+          idTicket : this.idTicket,
           section : "ALL",
           language : language
         },
@@ -82,6 +83,7 @@ export class BreadcrumbComponent implements OnInit{
         data: {
           type : "P",
           idPerson : this.idPerson,
+          idTicket : this.idTicket,
           section : "ALL",
           language : language
         },

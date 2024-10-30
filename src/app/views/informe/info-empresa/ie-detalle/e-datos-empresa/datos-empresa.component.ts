@@ -634,7 +634,8 @@ export class DatosEmpresaComponent implements OnInit, OnDestroy {
         type : "E",
         idCompany : this.id,
         section : "IDENTIFICACION",
-        language : "E"
+        language : "E",
+        idTicket : 0
       },
     });
   }
@@ -644,7 +645,8 @@ export class DatosEmpresaComponent implements OnInit, OnDestroy {
         type : "E",
         idCompany : this.id,
         section : "IDENTIFICACION",
-        language : "I"
+        language : "I",
+        idTicket : 0
       },
     });
   }

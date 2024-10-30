@@ -341,7 +341,8 @@ constructor(
         type : "E",
         idCompany : this.idCompany,
         section : "ANTECEDENTES",
-        language : "E"
+        language : "E",
+        idTicket : 0
       },
     });
   }
@@ -351,7 +352,8 @@ constructor(
         type : "E",
         idCompany : this.idCompany,
         section : "ANTECEDENTES",
-        language : "I"
+        language : "I",
+        idTicket : 0
       },
     });
   }

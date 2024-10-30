@@ -43,6 +43,7 @@ export class IEDetalleComponent implements OnInit {
 
   loading: boolean = true;
   id = 0
+  idTicket = 0
   cupon = ""
 
   company = false
@@ -65,8 +66,8 @@ export class IEDetalleComponent implements OnInit {
       this.id = parseInt(id + '')
     }
     if(cupon !== null && cupon !== ""){
-      console.log('cupon: '+cupon)
-      this.cupon= cupon
+      this.idTicket = parseInt(cupon)
+      console.log(this.idTicket)
     }
   }
 

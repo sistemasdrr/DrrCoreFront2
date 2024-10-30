@@ -422,7 +422,8 @@ export class RamoComponent implements OnInit, OnDestroy{
         type : "E",
         idCompany : this.idCompany,
         section : "RAMO",
-        language : "E"
+        language : "E",
+        idTicket : 0
       },
     });
   }
@@ -432,7 +433,8 @@ export class RamoComponent implements OnInit, OnDestroy{
         type : "E",
         idCompany : this.idCompany,
         section : "RAMO",
-        language : "I"
+        language : "I",
+        idTicket : 0
       },
     });
   }
