@@ -172,7 +172,7 @@ export class SeleccionarPersonaComponent implements OnInit{
     }
     localStorage.setItem('busquedaPersonas', JSON.stringify(busqueda))
     console.log(busqueda)
-    this.personaService.getList(this.nombreCompleto.trim(), this.filtroRB, this.idPais, this.chkConInforme).subscribe(
+    this.personaService.getDatosPersonas(this.nombreCompleto.trim(), this.filtroRB, this.idPais, this.chkConInforme,'N','T').subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.dataSource = new MatTableDataSource<TPersona>(response.data);

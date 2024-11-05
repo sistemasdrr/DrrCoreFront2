@@ -394,19 +394,15 @@ compararModelosF : any
   seleccionarProfesion(profesion : ComboData){
     if(profesion !== null){
       console.log(profesion)
-      if (typeof profesion === 'string' || profesion.id === 0 || profesion === null || profesion === undefined ) {
-        this.msgProfesion = "Seleccione una opción."
-        this.profession = ''
-        this.colorMsgProfesion = "red"
+      if (typeof profesion === 'string' ||profesion === null) {
+      this.msgProfesion = "Seleccione una opción."
+        this.profession = profesion
+      this.colorMsgProfesion = "red"
       } else {
         this.msgProfesion = "Opción Seleccionada."
         this.profession = profesion.valor
         this.colorMsgProfesion = "green"
       }
-    }else{
-      this.profession = ''
-      this.msgProfesion = "Seleccione una opción."
-      this.colorMsgProfesion = "red"
     }
   }
   ngOnDestroy(): void {

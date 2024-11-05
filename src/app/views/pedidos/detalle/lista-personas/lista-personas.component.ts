@@ -164,7 +164,7 @@ export class ListaPersonasComponent implements OnInit {
     // localStorage.setItem('busquedaPersonas', JSON.stringify(busqueda))
 
     this.loading=true;
-    this.datosPersonaService.getDatosPersonas(this.razonSocial.trim(), this.filtroRB, this.idPais, this.chkConInforme,this.filterBy).subscribe(
+    this.datosPersonaService.getDatosPersonas(this.razonSocial.trim(), this.filtroRB, this.idPais, this.chkConInforme,this.filterBy,'T').subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.dataSource = new MatTableDataSource(response.data)

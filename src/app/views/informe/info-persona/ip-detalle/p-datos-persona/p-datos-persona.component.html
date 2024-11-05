@@ -292,11 +292,11 @@
         <div class="col-md-4">
           <mat-form-field class="w-100">
             <mat-label>Profesión</mat-label>
-            <input type="text" matInput [formControl]="ctrlProfesion" [matAutocomplete]="auto" [(ngModel)]="profesionInforme" (ngModelChange)="seleccionarProfesion(profesionInforme)">
-            <mat-hint [ngClass]="colorMsgProfesion === 'red' ? 'col-red': 'col-green'" ><i class="fa-solid fa-circle-exclamation" *ngIf="colorMsgProfesion === 'red'"></i><i class="fa-solid fa-circle-check" *ngIf="colorMsgProfesion === 'green'"></i>&nbsp;{{msgProfesion}}</mat-hint>
+            <input type="text" matInput [formControl]="ctrlProfesion" [matAutocomplete]="auto" [(ngModel)]="profesionInforme" (ngModelChange)="seleccionarProfesion($event)">
+            <mat-hint [ngClass]="profession === '' ? 'col-red': 'col-green'" ><i class="fa-solid fa-circle-exclamation" *ngIf="profession === ''"></i><i class="fa-solid fa-circle-check" *ngIf="profession !== ''"></i>&nbsp;{{msgProfesion}}</mat-hint>
             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-              <mat-option *ngFor="let moneda of filteredProfesion | async" [value]="moneda">
-                {{moneda.valor}}
+              <mat-option *ngFor="let profesion  of filteredProfesion | async" [value]="profesion">
+                {{profesion.valor}}
               </mat-option>
             </mat-autocomplete>
 

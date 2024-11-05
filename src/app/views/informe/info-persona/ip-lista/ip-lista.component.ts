@@ -35,6 +35,7 @@ export class IPListaComponent implements OnInit{
 
   //FILTRAR
   nombreCompleto = ''
+  quality  = "T"
   idPais = 0
   filtroRB = 'C'
   filterBy='N'
@@ -292,7 +293,7 @@ export class IPListaComponent implements OnInit{
     //   conInforme : this.chkConInforme
     // }
     // localStorage.setItem('busquedaPersonas', JSON.stringify(busqueda))
-    this.personaService.getDatosPersonas(this.nombreCompleto.trim(), this.filtroRB, this.idPais, this.chkConInforme, this.filterBy).subscribe(
+    this.personaService.getDatosPersonas(this.nombreCompleto.trim(), this.filtroRB, this.idPais, this.chkConInforme, this.filterBy,this.quality).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.dataSource = new MatTableDataSource<TPersona>(response.data);

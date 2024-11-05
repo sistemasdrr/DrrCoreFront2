@@ -61,6 +61,7 @@ export class IEListaComponent implements OnInit{
 
   //FILTROS
   razonSocial = ""
+  quality = "T"
   filtroRB = "C"
   filterBy = "N"
   idPais = 0
@@ -178,7 +179,7 @@ export class IEListaComponent implements OnInit{
     //   conInforme : this.chkConInforme
     // }
     // localStorage.setItem('busquedaEmpresas', JSON.stringify(busqueda))
-    this.datosEmpresaService.getDatosEmpresas(this.razonSocial.trim(), this.filtroRB, this.idPais, this.chkConInforme,this.filterBy).subscribe(
+    this.datosEmpresaService.getDatosEmpresas(this.razonSocial.trim(), this.filtroRB, this.idPais, this.chkConInforme,this.filterBy,this.quality).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.dataSource = new MatTableDataSource<TCompany>(response.data);
