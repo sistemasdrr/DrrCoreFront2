@@ -20,7 +20,7 @@
                   <mat-option [value]="'C'">Por Nombre Comercial</mat-option>
                   <mat-option [value]="'D'">Por Dirección</mat-option>
                   <mat-option [value]="'R'">Por Registro Tributario</mat-option>
-                  <mat-option [value]="'T'">Por Telefono</mat-option>
+                  <mat-option [value]="'T'">Por Telefono/Celular</mat-option>
                   <mat-option [value]="'S'">Por Nombre Solicitado</mat-option>
                 </mat-select>
               </mat-form-field>
@@ -57,7 +57,7 @@
             </div>
             <div class="col-md-1  p-0">
               <mat-form-field class="w-100" style="padding-top: 1rem; padding-left: 1rem;">
-                <mat-label>Calidad</mat-label>
+                <mat-label>Calidad Final</mat-label>
                 <mat-select [(ngModel)]="quality" >
                   <mat-option [value]="'T'">Todos</mat-option>
                   <mat-option [value]="'A'">A</mat-option>
@@ -85,7 +85,7 @@
             </div>
             <div class="col-md-2 p-0 d-flex align-items-center justify-content-center">
               <div class="" matTooltip="BUSCAR" style="margin: 0 .5rem 0 .5rem">
-                <button mat-mini-fab class="bg-blue" (click)="filtrarEmpresas()">
+                <button mat-mini-fab class="bg-blue" (click)="filtrarEmpresas(0)">
                   <mat-icon class="col-white">search</mat-icon>
                 </button>
               </div>
@@ -104,7 +104,36 @@
             </div>
           </div>
             <div class="row">
-
+              <div class="col-md-2">
+                <button mat-raised-button style="width: 100%; background-color: rgb(7, 135, 255);" (click)="filtrarEmpresas(1)">
+                  Empresas con Informe
+                </button>
+              </div>
+              <div class="col-md-2">
+                <button mat-raised-button style="width: 100%; background-color: rgb(250, 247, 75);" (click)="filtrarEmpresas(2)">
+                  Empresas sólo Relacionada
+                </button>
+              </div>
+              <div class="col-md-2">
+                <button mat-raised-button style="width: 100%; background-color: rgb(255, 255, 255);" (click)="filtrarEmpresas(3)">
+                  Empresas sin Informe, sólo datos
+                </button>
+              </div>
+              <div class="col-md-2">
+                <button mat-raised-button style="width: 100%; background-color: rgb(255, 57, 8);" (click)="filtrarEmpresas(4)">
+                  Empresas Eliminadas, Baja, etc
+                </button>
+              </div>
+              <div class="col-md-2">
+                <button mat-raised-button style="width: 100%; background-color: rgb(7, 226, 255);" (click)="filtrarEmpresas(5)">
+                  Personas con Negocio
+                </button>
+              </div>
+              <div class="col-md-2">
+                <button mat-raised-button style="width: 100%; background-color: fuchsia;" (click)="filtrarEmpresas(6)">
+                   Informes con Reg. Tributario Duplicado
+                </button>
+              </div>
           </div>
         </div>
       </div>
@@ -167,14 +196,14 @@
       </div-->
       <div class="col-md-12" style="overflow-x: auto;">
         <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8" matSort>
-          <ng-container matColumnDef="creditRisk" >
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center"> RC </th>
-            <td mat-cell *matCellDef="let empresa" class="text-center" style="border-radius: 10px;" [class]="empresa.creditRisk ==='A+' ? 'bg-green' : empresa.creditRisk === 'A-' ? 'l-bg-green' : empresa.creditRisk === 'B' ? 'bg-yellow' : empresa.creditRisk === 'C' ? 'bg-orange' : empresa.creditRisk === 'D' ? 'bg-red' : empresa.creditRisk === 'E' ? 'bg-black col-white' : empresa.creditRisk === 'NN' ? 'bg-grey' : '' ">
-              <b style="font-size: 20px;">{{empresa.creditRisk}}</b>
+          <ng-container matColumnDef="indicator" >
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Indicador</th>
+            <td mat-cell *matCellDef="let empresa" class="text-center">
+              <span class="dot{{empresa.indicators}}"></span>
             </td>
-          </ng-container>
+            </ng-container>
           <ng-container matColumnDef="language" >
-          <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Idioma</th>
+          <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Lenguaje</th>
           <td mat-cell *matCellDef="let empresa" class="text-center">
             <span class="fi fi-es" style="font-size: 24px;" *ngIf="empresa.language === 'E'"></span>
             <span class="fi fi-us" style="font-size: 24px;" *ngIf="empresa.language === 'I'"></span>
@@ -187,7 +216,11 @@
           </ng-container>
           <ng-container matColumnDef="taxNumber" >
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center"> RUC</th>
-            <td mat-cell *matCellDef="let empresa" class="text-center">{{empresa.taxNumber}}</td>
+            <td mat-cell *matCellDef="let empresa" class="text-center">
+              <span></span>
+              <span *ngIf="empresa.duplicateTax===true" style="background-color: fuchsia;"> {{empresa.taxNumber}}</span>
+              <span *ngIf="empresa.duplicateTax===false"> {{empresa.taxNumber}}</span>
+             </td>
           </ng-container>
           <ng-container matColumnDef="lastReportDate" >
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center"> Datos Al</th>
@@ -199,18 +232,18 @@
               {{empresa.isoCountry}} <span class="fi fi-{{empresa.flagCountry}}" style="font-size: 20px;"></span>
             </td>
           </ng-container>
-          <ng-container matColumnDef="traductionPercentage" >
+         <!-- <ng-container matColumnDef="traductionPercentage" >
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center"> Traducción</th>
             <td mat-cell *matCellDef="let empresa" class="text-center">
               {{empresa.traductionPercentage}}%
               <mat-progress-bar mode="determinate" value="{{empresa.traductionPercentage}}" *ngIf="empresa.traductionPercentage > 40"></mat-progress-bar>
               <mat-progress-bar mode="determinate" value="{{empresa.traductionPercentage}}" color="warn" *ngIf="empresa.traductionPercentage <= 40"></mat-progress-bar>
             </td>
-          </ng-container>
+          </ng-container> -->
           <ng-container matColumnDef="quality" >
-            <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Calidad</th>
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Calidad Final</th>
             <td mat-cell *matCellDef="let empresa" class="text-center">
-
+                  {{empresa.quality===' '?'S/C':empresa.quality}}
               <span class="fa fa-star " [class]="empresa.quality === 'A' || empresa.quality === 'B' ||empresa.quality === 'C' || empresa.quality === 'D' ? 'checked' : '' "></span>
               <span class="fa fa-star "  [class]="empresa.quality === 'A' ||empresa.quality === 'B' ||empresa.quality === 'C' ? 'checked' : ''"></span>
               <span class="fa fa-star "  [class]="empresa.quality === 'A' ||empresa.quality === 'B' ? 'checked' : ''"></span>

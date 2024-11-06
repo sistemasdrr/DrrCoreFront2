@@ -155,7 +155,7 @@ export class ListaEmpresasComponent implements OnInit {
       listaEmpresas.classList.remove('hide-loader');
     }
     this.loading=true;
-    this.datosEmpresaService.getDatosEmpresas(this.razonSocial.trim(), this.filtroRB, this.idPais, this.chkConInforme,this.filterBy,'T').subscribe(
+    this.datosEmpresaService.getDatosEmpresas(this.razonSocial.trim(), this.filtroRB, this.idPais, this.chkConInforme,this.filterBy,'T',0).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
 

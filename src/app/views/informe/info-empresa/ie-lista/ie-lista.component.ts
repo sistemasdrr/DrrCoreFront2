@@ -71,7 +71,7 @@ export class IEListaComponent implements OnInit{
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('filter') filter!: ElementRef;
-  columnsToDisplay = ['creditRisk', 'language', 'name', 'taxNumber', 'lastReportDate', 'isoCountry', 'traductionPercentage', 'quality','manager','acciones' ];
+  columnsToDisplay = ['indicator', 'language', 'name', 'taxNumber', 'lastReportDate', 'isoCountry', 'quality','manager','acciones' ];
 
   constructor(private datosEmpresaService : DatosEmpresaService,private router : Router, private paisService : PaisService, private dialog : MatDialog){
     this.dataSource = new MatTableDataSource()
@@ -148,7 +148,7 @@ export class IEListaComponent implements OnInit{
   }
   filtrar(event : any){
     if(event.code == 'Enter'){
-      this.filtrarEmpresas()
+      this.filtrarEmpresas(0)
     }
   }
   limpiar(){
@@ -165,9 +165,9 @@ export class IEListaComponent implements OnInit{
     }
     this.chkConInforme = true
 
-    this.filtrarEmpresas()
+    this.filtrarEmpresas(0)
   }
-  filtrarEmpresas(){
+  filtrarEmpresas(indicador:number){
     const listaEmpresas = document.getElementById('loader-lista-empresas') as HTMLElement | null;
     if(listaEmpresas){
       listaEmpresas.classList.remove('hide-loader');
@@ -179,7 +179,7 @@ export class IEListaComponent implements OnInit{
     //   conInforme : this.chkConInforme
     // }
     // localStorage.setItem('busquedaEmpresas', JSON.stringify(busqueda))
-    this.datosEmpresaService.getDatosEmpresas(this.razonSocial.trim(), this.filtroRB, this.idPais, this.chkConInforme,this.filterBy,this.quality).subscribe(
+    this.datosEmpresaService.getDatosEmpresas(this.razonSocial.trim(), this.filtroRB, this.idPais, this.chkConInforme,this.filterBy,this.quality,indicador).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.dataSource = new MatTableDataSource<TCompany>(response.data);
@@ -272,7 +272,7 @@ export class IEListaComponent implements OnInit{
             console.log(response)
           }
         ).add(() => {
-          this.filtrarEmpresas()
+          this.filtrarEmpresas(0)
         })
       }
     });
@@ -303,7 +303,7 @@ export class IEListaComponent implements OnInit{
             console.log(response)
           }
         ).add(() => {
-          this.filtrarEmpresas()
+          this.filtrarEmpresas(0)
         })
       }
     });
@@ -334,7 +334,7 @@ export class IEListaComponent implements OnInit{
             console.log(response)
           }
         ).add(() => {
-          this.filtrarEmpresas()
+          this.filtrarEmpresas(0)
         })
       }
     });

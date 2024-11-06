@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Company, StatusCompany, TCompany, WCompany} from 'app/models/informes/empresa/datos-empresa';
 import { Response } from 'app/models/response';
+import { number } from 'echarts';
 import { environment } from 'environments/environment';
 import { Observable, catchError, throwError } from 'rxjs';
 
@@ -15,8 +16,8 @@ export class DatosEmpresaService {
 
   constructor(private http : HttpClient) {
   }
-  getDatosEmpresas(razonSocial : string, tipoFiltro : string, idPais : number, conInforme : boolean, filterBy:string, quality : string ): Observable<Response<TCompany[]>>{
-    return this.http.post<Response<TCompany[]>>(this.url + this.controllerCompany + '/getbyname?name='+razonSocial+'&form='+tipoFiltro+'&idCountry='+idPais+'&filterBy='+filterBy+'&haveReport='+conInforme+'&quality='+quality,'')
+  getDatosEmpresas(razonSocial : string, tipoFiltro : string, idPais : number, conInforme : boolean, filterBy:string, quality : string,indicador:number ): Observable<Response<TCompany[]>>{
+    return this.http.post<Response<TCompany[]>>(this.url + this.controllerCompany + '/getbyname?name='+razonSocial+'&form='+tipoFiltro+'&idCountry='+idPais+'&filterBy='+filterBy+'&haveReport='+conInforme+'&quality='+quality+'&indicador='+indicador,'')
     .pipe(catchError(this.handleErrorGet));
   }
   getCompanySearch(name : string, taxCode : string, idCountry : number): Observable<Response<WCompany[]>>{
