@@ -178,7 +178,11 @@
           </ng-container>
           <ng-container matColumnDef="name" >
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center"> Nombre Completo</th>
-          <td mat-cell *matCellDef="let persona" class="" style="min-width: 15rem;"><b>{{persona.fullname}}</b></td>
+          <td mat-cell *matCellDef="let persona" class="" style="min-width: 15rem;">
+
+            <a [href]="'#/informes/persona/detalle/'+persona.id" target="_blank" rel="noopener noreferrer"><b>{{persona.fullname}}</b></a>
+
+          </td>
           </ng-container>
           <ng-container matColumnDef="taxNumber" >
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center"> Doc. de Identidad</th>

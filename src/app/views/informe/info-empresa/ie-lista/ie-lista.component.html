@@ -212,7 +212,10 @@
           </ng-container>
           <ng-container matColumnDef="name" >
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center"> Razón Social</th>
-          <td mat-cell *matCellDef="let empresa" class="" style="min-width: 15rem;"><b>{{empresa.name}}</b></td>
+          <td mat-cell *matCellDef="let empresa" class="" style="min-width: 15rem;">
+            <a [href]="'#/informes/empresa/detalle/'+empresa.id" target="_blank" rel="noopener noreferrer"><b>{{empresa.name}}</b></a>
+
+          </td>
           </ng-container>
           <ng-container matColumnDef="taxNumber" >
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center"> RUC</th>

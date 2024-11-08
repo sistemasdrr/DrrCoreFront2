@@ -465,6 +465,7 @@ export class FacturacionMensualComponent implements OnInit {
     const dialogRef = this.dialog.open(CancelarFacturaAbonadoComponent, {
       data : {
         idSubscriberInvoice : this.idSubscriberInvoice,
+        type : "FM"
       }
     })
     dialogRef.afterClosed().subscribe(

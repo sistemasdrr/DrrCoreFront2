@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Query5_1_2ByCycle, Query5_1_2Tickets } from 'app/models/consulta';
-import { AddInvoiceAgent, AddInvoiceSubscriber, GetAgentInvoice, GetPersonalToInvoice, InvoiceAgentList, InvoiceSubcriberListByBill, InvoiceSubcriberListPaids, InvoiceSubcriberListToCollect, NewAgentInvoice } from 'app/models/facturacion';
+import { AddInvoiceAgent, AddInvoiceSubscriber, AddInvoiceSubscriberCC, GetAgentInvoice, GetPersonalToInvoice, InvoiceAgentList, InvoiceSubcriberCCListByBill, InvoiceSubcriberCCListPaids, InvoiceSubcriberCCListToCollect, InvoiceSubcriberListByBill, InvoiceSubcriberListPaids, InvoiceSubcriberListToCollect, NewAgentInvoice } from 'app/models/facturacion';
 import { Response } from 'app/models/response';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
@@ -19,11 +19,20 @@ export class InvoiceService {
   GetInvoiceSubscriberListByBill(startDate : string, endDate : string) : Observable<Response<InvoiceSubcriberListByBill[]>>{
     return this.http.get<Response<InvoiceSubcriberListByBill[]>>(this.url + this.controller + '/GetInvoiceSubscriberListByBill?startDate='+startDate+'&endDate='+endDate);
   }
+  GetInvoiceSubscriberCCListByBill(month : number, year : number) : Observable<Response<InvoiceSubcriberCCListByBill[]>>{
+    return this.http.get<Response<InvoiceSubcriberCCListByBill[]>>(this.url + this.controller + '/GetInvoiceSubscriberCCListByBill?month='+month+'&year='+year);
+  }
   GetInvoiceSubscriberListToCollect(month : number, year : number) : Observable<Response<InvoiceSubcriberListToCollect[]>>{
     return this.http.get<Response<InvoiceSubcriberListToCollect[]>>(this.url + this.controller + '/GetInvoiceSubscriberListToCollect?month='+month+'&year='+year);
   }
+  GetInvoiceSubscriberCCListToCollect(month : number, year : number) : Observable<Response<InvoiceSubcriberCCListToCollect[]>>{
+    return this.http.get<Response<InvoiceSubcriberCCListToCollect[]>>(this.url + this.controller + '/GetInvoiceSubscriberCCListToCollect?month='+month+'&year='+year);
+  }
   GetInvoiceSubscriberListPaids(month : number, year : number) : Observable<Response<InvoiceSubcriberListPaids[]>>{
     return this.http.get<Response<InvoiceSubcriberListPaids[]>>(this.url + this.controller + '/GetInvoiceSubscriberListPaids?month='+month+'&year='+year);
+  }
+  GetInvoiceSubscriberCCListPaids(month : number, year : number) : Observable<Response<InvoiceSubcriberCCListPaids[]>>{
+    return this.http.get<Response<InvoiceSubcriberCCListPaids[]>>(this.url + this.controller + '/GetInvoiceSubscriberCCListPaids?month='+month+'&year='+year);
   }
   UpdateSubscriberTicket(idTicket : number, requestedName : string, procedureType : string, dispatchDate : string, price : number) : Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url + this.controller + '/UpdateSubscriberTicket?idTicket='+idTicket+'&requestedName='+requestedName+'&procedureType='+procedureType+'&dispatchDate='+dispatchDate+'&price='+price,'');
@@ -34,8 +43,14 @@ export class InvoiceService {
   CancelSubscriberInvoiceToCollect(idSubscriberInvoice : number, cancelDate : string) : Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url + this.controller + '/CancelSubscriberInvoiceToCollect?idSubscriberInvoice='+idSubscriberInvoice+'&cancelDate='+cancelDate,'');
   }
+  CancelSubscriberInvoiceCCToCollect(idSubscriberInvoice : number, cancelDate : string) : Observable<Response<boolean>>{
+    return this.http.post<Response<boolean>>(this.url + this.controller + '/CancelSubscriberInvoiceCCToCollect?idSubscriberInvoice='+idSubscriberInvoice+'&cancelDate='+cancelDate,'');
+  }
   AddSubscriberInvoice(obj : AddInvoiceSubscriber) : Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url + this.controller + '/SaveSubscriberInvoice',obj);
+  }
+  AddSubscriberInvoiceCC(obj : AddInvoiceSubscriberCC) : Observable<Response<boolean>>{
+    return this.http.post<Response<boolean>>(this.url + this.controller + '/SaveSubscriberInvoiceCC',obj);
   }
   GetExcelAgentInvoice(code : string, startDate : string, endDate : string){
     return this.http.get(this.url + this.controller + '/GetExcelAgentInvoice?code='+code+'&startDate='+startDate+'&endDate='+endDate,{observe:'response',responseType:'blob'});

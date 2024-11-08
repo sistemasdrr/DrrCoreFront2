@@ -20,6 +20,8 @@ export class CancelarFacturaAbonadoComponent {
   month = this.date.getMonth() + 1;
   year = this.date.getFullYear();
 
+  type = ""
+
   cancelDate = this.day + "/" + this.month + "/" + this.year;
 
   constructor(public dialogRef: MatDialogRef<CancelarFacturaAbonadoComponent>,
@@ -27,6 +29,9 @@ export class CancelarFacturaAbonadoComponent {
     if(data){
       console.log(data)
       this.idSubscriberInvoice = data.idSubscriberInvoice
+      this.type = data.type
+      console.log(this.idSubscriberInvoice)
+      console.log(this.type)
     }
   }
 
@@ -62,28 +67,54 @@ export class CancelarFacturaAbonadoComponent {
     }).then((result) => {
       if (result.value) {
         this.loading = true
-        this.invoiceService.CancelSubscriberInvoiceToCollect(this.idSubscriberInvoice,this.cancelDate).subscribe(
-          (response) => {
-            if(response.isSuccess === true && response.isWarning === false){
-              Swal.fire({
-                title: 'Se cancelo la factura del agente correctamente',
-                text: "",
-                icon: 'success',
-                width: '20rem',
-                heightAuto : true
-              }).then(
-                () => {
-                  this.loading = false;
-                  this.dialogRef.close({
-                    success : true
-                  })
-                }
-              )
+        if(this.type === "CC"){
+          this.invoiceService.CancelSubscriberInvoiceCCToCollect(this.idSubscriberInvoice,this.cancelDate).subscribe(
+            (response) => {
+              if(response.isSuccess === true && response.isWarning === false){
+                Swal.fire({
+                  title: 'Se cancelo la factura del agente correctamente',
+                  text: "",
+                  icon: 'success',
+                  width: '20rem',
+                  heightAuto : true
+                }).then(
+                  () => {
+                    this.loading = false;
+                    this.dialogRef.close({
+                      success : true
+                    })
+                  }
+                )
+              }
+            },(error) => {
+              this.loading = false;
             }
-          },(error) => {
-            this.loading = false;
-          }
-        )
+          )
+        }else{
+          this.invoiceService.CancelSubscriberInvoiceToCollect(this.idSubscriberInvoice,this.cancelDate).subscribe(
+            (response) => {
+              if(response.isSuccess === true && response.isWarning === false){
+                Swal.fire({
+                  title: 'Se cancelo la factura del agente correctamente',
+                  text: "",
+                  icon: 'success',
+                  width: '20rem',
+                  heightAuto : true
+                }).then(
+                  () => {
+                    this.loading = false;
+                    this.dialogRef.close({
+                      success : true
+                    })
+                  }
+                )
+              }
+            },(error) => {
+              this.loading = false;
+            }
+          )
+        }
+
       }
     })
   }

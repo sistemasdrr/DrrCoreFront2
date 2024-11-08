@@ -36,7 +36,7 @@
                     <time class="left-time" datetime="2017-11-04T18:30"><span  class="hidden">{{item.date}}</span>
                       <span class="">{{item.time}}</span>
                     </time>
-                    <div class="left-icon"><img src="assets/images/user/user1.jpg" alt="">
+                    <div class="left-icon" [style]="item.flag === true ? 'background-color: green;' : 'background-color: red;'" >
                     </div>
                     <div class="left-label empty">
                       <span class="progress-percent label {{item.color}} mb-2 shadow" style="width: 200px;{{item.color === 'label' ? 'color : black;' : 'color : white;'}}" >

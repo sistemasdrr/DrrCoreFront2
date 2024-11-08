@@ -76,6 +76,7 @@ export interface TimeLineTicket{
   time : string
   status : string
   color : string
+  flag : boolean
 }
 export interface TicketObservations{
   reportName : string

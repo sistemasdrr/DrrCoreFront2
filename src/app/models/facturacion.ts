@@ -17,6 +17,21 @@ export interface InvoiceSubcriberListByBill{
   subscriberCode : string
   idInvoiceState : number
 }
+export interface InvoiceSubcriberCCListByBill{
+  idSubscriber : number
+  name : string
+  code : string
+  country : string
+  flagCountry : string
+  history : InvoiceSubscriberCCHistory[]
+}
+export interface InvoiceSubscriberCCHistory{
+  id : number
+  couponAmount : number
+  unitPrice : number
+  totalPrice : number
+  purchaseDate : string
+}
 export interface InvoiceSubcriberListToCollect{
   id : number
   invoiceCode : string
@@ -27,6 +42,17 @@ export interface InvoiceSubcriberListToCollect{
   invoiceEmitDate : Date | null
   details : InvoiceDetailsSubcriberToCollect[]
 }
+export interface InvoiceSubcriberCCListToCollect{
+  id : number
+  invoiceCode : string
+  idCurrency : number
+  idSubscriber : number
+  subscriberName : string
+  subscriberCode : string
+  invoiceEmitDate : Date | null
+  quantity : number
+  totalPrice : number
+}
 export interface InvoiceSubcriberListPaids{
   id : number
   idSubscriber : number
@@ -34,7 +60,18 @@ export interface InvoiceSubcriberListPaids{
   subscriberCode : string
   details : InvoiceDetailsSubcriberPaids[]
 }
-
+export interface InvoiceSubcriberCCListPaids{
+  id : number
+  invoiceCode : string
+  idCurrency : number
+  idSubscriber : number
+  subscriberName : string
+  subscriberCode : string
+  invoiceEmitDate : Date | null
+  invoiceCancelDate : Date | null
+  quantity : number
+  totalPrice : number
+}
 export interface InvoiceDetailsSubcriberToCollect{
   idSubscriberInvoiceDetails : number
   idSubscriberInvoice : number
@@ -76,6 +113,18 @@ export interface AddInvoiceSubscriber{
   attendedByName : string
   attendedByEmail : string
   invoiceSubscriberList : InvoiceSubcriberListByBill[]
+}
+export interface AddInvoiceSubscriberCC{
+  invoiceCode : string
+  invoiceDate : Date | null
+  language : string
+  idCurrency : number
+  idSubscriber : number
+  attendedByName : string
+  attendedByEmail : string
+  quantity : number
+  totalPrice : number
+  details : InvoiceSubscriberCCHistory[]
 }
 
 export interface InvoiceAgentList{
