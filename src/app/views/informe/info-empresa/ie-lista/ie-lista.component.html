@@ -22,6 +22,7 @@
                   <mat-option [value]="'R'">Por Registro Tributario</mat-option>
                   <mat-option [value]="'T'">Por Telefono/Celular</mat-option>
                   <mat-option [value]="'S'">Por Nombre Solicitado</mat-option>
+                  <mat-option [value]="'E'">Por Departamento / Estado</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
@@ -125,12 +126,12 @@
                 </button>
               </div>
               <div class="col-md-2">
-                <button mat-raised-button style="width: 100%; background-color: rgb(7, 226, 255);" (click)="filtrarEmpresas(5)">
+                <button mat-raised-button style="width: 100%; background-color: rgb(7, 226, 255);" (click)="filtrarEmpresas(6)">
                   Personas con Negocio
                 </button>
               </div>
               <div class="col-md-2">
-                <button mat-raised-button style="width: 100%; background-color: fuchsia;" (click)="filtrarEmpresas(6)">
+                <button mat-raised-button style="width: 100%; background-color: fuchsia;" (click)="filtrarEmpresas(5)">
                    Informes con Reg. Tributario Duplicado
                 </button>
               </div>
@@ -199,7 +200,7 @@
           <ng-container matColumnDef="indicator" >
             <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Indicador</th>
             <td mat-cell *matCellDef="let empresa" class="text-center">
-              <span class="dot{{empresa.indicators}}"></span>
+              <span class="dot{{empresa.status}}"></span>
             </td>
             </ng-container>
           <ng-container matColumnDef="language" >
@@ -221,8 +222,9 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center"> RUC</th>
             <td mat-cell *matCellDef="let empresa" class="text-center">
               <span></span>
-              <span *ngIf="empresa.duplicateTax===true" style="background-color: fuchsia;"> {{empresa.taxNumber}}</span>
-              <span *ngIf="empresa.duplicateTax===false"> {{empresa.taxNumber}}</span>
+              <span *ngIf="empresa.taxStatus===1" style="background-color: fuchsia;"> {{empresa.taxNumber}}</span>
+              <span *ngIf="empresa.taxStatus===2" style="background-color: rgb(7, 226, 255);"> {{empresa.taxNumber}}</span>
+              <span *ngIf="empresa.taxStatus===0"> {{empresa.taxNumber}}</span>
              </td>
           </ng-container>
           <ng-container matColumnDef="lastReportDate" >
