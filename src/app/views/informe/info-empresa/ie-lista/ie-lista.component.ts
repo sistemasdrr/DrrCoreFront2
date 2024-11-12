@@ -71,7 +71,7 @@ export class IEListaComponent implements OnInit{
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('filter') filter!: ElementRef;
-  columnsToDisplay = ['indicator', 'language', 'name', 'taxNumber', 'lastReportDate', 'isoCountry', 'quality','manager','acciones' ];
+  columnsToDisplay = ['indicator', 'language', 'name','address','tellphone', 'taxNumber', 'lastReportDate', 'isoCountry', 'quality','manager','acciones' ];
 
   constructor(private datosEmpresaService : DatosEmpresaService,private router : Router, private paisService : PaisService, private dialog : MatDialog){
     this.dataSource = new MatTableDataSource()

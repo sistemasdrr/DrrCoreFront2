@@ -198,25 +198,33 @@
       <div class="col-md-12" style="overflow-x: auto;">
         <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8" matSort>
           <ng-container matColumnDef="indicator" >
-            <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Indicador</th>
-            <td mat-cell *matCellDef="let empresa" class="text-center">
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center" style="width: 2rem;"> Indicador</th>
+            <td mat-cell *matCellDef="let empresa" class="text-center" style="width: 2cqb;">
               <span class="dot{{empresa.status}}"></span>
             </td>
             </ng-container>
           <ng-container matColumnDef="language" >
-          <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Lenguaje</th>
-          <td mat-cell *matCellDef="let empresa" class="text-center">
+          <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center" style="width: 2rem;"> Lenguaje</th>
+          <td mat-cell *matCellDef="let empresa" class="text-center" style="width: 2rem;">
             <span class="fi fi-es" style="font-size: 24px;" *ngIf="empresa.language === 'E'"></span>
             <span class="fi fi-us" style="font-size: 24px;" *ngIf="empresa.language === 'I'"></span>
             <span class="fi fi-us" style="font-size: 24px; background-image: url('https://informesdrr.com/front/assets/images/us-es.png');" *ngIf="empresa.language === 'A'"></span>
             </td>
           </ng-container>
           <ng-container matColumnDef="name" >
-          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center"> Razón Social</th>
-          <td mat-cell *matCellDef="let empresa" class="" style="min-width: 15rem;">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="width: 20rem;"> Razón Social</th>
+          <td mat-cell *matCellDef="let empresa" class="" style="width: 20rem;">
             <a [href]="'#/informes/empresa/detalle/'+empresa.id" target="_blank" rel="noopener noreferrer"><b>{{empresa.name}}</b></a>
 
           </td>
+          </ng-container>
+          <ng-container matColumnDef="address" >
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" style="width: 20rem;"> Dirección</th>
+            <td style="width: 20rem;" mat-cell *matCellDef="let empresa">{{empresa.address}}</td>
+          </ng-container>
+          <ng-container matColumnDef="tellphone" >
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center"> Teléfono / Celular</th>
+            <td mat-cell *matCellDef="let empresa">{{empresa.telephone}}</td>
           </ng-container>
           <ng-container matColumnDef="taxNumber" >
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center"> RUC</th>
@@ -248,7 +256,7 @@
           <ng-container matColumnDef="quality" >
             <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-center"> Calidad Final</th>
             <td mat-cell *matCellDef="let empresa" class="text-center">
-                  {{empresa.quality===' '?'S/C':empresa.quality}}
+                  {{empresa.quality===' '?'SC':empresa.quality}}
               <span class="fa fa-star " [class]="empresa.quality === 'A' || empresa.quality === 'B' ||empresa.quality === 'C' || empresa.quality === 'D' ? 'checked' : '' "></span>
               <span class="fa fa-star "  [class]="empresa.quality === 'A' ||empresa.quality === 'B' ||empresa.quality === 'C' ? 'checked' : ''"></span>
               <span class="fa fa-star "  [class]="empresa.quality === 'A' ||empresa.quality === 'B' ? 'checked' : ''"></span>
