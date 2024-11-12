@@ -11,7 +11,7 @@
     </div>
     <!-- Widgets -->
     <div class="row">
-      <div class="col-md-3 col-sm-6">
+      <div [class]="idEmployee !== 80 && idEmployee !== 96 ? 'col-md-3 col-sm-6' : 'col-md-6 col-sm-12'">
         <button (click)="redirigir()" class="w-100 border-0 info-box7 order-info-box7" style="background-color: #3A9413;">
           <div class="info-box7-block">
             <h4 class="m-b-20 text-start">Tareas Pendientes</h4>
@@ -20,7 +20,7 @@
           </div>
         </button>
       </div>
-      <div class="col-md-3 col-sm-6">
+      <div class="col-md-3 col-sm-6" *ngIf="idEmployee !== 80 && idEmployee !== 96">
         <button  (click)="produccionDiaria()" class="w-100 border-0 info-box7 order-info-box7" style="background-color: #229cf7;">
           <div class="info-box7-block">
             <h4 class="m-b-20">Producción Diaria</h4>
@@ -29,7 +29,7 @@
           </div>
         </button>
       </div>
-      <div class="col-md-3 col-sm-6">
+      <div class="col-md-3 col-sm-6" *ngIf="idEmployee !== 80 && idEmployee !== 96">
         <button (click)="produccionMensual()" class="w-100 border-0 info-box7 bg-c-yellow order-info-box7">
           <div class="info-box7-block">
             <h4 class="m-b-20">Producción Mensual</h4>
@@ -38,7 +38,7 @@
           </div>
         </button>
       </div>
-      <div class="col-md-3 col-sm-6">
+      <div [class]="idEmployee !== 80 && idEmployee !== 96 ? 'col-md-3 col-sm-6' : 'col-md-6 col-sm-12'">
         <div class="info-box7 bg-c-pink order-info-box7">
           <div class="info-box7-block">
             <h4 class="m-b-20">Cupones Observados</h4>
