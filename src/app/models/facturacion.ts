@@ -109,9 +109,16 @@ export interface AddInvoiceSubscriber{
   invoiceDate : Date | null
   language : string
   idCurrency : number
+  idCountry : number
   idSubscriber : number
+  exchangeRate : number
+  subscriberCode : string
   attendedByName : string
   attendedByEmail : string
+  taxTypeCode : string
+  address : string
+  attendedBy : string
+  igv : number
   invoiceSubscriberList : InvoiceSubcriberListByBill[]
 }
 export interface AddInvoiceSubscriberCC{

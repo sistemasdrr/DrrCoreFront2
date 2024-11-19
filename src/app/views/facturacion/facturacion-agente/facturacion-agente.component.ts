@@ -140,9 +140,7 @@ export class FacturacionAgenteComponent implements OnInit {
   updateTotalPrice2() {
     this.totalSelectedPrice2 = this.selection2.selected.reduce((acc, curr) => acc + curr.price, 0);
   }
-  updateTotalPrice3() {
-    this.totalSelectedPrice3 = this.selection1.selected.reduce((acc, curr) => acc + curr.price, 0);
-  }
+
   calcularInformes(procedureType : string, number : number) : number {
     if(number === 1){
       return this.dataSourcePedido1.data.filter(x => x.procedureType === procedureType).length;

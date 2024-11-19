@@ -16,6 +16,9 @@ export class InvoiceService {
 
   constructor(private http : HttpClient) { }
 
+  GetTramo(obj : AddInvoiceSubscriber) : Observable<Response<boolean>>{
+    return this.http.post<Response<boolean>>(this.url + this.controller + '/GetTramo', obj);
+  }
   GetInvoiceSubscriberListByBill(startDate : string, endDate : string) : Observable<Response<InvoiceSubcriberListByBill[]>>{
     return this.http.get<Response<InvoiceSubcriberListByBill[]>>(this.url + this.controller + '/GetInvoiceSubscriberListByBill?startDate='+startDate+'&endDate='+endDate);
   }

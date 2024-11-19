@@ -1,7 +1,7 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { AddInvoiceSubscriber, InvoiceDetailsSubcriberToCollect, InvoiceSubcriberListByBill, InvoiceSubcriberListPaids, InvoiceSubcriberListToCollect } from './../../../../models/facturacion';
 import { InvoiceService } from './../../../../services/Facturacion/invoice.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatPaginator } from '@angular/material/paginator';
@@ -38,7 +38,7 @@ export interface dataPedido{
   templateUrl: './facturacion-mensual.component.html',
   styleUrls: ['./facturacion-mensual.component.scss']
 })
-export class FacturacionMensualComponent implements OnInit {
+export class FacturacionMensualComponent implements OnInit, AfterViewInit {
   breadscrums = [
     {
       title: 'Facturación Mensual de Abonado',
@@ -69,7 +69,7 @@ export class FacturacionMensualComponent implements OnInit {
   columnsToCollect : string[] = ['invoiceCode','opciones']
   columnsPaids : string[] = ['invoiceCode','opciones']
 
-  columnsInvoiceByBill : string[] = ['select','ticket','name','orderDate','dispatchDate','procedureType', 'country','price','options']
+  columnsInvoiceByBill : string[] = ['select','number','requestedName','orderDate','dispatchDate','procedureType', 'country','price','options']
   columnsInvoiceToCollect : string[] = ['ticket','name','orderDate','dispatchDate','referenceNumber','country','procedureType','price','options']
   columnsInvoicePaids : string[] = ['ticket','name','orderDate','dispatchDate','referenceNumber','country','procedureType','price']
 
@@ -84,6 +84,7 @@ export class FacturacionMensualComponent implements OnInit {
   code = ""
   address = ""
   taxTypeCode = ""
+  exchangeRate = 1;
   attendedByName = ""
   attendedByEmail = ""
   idCountry = 0
@@ -121,18 +122,23 @@ export class FacturacionMensualComponent implements OnInit {
   monthC = 1
   yearC = 2024
 
+  igv1 = 0
+  igvFlag = false;
+
   //1
   isAllSelected1() {
     const numSelected = this.selection1.selected.length;
-    const numRows = this.dataSource1.data.length;
+    const numRows = this.dataSourcePedido1.data.length;
     return numSelected === numRows;
   }
   toggleAllRows1() {
     if (this.isAllSelected1()) {
       this.selection1.clear();
+      this.updateTotalPrice1();
       return;
     }
-    this.selection1.select(...this.dataSource1.data);
+    this.selection1.select(...this.dataSourcePedido1.data);
+    this.updateTotalPrice1();
   }
   checkboxLabel1(row?: InvoiceSubcriberListByBill): string {
     if (!row) {
@@ -142,14 +148,25 @@ export class FacturacionMensualComponent implements OnInit {
   }
   onCheckboxChange1(row: InvoiceSubcriberListByBill) {
     this.selection1.toggle(row);
+    this.updateTotalPrice1();
   }
-
+  calcularInformes(procedureType : string, number : number) : number {
+    if(number === 1){
+      return this.dataSourcePedido1.data.filter(x => x.procedureType === procedureType).length;
+    }else if( number === 2){
+      return this.dataSourcePedido2.data.filter(x => x.procedureType === procedureType).length;
+    }else if(number === 3){
+      return this.dataSourcePedido3.data.filter(x => x.procedureType === procedureType).length;
+    }else{
+      return 0
+    }
+  }
 
   constructor(private invoiceService : InvoiceService, private abonadoService : AbonadoService,
     private comboService : ComboService, private dialog : MatDialog
   ){
     this.dataSource1 = new MatTableDataSource()
-    this.dataSource1.sort = this.sort
+    this.dataSourcePedido1.sort = this.sort
 
   }
   ngOnInit(): void {
@@ -168,6 +185,11 @@ export class FacturacionMensualComponent implements OnInit {
       }
     )
   }
+
+  ngAfterViewInit() {
+    this.dataSourcePedido1.paginator = this.paginator;
+    this.dataSourcePedido1.sort = this.sort;
+  }
   formatDate(date: moment.Moment): string {
     const formattedDate = date.format('DD/MM/YYYY');
     return formattedDate;
@@ -183,6 +205,48 @@ export class FacturacionMensualComponent implements OnInit {
       }
     }
     return distinctInvoices;
+  }
+
+  descargarTramo(){
+    Swal.fire({
+      title: '¿Está seguro de guardar este Tramo?',
+      text: "",
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText : 'No',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí',
+      width: '20rem',
+      heightAuto : true
+    }).then((result) => {
+      if (result.value) {
+        this.armarModelo()
+        this.loading = true;
+        this.invoiceService.GetTramo(this.model[0]).subscribe(
+          (response) => {
+            if(response.isSuccess === true && response.data === true){
+              Swal.fire({
+                title: 'Se guardo el Tramo correctamente.',
+                text: "",
+                icon: 'success',
+                width: '20rem',
+                heightAuto : true
+              }).then(
+                () => {
+                  this.loading = false
+                }
+              )
+            }else{
+              this.loading = false;
+            }
+          }
+        ).add(() => {
+          this.loading = false
+        })
+      }
+    })
+
   }
   selectStartDate(event: MatDatepickerInputEvent<Date>) {
     const selectedDate = event.value;
@@ -202,15 +266,23 @@ export class FacturacionMensualComponent implements OnInit {
       invoiceDate : this.invoiceDate,
       language : this.language,
       idCurrency : this.idCurrency,
+      idCountry : this.idCountry,
       idSubscriber : this.idSubscriber,
+      subscriberCode : this.code,
       attendedByName : this.attendedByName,
       attendedByEmail : this.attendedByEmail,
+      taxTypeCode : this.taxTypeCode,
+      exchangeRate : this.exchangeRate,
+      address : this.address,
+      attendedBy : this.attendedByName,
+      igv : this.igv1,
       invoiceSubscriberList : this.selection1.selected
     }
   }
   selectSubscriberByBill(idSubscriber : number){
     this.selection1.clear()
     this.dataSourcePedido1.data = this.datos.filter(x => x.idSubscriber === idSubscriber)
+    this.dataSourcePedido1.sort = this.sort;
     this.abonadoService.getAbonadoPorId(idSubscriber).subscribe(
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
@@ -232,7 +304,7 @@ export class FacturacionMensualComponent implements OnInit {
   }
   selectInvoiceToCollect(obj : InvoiceSubcriberListToCollect){
     this.dataSourcePedido2.data = obj.details
-    this.dataSourcePedido2.sort = this.sort
+    //this.dataSourcePedido2.sort = this.sort
     this.totalSelectedPrice2 = 0
     this.dataSourcePedido2.data.forEach(element => {
       this.totalSelectedPrice2 += element.price
@@ -259,12 +331,22 @@ export class FacturacionMensualComponent implements OnInit {
     )
   }
   idSubscriberInvoice = 0
+
   totalSelectedPrice1 = 0
   totalSelectedPrice2 = 0
   totalSelectedPrice3 = 0
+  updateTotalPrice1() {
+    this.totalSelectedPrice1 = this.selection1.selected.reduce((acc, curr) => acc + curr.price, 0);
+    if(this.igvFlag){
+      this.igv1 = this.totalSelectedPrice1 * 18 / 100
+    }else{
+      this.igv1 = 0
+    }
+  }
+
   selectInvoicePaids(obj : InvoiceSubcriberListToCollect){
     this.dataSourcePedido3.data = obj.details
-    this.dataSourcePedido3.sort = this.sort
+    //his.dataSourcePedido3.sort = this.sort
     this.totalSelectedPrice3 = 0
     this.dataSourcePedido3.data.forEach(element => {
       this.totalSelectedPrice3 += element.price
@@ -326,7 +408,7 @@ export class FacturacionMensualComponent implements OnInit {
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.dataSource2 = new MatTableDataSource<InvoiceSubcriberListToCollect>(response.data)
-          this.dataSource2.sort = this.sort
+          //this.dataSource2.sort = this.sort
         }
       },
       (error) => {
@@ -344,7 +426,7 @@ export class FacturacionMensualComponent implements OnInit {
       (response) => {
         if(response.isSuccess === true && response.isWarning === false){
           this.dataSource3.data = response.data
-          this.dataSource3.sort = this.sort
+          //this.dataSource3.sort = this.sort
         }
       },
       (error) => {
@@ -390,6 +472,7 @@ export class FacturacionMensualComponent implements OnInit {
       this.dataSource3.data = []
 
       this.dataSourcePedido1.data = []
+      this.dataSourcePedido1.sort = this.sort;
       this.dataSourcePedido3.data = []
     }else if(index === 2){
       this.byBill = false
@@ -400,6 +483,7 @@ export class FacturacionMensualComponent implements OnInit {
       this.dataSource2.data = []
 
       this.dataSourcePedido1.data = []
+      this.dataSourcePedido1.sort = this.sort;
       this.dataSourcePedido2.data = []
     }
     this.invoiceNumber = ""
@@ -477,7 +561,7 @@ export class FacturacionMensualComponent implements OnInit {
             (response) => {
               if(response.isSuccess === true && response.isWarning === false){
                 this.dataSource2.data = response.data
-                this.dataSource2.sort = this.sort
+                //this.dataSource2.sort = this.sort
               }
             },(error) => {
               console.log(error)
