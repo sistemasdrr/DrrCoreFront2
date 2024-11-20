@@ -238,7 +238,17 @@ export class FacturacionMensualComponent implements OnInit, AfterViewInit {
                 }
               )
             }else{
-              this.loading = false;
+              Swal.fire({
+                title: 'Ocurrio un problema al guardar el Tramo.',
+                text: "",
+                icon: 'error',
+                width: '20rem',
+                heightAuto : true
+              }).then(
+                () => {
+                  this.loading = false
+                }
+              )
             }
           }
         ).add(() => {
