@@ -93,16 +93,15 @@
               <mat-icon class="col-white">grid_on</mat-icon>
             </button>
           </div>
-          <div class="col-md-2" *ngIf="idQuery === 3">
+          <div class="col-md-3" *ngIf="idQuery === 3">
             <mat-form-field class="w-100">
               <mat-label>Agente</mat-label>
-              <mat-select [(ngModel)]="query1_3_code" placeholder=""
-                (ngModelChange)="selectQuery6_3_3()">
+              <mat-select [(ngModel)]="query1_3_code" placeholder="">
                 <mat-option [value]="item.valor" *ngFor="let item of listaAgentes ">{{item.valor + " - " + item.name}}</mat-option>
               </mat-select>
             </mat-form-field>
           </div>
-          <div class="col-md-2" *ngIf="idQuery === 3">
+          <div class="col-md-1" *ngIf="idQuery === 3">
             <mat-form-field color="primary" style="width: 100%;">
               <mat-label>Desde</mat-label>
               <input matInput [matDatepicker]="start_Date3" [(ngModel)]="query1_3_start" (dateChange)="selectStartDate_3($event)">
@@ -110,7 +109,7 @@
               <mat-datepicker #start_Date3 color="primary"></mat-datepicker>
             </mat-form-field>
           </div>
-          <div class="col-md-2" *ngIf="idQuery === 3">
+          <div class="col-md-1" *ngIf="idQuery === 3">
             <mat-form-field color="primary" style="width: 100%;">
               <mat-label>Hasta</mat-label>
               <input matInput [matDatepicker]="end_Date3" [(ngModel)]="query1_3_end"  (dateChange)="selectEndDate_3($event)">
@@ -119,11 +118,14 @@
             </mat-form-field>
           </div>
 
-          <div class="col-md-1" *ngIf="idQuery === 3">
-            <button *ngIf="query1_1_code !== ''" mat-mini-fab color="warn" style="margin: 0 .5rem .5rem .5rem;" (click)="descargarDocumento(idQuery, 'pdf')" #tooltip="matTooltip" matTooltip="Descargar PDF">
+          <div class="col-md-2" *ngIf="idQuery === 3">
+            <button *ngIf="query1_3_code !== ''" mat-mini-fab color="primary" style="margin: 0 .5rem .5rem .5rem;" (click)="selectQuery6_3_3()" #tooltip="matTooltip" matTooltip="Buscar">
+              <mat-icon class="col-white">search</mat-icon>
+            </button>
+            <button *ngIf="query1_3_code !== ''" mat-mini-fab color="warn" style="margin: 0 .5rem .5rem .5rem;" (click)="descargarDocumento(idQuery, 'pdf')" #tooltip="matTooltip" matTooltip="Descargar PDF">
               <mat-icon class="col-white">picture_as_pdf</mat-icon>
             </button>
-            <button *ngIf="query1_1_code !== ''" mat-mini-fab class="bg-green" style="margin: 0 .5rem .5rem .5rem;" (click)="descargarDocumento(idQuery, 'excel')" #tooltip="matTooltip" matTooltip="Descargar Excel">
+            <button *ngIf="query1_3_code !== ''" mat-mini-fab class="bg-green" style="margin: 0 .5rem .5rem .5rem;" (click)="descargarDocumento(idQuery, 'excel')" #tooltip="matTooltip" matTooltip="Descargar Excel">
               <mat-icon class="col-white">grid_on</mat-icon>
             </button>
           </div>
@@ -295,48 +297,48 @@
         <div class="row">
           <div class="col-md-12" *ngIf="idQuery === 0">
             <pdf-viewer [src]="query1_0_pdfSrc" [show-borders]="true" [render-text]="true" [original-size]="false"
-                  style="width: 100%; height: {{loading === true ? '5rem' : '45rem'}}"></pdf-viewer>
+                  style="width: 100%; height: {{loading === true ? '5rem' : '60rem'}}" [zoom]="zoom_to"></pdf-viewer>
 
           </div>
           <div class="col-md-12" *ngIf="idQuery === 1">
             <pdf-viewer [src]="query1_1_pdfSrc" [show-borders]="true" [render-text]="true" [original-size]="false"
-                  style="width: 100%; height: {{loading === true ? '5rem' : '45rem'}}"></pdf-viewer>
+                  style="width: 100%; height: {{loading === true ? '5rem' : '60rem'}}" [zoom]="zoom_to"></pdf-viewer>
 
           </div>
           <div class="col-md-12" *ngIf="idQuery === 2">
             <pdf-viewer [src]="query1_2_pdfSrc" [show-borders]="true" [render-text]="true" [original-size]="false"
-                  style="width: 100%; height: {{loading === true ? '5rem' : '45rem'}}"></pdf-viewer>
+                  style="width: 100%; height: {{loading === true ? '5rem' : '60rem'}}" [zoom]="zoom_to"></pdf-viewer>
 
           </div>
           <div class="col-md-12" *ngIf="idQuery === 3">
             <pdf-viewer [src]="query1_3_pdfSrc" [show-borders]="true" [render-text]="true" [original-size]="false"
-                  style="width: 100%; height: {{loading === true ? '5rem' : '45rem'}}"></pdf-viewer>
+                  style="width: 100%; height: {{loading === true ? '5rem' : '60rem'}}"  [zoom]="zoom_to"></pdf-viewer>
 
           </div>
           <div class="col-md-12" *ngIf="idQuery === 4">
             <pdf-viewer [src]="query1_4_pdfSrc" [show-borders]="true" [render-text]="true" [original-size]="false"
-                  style="width: 100%; height: {{loading === true ? '5rem' : '45rem'}}"></pdf-viewer>
+                  style="width: 100%; height: {{loading === true ? '5rem' : '60rem'}}" [zoom]="zoom_to"></pdf-viewer>
 
           </div>
           <div class="col-md-12" *ngIf="idQuery === 5">
             <pdf-viewer [src]="query1_5_pdfSrc" [show-borders]="true" [render-text]="true" [original-size]="false"
-                  style="width: 100%; height: {{loading === true ? '5rem' : '45rem'}}"></pdf-viewer>
+                  style="width: 100%; height: {{loading === true ? '5rem' : '60rem'}}" [zoom]="zoom_to"></pdf-viewer>
           </div>
           <div class="col-md-12" *ngIf="idQuery === 6">
             <pdf-viewer [src]="query1_6_pdfSrc" [show-borders]="true" [render-text]="true" [original-size]="false"
-                  style="width: 100%; height: {{loading === true ? '5rem' : '45rem'}}"></pdf-viewer>
+                  style="width: 100%; height: {{loading === true ? '5rem' : '60rem'}}" [zoom]="zoom_to"></pdf-viewer>
           </div>
           <div class="col-md-12" *ngIf="idQuery === 7">
             <pdf-viewer [src]="query1_7_pdfSrc" [show-borders]="true" [render-text]="true" [original-size]="false"
-                  style="width: 100%; height: {{loading === true ? '5rem' : '45rem'}}"></pdf-viewer>
+                  style="width: 100%; height: {{loading === true ? '5rem' : '60rem'}}" [zoom]="zoom_to"></pdf-viewer>
           </div>
           <div class="col-md-12" *ngIf="idQuery === 8">
             <pdf-viewer [src]="query1_8_pdfSrc" [show-borders]="true" [render-text]="true" [original-size]="false"
-                  style="width: 100%; height: {{loading === true ? '5rem' : '45rem'}}"></pdf-viewer>
+                  style="width: 100%; height: {{loading === true ? '5rem' : '60rem'}}" [zoom]="zoom_to"></pdf-viewer>
           </div>
           <div class="col-md-12" *ngIf="idQuery === 9">
             <pdf-viewer [src]="query1_11_pdfSrc" [show-borders]="true" [render-text]="true" [original-size]="false"
-                  style="width: 100%; height: {{loading === true ? '5rem' : '45rem'}}"></pdf-viewer>
+                  style="width: 100%; height: {{loading === true ? '5rem' : '60rem'}}" [zoom]="zoom_to"></pdf-viewer>
           </div>
 
         </div>

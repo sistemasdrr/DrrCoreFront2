@@ -34,7 +34,7 @@ export class AgentesComponent implements OnInit {
   ];
 
   loading = false;
-
+  zoom_to: number = 0.5;
   idQuery = 1;
 
   constructor(
@@ -88,7 +88,15 @@ export class AgentesComponent implements OnInit {
         break;
     }
   }
+  zoom_in() {
+    this.zoom_to = this.zoom_to + 0.25;
+  }
 
+  zoom_out() {
+    if (this.zoom_to > 1) {
+       this.zoom_to = this.zoom_to - 0.25;
+    }
+  }
   query1_0_pdfSrc: any;
   query1_0_pdfBlob: Blob = new Blob();
   selectQuery6_3_0(){
