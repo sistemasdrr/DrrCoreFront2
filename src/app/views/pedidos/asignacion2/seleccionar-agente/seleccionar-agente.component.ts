@@ -71,6 +71,10 @@ export class SeleccionarAgenteComponent implements OnInit {
   sendZip = false
   step=1
 
+  supervisorCode = ""
+
+
+
   seleccionarTrabajador(codigo : string, nombre : string, idUserLogin : number, internal : boolean){
     this.step=2
     this.asignadoCodigo = codigo
@@ -103,7 +107,7 @@ export class SeleccionarAgenteComponent implements OnInit {
       const auth = JSON.parse(localStorage.getItem('authCache')+'')
       this.userFrom = auth.idUser
 
-      console.log(this.order[0].id)
+      console.log(this.order[0])
       this.idTicketHistory = this.order[0].id
       console.log(this.order[0].asignedTo)
       console.log(this.order[0].idTicket)
@@ -111,6 +115,14 @@ export class SeleccionarAgenteComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.ticketService.GetSupervisorCodeTicket(this.idTicket).subscribe(
+      (response) => {
+        if(response.isSuccess === true){
+          this.supervisorCode = response.data
+          console.log(this.supervisorCode)
+        }
+      }
+    )
     this.ticketService.GetTicketAssignedValidation(this.idTicket).subscribe(
       (response) => {
         if(response.isSuccess === true){
@@ -158,52 +170,78 @@ export class SeleccionarAgenteComponent implements OnInit {
   }
   numAsig = 0
   enviarDespachar(){
-    Swal.fire({
-      title: '¿Está seguro de enviar a despachar?',
-      text: "",
-      icon: 'warning',
-      showCancelButton: true,
-      cancelButtonText : 'No',
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí',
-      width: '20rem',
-      heightAuto : true
-    }).then((result) => {
-      if (result.value) {
-        this.loading=true;
-        this.ticketService.TicketToDispatch(this.idTicketHistory, this.idTicket,this.quality,this.qualityTranslator,this.qualityTypist).subscribe(
-          (response) => {
-            if(response.isSuccess === true && response.isWarning === false){
-              Swal.fire({
-                title: 'El ticket se envio a despacho',
-                text: "",
-                icon: 'success',
-                width: '20rem',
-                heightAuto : true
-              }).then(() => {
-                this.dialogRef.close()
-                this.loading=false;
-              })
+    console.log(this.quality)
+    console.log(this.qualityTranslator)
+    console.log(this.qualityTypist)
+    console.log(this.supervisorCode)
+    const supervisor = this.order[0].otherUserCode.filter(x => x.code.includes("S") && x.active === true)[0]
+    console.log(supervisor)
+    if(this.supervisorCode === "" && supervisor === null){
+      Swal.fire({
+        title: 'El Cupon no cuenta con un supervisor asignado.',
+        text: "",
+        icon: 'error',
+        width: '20rem',
+        heightAuto : true
+      })
+    }else if(this.quality.trim() === "" || this.qualityTranslator.trim() === "" || this.qualityTypist.trim() === ""){
+      Swal.fire({
+        title: 'El Cupón no cuenta con todas las calidades asignadas.',
+        text: "",
+        icon: 'error',
+        width: '20rem',
+        heightAuto : true
+      })
+    }else{
+      Swal.fire({
+        title: '¿Está seguro de enviar a despachar?',
+        text: "",
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText : 'No',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí',
+        width: '20rem',
+        heightAuto : true
+      }).then((result) => {
 
-            }else{
-              Swal.fire({
-                title: 'Ocurrio un error, comunicarse con Sistemas',
-                text: "",
-                icon: 'error',
-                width: '20rem',
-                heightAuto : true
-              }).then(() => {
-                this.dialogRef.close()
-                this.loading=false;
-              })
+        if (result.value) {
+          this.loading=true;
+          this.ticketService.TicketToDispatch(this.idTicketHistory, this.idTicket,this.quality,this.qualityTranslator,this.qualityTypist, this.order[0].otherUserCode).subscribe(
+            (response) => {
+              if(response.isSuccess === true && response.isWarning === false){
+                Swal.fire({
+                  title: 'El ticket se envio a despacho',
+                  text: "",
+                  icon: 'success',
+                  width: '20rem',
+                  heightAuto : true
+                }).then(() => {
+                  this.dialogRef.close()
+                  this.loading=false;
+                })
 
+              }else{
+                Swal.fire({
+                  title: 'Ocurrio un error, comunicarse con Sistemas',
+                  text: "",
+                  icon: 'error',
+                  width: '20rem',
+                  heightAuto : true
+                }).then(() => {
+                  this.dialogRef.close()
+                  this.loading=false;
+                })
+
+              }
             }
-          }
 
-        )
-      }
-    })
+          )
+        }
+      })
+    }
+
   }
   filtrarDatos(tipo : string){
     if(tipo === "PA"){

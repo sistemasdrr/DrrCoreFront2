@@ -44,12 +44,27 @@
             <div class="row" *ngIf="tipo ==='ckeditor'">
               <div class="col-md-6">
                 <div class="body mat-elevation-z8">
-                <ckeditor [editor]="Editor" style="min-height: 20rem; " data="" [(ngModel)]="comentario_es" ></ckeditor>
-               </div>
+                  <ckeditor
+                  [editor]="Editor"
+                  style="min-height: 20rem;"
+                  data=""
+                  [(ngModel)]="comentario_es"
+                  (keydown)="onKeydown1($event)"
+                  (ready)="onEditorReady1($event)">
+                </ckeditor>
+
+                               </div>
               </div>
               <div class="col-md-6">
                 <div class="body mat-elevation-z8">
-                <ckeditor [editor]="Editor" style="min-height: 20rem; " data="" [(ngModel)]="comentario_en" ></ckeditor>
+                  <ckeditor
+                  [editor]="Editor"
+                  style="min-height: 20rem;"
+                  data=""
+                  [(ngModel)]="comentario_en"
+                  (keydown)="onKeydown2($event)"
+                  (ready)="onEditorReady2($event)">
+                </ckeditor>
                </div>
               </div>
             </div>

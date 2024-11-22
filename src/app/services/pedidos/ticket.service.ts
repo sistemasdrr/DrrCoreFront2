@@ -1,4 +1,4 @@
-import { AddTicketObservations, Asignacion, EmployeesAssignated, GetTicketObservations, ListTicket2, NewAsignacion, TicketHistoryCount, PendingTask, ObservedTickets, GetTicketUserResponseDto } from './../../models/pedidos/ticket';
+import { AddTicketObservations, Asignacion, EmployeesAssignated, GetTicketObservations, ListTicket2, NewAsignacion, TicketHistoryCount, PendingTask, ObservedTickets, GetTicketUserResponseDto, OtherUserCode } from './../../models/pedidos/ticket';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CurrentTicket, ListTicket, ReportType, PersonalAssignation, SaveTicketAssignation, SendQuery, Ticket, TicketListPending, TicketQuery, TicketFile, TicketHistorySubscriber, SearchSituation, TicketsByCompanyOrPerson, TimeLineTicket, TicketObservations, ProviderByTicket } from 'app/models/pedidos/ticket';
@@ -177,8 +177,8 @@ export class TicketService {
     return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/FinishTicketObservation?idTicketObservation='+id+'&conclusion='+conclusion+'&dr='+dr+'&ag='+ag+'&cl='+cl,'');
   }
 
-  TicketToDispatch(idTicketHistory : number, idTicket : number,quality:string, qualityTranslator:string, qualityTypist:string) : Observable<Response<boolean>>{
-    return this.http.get<Response<boolean>>(this.url + this.controllerTicket + '/TicketToDispatch?idTicketHistory='+idTicketHistory+'&idTicket='+idTicket+'&quality='+quality+'&qualityTranslator='+qualityTranslator+'&qualityTypist='+qualityTypist);
+  TicketToDispatch(idTicketHistory : number, idTicket : number,quality:string, qualityTranslator:string, qualityTypist:string, otherUsers : OtherUserCode[]) : Observable<Response<boolean>>{
+    return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/TicketToDispatch?idTicketHistory='+idTicketHistory+'&idTicket='+idTicket+'&quality='+quality+'&qualityTranslator='+qualityTranslator+'&qualityTypist='+qualityTypist, otherUsers);
   }
   PendingTask(userTo : string) : Observable<Response<PendingTask[]>>{
     return this.http.get<Response<PendingTask[]>>(this.url + this.controllerTicket + '/PendingTask?userTo='+userTo);
@@ -194,6 +194,9 @@ export class TicketService {
   }
   GetSupervisorTicket(idTicket : number) : Observable<Response<string>>{
     return this.http.get<Response<string>>(this.url + this.controllerTicket + '/GetSupervisorTicket?idTicket='+idTicket);
+  }
+  GetSupervisorCodeTicket(idTicket : number) : Observable<Response<string>>{
+    return this.http.get<Response<string>>(this.url + this.controllerTicket + '/GetSupervisorCodeTicket?idTicket='+idTicket);
   }
   DeleteFile(id : number) : Observable<Response<boolean>>{
     return this.http.get<Response<boolean>>(this.url + this.controllerTicket + '/DeleteFile?id='+id);

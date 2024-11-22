@@ -38,8 +38,7 @@
           <div class="col-md-2" *ngIf="idQuery === 1">
             <mat-form-field class="w-100">
               <mat-label>Digitador</mat-label>
-              <mat-select [(ngModel)]="query1_1_code" placeholder=""
-                (ngModelChange)="selectQuery6_4_1()">
+              <mat-select [(ngModel)]="query1_1_code" placeholder="">
                 <mat-option [value]="item.valor" *ngFor="let item of listaDigitadores ">{{item.valor + " - " + item.name}}</mat-option>
               </mat-select>
             </mat-form-field>
@@ -61,7 +60,10 @@
             </mat-form-field>
           </div>
 
-          <div class="col-md-1" *ngIf="idQuery === 1">
+          <div class="col-md-2" *ngIf="idQuery === 1">
+            <button  mat-mini-fab color="primary" style="margin: 0 .5rem .5rem .5rem;" (click)="selectQuery6_4_1()" #tooltip="matTooltip" matTooltip="Buscar">
+              <mat-icon class="col-white">search</mat-icon>
+            </button>
             <button *ngIf="query1_1_code !== ''" mat-mini-fab color="warn" style="margin: 0 .5rem .5rem .5rem;" (click)="descargarDocumento(idQuery, 'pdf')" #tooltip="matTooltip" matTooltip="Descargar PDF">
               <mat-icon class="col-white">picture_as_pdf</mat-icon>
             </button>
@@ -72,13 +74,15 @@
           <div class="col-md-2" *ngIf="idQuery === 2">
             <mat-form-field class="w-100">
               <mat-label>Digitador</mat-label>
-              <mat-select [(ngModel)]="query1_2_code" placeholder=""
-                (ngModelChange)="selectQuery6_4_2()">
+              <mat-select [(ngModel)]="query1_2_code" placeholder="">
                 <mat-option [value]="item.valor" *ngFor="let item of listaDigitadores ">{{item.valor + " - " + item.name}}</mat-option>
               </mat-select>
             </mat-form-field>
           </div>
-          <div class="col-md-1" *ngIf="idQuery === 2">
+          <div class="col-md-2" *ngIf="idQuery === 2">
+            <button  mat-mini-fab color="primary" style="margin: 0 .5rem .5rem .5rem;" (click)="selectQuery6_4_2()" #tooltip="matTooltip" matTooltip="Buscar">
+              <mat-icon class="col-white">search</mat-icon>
+            </button>
             <button *ngIf="query1_2_code !== ''" mat-mini-fab color="warn" style="margin: 0 .5rem .5rem .5rem;" (click)="descargarDocumento(idQuery, 'pdf')" #tooltip="matTooltip" matTooltip="Descargar PDF">
               <mat-icon class="col-white">picture_as_pdf</mat-icon>
             </button>
@@ -89,8 +93,7 @@
           <div class="col-md-2" *ngIf="idQuery === 3">
             <mat-form-field class="w-100">
               <mat-label>Digitador</mat-label>
-              <mat-select [(ngModel)]="query1_3_code" placeholder=""
-                (ngModelChange)="selectQuery6_4_3()">
+              <mat-select [(ngModel)]="query1_3_code" placeholder="">
                 <mat-option [value]="item.valor" *ngFor="let item of listaDigitadores ">{{item.valor + " - " + item.name}}</mat-option>
               </mat-select>
             </mat-form-field>
@@ -112,7 +115,10 @@
             </mat-form-field>
           </div>
 
-          <div class="col-md-1" *ngIf="idQuery === 3">
+          <div class="col-md-2" *ngIf="idQuery === 3">
+            <button  mat-mini-fab color="primary" style="margin: 0 .5rem .5rem .5rem;" (click)="selectQuery6_4_3()" #tooltip="matTooltip" matTooltip="Buscar">
+              <mat-icon class="col-white">search</mat-icon>
+            </button>
             <button *ngIf="query1_1_code !== ''" mat-mini-fab color="warn" style="margin: 0 .5rem .5rem .5rem;" (click)="descargarDocumento(idQuery, 'pdf')" #tooltip="matTooltip" matTooltip="Descargar PDF">
               <mat-icon class="col-white">picture_as_pdf</mat-icon>
             </button>
@@ -123,7 +129,7 @@
           <div class="col-md-2" *ngIf="idQuery === 4">
             <mat-form-field class="w-100" >
               <mat-label>Mes</mat-label>
-              <mat-select [(ngModel)]="query1_4_month" (ngModelChange)="selectQuery6_4_4()">
+              <mat-select [(ngModel)]="query1_4_month">
                   <mat-option [value]="1">Enero</mat-option>
                   <mat-option [value]="2">Febrero</mat-option>
                   <mat-option [value]="3">Marzo</mat-option>
@@ -142,13 +148,16 @@
           <div class="col-md-2" *ngIf="idQuery === 4">
             <mat-form-field class="w-100" >
               <mat-label>Año </mat-label>
-              <mat-select [(ngModel)]="query1_4_year" (ngModelChange)="selectQuery6_4_4()">
+              <mat-select [(ngModel)]="query1_4_year">
                 <mat-option [value]="item" *ngFor="let item of years">{{item}}</mat-option>
             </mat-select>
             </mat-form-field>
           </div>
 
-          <div class="col-md-1" *ngIf="idQuery === 4">
+          <div class="col-md-2" *ngIf="idQuery === 4">
+            <button  mat-mini-fab color="primary" style="margin: 0 .5rem .5rem .5rem;" (click)="selectQuery6_4_4()" #tooltip="matTooltip" matTooltip="Buscar">
+              <mat-icon class="col-white">search</mat-icon>
+            </button>
             <button mat-mini-fab color="warn" style="margin: 0 .5rem .5rem .5rem;" (click)="descargarDocumento(idQuery, 'pdf')" #tooltip="matTooltip" matTooltip="Descargar PDF">
               <mat-icon class="col-white">picture_as_pdf</mat-icon>
             </button>

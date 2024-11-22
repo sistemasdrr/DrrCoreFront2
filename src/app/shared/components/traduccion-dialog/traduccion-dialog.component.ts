@@ -54,6 +54,43 @@ export class TraduccionDialogComponent{
   //CKEDITOR
   public Editor: any = ClassicEditor;
 
+  editorInstance1: any;
+  editorInstance2: any;
+
+  onKeydown1(event: KeyboardEvent): void {
+    if (event.key === 'Tab') {
+      event.preventDefault(); 
+
+      if (this.editorInstance1) {
+        const selection = this.editorInstance1.model.document.selection;
+        const tabCharacter = '    ';
+
+        this.editorInstance1.model.change((writer: any) => {
+          writer.insertText(tabCharacter, selection.getFirstPosition());
+        });
+      }
+    }
+  }
+  onEditorReady1(editor: any): void {
+    this.editorInstance1 = editor;
+  }
+  onKeydown2(event: KeyboardEvent): void {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+
+      if (this.editorInstance2) {
+        const selection = this.editorInstance2.model.document.selection;
+        const tabCharacter = '    ';
+
+        this.editorInstance2.model.change((writer: any) => {
+          writer.insertText(tabCharacter, selection.getFirstPosition());
+        });
+      }
+    }
+  }
+  onEditorReady2(editor: any): void {
+    this.editorInstance2 = editor;
+  }
   ListaClinton1(lista : boolean){
     if(lista === true){
       if(this.comentario_es.includes(this.text2)){

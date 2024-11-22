@@ -57,11 +57,17 @@ export class AbonadosComponent implements OnInit {
     private reportService: ReportService,
     private comboService: ComboService
   ) {
-    this.filterPais = new Observable<Pais[]>();
+    this.filterPais1 = new Observable<Pais[]>();
+    this.filterPais2 = new Observable<Pais[]>();
   }
 
   ngOnInit(): void {
     const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth();
+    this.query1_6_month = currentMonth+1
+    this.query1_7_month = currentMonth+1
+    this.query1_8_month = currentMonth+1
+    this.query1_9_month = currentMonth+1
     const startYear = currentYear - 10;
     this.query1_5_year = currentYear;
     this.query1_6_year = currentYear;
@@ -88,14 +94,14 @@ export class AbonadosComponent implements OnInit {
         this.paises = response.data;
       }
     });
-    this.filterPais = this.query1_4_controlPaises.valueChanges.pipe(
+    this.filterPais1 = this.query1_4_controlPaises.valueChanges.pipe(
       startWith(''),
       map((value) => {
         const name = typeof value === 'string' ? value : value?.valor;
         return name ? this._filterPais(name as string) : this.paises.slice();
       })
     );
-    this.filterPais = this.query1_5_controlPaises.valueChanges.pipe(
+    this.filterPais2 = this.query1_5_controlPaises.valueChanges.pipe(
       startWith(''),
       map((value) => {
         const name = typeof value === 'string' ? value : value?.valor;
@@ -403,7 +409,7 @@ export class AbonadosComponent implements OnInit {
   }
 
   paises: Pais[] = [];
-  filterPais: Observable<Pais[]>;
+  filterPais1: Observable<Pais[]>;
 
   query1_4_idCountry = 0;
   query1_4_iconoSeleccionado = '';
@@ -445,7 +451,18 @@ export class AbonadosComponent implements OnInit {
         this.query1_4_iconoSeleccionado = pais.bandera;
         this.query1_4_idCountry = pais.id;
 
-        this.loading = true;
+
+      }
+    } else {
+      this.query1_4_idCountry = 0;
+      console.log(this.query1_4_idCountry);
+      this.query1_4_msgPais = 'Seleccione una opción.';
+      this.query1_4_colorMsgPais = 'red';
+    }
+  }
+
+  selectQuery1_4(){
+    this.loading = true;
         this.reportService
           .DownloadReport6_1_15(this.query1_4_idCountry, 'pdf')
           .subscribe((response) => {
@@ -460,19 +477,13 @@ export class AbonadosComponent implements OnInit {
           .add(() => {
             this.loading = false;
           });
-      }
-    } else {
-      this.query1_4_idCountry = 0;
-      console.log(this.query1_4_idCountry);
-      this.query1_4_msgPais = 'Seleccione una opción.';
-      this.query1_4_colorMsgPais = 'red';
-    }
   }
 
   query1_5_idCountry = 0;
   query1_5_year = 0;
   query1_5_iconoSeleccionado = '';
 
+  filterPais2: Observable<Pais[]>;
   query1_5_controlPaises = new FormControl<string | Pais>('');
   query1_5_msgPais = '';
   query1_5_colorMsgPais = '';
@@ -510,7 +521,18 @@ export class AbonadosComponent implements OnInit {
         this.query1_5_iconoSeleccionado = pais.bandera;
         this.query1_5_idCountry = pais.id;
 
-        this.loading = true;
+
+      }
+    } else {
+      this.query1_5_idCountry = 0;
+      console.log(this.query1_5_idCountry);
+      this.query1_5_msgPais = 'Seleccione una opción.';
+      this.query1_5_colorMsgPais = 'red';
+    }
+  }
+
+  selectQuery1_5(){
+    this.loading = true;
 
         this.reportService
           .DownloadReport6_1_18(
@@ -530,13 +552,6 @@ export class AbonadosComponent implements OnInit {
           .add(() => {
             this.loading = false;
           });
-      }
-    } else {
-      this.query1_5_idCountry = 0;
-      console.log(this.query1_5_idCountry);
-      this.query1_5_msgPais = 'Seleccione una opción.';
-      this.query1_5_colorMsgPais = 'red';
-    }
   }
 
   query1_6_month = 1;

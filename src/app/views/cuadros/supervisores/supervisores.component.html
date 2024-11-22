@@ -28,13 +28,15 @@
           <div class="col-md-2" *ngIf="idQuery === 1">
             <mat-form-field class="w-100">
               <mat-label>Supervisor</mat-label>
-              <mat-select [(ngModel)]="query1_1_code" placeholder=""
-                (ngModelChange)="selectQuery6_6_1()">
+              <mat-select [(ngModel)]="query1_1_code" placeholder="">
                 <mat-option [value]="item.valor" *ngFor="let item of listaSupervisores ">{{item.valor + " - " + item.name}}</mat-option>
               </mat-select>
             </mat-form-field>
           </div>
-          <div class="col-md-1" *ngIf="idQuery === 1 && query1_1_code !== ''">
+          <div class="col-md-2" *ngIf="idQuery === 1 && query1_1_code !== ''">
+            <button  mat-mini-fab color="primary" style="margin: 0 .5rem .5rem .5rem;" (click)="selectQuery6_6_1()" #tooltip="matTooltip" matTooltip="Buscar">
+              <mat-icon class="col-white">search</mat-icon>
+            </button>
             <button *ngIf="query1_1_code !== ''" mat-mini-fab color="warn" style="margin: 0 .5rem .5rem .5rem;" (click)="descargarDocumento(idQuery, 'pdf')" #tooltip="matTooltip" matTooltip="Descargar PDF">
               <mat-icon class="col-white">picture_as_pdf</mat-icon>
             </button>

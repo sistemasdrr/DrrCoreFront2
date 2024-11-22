@@ -259,6 +259,7 @@ export interface ListTicket2{
 }
 export interface OtherUserCode{
   code : string
+  type : string
   active : boolean
 }
 export interface TicketListPending{
