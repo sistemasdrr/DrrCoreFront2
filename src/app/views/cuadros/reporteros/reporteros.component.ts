@@ -113,6 +113,42 @@ export class ReporterosComponent implements OnInit{
             this.loading = false;
           });
         break;
+        case 3:
+          this.loading = true;
+          this.reportService
+            .DownloadReport6_2_3(this.query1_3_startString,this.query1_3_endString, this.query1_3_code, format)
+            .subscribe((response) => {
+              const blob: Blob = response.body as Blob;
+              const a = document.createElement('a');
+              a.download =
+                'REPORTE 6.2.3 - ' +
+                this.query1_2_code +
+                (format === 'pdf' ? '.pdf' : '.xlsx');
+              a.href = window.URL.createObjectURL(blob);
+              a.click();
+            })
+            .add(() => {
+              this.loading = false;
+            });
+          break;
+          case 4:
+          this.loading = true;
+          this.reportService
+            .DownloadReport6_2_4(this.query1_4_month,this.query1_4_year, this.query1_4_orderBy, format)
+            .subscribe((response) => {
+              const blob: Blob = response.body as Blob;
+              const a = document.createElement('a');
+              a.download =
+                'REPORTE 6.2.4 - ' +
+                this.query1_2_code +
+                (format === 'pdf' ? '.pdf' : '.xlsx');
+              a.href = window.URL.createObjectURL(blob);
+              a.click();
+            })
+            .add(() => {
+              this.loading = false;
+            });
+          break;
     }
   }
 
