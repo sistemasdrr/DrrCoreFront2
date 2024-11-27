@@ -286,6 +286,9 @@ export class MainComponent implements OnInit {
   produccionMensual(){
     this.router.navigate(['/dashboard/produccion/mensual']);
   }
+  cuponesObservados(){
+    this.router.navigate(['/dashboard/cupones-observados']);
+  }
   private cardChart1() {
     this.smallBarChart = {
       chart: {

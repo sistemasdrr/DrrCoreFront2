@@ -108,6 +108,7 @@ export interface HistorialFacturacionPorCupones{
   idCouponBilling : number
   idEmployee : number
   purchaseDate : string
+  state : string
   couponAmount : number
   couponUnitPrice : number
   totalPrice : number

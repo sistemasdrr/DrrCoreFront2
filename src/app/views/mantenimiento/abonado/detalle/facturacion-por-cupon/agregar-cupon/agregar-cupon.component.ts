@@ -14,11 +14,13 @@ import Swal from 'sweetalert2';
 export class AgregarCuponComponent implements OnInit {
   titulo = ""
   accion = ""
+  loading = false;
 
   //FORM
   id = 0
   idCouponBilling = 0
   date = ""
+  state = "PF"
   dateD : Date | null = null
   couponAmount = 0
   unitPrice = 0
@@ -56,6 +58,7 @@ export class AgregarCuponComponent implements OnInit {
       idCouponBilling : this.idCouponBilling,
       idEmployee : 0,
       purchaseDate : this.date,
+      state : this.state,
       couponAmount : this.couponAmount,
       couponUnitPrice : this.unitPrice,
       totalPrice : this.couponAmount * this.unitPrice
@@ -75,6 +78,7 @@ export class AgregarCuponComponent implements OnInit {
         heightAuto: true
       }).then((result) => {
         if (result.value) {
+          this.loading = true
           this.abonadoService.addHistorialFacturacionPorCupones(this.historial[0]).subscribe(
             (response) => {
               if(response.isSuccess === true && response.isWarning === false){
@@ -92,6 +96,7 @@ export class AgregarCuponComponent implements OnInit {
             }
           ).add(
             () => {
+              this.loading = false
               this.dialogRef.close()
             }
           )

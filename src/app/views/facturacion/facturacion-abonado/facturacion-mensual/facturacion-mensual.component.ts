@@ -129,6 +129,7 @@ export class FacturacionMensualComponent implements OnInit, AfterViewInit {
   isAllSelected1() {
     const numSelected = this.selection1.selected.length;
     const numRows = this.dataSourcePedido1.data.length;
+    this.updateTotalPrice1()
     return numSelected === numRows;
   }
   toggleAllRows1() {

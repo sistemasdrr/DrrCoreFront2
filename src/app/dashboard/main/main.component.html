@@ -38,15 +38,16 @@
           </div>
         </button>
       </div>
-      <div [class]="idEmployee !== 80 && idEmployee !== 96 ? 'col-md-3 col-sm-6' : 'col-md-6 col-sm-12'">
-        <div class="info-box7 bg-c-pink order-info-box7">
+      <div  [class]="idEmployee !== 80 && idEmployee !== 96 ? 'col-md-3 col-sm-6' : 'col-md-6 col-sm-12'">
+        <button (click)="cuponesObservados()" class="w-100 border-0 info-box7  bg-c-pink order-info-box7">
           <div class="info-box7-block">
             <h4 class="m-b-20">Cupones Observados</h4>
             <h2 class="text-end"><i class="fa-solid fa-eye float-start"></i><span>{{observedTickets.length}}</span></h2>
             <p class="m-b-0">{{observedTicketsStr === null || observedTicketsStr === '' ? '0' : observedTicketsStr}}</p>
           </div>
-        </div>
+        </button>
       </div>
+
       <div class="col-md-6 col-sm-6" *ngIf="idUser === '31'">
         <a href="#/informes/empresa/lista">
           <div class="info-box7 bg-c-cyan order-info-box7">

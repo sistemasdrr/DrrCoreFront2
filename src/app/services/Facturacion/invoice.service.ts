@@ -19,6 +19,9 @@ export class InvoiceService {
   GetTramo(obj : AddInvoiceSubscriber) : Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url + this.controller + '/GetTramo', obj);
   }
+  GetTramoCC(obj : AddInvoiceSubscriberCC) : Observable<Response<boolean>>{
+    return this.http.post<Response<boolean>>(this.url + this.controller + '/GetTramoCC', obj);
+  }
   GetInvoiceSubscriberListByBill(startDate : string, endDate : string) : Observable<Response<InvoiceSubcriberListByBill[]>>{
     return this.http.get<Response<InvoiceSubcriberListByBill[]>>(this.url + this.controller + '/GetInvoiceSubscriberListByBill?startDate='+startDate+'&endDate='+endDate);
   }

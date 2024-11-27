@@ -126,9 +126,17 @@ export interface AddInvoiceSubscriberCC{
   invoiceDate : Date | null
   language : string
   idCurrency : number
+  idCountry : number
   idSubscriber : number
+
+  exchangeRate : number
+  subscriberCode : string
   attendedByName : string
   attendedByEmail : string
+  taxTypeCode : string
+  igv : number
+  address : string
+  attendedBy : string
   quantity : number
   totalPrice : number
   details : InvoiceSubscriberCCHistory[]

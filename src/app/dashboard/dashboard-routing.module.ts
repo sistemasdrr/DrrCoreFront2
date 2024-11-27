@@ -6,6 +6,7 @@ import { Dashboard3Component } from './dashboard3/dashboard3.component';
 import { ProduccionDiariaComponent } from 'app/dashboard/produccion-diaria/produccion-diaria.component';
 import { ProduccionMensualComponent } from './produccion-mensual/produccion-mensual.component';
 import { ReportesComponent } from './reportes/reportes.component';
+import { ListaObservadosComponent } from './lista-observados/lista-observados.component';
 
 const routes: Routes = [
   {
@@ -36,6 +37,10 @@ const routes: Routes = [
   {
     path: 'produccion/mensual', component: ProduccionMensualComponent,
     title : 'Producción Mensual - DRR Core V1'
+  },
+  {
+    path: 'cupones-observados', component: ListaObservadosComponent,
+    title : 'Listado de Cupones Observados - DRR Core V1'
   }
 ];
 

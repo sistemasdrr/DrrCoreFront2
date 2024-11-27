@@ -49,6 +49,9 @@ export class FacturacionConCuponesComponent implements OnInit{
   idCurrency = 0
   language = ""
 
+  igv1 = 0
+  igvFlag = false;
+  exchangeRate = 0
   paises : Pais[] = []
   //FILTRAR
   //POR FACTURAR
@@ -111,6 +114,60 @@ export class FacturacionConCuponesComponent implements OnInit{
       }
     )
   }
+
+  descargarTramo(){
+    console.log(this.model[0])
+    Swal.fire({
+      title: '¿Está seguro de guardar este Tramo?',
+      text: "",
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText : 'No',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí',
+      width: '20rem',
+      heightAuto : true
+    }).then((result) => {
+      if (result.value) {
+        this.armarModelo()
+        this.loading = true;
+        this.invoiceService.GetTramoCC(this.model[0]).subscribe(
+          (response) => {
+            if(response.isSuccess === true && response.data === true){
+              Swal.fire({
+                title: 'Se guardo el Tramo correctamente.',
+                text: "",
+                icon: 'success',
+                width: '20rem',
+                heightAuto : true
+              }).then(
+                () => {
+                  this.loading = false
+                }
+              )
+            }else{
+              Swal.fire({
+                title: 'Ocurrio un problema al guardar el Tramo.',
+                text: "",
+                icon: 'error',
+                width: '20rem',
+                heightAuto : true
+              }).then(
+                () => {
+                  this.loading = false
+                }
+              )
+            }
+          }
+        ).add(() => {
+          this.loading = false
+        })
+      }
+    })
+
+  }
+
   onTabChange(event: any): void {
     if (event.index === 0) {
       this.type = 'PF';
@@ -134,7 +191,6 @@ export class FacturacionConCuponesComponent implements OnInit{
     if (!row) {
       return `${this.isAllSelected1() ? 'deselect' : 'select'} all`;
     }
-    this.updateTotalPrice1()
     return `${this.selection1.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
   }
   isAllSelected1() {
@@ -143,9 +199,16 @@ export class FacturacionConCuponesComponent implements OnInit{
     this.updateTotalPrice1()
     return numSelected === numRows;
   }
+  totalQuantity: number = 0;
   totalSelectedPrice1: number = 0;
   updateTotalPrice1() {
     this.totalSelectedPrice1 = this.selection1.selected.reduce((acc, curr) => acc + curr.totalPrice, 0);
+    this.totalQuantity = this.selection1.selected.reduce((acc, curr) => acc + curr.couponAmount, 0);
+    if(this.igvFlag){
+      this.igv1 = this.totalSelectedPrice1 * 18 / 100
+    }else{
+      this.igv1 = 0
+    }
   }
   buscarPorFacturar(){
     this.loading = true
@@ -330,6 +393,13 @@ export class FacturacionConCuponesComponent implements OnInit{
       invoiceDate : this.invoiceDate,
       language : this.language,
       idCurrency : this.idCurrency,
+      idCountry : this.idCountry,
+      address : this.address,
+      attendedBy : this.attendedByName,
+      subscriberCode : this.code,
+      igv : this.igv1,
+      exchangeRate : 0,
+      taxTypeCode : this.taxTypeCode,
       idSubscriber : this.idSubscriber,
       attendedByName : this.attendedByName,
       attendedByEmail : this.attendedByEmail,
