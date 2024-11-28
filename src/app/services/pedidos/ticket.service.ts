@@ -86,7 +86,9 @@ export class TicketService {
   getListToDispatch() : Observable<Response<ListTicket[]>>{
     return this.http.get<Response<ListTicket[]>>(this.url + this.controllerTicket + '/getListToDispatch');
   }
-
+  GetTicketObservedByIdEmployee(idEmployee : number) : Observable<Response<ListTicket[]>>{
+    return this.http.get<Response<ListTicket[]>>(this.url + this.controllerTicket + '/GetTicketObservedByIdEmployee?idEmployee='+idEmployee);
+  }
   dispatchTicket(idTicket : number, idUser : number, obj : number[]) : Observable<Response<boolean>>{
     return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/DispatchTicket?idTicket='+idTicket+'&idUser='+idUser,obj);
   }
@@ -228,5 +230,8 @@ export class TicketService {
 
   GetUsersInTicket(idTicket : number) : Observable<Response<string[]>>{
     return this.http.get<Response<string[]>>(this.url + this.controllerTicket + '/GetUsersInTicket?idTicket='+idTicket);
+  }
+  TicketToDispatchById(idTicket : number, hasObs : boolean) : Observable<Response<boolean>>{
+    return this.http.post<Response<boolean>>(this.url + this.controllerTicket + '/TicketToDispatchById?idTicket='+idTicket+'&hasObs='+hasObs,'');
   }
 }

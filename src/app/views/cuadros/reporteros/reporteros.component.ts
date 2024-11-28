@@ -3,7 +3,9 @@ import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAda
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { ComboDataName, Pais } from 'app/models/combo';
+import { GetCycles } from 'app/models/consulta';
 import { ComboService } from 'app/services/combo.service';
+import { ConsultaService } from 'app/services/Consultas/consulta.service';
 import { AbonadoService } from 'app/services/mantenimiento/abonado.service';
 import { ReportService } from 'app/services/report.service';
 import * as moment from 'moment';
@@ -38,10 +40,12 @@ export class ReporterosComponent implements OnInit{
 
   idQuery = 1;
 
+  cycles : GetCycles[] = []
   constructor(
     private abonadoService: AbonadoService,
     private reportService: ReportService,
-    private comboService: ComboService
+    private comboService: ComboService,
+    private consultaService : ConsultaService
   ) {
   }
 
@@ -59,6 +63,13 @@ export class ReporterosComponent implements OnInit{
       (response) => {
         if(response.isSuccess === true){
           this.listaReporteros = response.data
+        }
+      }
+    )
+    this.consultaService.GetCycles().subscribe(
+      (response) => {
+        if(response.isSuccess === true){
+          this.cycles = response.data
         }
       }
     )
@@ -116,7 +127,7 @@ export class ReporterosComponent implements OnInit{
         case 3:
           this.loading = true;
           this.reportService
-            .DownloadReport6_2_3(this.query1_3_startString,this.query1_3_endString, this.query1_3_code, format)
+            .DownloadReport6_2_3(this.query1_3_cycle, this.query1_3_code, format)
             .subscribe((response) => {
               const blob: Blob = response.body as Blob;
               const a = document.createElement('a');
@@ -233,6 +244,7 @@ export class ReporterosComponent implements OnInit{
   query1_3_endString = ""
 
   query1_3_code = ""
+  query1_3_cycle = ""
 
   query1_3_pdfSrc: any;
   query1_3_pdfBlob: Blob = new Blob();
@@ -252,7 +264,7 @@ export class ReporterosComponent implements OnInit{
   selectQuery6_2_3(){
     this.loading = true
     this.reportService
-    .DownloadReport6_2_3(this.query1_3_startString, this.query1_3_endString,this.query1_3_code, 'pdf')
+    .DownloadReport6_2_3(this.query1_3_cycle,this.query1_3_code, 'pdf')
     .subscribe((response) => {
       this.query1_3_pdfBlob = response.body as Blob;
       const reader = new FileReader();

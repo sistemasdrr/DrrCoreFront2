@@ -23,12 +23,13 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { FeatherModule } from 'angular-feather';
 import { ReportesComponent } from './reportes/reportes.component';
+import { ListaObservadosComponent } from './lista-observados/lista-observados.component';
 
 @NgModule({
   declarations: [MainComponent, Dashboard2Component, Dashboard3Component,
     ProduccionDiariaComponent,
     ProduccionMensualComponent,
-    EnviarComplementoComponent,ReportesComponent],
+    EnviarComplementoComponent,ReportesComponent,ListaObservadosComponent],
   imports: [
     CommonModule,
     DashboardRoutingModule,
@@ -48,7 +49,8 @@ import { ReportesComponent } from './reportes/reportes.component';
     MatSortModule,
     PdfViewerModule,
     NgxExtendedPdfViewerModule,
-    FeatherModule
+    FeatherModule,
+
   ],
 })
 export class DashboardModule {}

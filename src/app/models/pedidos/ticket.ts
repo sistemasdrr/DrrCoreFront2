@@ -103,6 +103,7 @@ export interface HistorialPedido{
 
 export interface ListTicket{
   id : number
+  idTicket : number
   number : string
   idSubscriber : number
   language : string

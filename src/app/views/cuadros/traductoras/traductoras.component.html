@@ -97,20 +97,13 @@
               </mat-select>
             </mat-form-field>
           </div>
-          <div class="col-md-2" *ngIf="idQuery === 3">
+          <div class="col-md-3" *ngIf="idQuery === 3">
+
             <mat-form-field color="primary" style="width: 100%;">
-              <mat-label>Desde</mat-label>
-              <input matInput [matDatepicker]="start_Date3" [(ngModel)]="query1_3_start" (dateChange)="selectStartDate_3($event)">
-              <mat-datepicker-toggle matIconSuffix [for]="start_Date3"></mat-datepicker-toggle>
-              <mat-datepicker #start_Date3 color="primary"></mat-datepicker>
-            </mat-form-field>
-          </div>
-          <div class="col-md-2" *ngIf="idQuery === 3">
-            <mat-form-field color="primary" style="width: 100%;">
-              <mat-label>Hasta</mat-label>
-              <input matInput [matDatepicker]="end_Date3" [(ngModel)]="query1_3_end"  (dateChange)="selectEndDate_3($event)">
-              <mat-datepicker-toggle matIconSuffix [for]="end_Date3"></mat-datepicker-toggle>
-              <mat-datepicker #end_Date3 color="primary"></mat-datepicker>
+              <mat-label>Ciclo</mat-label>
+              <mat-select [(ngModel)]="query1_3_cycle">
+                <mat-option *ngFor="let item of cycles" [value]="item.code">{{item.value}}</mat-option>
+            </mat-select>
             </mat-form-field>
           </div>
 
